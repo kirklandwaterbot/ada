@@ -1,4 +1,5 @@
 import initSqlJs from "sql.js";
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 
 export const DATASET_ID = "94fv-bak7";
 export const SOCRATA_API_URL = `https://data.ny.gov/resource/${DATASET_ID}.json`;
@@ -8,6 +9,8 @@ export const COUNT_API_URL =
   `https://data.ny.gov/resource/${DATASET_ID}.json?$select=count(*)`;
 export const DATASET_PAGE_URL = `https://data.ny.gov/d/${DATASET_ID}`;
 export const SQLITE_DB_PATH = "data/mta-subway-elevator-escalator-assets.sqlite";
+const POSTGRES_ASSETS_TABLE = "mta_subway_access_assets";
+const POSTGRES_METADATA_TABLE = "mta_subway_access_sync_metadata";
 
 export type MtaAsset = {
   equipment_code: string;
@@ -77,7 +80,15 @@ export type MtaAssetDataset = {
 
 type RawMetadata = Record<string, string | null>;
 
+let postgresClient: NeonQueryFunction<false, false> | null = null;
+
 export async function getMtaAssetDataset(): Promise<MtaAssetDataset> {
+  const postgresDataset = await readPostgresDataset();
+
+  if (postgresDataset) {
+    return postgresDataset;
+  }
+
   const sqlDataset = await readSqliteDataset();
 
   if (sqlDataset) {
@@ -96,6 +107,149 @@ export async function getMtaAssetDataset(): Promise<MtaAssetDataset> {
 export async function getMtaAssets(): Promise<MtaAsset[]> {
   const dataset = await getMtaAssetDataset();
   return dataset.assets;
+}
+
+export async function syncMtaAssetsToPostgres() {
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is not configured.");
+  }
+
+  const [assets, expectedRowCount] = await Promise.all([
+    fetchLiveAssets(),
+    fetchExpectedRowCount(),
+  ]);
+  const syncedAt = new Date().toISOString();
+  const loadedRowCount = assets.length;
+  const rowCountMatches =
+    typeof expectedRowCount === "number"
+      ? expectedRowCount === loadedRowCount
+      : null;
+  const metadata: RawMetadata = {
+    count_api_url: COUNT_API_URL,
+    csv_download_url: CSV_DOWNLOAD_URL,
+    dataset_id: DATASET_ID,
+    dataset_page_url: DATASET_PAGE_URL,
+    json_api_url: SOCRATA_API_URL,
+    local_snapshot_written_at: syncedAt,
+    row_count_expected:
+      typeof expectedRowCount === "number" ? String(expectedRowCount) : null,
+    row_count_loaded: String(loadedRowCount),
+    row_count_matches:
+      typeof rowCountMatches === "boolean" ? String(rowCountMatches) : null,
+    synced_at: syncedAt,
+    upstream_source: "live_api",
+  };
+
+  await writePostgresDataset(assets, metadata);
+
+  return {
+    loadedRowCount,
+    metadata: normalizeMetadata(metadata, "sql", loadedRowCount),
+    rowCountMatches,
+  };
+}
+
+async function readPostgresDataset(): Promise<MtaAssetDataset | null> {
+  if (!process.env.DATABASE_URL) {
+    return null;
+  }
+
+  try {
+    const sql = getPostgresClient();
+    const metadataRows = (await sql.query(
+      `SELECT key, value FROM ${quoteIdentifier(POSTGRES_METADATA_TABLE)} ORDER BY key`,
+    )) as Array<{ key: string; value: string | null }>;
+    const assetRows = (await sql.query(
+      `SELECT * FROM ${quoteIdentifier(POSTGRES_ASSETS_TABLE)} ORDER BY equipment_code`,
+    )) as Array<Record<string, string | null>>;
+    const assets = assetRows.map((row) => rowToAsset(row));
+    const columns = getColumns(assets);
+
+    return {
+      assets,
+      columns,
+      metadata: normalizeMetadata(
+        Object.fromEntries(
+          metadataRows.map((row) => [row.key, row.value]),
+        ) as RawMetadata,
+        "sql",
+        assets.length,
+      ),
+      stats: getAssetStats(assets),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function writePostgresDataset(
+  assets: MtaAsset[],
+  metadata: RawMetadata,
+) {
+  const sql = getPostgresClient();
+  const columns = getColumns(assets);
+
+  await sql.query(
+    `CREATE TABLE IF NOT EXISTS ${quoteIdentifier(POSTGRES_METADATA_TABLE)} (
+      key TEXT PRIMARY KEY,
+      value TEXT
+    )`,
+  );
+  await sql.query(
+    `CREATE TABLE IF NOT EXISTS ${quoteIdentifier(POSTGRES_ASSETS_TABLE)} (
+      equipment_code TEXT PRIMARY KEY
+    )`,
+  );
+
+  for (const column of columns) {
+    await sql.query(
+      `ALTER TABLE ${quoteIdentifier(POSTGRES_ASSETS_TABLE)}
+       ADD COLUMN IF NOT EXISTS ${quoteIdentifier(column)} TEXT`,
+    );
+  }
+
+  await sql.query(
+    `CREATE INDEX IF NOT EXISTS idx_mta_access_assets_borough
+     ON ${quoteIdentifier(POSTGRES_ASSETS_TABLE)} (borough)`,
+  );
+  await sql.query(
+    `CREATE INDEX IF NOT EXISTS idx_mta_access_assets_type
+     ON ${quoteIdentifier(POSTGRES_ASSETS_TABLE)} (elevator_or_escalator)`,
+  );
+  await sql.query(`TRUNCATE TABLE ${quoteIdentifier(POSTGRES_ASSETS_TABLE)}`);
+
+  const columnList = columns.map(quoteIdentifier).join(", ");
+  const placeholders = columns.map((_, index) => `$${index + 1}`).join(", ");
+  const updateList = columns
+    .filter((column) => column !== "equipment_code")
+    .map(
+      (column) =>
+        `${quoteIdentifier(column)} = EXCLUDED.${quoteIdentifier(column)}`,
+    )
+    .join(", ");
+
+  for (const asset of assets) {
+    await sql.query(
+      `INSERT INTO ${quoteIdentifier(POSTGRES_ASSETS_TABLE)}
+       (${columnList})
+       VALUES (${placeholders})
+       ON CONFLICT (equipment_code) DO UPDATE SET ${updateList}`,
+      columns.map((column) => normalizeValue(asset[column])),
+    );
+  }
+
+  await sql.query(`TRUNCATE TABLE ${quoteIdentifier(POSTGRES_METADATA_TABLE)}`);
+
+  for (const [key, value] of Object.entries(metadata)) {
+    await sql.query(
+      `INSERT INTO ${quoteIdentifier(POSTGRES_METADATA_TABLE)} (key, value)
+       VALUES ($1, $2)
+       ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+      [key, normalizeValue(value)],
+    );
+  }
 }
 
 async function readSqliteDataset(): Promise<MtaAssetDataset | null> {
@@ -247,6 +401,34 @@ function rowsToObjects(columns: string[], values: unknown[][]): MtaAsset[] {
       ]),
     ),
   ) as MtaAsset[];
+}
+
+function rowToAsset(row: Record<string, string | null>): MtaAsset {
+  return Object.fromEntries(
+    Object.entries(row).map(([key, value]) => [key, value ?? undefined]),
+  ) as MtaAsset;
+}
+
+function getPostgresClient() {
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is not configured.");
+  }
+
+  postgresClient ??= neon(databaseUrl);
+
+  return postgresClient;
+}
+
+function normalizeValue(value: unknown) {
+  if (value === null || typeof value === "undefined") return null;
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+}
+
+function quoteIdentifier(identifier: string) {
+  return `"${identifier.replaceAll('"', '""')}"`;
 }
 
 function mapMetadata(result: Array<{ columns: string[]; values: unknown[][] }>) {
