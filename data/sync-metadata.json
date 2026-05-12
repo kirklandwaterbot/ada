@@ -1,0 +1,14 @@
+{
+  "dataset_id": "94fv-bak7",
+  "dataset_page_url": "https://data.ny.gov/d/94fv-bak7",
+  "csv_download_url": "https://data.ny.gov/api/views/94fv-bak7/rows.csv?accessType=DOWNLOAD",
+  "json_api_url": "https://data.ny.gov/resource/94fv-bak7.json?$limit=5000&$order=equipment_code",
+  "count_api_url": "https://data.ny.gov/resource/94fv-bak7.json?$select=count(*)",
+  "upstream_source": "live_api",
+  "synced_at": "2026-05-12T16:18:30.478Z",
+  "local_snapshot_written_at": "2026-05-12T16:18:30.478Z",
+  "csv_bytes": 459357,
+  "row_count_loaded": 749,
+  "row_count_expected": 749,
+  "row_count_matches": true
+}

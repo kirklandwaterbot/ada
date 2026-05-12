@@ -1,0 +1,26 @@
+name: Weekly MTA asset sync
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run sync:data
+      - name: Commit updated data files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update MTA asset inventory"
+          file_pattern: data/mta-subway-elevator-escalator-assets.* data/sync-metadata.json
