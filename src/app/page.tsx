@@ -3,10 +3,13 @@ import {
   DATASET_PAGE_URL,
   type DataMetadata,
   formatTimestamp,
+  getAccessibilityStationSummary,
   getMtaAssetDataset,
   type MtaAsset,
 } from "@/lib/mta-assets";
+import { AccessibilityDashboard } from "@/components/accessibility-dashboard";
 import { AssetDataTable } from "@/components/asset-data-table";
+import { AssetMap } from "@/components/asset-map";
 import { CopySourceLink } from "@/components/copy-source-link";
 import { SettingsButton } from "@/components/settings-panel";
 import Image from "next/image";
@@ -37,6 +40,8 @@ export default async function Home() {
       assets.map((asset) => asset.station_description).filter(Boolean),
     ).size,
   };
+  const accessibilitySummary = getAccessibilityStationSummary();
+
   return (
     <main className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-100">
       <div className="fixed inset-0 flex justify-center sm:px-8">
@@ -61,7 +66,7 @@ export default async function Home() {
               </div>
               <div>
                 <p className="font-mono text-xs font-semibold uppercase text-[var(--accent-600)]">
-                  data.ny.gov / weekly inventory
+                  data.ny.gov / daily inventory
                 </p>
                 <h1 className="mt-2 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
                   Subway access assets
@@ -109,7 +114,14 @@ export default async function Home() {
               {loadError}
             </div>
           ) : (
-            <AssetDataTable />
+            <>
+              <AccessibilityDashboard
+                assets={assets}
+                summary={accessibilitySummary}
+              />
+              <AssetMap assets={assets} />
+              <AssetDataTable />
+            </>
           )}
         </section>
       </div>
@@ -150,7 +162,7 @@ function DataSourcePanel({ metadata }: { metadata: DataMetadata }) {
             Data source
           </h2>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            SQLite-backed local copy built from the New York State Socrata dataset.
+            SQL-backed synchronized copy built from the New York State Socrata dataset.
           </p>
         </div>
         <span className="inline-flex w-fit rounded-full bg-[var(--accent-50)] px-3 py-1 text-xs font-semibold uppercase text-[var(--accent-700)] dark:bg-[rgb(var(--accent-600-rgb)_/_0.24)] dark:text-zinc-100">

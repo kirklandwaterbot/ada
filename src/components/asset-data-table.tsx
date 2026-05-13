@@ -2,6 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { MtaAsset } from "@/lib/mta-assets";
+import {
+  formatAssetCellValue,
+  getAssetRoutes,
+  getAssetRouteSortKey,
+} from "@/lib/asset-display";
+import { focusAssetOnMap } from "@/lib/map-focus";
+import { SubwayRouteIcons } from "@/components/subway-route-icons";
 
 type SortDirection = "asc" | "desc";
 
@@ -11,6 +18,7 @@ type AssetApiResponse = {
 };
 
 type TableViewState = {
+  adaCompliant: string;
   borough: string;
   facetColumn: string;
   facetValues: Record<string, string[]>;
@@ -20,15 +28,16 @@ type TableViewState = {
   type: string;
 };
 
-const STORAGE_KEY = "mta-access-assets-table-view";
+const STORAGE_KEY = "mta-access-assets-table-view-v3";
 const EMPTY_ASSETS: MtaAsset[] = [];
 const EMPTY_COLUMNS: string[] = [];
 const DEFAULT_TABLE_VIEW: TableViewState = {
+  adaCompliant: "YES",
   borough: "All",
-  facetColumn: "borough",
+  facetColumn: "ada_compliant",
   facetValues: {},
   query: "",
-  sortColumn: "equipment_code",
+  sortColumn: "subway_line",
   sortDirection: "asc",
   type: "All",
 };
@@ -79,7 +88,9 @@ export function AssetDataTable() {
 
   const assets = data?.assets ?? EMPTY_ASSETS;
   const columns = data?.columns ?? EMPTY_COLUMNS;
+  const tableColumns = useMemo(() => columns.filter(isTableColumn), [columns]);
   const {
+    adaCompliant,
     borough,
     facetColumn,
     facetValues,
@@ -88,16 +99,22 @@ export function AssetDataTable() {
     sortDirection,
     type,
   } = view;
+  const activeFacetColumn = tableColumns.includes(facetColumn)
+    ? facetColumn
+    : DEFAULT_TABLE_VIEW.facetColumn;
+  const activeSortColumn = tableColumns.includes(sortColumn)
+    ? sortColumn
+    : DEFAULT_TABLE_VIEW.sortColumn;
 
   const boroughs = useMemo(
     () => getUniqueValues(assets, "borough").filter((value) => value !== "-"),
     [assets],
   );
 
-  const selectedFacetValues = facetValues[facetColumn] ?? [];
+  const selectedFacetValues = facetValues[activeFacetColumn] ?? [];
   const facetOptions = useMemo(
-    () => getUniqueValues(assets, facetColumn).slice(0, 80),
-    [assets, facetColumn],
+    () => getUniqueValues(assets, activeFacetColumn).slice(0, 80),
+    [assets, activeFacetColumn],
   );
 
   const filteredAssets = useMemo(() => {
@@ -105,25 +122,51 @@ export function AssetDataTable() {
     const filtered = assets.filter((asset) => {
       const matchesQuery = !normalizedQuery
         ? true
-        : Object.values(asset)
-            .filter(Boolean)
-            .some((value) => value?.toLowerCase().includes(normalizedQuery));
+        : tableColumns.some((column) =>
+            asset[column]?.toLowerCase().includes(normalizedQuery),
+          );
 
       const matchesBorough = borough === "All" ? true : asset.borough === borough;
       const matchesType = type === "All" ? true : asset.elevator_or_escalator === type;
+      const matchesAda =
+        adaCompliant === "All" ? true : asset.ada_compliant === adaCompliant;
       const matchesFacets = Object.entries(facetValues).every(
         ([column, selectedValues]) =>
-          selectedValues.length === 0
+          !isTableColumn(column) || selectedValues.length === 0
             ? true
             : selectedValues.includes(normalizeCellValue(asset[column])),
       );
 
-      return matchesQuery && matchesBorough && matchesType && matchesFacets;
+      return (
+        matchesQuery &&
+        matchesBorough &&
+        matchesType &&
+        matchesAda &&
+        matchesFacets
+      );
     });
 
     return filtered.sort((a, b) => {
-      const left = normalizeCellValue(a[sortColumn]);
-      const right = normalizeCellValue(b[sortColumn]);
+      if (activeSortColumn === "subway_line") {
+        const routeComparison =
+          getAssetRouteSortKey(a) - getAssetRouteSortKey(b);
+
+        if (routeComparison !== 0) {
+          return sortDirection === "asc" ? routeComparison : -routeComparison;
+        }
+      }
+
+      const left = normalizeCellValue(a[activeSortColumn]);
+      const right = normalizeCellValue(b[activeSortColumn]);
+
+      if (left === "-" && right !== "-") {
+        return 1;
+      }
+
+      if (left !== "-" && right === "-") {
+        return -1;
+      }
+
       const comparison = left.localeCompare(right, undefined, {
         numeric: true,
         sensitivity: "base",
@@ -131,15 +174,27 @@ export function AssetDataTable() {
 
       return sortDirection === "asc" ? comparison : -comparison;
     });
-  }, [assets, borough, facetValues, query, sortColumn, sortDirection, type]);
+  }, [
+    adaCompliant,
+    assets,
+    borough,
+    facetValues,
+    query,
+    activeSortColumn,
+    sortDirection,
+    tableColumns,
+    type,
+  ]);
 
-  const activeFacetCount = Object.values(facetValues).reduce(
-    (count, values) => count + values.length,
+  const activeFacetCount = Object.entries(facetValues).reduce(
+    (count, [column, values]) =>
+      isTableColumn(column) ? count + values.length : count,
     0,
   );
 
   const clearFilters = () => {
     updateView({
+      adaCompliant: "YES",
       borough: "All",
       facetValues: {},
       query: "",
@@ -153,19 +208,23 @@ export function AssetDataTable() {
 
   const toggleFacetValue = (value: string) => {
     setView((current) => {
-      const currentValues = current.facetValues[current.facetColumn] ?? [];
+      const currentValues = current.facetValues[activeFacetColumn] ?? [];
       const nextValues = currentValues.includes(value)
         ? currentValues.filter((item) => item !== value)
         : [...currentValues, value];
       const nextFacetValues = { ...current.facetValues };
 
       if (nextValues.length === 0) {
-        delete nextFacetValues[current.facetColumn];
+        delete nextFacetValues[activeFacetColumn];
       } else {
-        nextFacetValues[current.facetColumn] = nextValues;
+        nextFacetValues[activeFacetColumn] = nextValues;
       }
 
-      return { ...current, facetValues: nextFacetValues };
+      return {
+        ...current,
+        facetColumn: activeFacetColumn,
+        facetValues: nextFacetValues,
+      };
     });
   };
 
@@ -227,7 +286,7 @@ export function AssetDataTable() {
   return (
     <div className="mt-6">
       <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-white/10">
-        <div className="grid gap-3 lg:grid-cols-[minmax(220px,1fr)_180px_180px_220px_140px]">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_minmax(120px,160px)_minmax(120px,160px)_minmax(140px,160px)_minmax(180px,220px)_minmax(120px,140px)]">
           <input
             aria-label="Search any column"
             className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
@@ -257,19 +316,29 @@ export function AssetDataTable() {
             <option>Escalator</option>
           </select>
           <select
+            aria-label="Filter by ADA compliance"
+            className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            onChange={(event) => updateView({ adaCompliant: event.target.value })}
+            value={adaCompliant}
+          >
+            <option value="YES">ADA: YES</option>
+            <option value="NO">ADA: NO</option>
+            <option value="All">ADA: All</option>
+          </select>
+          <select
             aria-label="Sort column"
             className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             onChange={(event) => updateView({ sortColumn: event.target.value })}
-            value={sortColumn}
+            value={activeSortColumn}
           >
-            {columns.map((column) => (
+            {tableColumns.map((column) => (
               <option key={column} value={column}>
                 Sort: {formatColumnLabel(column)}
               </option>
             ))}
           </select>
           <button
-            className="h-11 rounded-md bg-zinc-100 px-4 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+            className="h-11 min-w-0 rounded-md bg-zinc-100 px-4 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
             onClick={() =>
               updateView({
                 sortDirection: sortDirection === "asc" ? "desc" : "asc",
@@ -290,9 +359,9 @@ export function AssetDataTable() {
               aria-label="Choose column for value filters"
               className="mt-2 h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(event) => updateView({ facetColumn: event.target.value })}
-              value={facetColumn}
+              value={activeFacetColumn}
             >
-              {columns.map((column) => (
+              {tableColumns.map((column) => (
                 <option key={column} value={column}>
                   {formatColumnLabel(column)}
                 </option>
@@ -306,7 +375,7 @@ export function AssetDataTable() {
               </p>
               <button
                 className="text-xs font-semibold text-[var(--accent-700)] hover:underline dark:text-zinc-200"
-                onClick={() => clearFacetColumn(facetColumn)}
+                onClick={() => clearFacetColumn(activeFacetColumn)}
                 type="button"
               >
                 Clear column
@@ -336,7 +405,11 @@ export function AssetDataTable() {
           </div>
         </div>
 
-        {activeFacetCount > 0 || query || borough !== "All" || type !== "All" ? (
+        {activeFacetCount > 0 ||
+        query ||
+        borough !== "All" ||
+        type !== "All" ||
+        adaCompliant !== "YES" ? (
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="font-mono text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500">
               Active filters
@@ -353,8 +426,14 @@ export function AssetDataTable() {
             {type !== "All" ? (
               <FilterChip label={`Type: ${type}`} onClear={() => updateView({ type: "All" })} />
             ) : null}
+            {adaCompliant !== "YES" ? (
+              <FilterChip
+                label={`ADA: ${adaCompliant}`}
+                onClear={() => updateView({ adaCompliant: "YES" })}
+              />
+            ) : null}
             {Object.entries(facetValues).flatMap(([column, values]) =>
-              values.map((value) => (
+              isTableColumn(column) ? values.map((value) => (
                 <FilterChip
                   key={`${column}-${value}`}
                   label={`${formatColumnLabel(column)}: ${value}`}
@@ -362,7 +441,7 @@ export function AssetDataTable() {
                     clearFacetValue(column, value);
                   }}
                 />
-              )),
+              )) : [],
             )}
             <button
               className="ml-auto text-xs font-semibold text-[var(--accent-700)] hover:underline dark:text-zinc-200"
@@ -390,9 +469,9 @@ export function AssetDataTable() {
           <table className="w-full min-w-[1600px] border-collapse text-left text-[length:var(--asset-table-font-size)]">
             <thead className="bg-zinc-50 text-xs uppercase text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
               <tr>
-                {columns.map((column) => (
+                {tableColumns.map((column) => (
                   <HeaderCell
-                    active={sortColumn === column}
+                    active={activeSortColumn === column}
                     direction={sortDirection}
                     key={column}
                     onClick={() => handleHeaderSort(column)}
@@ -408,7 +487,7 @@ export function AssetDataTable() {
                   className="border-t border-zinc-100 align-top transition hover:bg-[var(--accent-50)] dark:border-zinc-800 dark:hover:bg-[rgb(var(--accent-600-rgb)_/_0.16)]"
                   key={asset.equipment_code}
                 >
-                  {columns.map((column) => (
+                  {tableColumns.map((column) => (
                     <AssetCell asset={asset} column={column} key={column} />
                   ))}
                 </tr>
@@ -443,7 +522,7 @@ function HeaderCell({
         type="button"
       >
         {children}
-        {active ? <span aria-hidden="true">{direction === "asc" ? "^" : "v"}</span> : null}
+        {active ? <span aria-hidden="true">{direction === "asc" ? "↑" : "↓"}</span> : null}
       </button>
     </th>
   );
@@ -472,7 +551,7 @@ function AssetCell({ asset, column }: { asset: MtaAsset; column: string }) {
   const rawValue = asset[column];
   const value = column.endsWith("_date")
     ? formatDatasetDate(rawValue)
-    : rawValue || "-";
+    : formatAssetCellValue(asset, column);
   const isImportant =
     column === "equipment_code" ||
     column === "station_description" ||
@@ -483,9 +562,7 @@ function AssetCell({ asset, column }: { asset: MtaAsset; column: string }) {
       className={[
         "max-w-[24rem] whitespace-normal px-4 py-[var(--asset-row-padding-y)] leading-6 text-zinc-600 dark:text-zinc-400",
         isImportant ? "font-semibold text-zinc-800 dark:text-zinc-100" : "",
-        column === "equipment_code" ||
-        column === "station_name" ||
-        column === "subway_line"
+        column === "equipment_code" || column === "station_name"
           ? "font-mono text-xs"
           : "",
       ].join(" ")}
@@ -494,6 +571,49 @@ function AssetCell({ asset, column }: { asset: MtaAsset; column: string }) {
         <span className="inline-flex rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
           {rawValue}
         </span>
+      ) : column === "ada_compliant" && rawValue ? (
+        <span
+          className={[
+            "inline-flex rounded-full px-2.5 py-1 text-xs font-semibold",
+            rawValue === "YES"
+              ? "bg-green-50 text-green-700 ring-1 ring-green-600/20 dark:bg-green-500/15 dark:text-green-300 dark:ring-green-400/20"
+              : rawValue === "NO"
+                ? "bg-red-50 text-red-700 ring-1 ring-red-600/20 dark:bg-red-500/15 dark:text-red-300 dark:ring-red-400/20"
+                : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200",
+          ].join(" ")}
+        >
+          {rawValue}
+        </span>
+      ) : column === "station_description" ? (
+        <div>
+          <button
+            className="text-left underline-offset-4 transition hover:text-[var(--accent-600)] hover:underline"
+            onClick={() => focusAssetOnMap(asset.equipment_code)}
+            type="button"
+          >
+            {value}
+          </button>
+          <SubwayRouteIcons routes={getAssetRoutes(asset)} />
+        </div>
+      ) : (column === "alternative_route" || column === "notes") && rawValue ? (
+        <ExpandableCell value={rawValue} />
+      ) : column === "station_planned_ada" && rawValue ? (
+        <span className="inline-flex rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-700 ring-1 ring-green-600/20 dark:bg-green-500/15 dark:text-green-300 dark:ring-green-400/20">
+          {rawValue} Planned
+        </span>
+      ) : column === "station_accessibility_status" && rawValue ? (
+        <span
+          className={[
+            "inline-flex rounded-full px-2.5 py-1 text-xs font-semibold",
+            rawValue === "Accessible"
+              ? "bg-green-50 text-green-700 ring-1 ring-green-600/20 dark:bg-green-500/15 dark:text-green-300 dark:ring-green-400/20"
+              : rawValue === "Partially accessible"
+                ? "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-400/20"
+                : "bg-red-50 text-red-700 ring-1 ring-red-600/20 dark:bg-red-500/15 dark:text-red-300 dark:ring-red-400/20",
+          ].join(" ")}
+        >
+          {formatAccessibilityStatus(asset)}
+        </span>
       ) : (
         value
       )}
@@ -501,8 +621,46 @@ function AssetCell({ asset, column }: { asset: MtaAsset; column: string }) {
   );
 }
 
+function ExpandableCell({ value }: { value: string }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="max-w-72">
+      {expanded ? (
+        <p className="mb-2 whitespace-normal leading-6">{value}</p>
+      ) : null}
+      <button
+        className="inline-flex rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+        onClick={() => setExpanded((current) => !current)}
+        type="button"
+      >
+        {expanded ? "Collapse" : "Expand"}
+      </button>
+    </div>
+  );
+}
+
 function formatColumnLabel(column: string) {
   return column.replaceAll("_", " ");
+}
+
+function formatAccessibilityStatus(asset: MtaAsset) {
+  const status = asset.station_accessibility_status || "-";
+  const detail = getAccessibilityDetail(asset.station_accessibility_raw);
+
+  if (status === "Partially accessible" && detail) {
+    return `♿ ${status} (${detail})`;
+  }
+
+  return `♿ ${status}`;
+}
+
+function getAccessibilityDetail(value?: string) {
+  return value?.match(/\(([^)]+)\)/)?.[1]?.trim();
+}
+
+function isTableColumn(column: string) {
+  return column !== "station_services";
 }
 
 function getUniqueValues(assets: MtaAsset[], column: string) {
@@ -548,13 +706,21 @@ function readStoredTableView(): TableViewState {
     const parsed = JSON.parse(storedValue) as Partial<TableViewState>;
 
     return {
+      adaCompliant:
+        typeof parsed.adaCompliant === "string"
+          ? parsed.adaCompliant
+          : DEFAULT_TABLE_VIEW.adaCompliant,
       borough: typeof parsed.borough === "string" ? parsed.borough : DEFAULT_TABLE_VIEW.borough,
       facetColumn:
-        typeof parsed.facetColumn === "string"
+        typeof parsed.facetColumn === "string" && isTableColumn(parsed.facetColumn)
           ? parsed.facetColumn
           : DEFAULT_TABLE_VIEW.facetColumn,
       facetValues: isFacetValues(parsed.facetValues)
-        ? parsed.facetValues
+        ? Object.fromEntries(
+            Object.entries(parsed.facetValues).filter(([column]) =>
+              isTableColumn(column),
+            ),
+          )
         : DEFAULT_TABLE_VIEW.facetValues,
       query: typeof parsed.query === "string" ? parsed.query : DEFAULT_TABLE_VIEW.query,
       sortColumn:

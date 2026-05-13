@@ -1,0 +1,1558 @@
+{
+  "source": "metro-memory/public/city-data/nyc-rapid-transit.json",
+  "generatedFrom": "data/accessibility-stations.json",
+  "totalPlannedStations": 100,
+  "matchedStations": 100,
+  "missingStations": [],
+  "stations": [
+    {
+      "id": "2 av-F-6 Av Line",
+      "station": "2 Av",
+      "line": "6 Av Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "East Village",
+      "plannedAdaNote": "✅",
+      "latitude": 40.7234,
+      "longitude": -73.989939,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "2 Av"
+    },
+    {
+      "id": "3 av 138 st-6-Pelham Line",
+      "station": "3 Av-138 St",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Mott Haven",
+      "plannedAdaNote": "✅",
+      "latitude": 40.810474,
+      "longitude": -73.926139,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "3 Av - 138 St"
+    },
+    {
+      "id": "4 av 9 st-F-G-Culver Line",
+      "station": "4 Av/9 St",
+      "line": "Culver Line",
+      "services": [
+        "F",
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Park Slope",
+      "plannedAdaNote": "✅",
+      "latitude": 40.6699366,
+      "longitude": -73.9890724,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "4 Av - 9 St"
+    },
+    {
+      "id": "4 av 9 st-R-4 Av Line",
+      "station": "4 Av/9 St",
+      "line": "4 Av Line",
+      "services": [
+        "R"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Park Slope",
+      "plannedAdaNote": "✅",
+      "latitude": 40.6699366,
+      "longitude": -73.9890724,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "4 Av - 9 St"
+    },
+    {
+      "id": "7 av-B-D-E-6 Av Line,Queens Blvd Line",
+      "station": "7 Av",
+      "line": "6 Av Line,Queens Blvd Line",
+      "services": [
+        "B",
+        "D",
+        "E"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.763176,
+      "longitude": -73.98238,
+      "coordinateSource": "data.ny.gov asset coordinates",
+      "matchedStationName": "7 Av (B/D/E)"
+    },
+    {
+      "id": "18 av-D-West End Line",
+      "station": "18 Av",
+      "line": "West End Line",
+      "services": [
+        "D"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bensonhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.607954,
+      "longitude": -74.001735,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "18 Av"
+    },
+    {
+      "id": "23 st-1-Broadway-7 Av Line",
+      "station": "23 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chelsea",
+      "plannedAdaNote": "✅",
+      "latitude": 40.744078,
+      "longitude": -73.995651,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "23 St"
+    },
+    {
+      "id": "23 st-C-E-8 Av Line",
+      "station": "23 St",
+      "line": "8 Av Line",
+      "services": [
+        "C",
+        "E"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chelsea",
+      "plannedAdaNote": "✅",
+      "latitude": 40.745906,
+      "longitude": -73.998042,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "23 St"
+    },
+    {
+      "id": "33 st rawson st-7-Flushing Line",
+      "station": "33 St-Rawson St",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Sunnyside",
+      "plannedAdaNote": "✅",
+      "latitude": 40.744592,
+      "longitude": -73.930996,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "33 St - Rawson St"
+    },
+    {
+      "id": "36 st-D-N-R-4 Av Line",
+      "station": "36 St",
+      "line": "4 Av Line",
+      "services": [
+        "D",
+        "N",
+        "R"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Sunset Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.655144,
+      "longitude": -74.00355,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "36 St"
+    },
+    {
+      "id": "42 st bryant park 5 av-B-D-F-M-6 Av Line",
+      "station": "42 St-Bryant Park/5 Av",
+      "line": "6 Av Line",
+      "services": [
+        "B",
+        "D",
+        "F",
+        "M"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.754218,
+      "longitude": -73.984558,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "42 St - Bryant Pk"
+    },
+    {
+      "id": "42 st bryant park fifth av-7-Flushing Line",
+      "station": "42 St-Bryant Park/Fifth Av",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.754218,
+      "longitude": -73.984558,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "42 St - Bryant Pk"
+    },
+    {
+      "id": "46 st bliss st-7-Flushing Line",
+      "station": "46 St-Bliss St",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Sunnyside",
+      "plannedAdaNote": "✅",
+      "latitude": 40.74316,
+      "longitude": -73.918483,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "46 St - Bliss St"
+    },
+    {
+      "id": "53 st-R-4 Av Line",
+      "station": "53 St",
+      "line": "4 Av Line",
+      "services": [
+        "R"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Sunset Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.64507,
+      "longitude": -74.014036,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "53 St"
+    },
+    {
+      "id": "63 dr rego park-M-R-Queens Blvd Line",
+      "station": "63 Dr-Rego Park",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Rego Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.729852,
+      "longitude": -73.8616,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "63 Dr - Rego Park"
+    },
+    {
+      "id": "81 st museum of natural history-B-C-8 Av Line",
+      "station": "81 St-Museum of Natural History",
+      "line": "8 Av Line",
+      "services": [
+        "B",
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Upper West Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.781434,
+      "longitude": -73.972146,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "81 St - Museum Of Natural History"
+    },
+    {
+      "id": "88 st-A-Fulton St Line",
+      "station": "88 St",
+      "line": "Fulton St Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Ozone Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.679846,
+      "longitude": -73.85147,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "88 St - Boyd Av"
+    },
+    {
+      "id": "96 st-B-C-8 Av Line",
+      "station": "96 St",
+      "line": "8 Av Line",
+      "services": [
+        "B",
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Upper West Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.791641,
+      "longitude": -73.964695,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "96 St"
+    },
+    {
+      "id": "103 st corona plaza-7-Flushing Line",
+      "station": "103 St-Corona Plaza",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Corona",
+      "plannedAdaNote": "✅",
+      "latitude": 40.749887,
+      "longitude": -73.862704,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "103 St - Corona Plaza"
+    },
+    {
+      "id": "110 st-6-Lexington Av Line",
+      "station": "110 St",
+      "line": "Lexington Av Line",
+      "services": [
+        "6"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "East Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.795019,
+      "longitude": -73.944249,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "110 St"
+    },
+    {
+      "id": "110 st malcolm x plaza-2-3-Lenox Av Line",
+      "station": "110 St-Malcolm X Plaza",
+      "line": "Lenox Av Line",
+      "services": [
+        "2",
+        "3"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.798665,
+      "longitude": -73.952174,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "110 St - Malcolm X Plaza"
+    },
+    {
+      "id": "116 st-B-C-8 Av Line",
+      "station": "116 St",
+      "line": "8 Av Line",
+      "services": [
+        "B",
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.804421,
+      "longitude": -73.955364,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "116 St"
+    },
+    {
+      "id": "121 st-J-Jamaica Line",
+      "station": "121 St",
+      "line": "Jamaica Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Richmond Hill",
+      "plannedAdaNote": "✅",
+      "latitude": 40.700489,
+      "longitude": -73.828293,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "121 St"
+    },
+    {
+      "id": "125 st-2-3-Lenox Av Line",
+      "station": "125 St",
+      "line": "Lenox Av Line",
+      "services": [
+        "2",
+        "3"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8077749,
+      "longitude": -73.9455321,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "125 St - Lenox Av"
+    },
+    {
+      "id": "145 st-A-B-C-D-8 Av Line,Concourse Line",
+      "station": "145 St",
+      "line": "8 Av Line,Concourse Line",
+      "services": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.824783,
+      "longitude": -73.944217,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "145 St"
+    },
+    {
+      "id": "149 st grand concourse-4-Jerome Av Line",
+      "station": "149 St-Grand Concourse",
+      "line": "Jerome Av Line",
+      "services": [
+        "4"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Mott Haven",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8185656,
+      "longitude": -73.9273142,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "149 St - Hostos"
+    },
+    {
+      "id": "149 st grand concourse-2-5-White Plains Rd Line",
+      "station": "149 St-Grand Concourse",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Mott Haven",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8185656,
+      "longitude": -73.9273142,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "149 St - Hostos"
+    },
+    {
+      "id": "155 st-C-8 Av Line",
+      "station": "155 St",
+      "line": "8 Av Line",
+      "services": [
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.830518,
+      "longitude": -73.941514,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "155 St"
+    },
+    {
+      "id": "157 st-1-Broadway-7 Av Line",
+      "station": "157 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.83404,
+      "longitude": -73.944887,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "157 St"
+    },
+    {
+      "id": "167 st-D-Concourse Line",
+      "station": "167 St",
+      "line": "Concourse Line",
+      "services": [
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Highbridge",
+      "plannedAdaNote": "✅",
+      "latitude": 40.833771,
+      "longitude": -73.91844,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "167 St"
+    },
+    {
+      "id": "168 st-1-Broadway-7 Av Line",
+      "station": "168 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.840554,
+      "longitude": -73.940128,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "168 St - Washington Hts"
+    },
+    {
+      "id": "182 183 sts-D-Concourse Line",
+      "station": "182-183 Sts",
+      "line": "Concourse Line",
+      "services": [
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Fordham",
+      "plannedAdaNote": "✅",
+      "latitude": 40.856093,
+      "longitude": -73.900741,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "182-183 Sts"
+    },
+    {
+      "id": "190 st-A-8 Av Line",
+      "station": "190 St",
+      "line": "8 Av Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.859022,
+      "longitude": -73.93418,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "190 St"
+    },
+    {
+      "id": "191 st-1-Broadway-7 Av Line",
+      "station": "191 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.855224,
+      "longitude": -73.92941,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "191 St"
+    },
+    {
+      "id": "av i-F-Culver Line",
+      "station": "Av I",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Midwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.625322,
+      "longitude": -73.976124,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Avenue I"
+    },
+    {
+      "id": "av n-F-Culver Line",
+      "station": "Av N",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bensonhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.61514,
+      "longitude": -73.974194,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Avenue N"
+    },
+    {
+      "id": "baychester av-5-Dyre Av Line",
+      "station": "Baychester Av",
+      "line": "Dyre Av Line",
+      "services": [
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Eastchester",
+      "plannedAdaNote": "✅",
+      "latitude": 40.878666,
+      "longitude": -73.838598,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Baychester Av"
+    },
+    {
+      "id": "beach 36 st-A-Rockaway Line",
+      "station": "Beach 36 St",
+      "line": "Rockaway Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Edgemere",
+      "plannedAdaNote": "✅",
+      "latitude": 40.595397,
+      "longitude": -73.768174,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Beach 36 St - Edgemere"
+    },
+    {
+      "id": "beach 90 st-SR-Rockaway Line",
+      "station": "Beach 90 St",
+      "line": "Rockaway Line",
+      "services": [
+        "SR"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Rockaway Beach",
+      "plannedAdaNote": "✅",
+      "latitude": 40.588045,
+      "longitude": -73.813648,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Beach 90 St - Holland"
+    },
+    {
+      "id": "bedford nostrand avs-G-Crosstown Line",
+      "station": "Bedford-Nostrand Avs",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.689626,
+      "longitude": -73.953522,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Bedford - Nostrand Avs"
+    },
+    {
+      "id": "briarwood-E-F-Queens Blvd Line",
+      "station": "Briarwood",
+      "line": "Queens Blvd Line",
+      "services": [
+        "E",
+        "F"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Briarwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.709178,
+      "longitude": -73.820576,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Briarwood"
+    },
+    {
+      "id": "brighton beach-B-Q-Brighton Line",
+      "station": "Brighton Beach",
+      "line": "Brighton Line",
+      "services": [
+        "B",
+        "Q"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Brighton Beach",
+      "plannedAdaNote": "✅",
+      "latitude": 40.577631,
+      "longitude": -73.96138,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Brighton Beach"
+    },
+    {
+      "id": "broadway-N-W-Astoria Line",
+      "station": "Broadway",
+      "line": "Astoria Line",
+      "services": [
+        "N",
+        "W"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "plannedAdaNote": "✅",
+      "latitude": 40.761818,
+      "longitude": -73.925505,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Broadway"
+    },
+    {
+      "id": "broadway junction-L-Canarsie Line",
+      "station": "Broadway Junction",
+      "line": "Canarsie Line",
+      "services": [
+        "L"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.706092,
+      "longitude": -73.950308,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Broadway"
+    },
+    {
+      "id": "broadway junction-A-C-Fulton St Line",
+      "station": "Broadway Junction",
+      "line": "Fulton St Line",
+      "services": [
+        "A",
+        "C"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.706092,
+      "longitude": -73.950308,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Broadway"
+    },
+    {
+      "id": "broadway junction-J-Jamaica Line",
+      "station": "Broadway Junction",
+      "line": "Jamaica Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.706092,
+      "longitude": -73.950308,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Broadway"
+    },
+    {
+      "id": "brook av-6-Pelham Line",
+      "station": "Brook Av",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Mott Haven",
+      "plannedAdaNote": "✅",
+      "latitude": 40.807564,
+      "longitude": -73.919242,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Brook Av"
+    },
+    {
+      "id": "burnside av-4-Jerome Av Line",
+      "station": "Burnside Av",
+      "line": "Jerome Av Line",
+      "services": [
+        "4"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Morris Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.853454,
+      "longitude": -73.907686,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Burnside Av"
+    },
+    {
+      "id": "canal st-N-Q-Broadway Line",
+      "station": "Canal St",
+      "line": "Broadway Line",
+      "services": [
+        "N",
+        "Q"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chinatown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718383,
+      "longitude": -74.00046,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St"
+    },
+    {
+      "id": "canal st-R-W-Broadway Line",
+      "station": "Canal St",
+      "line": "Broadway Line",
+      "services": [
+        "R",
+        "W"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chinatown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.719524,
+      "longitude": -74.001769,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St"
+    },
+    {
+      "id": "canal st-1-Broadway-7 Av Line",
+      "station": "Canal St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "SoHo",
+      "plannedAdaNote": "✅",
+      "latitude": 40.722855,
+      "longitude": -74.006288,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St"
+    },
+    {
+      "id": "canal st-A-C-E-8 Av Line",
+      "station": "Canal St",
+      "line": "8 Av Line",
+      "services": [
+        "A",
+        "C",
+        "E"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Tribeca",
+      "plannedAdaNote": "✅",
+      "latitude": 40.720824,
+      "longitude": -74.005229,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St"
+    },
+    {
+      "id": "canal st-J-Nassau St Line",
+      "station": "Canal St",
+      "line": "Nassau St Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chinatown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718093,
+      "longitude": -73.999894,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St"
+    },
+    {
+      "id": "cathedral pkwy 110 st-1-Broadway-7 Av Line",
+      "station": "Cathedral Pkwy-110 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Morningside Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8006,
+      "longitude": -73.958154,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Cathedral Pkwy - 110 St"
+    },
+    {
+      "id": "classon av-G-Crosstown Line",
+      "station": "Classon Av",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.68887,
+      "longitude": -73.960069,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Classon Av"
+    },
+    {
+      "id": "clifton-SIR-Staten Island Railway",
+      "station": "Clifton",
+      "line": "Staten Island Railway",
+      "services": [
+        "SIR"
+      ],
+      "borough": "Staten Island",
+      "neighborhood": "Clifton",
+      "plannedAdaNote": "✅",
+      "latitude": 40.621324,
+      "longitude": -74.071386,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Clifton"
+    },
+    {
+      "id": "cypress hills-J-Jamaica Line",
+      "station": "Cypress Hills",
+      "line": "Jamaica Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.689941,
+      "longitude": -73.87255,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Cypress Hills"
+    },
+    {
+      "id": "delancey st essex st-J-M-Z-Nassau St Line",
+      "station": "Delancey St/Essex St",
+      "line": "Nassau St Line",
+      "services": [
+        "J",
+        "M",
+        "Z"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Lower East Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718526,
+      "longitude": -73.988159,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Essex St"
+    },
+    {
+      "id": "delancey st essex st-F-M-6 Av Line",
+      "station": "Delancey St/Essex St",
+      "line": "6 Av Line",
+      "services": [
+        "F",
+        "M"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Lower East Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718613,
+      "longitude": -73.988119,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Delancey St"
+    },
+    {
+      "id": "eastchester dyre av-5-Dyre Av Line",
+      "station": "Eastchester-Dyre Av",
+      "line": "Dyre Av Line",
+      "services": [
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Eastchester",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8883,
+      "longitude": -73.830834,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Eastchester - Dyre Av"
+    },
+    {
+      "id": "elder av-6-Pelham Line",
+      "station": "Elder Av",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Soundview",
+      "plannedAdaNote": "✅",
+      "latitude": 40.828586,
+      "longitude": -73.879159,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Elder Av"
+    },
+    {
+      "id": "elmhurst av-M-R-Queens Blvd Line",
+      "station": "Elmhurst Av",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Elmhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.742455,
+      "longitude": -73.882016,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Elmhurst Av"
+    },
+    {
+      "id": "flushing av-G-Crosstown Line",
+      "station": "Flushing Av",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.700378,
+      "longitude": -73.950222,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Flushing Av"
+    },
+    {
+      "id": "fordham rd-B-D-Concourse Line",
+      "station": "Fordham Rd",
+      "line": "Concourse Line",
+      "services": [
+        "B",
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Fordham",
+      "plannedAdaNote": "✅",
+      "latitude": 40.861297,
+      "longitude": -73.897753,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Fordham Rd"
+    },
+    {
+      "id": "forest av-M-Myrtle Av Line",
+      "station": "Forest Av",
+      "line": "Myrtle Av Line",
+      "services": [
+        "M"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Ridgewood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.704426,
+      "longitude": -73.903078,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Forest Av"
+    },
+    {
+      "id": "fort hamilton pkwy-D-West End Line",
+      "station": "Fort Hamilton Pkwy",
+      "line": "West End Line",
+      "services": [
+        "D"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Borough Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.640914,
+      "longitude": -73.994302,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Fort Hamilton Pkwy"
+    },
+    {
+      "id": "fulton st-G-Crosstown Line",
+      "station": "Fulton St",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Fort Greene",
+      "plannedAdaNote": "✅",
+      "latitude": 40.687119,
+      "longitude": -73.975375,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Fulton St"
+    },
+    {
+      "id": "gates av-J-Z-Jamaica Line",
+      "station": "Gates Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.68963,
+      "longitude": -73.92227,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Gates Av"
+    },
+    {
+      "id": "grand army plaza-2-3-Eastern Pkwy Line",
+      "station": "Grand Army Plaza",
+      "line": "Eastern Pkwy Line",
+      "services": [
+        "2",
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Park Slope",
+      "plannedAdaNote": "✅",
+      "latitude": 40.675235,
+      "longitude": -73.971046,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Grand Army Plaza"
+    },
+    {
+      "id": "grand av newtown-M-R-Queens Blvd Line",
+      "station": "Grand Av-Newtown",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Elmhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.737015,
+      "longitude": -73.877223,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Grand Av - Newtown"
+    },
+    {
+      "id": "hoyt schermerhorn sts-A-C-G-Crosstown Line,Fulton St Line",
+      "station": "Hoyt-Schermerhorn Sts",
+      "line": "Crosstown Line,Fulton St Line",
+      "services": [
+        "A",
+        "C",
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Downtown Brooklyn",
+      "plannedAdaNote": "✅",
+      "latitude": 40.688484,
+      "longitude": -73.985001,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Hoyt - Schermerhorn Sts"
+    },
+    {
+      "id": "huguenot-SIR-Staten Island Railway",
+      "station": "Huguenot",
+      "line": "Staten Island Railway",
+      "services": [
+        "SIR"
+      ],
+      "borough": "Staten Island",
+      "neighborhood": "Huguenot",
+      "plannedAdaNote": "✅",
+      "latitude": 40.533668,
+      "longitude": -74.191784,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Huguenot"
+    },
+    {
+      "id": "jefferson st-L-Canarsie Line",
+      "station": "Jefferson St",
+      "line": "Canarsie Line",
+      "services": [
+        "L"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bushwick",
+      "plannedAdaNote": "✅",
+      "latitude": 40.706607,
+      "longitude": -73.922913,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Jefferson St"
+    },
+    {
+      "id": "junius st-3-New Lots Line",
+      "station": "Junius St",
+      "line": "New Lots Line",
+      "services": [
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Brownsville",
+      "plannedAdaNote": "✅",
+      "latitude": 40.6636698,
+      "longitude": -73.9014451,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Junius St"
+    },
+    {
+      "id": "kings hwy-F-Culver Line",
+      "station": "Kings Hwy",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Gravesend",
+      "plannedAdaNote": "✅",
+      "latitude": 40.603218,
+      "longitude": -73.972374,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Kings Hwy"
+    },
+    {
+      "id": "middletown rd-6-Pelham Line",
+      "station": "Middletown Rd",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Pelham Bay",
+      "plannedAdaNote": "✅",
+      "latitude": 40.843869,
+      "longitude": -73.83633,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Middletown Rd"
+    },
+    {
+      "id": "morrison av soundview-6-Pelham Line",
+      "station": "Morrison Av-Soundview",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Soundview",
+      "plannedAdaNote": "✅",
+      "latitude": 40.829532,
+      "longitude": -73.874522,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Morrison Av- Sound View"
+    },
+    {
+      "id": "myrtle av-J-M-Z-Jamaica Line",
+      "station": "Myrtle Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "M",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.697203,
+      "longitude": -73.935661,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Myrtle Av"
+    },
+    {
+      "id": "myrtle willoughby avs-G-Crosstown Line",
+      "station": "Myrtle-Willoughby Avs",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.695273,
+      "longitude": -73.949193,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Myrtle - Willoughby Avs"
+    },
+    {
+      "id": "neptune av-F-Culver Line",
+      "station": "Neptune Av",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Coney Island",
+      "plannedAdaNote": "✅",
+      "latitude": 40.581011,
+      "longitude": -73.974572,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Neptune Av"
+    },
+    {
+      "id": "new lots av-3-New Lots Line",
+      "station": "New Lots Av",
+      "line": "New Lots Line",
+      "services": [
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.666235,
+      "longitude": -73.884079,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "New Lots Av"
+    },
+    {
+      "id": "norwood av-J-Z-Jamaica Line",
+      "station": "Norwood Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Cypress Hills",
+      "plannedAdaNote": "✅",
+      "latitude": 40.681409,
+      "longitude": -73.880039,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Norwood Av"
+    },
+    {
+      "id": "norwood 205 st-D-Concourse Line",
+      "station": "Norwood-205 St",
+      "line": "Concourse Line",
+      "services": [
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Norwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.874811,
+      "longitude": -73.878855,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Norwood - 205 St"
+    },
+    {
+      "id": "nostrand av-3-Eastern Pkwy Line",
+      "station": "Nostrand Av",
+      "line": "Eastern Pkwy Line",
+      "services": [
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.669856,
+      "longitude": -73.950465,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Nostrand Av"
+    },
+    {
+      "id": "nostrand av-A-C-Fulton St Line",
+      "station": "Nostrand Av",
+      "line": "Fulton St Line",
+      "services": [
+        "A",
+        "C"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.680439,
+      "longitude": -73.950426,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Nostrand Av"
+    },
+    {
+      "id": "parsons blvd-F-Queens Blvd Line",
+      "station": "Parsons Blvd",
+      "line": "Queens Blvd Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Jamaica",
+      "plannedAdaNote": "✅",
+      "latitude": 40.707564,
+      "longitude": -73.803326,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Parsons Blvd"
+    },
+    {
+      "id": "president st medgar evers college-2-5-Nostrand Av Line",
+      "station": "President St - Medgar Evers College",
+      "line": "Nostrand Av Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.667883,
+      "longitude": -73.950684,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "President St - Medgar Evers College"
+    },
+    {
+      "id": "prince s bay-SIR-Staten Island Railway",
+      "station": "Prince's Bay",
+      "line": "Staten Island Railway",
+      "services": [
+        "SIR"
+      ],
+      "borough": "Staten Island",
+      "neighborhood": "Prince's Bay",
+      "plannedAdaNote": "✅",
+      "latitude": 40.525503,
+      "longitude": -74.20006,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Prince's Bay"
+    },
+    {
+      "id": "prospect av-2-5-White Plains Rd Line",
+      "station": "Prospect Av",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Longwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.819588,
+      "longitude": -73.901773,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Prospect Av"
+    },
+    {
+      "id": "rockaway blvd-A-Fulton St Line",
+      "station": "Rockaway Blvd",
+      "line": "Fulton St Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Ozone Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.680429,
+      "longitude": -73.843853,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Rockaway Blvd"
+    },
+    {
+      "id": "smith ninth sts-F-G-Culver Line",
+      "station": "Smith-Ninth Sts",
+      "line": "Culver Line",
+      "services": [
+        "F",
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Gowanus",
+      "plannedAdaNote": "✅",
+      "latitude": 40.673582,
+      "longitude": -73.995957,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Smith - 9 Sts"
+    },
+    {
+      "id": "steinway st-M-R-Queens Blvd Line",
+      "station": "Steinway St",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "plannedAdaNote": "✅",
+      "latitude": 40.756878,
+      "longitude": -73.920739,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Steinway St"
+    },
+    {
+      "id": "sterling st-2-5-Nostrand Av Line",
+      "station": "Sterling St",
+      "line": "Nostrand Av Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Prospect Lefferts Gardens",
+      "plannedAdaNote": "✅",
+      "latitude": 40.662743,
+      "longitude": -73.95084,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Sterling St"
+    },
+    {
+      "id": "van cortlandt park 242 st-1-Broadway-7 Av Line",
+      "station": "Van Cortlandt Park-242 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Riverdale",
+      "plannedAdaNote": "✅",
+      "latitude": 40.889248,
+      "longitude": -73.898583,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Van Cortlandt Park - 242 St"
+    },
+    {
+      "id": "van siclen av-C-Fulton St Line",
+      "station": "Van Siclen Av",
+      "line": "Fulton St Line",
+      "services": [
+        "C"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.672709,
+      "longitude": -73.890358,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Van Siclen Av"
+    },
+    {
+      "id": "van siclen av-J-Z-Jamaica Line",
+      "station": "Van Siclen Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.678032,
+      "longitude": -73.89169,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Van Siclen Av"
+    },
+    {
+      "id": "wakefield 241 st-2-White Plains Rd Line",
+      "station": "Wakefield-241 St",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Wakefield",
+      "plannedAdaNote": "✅",
+      "latitude": 40.903125,
+      "longitude": -73.85062,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Wakefield - 241 St"
+    },
+    {
+      "id": "west farms sq east tremont av-2-5-White Plains Rd Line",
+      "station": "West Farms Sq-East Tremont Av",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "West Farms",
+      "plannedAdaNote": "✅",
+      "latitude": 40.850409,
+      "longitude": -73.905224,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Tremont Av"
+    },
+    {
+      "id": "woodhaven blvd-M-R-Queens Blvd Line",
+      "station": "Woodhaven Blvd",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Elmhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.733106,
+      "longitude": -73.869229,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Woodhaven Blvd"
+    },
+    {
+      "id": "woodlawn-4-Jerome Av Line",
+      "station": "Woodlawn",
+      "line": "Jerome Av Line",
+      "services": [
+        "4"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Norwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.886037,
+      "longitude": -73.878751,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Woodlawn"
+    }
+  ]
+}

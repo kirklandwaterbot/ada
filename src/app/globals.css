@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,0,0");
 @import "tailwindcss";
 
 :root {
@@ -41,4 +42,32 @@ body {
 :root:not([data-density="compact"]) {
   --asset-row-padding-y: 0.75rem;
   --asset-table-font-size: 0.875rem;
+}
+
+.asset-popup .mapboxgl-popup-content {
+  border: 1px solid rgb(228 228 231);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 18px 45px rgb(24 24 27 / 0.16),
+    0 1px 0 rgb(24 24 27 / 0.05);
+  padding: 0.75rem;
+  position: relative;
+}
+
+.asset-popup .mapboxgl-popup-tip {
+  border-top-color: rgb(228 228 231);
+}
+
+.material-symbols-rounded {
+  direction: ltr;
+  display: inline-block;
+  font-family: "Material Symbols Rounded";
+  font-feature-settings: "liga";
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
 }

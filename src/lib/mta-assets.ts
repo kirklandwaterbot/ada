@@ -1,5 +1,7 @@
 import initSqlJs from "sql.js";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
+import accessibilityStations from "../../data/accessibility-stations.json";
+import { getAssetRoutes } from "@/lib/asset-display";
 
 export const DATASET_ID = "94fv-bak7";
 export const SOCRATA_API_URL = `https://data.ny.gov/resource/${DATASET_ID}.json`;
@@ -11,6 +13,27 @@ export const DATASET_PAGE_URL = `https://data.ny.gov/d/${DATASET_ID}`;
 export const SQLITE_DB_PATH = "data/mta-subway-elevator-escalator-assets.sqlite";
 const POSTGRES_ASSETS_TABLE = "mta_subway_access_assets";
 const POSTGRES_METADATA_TABLE = "mta_subway_access_sync_metadata";
+const EXCLUDED_ASSET_CODES = new Set([
+  "EL147",
+  "EL256X",
+  "EL359X",
+  "EL400",
+  "EL459",
+  "EL790X",
+]);
+const PRIORITY_COLUMNS = [
+  "station_description",
+  "subway_line",
+  "station_neighborhood",
+  "borough",
+  "station_accessibility_status",
+  "station_planned_ada",
+  "equipment_code",
+  "ada_compliant",
+  "elevator_or_escalator",
+  "original_installation_date",
+  "latest_installation_date",
+];
 
 export type MtaAsset = {
   equipment_code: string;
@@ -20,6 +43,14 @@ export type MtaAsset = {
   station_name?: string;
   station_description?: string;
   station_complex_mrn?: string;
+  station_complex_description?: string;
+  station_accessibility_status?: string;
+  station_accessibility_raw?: string;
+  station_line?: string;
+  station_neighborhood?: string;
+  station_planned_ada?: string;
+  station_planned_ada_note?: string;
+  station_services?: string;
   subway_line?: string;
   borough?: string;
   x_coordinate?: string;
@@ -79,6 +110,7 @@ export type MtaAssetDataset = {
 };
 
 type RawMetadata = Record<string, string | null>;
+type AccessibleStation = (typeof accessibilityStations.stations)[number];
 
 let postgresClient: NeonQueryFunction<false, false> | null = null;
 
@@ -107,6 +139,10 @@ export async function getMtaAssetDataset(): Promise<MtaAssetDataset> {
 export async function getMtaAssets(): Promise<MtaAsset[]> {
   const dataset = await getMtaAssetDataset();
   return dataset.assets;
+}
+
+export function getAccessibilityStationSummary() {
+  return accessibilityStations.summary;
 }
 
 export async function syncMtaAssetsToPostgres() {
@@ -164,7 +200,7 @@ async function readPostgresDataset(): Promise<MtaAssetDataset | null> {
     const assetRows = (await sql.query(
       `SELECT * FROM ${quoteIdentifier(POSTGRES_ASSETS_TABLE)} ORDER BY equipment_code`,
     )) as Array<Record<string, string | null>>;
-    const assets = assetRows.map((row) => rowToAsset(row));
+    const assets = enrichAssetsWithAccessibility(assetRows.map((row) => rowToAsset(row)));
     const columns = getColumns(assets);
 
     return {
@@ -270,11 +306,13 @@ async function readSqliteDataset(): Promise<MtaAssetDataset | null> {
       );
       const result = db.exec("SELECT * FROM assets ORDER BY equipment_code");
       const first = result[0];
-      const assets = first ? rowsToObjects(first.columns, first.values) : [];
+      const assets = enrichAssetsWithAccessibility(
+        first ? rowsToObjects(first.columns, first.values) : [],
+      );
 
       return {
         assets,
-        columns: first?.columns ?? [],
+        columns: getColumns(assets),
         metadata: normalizeMetadata(metadata, "sql", assets.length),
         stats: getAssetStats(assets),
       };
@@ -290,7 +328,7 @@ async function readFallbackDataset(): Promise<
   Omit<MtaAssetDataset, "stats">
 > {
   try {
-    const assets = await fetchLiveAssets();
+    const assets = enrichAssetsWithAccessibility(await fetchLiveAssets());
     const expectedRowCount = await fetchExpectedRowCount();
 
     return {
@@ -318,7 +356,7 @@ async function readFallbackDataset(): Promise<
       },
     };
   } catch {
-    const assets = await readLocalAssetSnapshot();
+    const assets = enrichAssetsWithAccessibility(await readLocalAssetSnapshot());
 
     return {
       assets,
@@ -409,6 +447,297 @@ function rowToAsset(row: Record<string, string | null>): MtaAsset {
   ) as MtaAsset;
 }
 
+function enrichAssetsWithAccessibility(assets: MtaAsset[]): MtaAsset[] {
+  return assets.filter(isPublicAsset).map((asset) => {
+    const assetWithFallbacks = enrichAssetWithFallbackContext(asset);
+    const station = findAccessibleStation(assetWithFallbacks);
+
+    if (!station) {
+      return enrichAssetWithAdaFallback(assetWithFallbacks);
+    }
+
+    return {
+      ...assetWithFallbacks,
+      borough: assetWithFallbacks.borough || station.borough,
+      station_accessibility_raw: station.accessibilityRaw,
+      station_accessibility_status: station.accessibilityStatus,
+      station_line: station.line,
+      station_neighborhood: station.neighborhood,
+      station_planned_ada: station.plannedAda ? "✅" : "",
+      station_planned_ada_note: station.plannedAdaNote,
+      station_services: station.services.join(","),
+    };
+  });
+}
+
+function enrichAssetWithAdaFallback(asset: MtaAsset): MtaAsset {
+  if (asset.ada_compliant !== "YES" || asset.revenue_machine !== "YES") {
+    return asset;
+  }
+
+  return {
+    ...asset,
+    station_accessibility_raw: "♿",
+    station_accessibility_status: "Accessible",
+    station_neighborhood:
+      asset.station_neighborhood || getKnownAssetNeighborhood(asset),
+  };
+}
+
+function getKnownAssetNeighborhood(asset: MtaAsset) {
+  const stationName = asset.station_name?.toUpperCase() ?? "";
+  const stationKey = normalizeStationKey(asset.station_description);
+
+  if (stationKey === "lexington av 53 st") return "Midtown";
+  if (stationKey === "south ferry") return "Battery Park";
+  if (stationKey === "new utrecht av") return "Borough Park";
+  if (stationKey === "8th av" || stationKey === "8th ave") return "Sunset Park";
+  if (stationKey === "metropolitan av") return "Williamsburg";
+  if (stationName.includes("NEWDORP")) return "New Dorp";
+
+  return asset.station_neighborhood;
+}
+
+function isPublicAsset(asset: MtaAsset) {
+  return !EXCLUDED_ASSET_CODES.has(asset.equipment_code?.toUpperCase() ?? "");
+}
+
+function enrichAssetWithFallbackContext(asset: MtaAsset): MtaAsset {
+  if (asset.station_description || asset.station_name) {
+    return asset;
+  }
+
+  const knownStation = getKnownMissingStation(asset);
+
+  if (knownStation) {
+    return {
+      ...asset,
+      borough: asset.borough || knownStation.borough,
+      station_description: knownStation.station,
+      station_line: knownStation.line,
+      station_services: knownStation.services.join(","),
+      subway_line: asset.subway_line || knownStation.line,
+    };
+  }
+
+  if (!isNonRevenueAsset(asset)) {
+    return asset;
+  }
+
+  return {
+    ...asset,
+    station_description: getNonRevenueLocationLabel(asset),
+    station_line: "Non-revenue asset",
+    station_neighborhood: asset.borough,
+  };
+}
+
+function getKnownMissingStation(asset: MtaAsset) {
+  const equipmentCode = asset.equipment_code?.toUpperCase();
+
+  if (equipmentCode === "EL787" || equipmentCode === "EL788") {
+    return accessibilityStations.stations.find(
+      (station) => station.stationKey === "new dorp",
+    );
+  }
+
+  return null;
+}
+
+function isNonRevenueAsset(asset: MtaAsset) {
+  return asset.revenue_machine === "NO";
+}
+
+function getNonRevenueLocationLabel(asset: MtaAsset) {
+  const note = asset.notes?.trim();
+
+  if (note && !/^3 landings$/i.test(note)) {
+    return toDisplayCase(note);
+  }
+
+  return "Unspecified non-revenue asset";
+}
+
+function findAccessibleStation(asset: MtaAsset): AccessibleStation | null {
+  const stationKeys = getAssetStationKeys(asset);
+
+  if (stationKeys.length === 0) {
+    return null;
+  }
+
+  const matches = accessibilityStations.stations.filter(
+    (station) => stationKeys.includes(station.stationKey),
+  );
+
+  if (matches.length === 0) {
+    return null;
+  }
+
+  if (matches.length === 1) {
+    return matches[0] ?? null;
+  }
+
+  const assetRoutes = new Set(getAssetRoutes(asset));
+  const routeMatch = matches.find((station) =>
+    station.services.some((service) => assetRoutes.has(service)),
+  );
+
+  const assetLine = asset.subway_line?.toLowerCase() ?? "";
+  const lineMatch = matches.find((station) =>
+    assetLine.includes(station.line.toLowerCase().replaceAll(" ", "")),
+  );
+
+  if (routeMatch && lineMatch) {
+    return routeMatch === lineMatch ? routeMatch : lineMatch;
+  }
+
+  if (routeMatch) {
+    return routeMatch;
+  }
+
+  return lineMatch ?? matches[0] ?? null;
+}
+
+function getAssetStationKeys(asset: MtaAsset) {
+  const keys = new Set<string>();
+  const stationDescriptionKey = normalizeStationKey(
+    asset.station_description || asset.station_name,
+  );
+  const stationNameKey = normalizeStationKey(asset.station_name);
+  const stationAlias = getAssetStationAlias(asset);
+
+  if (stationDescriptionKey) keys.add(stationDescriptionKey);
+  if (stationNameKey) keys.add(stationNameKey);
+  if (stationAlias) keys.add(stationAlias);
+
+  for (const key of Array.from(keys)) {
+    const alias = STATION_KEY_ALIASES[key];
+
+    if (alias) {
+      keys.add(alias);
+    }
+  }
+
+  return Array.from(keys);
+}
+
+const STATION_KEY_ALIASES: Record<string, string> = {
+  "42st port authority bus terminal": "42 st port authority bus terminal",
+  "74 st broadway": "jackson heights roosevelt av 74 st",
+  "atlantic av barclays ctr": "atlantic av barclays center",
+  "bleecker st": "broadway lafayette st bleecker st",
+  "borough hall": "borough hall court st",
+  "brooklyn bridge city hall": "brooklyn bridge city hall chambers st",
+  "court sq": "court sq 23 st",
+  "e 149 st": "east 149 st",
+  "e 180 st": "east 180 st",
+  "jay st metro tech": "jay st metrotech",
+  "w 4 st wash sq": "west 4 st washington sq",
+  "whitehall st south ferry": "south ferry whitehall st",
+  "world trade center": "chambers st world trade center park place cortlandt st",
+};
+
+function getAssetStationAlias(asset: MtaAsset) {
+  const stationName = asset.station_name?.toUpperCase() ?? "";
+  const subwayLine = asset.subway_line?.toUpperCase() ?? "";
+
+  if (stationName.includes("14ST-8AV") || stationName.includes("8AV-CNR-L")) {
+    return "14 st eighth av";
+  }
+
+  if (stationName.includes("14ST-6AV")) {
+    return "14 st 6 av";
+  }
+
+  if (stationName.includes("14ST-7AV") || stationName.includes("6AV-CNR-L")) {
+    return "14 st sixth av";
+  }
+
+  if (stationName.includes("CORTLANDTST-7AV")) {
+    return "wtc cortlandt";
+  }
+
+  if (stationName.includes("CORTLANDTST-BWY")) {
+    return "chambers st world trade center park place cortlandt st";
+  }
+
+  if (
+    stationName.includes("51ST-LEX") ||
+    (asset.station_description === "51 St - Station" &&
+      subwayLine.includes("LEXINGTON"))
+  ) {
+    return "lexington av 51 st";
+  }
+
+  if (
+    stationName.includes("BWAY-LAFAYETTEST") ||
+    stationName.includes("BLEECKERST")
+  ) {
+    return "broadway lafayette st bleecker st";
+  }
+
+  if (
+    stationName.includes("COURTSQ") ||
+    asset.station_description === "Court Sq - Station"
+  ) {
+    return "court sq 23 st";
+  }
+
+  if (
+    stationName.includes("JACKSONHTS-ROOSEVELTAV") ||
+    stationName.includes("74ST-BROADWAY")
+  ) {
+    return "jackson heights roosevelt av 74 st";
+  }
+
+  if (
+    stationName.includes("SOUTHFERRY") ||
+    stationName.includes("WHITEHALLST-SOUTHFERRY")
+  ) {
+    return "south ferry whitehall st";
+  }
+
+  return null;
+}
+
+function normalizeStationKey(value?: string) {
+  return (value ?? "")
+    .trim()
+    .replace(/\s+-\s+Station$/i, "")
+    .toLowerCase()
+    .replace(/\b42st\b/g, "42 st")
+    .replaceAll("&", "and")
+    .replaceAll("/", " ")
+    .replaceAll("-", " ")
+    .replace(/\bb'?way\b/g, "broadway")
+    .replace(/\bavenue\b/g, "av")
+    .replace(/\bstreet\b/g, "st")
+    .replace(/\bctr\b/g, "center")
+    .replace(/\bhts\b/g, "heights")
+    .replace(/\bpk\b/g, "park")
+    .replace(/\bsq\b/g, "sq")
+    .replace(/\btpke\b/g, "turnpike")
+    .replace(/\bmetro tech\b/g, "metrotech")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function toDisplayCase(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .replace(/\bAt\b/g, "at")
+    .replace(/\bAnd\b/g, "and")
+    .replace(/\bTo\b/g, "to")
+    .replace(/\bOf\b/g, "of")
+    .replace(/\bSub\b/g, "Sub")
+    .replace(/\bSt\b/g, "St")
+    .replace(/\bNd\b/g, "nd")
+    .replace(/\bRd\b/g, "rd")
+    .replace(/\bTh\b/g, "th");
+}
+
 function getPostgresClient() {
   const databaseUrl = process.env.DATABASE_URL;
 
@@ -497,11 +826,22 @@ function getColumns(assets: MtaAsset[]) {
     Object.keys(asset).forEach((column) => columns.add(column));
   }
 
-  return Array.from(columns).sort((a, b) => {
-    if (a === "equipment_code") return -1;
-    if (b === "equipment_code") return 1;
+  return Array.from(columns).filter(isVisibleColumn).sort((a, b) => {
+    const priorityA = PRIORITY_COLUMNS.indexOf(a);
+    const priorityB = PRIORITY_COLUMNS.indexOf(b);
+
+    if (priorityA !== -1 || priorityB !== -1) {
+      if (priorityA === -1) return 1;
+      if (priorityB === -1) return -1;
+      return priorityA - priorityB;
+    }
+
     return a.localeCompare(b);
   });
+}
+
+function isVisibleColumn(column: string) {
+  return column !== "station_services";
 }
 
 export function getAssetStats(assets: MtaAsset[]): AssetStats {
