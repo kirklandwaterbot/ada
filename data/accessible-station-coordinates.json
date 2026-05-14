@@ -1,0 +1,60 @@
+{
+  "generatedFrom": "data/accessibility-stations.json",
+  "coordinateSource": "Metro Memory NYC station coordinates",
+  "stations": [
+    {
+      "id": "arthur kill-SIR-Staten Island Railway",
+      "station": "Arthur Kill",
+      "line": "Staten Island Railway",
+      "services": ["SIR"],
+      "latitude": 40.516578,
+      "longitude": -74.242096,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "dongan hills-SIR-Staten Island Railway",
+      "station": "Dongan Hills",
+      "line": "Staten Island Railway",
+      "services": ["SIR"],
+      "latitude": 40.588849,
+      "longitude": -74.09609,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "great kills-SIR-Staten Island Railway",
+      "station": "Great Kills",
+      "line": "Staten Island Railway",
+      "services": ["SIR"],
+      "latitude": 40.551231,
+      "longitude": -74.151399,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "new dorp-SIR-Staten Island Railway",
+      "station": "New Dorp",
+      "line": "Staten Island Railway",
+      "services": ["SIR"],
+      "latitude": 40.57348,
+      "longitude": -74.11721,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "st george-SIR-Staten Island Railway",
+      "station": "St. George",
+      "line": "Staten Island Railway",
+      "services": ["SIR"],
+      "latitude": 40.643748,
+      "longitude": -74.073643,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "tottenville-SIR-Staten Island Railway",
+      "station": "Tottenville",
+      "line": "Staten Island Railway",
+      "services": ["SIR"],
+      "latitude": 40.512764,
+      "longitude": -74.251961,
+      "statusLabel": "Accessible station"
+    }
+  ]
+}

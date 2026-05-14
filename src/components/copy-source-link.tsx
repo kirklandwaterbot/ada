@@ -12,7 +12,7 @@ export function CopySourceLink({ href, label }: { href: string; label: string })
   };
 
   return (
-    <div className="rounded-xl border border-zinc-100 bg-zinc-50 px-3 py-2 font-mono text-xs text-[var(--accent-700)] transition hover:bg-[var(--accent-50)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-[rgb(var(--accent-600-rgb)_/_0.16)]">
+    <div className="rounded-xl border border-zinc-100 bg-zinc-50 py-2 pl-3 pr-1.5 font-mono text-xs text-[var(--accent-700)] transition hover:bg-[var(--accent-50)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-[rgb(var(--accent-600-rgb)_/_0.16)]">
       <div className="flex items-start gap-2">
         <a className="min-w-0 flex-1" href={href} rel="noreferrer" target="_blank">
           <span className="block font-sans text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500">
@@ -22,20 +22,20 @@ export function CopySourceLink({ href, label }: { href: string; label: string })
         </a>
         <button
           aria-label={`Copy ${label}`}
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-zinc-500 transition hover:bg-white hover:text-[var(--accent-700)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+          className="ml-auto inline-flex h-8 w-12 shrink-0 items-center justify-center rounded-md text-zinc-500 transition hover:bg-white hover:text-[var(--accent-700)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           onClick={copyUrl}
           title={copied ? "Copied" : "Copy"}
           type="button"
         >
-          <ContentCopyIcon />
+          <span aria-live="polite" className="inline-flex items-center justify-center">
+            {copied ? (
+              <span className="font-sans text-[11px] font-semibold">Copied</span>
+            ) : (
+              <ContentCopyIcon />
+            )}
+          </span>
         </button>
       </div>
-      <span
-        aria-live="polite"
-        className="mt-1 block h-4 font-sans text-[11px] font-semibold text-zinc-400 dark:text-zinc-500"
-      >
-        {copied ? "Copied" : ""}
-      </span>
     </div>
   );
 }

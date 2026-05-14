@@ -2,10 +2,10 @@
   "sourceWorkbook": "New York Metro Accessible Stations List.xlsx",
   "summary": {
     "totalStations": 493,
-    "accessible": 170,
+    "accessible": 162,
     "partiallyAccessible": 10,
-    "notAccessible": 313,
-    "plannedAda": 100,
+    "notAccessible": 321,
+    "plannedAda": 102,
     "statenIslandStations": 21,
     "sirAccessible": 6,
     "sirPlannedAda": 3,
@@ -149,7 +149,7 @@
       "rank": 4
     },
     {
-      "station": "14 St/6 Av",
+      "station": "14 St",
       "stationKey": "14 st 6 av",
       "services": [
         "F",
@@ -168,7 +168,7 @@
       "rank": 19
     },
     {
-      "station": "14 St/Eighth Av",
+      "station": "14 St - 8 Av",
       "stationKey": "14 st eighth av",
       "services": [
         "L"
@@ -186,7 +186,7 @@
       "rank": 15
     },
     {
-      "station": "14 St/Eighth Av",
+      "station": "14 St - 8 Av",
       "stationKey": "14 st eighth av",
       "services": [
         "A",
@@ -206,8 +206,8 @@
       "rank": 15
     },
     {
-      "station": "14 St/Sixth Av",
-      "stationKey": "14 st sixth av",
+      "station": "14 St",
+      "stationKey": "14 st",
       "services": [
         "1",
         "2",
@@ -226,8 +226,8 @@
       "rank": 19
     },
     {
-      "station": "14 St/Sixth Av",
-      "stationKey": "14 st sixth av",
+      "station": "6 Av",
+      "stationKey": "6 av",
       "services": [
         "L"
       ],
@@ -342,8 +342,8 @@
       ],
       "division": "IRT",
       "line": "Broadway-7 Av Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "Late 1990s",
@@ -371,8 +371,8 @@
       "rank": 184
     },
     {
-      "station": "23 St-Baruch College",
-      "stationKey": "23 st baruch college",
+      "station": "23 St",
+      "stationKey": "23 st",
       "services": [
         "6"
       ],
@@ -410,7 +410,8 @@
       "station": "233 St",
       "stationKey": "233 st",
       "services": [
-        "2"
+        "2",
+        "5"
       ],
       "division": "IRT",
       "line": "White Plains Rd Line",
@@ -593,8 +594,8 @@
       ],
       "division": "IND",
       "line": "Queens Blvd Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "",
@@ -651,8 +652,8 @@
       ],
       "division": "IRT",
       "line": "Broadway-7 Av Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "2011",
@@ -932,8 +933,8 @@
       ],
       "division": "IRT",
       "line": "Lexington Av Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "",
@@ -1016,7 +1017,7 @@
       "rank": 139
     },
     {
-      "station": "Atlantic Av-Barclays Center",
+      "station": "Atlantic Av-Barclays Ctr",
       "stationKey": "atlantic av barclays center",
       "services": [
         "B",
@@ -1035,7 +1036,7 @@
       "rank": 20
     },
     {
-      "station": "Atlantic Av-Barclays Center",
+      "station": "Atlantic Av-Barclays Ctr",
       "stationKey": "atlantic av barclays center",
       "services": [
         "2",
@@ -1056,7 +1057,7 @@
       "rank": 20
     },
     {
-      "station": "Atlantic Av-Barclays Center",
+      "station": "Atlantic Av-Barclays Ctr",
       "stationKey": "atlantic av barclays center",
       "services": [
         "D",
@@ -1076,8 +1077,8 @@
       "rank": 20
     },
     {
-      "station": "Av H",
-      "stationKey": "av h",
+      "station": "Avenue H",
+      "stationKey": "avenue h",
       "services": [
         "Q"
       ],
@@ -1169,6 +1170,7 @@
       "station": "Bedford Park Blvd",
       "stationKey": "bedford park blvd",
       "services": [
+        "B",
         "D"
       ],
       "division": "IND",
@@ -1241,8 +1243,8 @@
       "rank": 62
     },
     {
-      "station": "Broadway-Lafayette St/Bleecker St",
-      "stationKey": "broadway lafayette st bleecker st",
+      "station": "Bleecker St",
+      "stationKey": "bleecker st",
       "services": [
         "6"
       ],
@@ -1259,8 +1261,8 @@
       "rank": 21
     },
     {
-      "station": "Broadway-Lafayette St/Bleecker St",
-      "stationKey": "broadway lafayette st bleecker st",
+      "station": "Broadway-Lafayette St",
+      "stationKey": "broadway lafayette st",
       "services": [
         "B",
         "D",
@@ -1280,8 +1282,8 @@
       "rank": 21
     },
     {
-      "station": "Brooklyn Bridge-City Hall/Chambers St",
-      "stationKey": "brooklyn bridge city hall chambers st",
+      "station": "Brooklyn Bridge-City Hall",
+      "stationKey": "brooklyn bridge city hall",
       "services": [
         "4",
         "5",
@@ -1300,10 +1302,11 @@
       "rank": 43
     },
     {
-      "station": "Brooklyn Bridge-City Hall/Chambers St",
-      "stationKey": "brooklyn bridge city hall chambers st",
+      "station": "Chambers St",
+      "stationKey": "chambers st",
       "services": [
-        "J"
+        "J",
+        "Z"
       ],
       "division": "BMT",
       "line": "Nassau St Line",
@@ -1336,7 +1339,7 @@
       "rank": 17
     },
     {
-      "station": "Canarsie-Rockaway Pkwy",
+      "station": "Canarsie/Rockaway Pkwy",
       "stationKey": "canarsie rockaway pkwy",
       "services": [
         "L"
@@ -1374,8 +1377,8 @@
       "rank": 80
     },
     {
-      "station": "Chambers St-World Trade Center/Park Place/Cortlandt St",
-      "stationKey": "chambers st world trade center park place cortlandt st",
+      "station": "Cortlandt St",
+      "stationKey": "cortlandt st",
       "services": [
         "R",
         "W"
@@ -1393,16 +1396,16 @@
       "rank": 11
     },
     {
-      "station": "Chambers St-World Trade Center/Park Place/Cortlandt St",
-      "stationKey": "chambers st world trade center park place cortlandt st",
+      "station": "Park Place",
+      "stationKey": "park place",
       "services": [
         "2",
         "3"
       ],
       "division": "IRT",
       "line": "Broadway-7 Av Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "August 20, 2005",
@@ -1412,16 +1415,16 @@
       "rank": 11
     },
     {
-      "station": "Chambers St-World Trade Center/Park Place/Cortlandt St",
-      "stationKey": "chambers st world trade center park place cortlandt st",
+      "station": "Chambers St",
+      "stationKey": "chambers st",
       "services": [
         "A",
         "C"
       ],
       "division": "IND",
       "line": "8 Av Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "August 20, 2005",
@@ -1431,8 +1434,8 @@
       "rank": 11
     },
     {
-      "station": "Chambers St-World Trade Center/Park Place/Cortlandt St",
-      "stationKey": "chambers st world trade center park place cortlandt st",
+      "station": "World Trade Center",
+      "stationKey": "world trade center",
       "services": [
         "E"
       ],
@@ -1506,7 +1509,7 @@
       "rank": 173
     },
     {
-      "station": "Coney Island-Stillwell Av",
+      "station": "Coney Island/Stillwell Av",
       "stationKey": "coney island stillwell av",
       "services": [
         "D",
@@ -1515,7 +1518,7 @@
         "Q"
       ],
       "division": "BMT, IND",
-      "line": "Brighton Line, Culver Line,Sea Beach Line, West End Line",
+      "line": "Brighton Line, Culver Line, Sea Beach Line, West End Line",
       "accessibilityStatus": "Accessible",
       "accessibilityRaw": "♿",
       "plannedAda": false,
@@ -1527,8 +1530,8 @@
       "rank": 98
     },
     {
-      "station": "Court Sq-23 St",
-      "stationKey": "court sq 23 st",
+      "station": "Court Sq",
+      "stationKey": "court sq",
       "services": [
         "G"
       ],
@@ -1545,8 +1548,8 @@
       "rank": 40
     },
     {
-      "station": "Court Sq-23 St",
-      "stationKey": "court sq 23 st",
+      "station": "Court Sq",
+      "stationKey": "court sq",
       "services": [
         "7"
       ],
@@ -1589,11 +1592,11 @@
       ],
       "division": "BMT",
       "line": "Canarsie Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
       "plannedAda": false,
       "plannedAdaNote": "",
-      "dateMadeAccessible": "2006",
+      "dateMadeAccessible": "",
       "borough": "Brooklyn",
       "neighborhood": "Bushwick",
       "ridership2024": 2931695,
@@ -1608,7 +1611,7 @@
         "R"
       ],
       "division": "BMT",
-      "line": "4 Av Line,Brighton Line",
+      "line": "4 Av Line, Brighton Line",
       "accessibilityStatus": "Accessible",
       "accessibilityRaw": "♿",
       "plannedAda": false,
@@ -1656,7 +1659,7 @@
       "rank": 217
     },
     {
-      "station": "East 149 St",
+      "station": "E 149 St",
       "stationKey": "east 149 st",
       "services": [
         "6"
@@ -1693,7 +1696,7 @@
       "rank": 194
     },
     {
-      "station": "Eastern Pkwy - Brooklyn Museum",
+      "station": "Eastern Pkwy-Brooklyn Museum",
       "stationKey": "eastern pkwy brooklyn museum",
       "services": [
         "2",
@@ -1787,7 +1790,7 @@
       "rank": 200
     },
     {
-      "station": "Flushing-Main St",
+      "station": "Flushing/Main St",
       "stationKey": "flushing main st",
       "services": [
         "7"
@@ -1865,7 +1868,6 @@
       "station": "Franklin Av",
       "stationKey": "franklin av",
       "services": [
-        "A",
         "C"
       ],
       "division": "IND",
@@ -1881,8 +1883,8 @@
       "rank": 244
     },
     {
-      "station": "Franklin Av/Botanic Garden",
-      "stationKey": "franklin av botanic garden",
+      "station": "Franklin Av - Medgar Evers College",
+      "stationKey": "franklin av medgar evers college",
       "services": [
         "2",
         "3",
@@ -1891,29 +1893,29 @@
       ],
       "division": "IRT",
       "line": "Eastern Pkwy Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
-      "plannedAda": false,
-      "plannedAdaNote": "",
-      "dateMadeAccessible": "October 17, 1999",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
+      "plannedAda": true,
+      "plannedAdaNote": "✅",
+      "dateMadeAccessible": "",
       "borough": "Brooklyn",
       "neighborhood": "Crown Heights",
       "ridership2024": 3463808,
       "rank": 94
     },
     {
-      "station": "Franklin Av/Botanic Garden",
-      "stationKey": "franklin av botanic garden",
+      "station": "Botanic Garden",
+      "stationKey": "botanic garden",
       "services": [
         "SF"
       ],
       "division": "BMT",
       "line": "Franklin Av Line",
-      "accessibilityStatus": "Accessible",
-      "accessibilityRaw": "♿",
-      "plannedAda": false,
-      "plannedAdaNote": "",
-      "dateMadeAccessible": "October 17, 1999",
+      "accessibilityStatus": "Not accessible",
+      "accessibilityRaw": "❌",
+      "plannedAda": true,
+      "plannedAdaNote": "✅",
+      "dateMadeAccessible": "",
       "borough": "Brooklyn",
       "neighborhood": "Crown Heights",
       "ridership2024": 3463808,
@@ -2300,7 +2302,7 @@
         "F"
       ],
       "division": "IND",
-      "line": "Culver Line,Fulton St Line",
+      "line": "Culver Line, Fulton St Line",
       "accessibilityStatus": "Accessible",
       "accessibilityRaw": "♿",
       "plannedAda": false,
@@ -2348,7 +2350,7 @@
       "rank": 30
     },
     {
-      "station": "Kew Gardens-Union Turnpike",
+      "station": "Kew Gardens-Union Tpke",
       "stationKey": "kew gardens union turnpike",
       "services": [
         "E",
@@ -2424,8 +2426,8 @@
       "rank": 84
     },
     {
-      "station": "Lexington Av/51 St",
-      "stationKey": "lexington av 51 st",
+      "station": "51 St",
+      "stationKey": "51 st",
       "services": [
         "6"
       ],
@@ -2556,7 +2558,7 @@
       "rank": 73
     },
     {
-      "station": "Middle Village-Metropolitan Av",
+      "station": "Middle Village/Metropolitan Av",
       "stationKey": "middle village metropolitan av",
       "services": [
         "M"
@@ -2592,7 +2594,7 @@
       "rank": 218
     },
     {
-      "station": "Myrtle-Wyckoff Avs",
+      "station": "Myrtle-Wyckoff Av",
       "stationKey": "myrtle wyckoff avs",
       "services": [
         "L"
@@ -2610,7 +2612,7 @@
       "rank": 54
     },
     {
-      "station": "Myrtle-Wyckoff Avs",
+      "station": "Myrtle-Wyckoff Av",
       "stationKey": "myrtle wyckoff avs",
       "services": [
         "M"
@@ -2686,7 +2688,7 @@
       "station": "Park Place",
       "stationKey": "park place",
       "services": [
-        "S"
+        "SF"
       ],
       "division": "BMT",
       "line": "Franklin Av Line",
@@ -2764,7 +2766,7 @@
         "SF"
       ],
       "division": "BMT",
-      "line": "Brighton Line,Franklin Av Line",
+      "line": "Brighton Line, Franklin Av Line",
       "accessibilityStatus": "Accessible",
       "accessibilityRaw": "♿",
       "plannedAda": false,
@@ -2853,8 +2855,8 @@
       "rank": 171
     },
     {
-      "station": "Sheepshead Bay",
-      "stationKey": "sheepshead bay",
+      "station": "Sheepshead Bay Rd",
+      "stationKey": "sheepshead bay rd",
       "services": [
         "B",
         "Q"
@@ -2891,7 +2893,7 @@
       "rank": 232
     },
     {
-      "station": "South Ferry/Whitehall St",
+      "station": "Whitehall St - South Ferry",
       "stationKey": "south ferry whitehall st",
       "services": [
         "R",
@@ -2910,8 +2912,8 @@
       "rank": 31
     },
     {
-      "station": "South Ferry/Whitehall St",
-      "stationKey": "south ferry whitehall st",
+      "station": "South Ferry",
+      "stationKey": "south ferry",
       "services": [
         "1"
       ],
@@ -2964,7 +2966,7 @@
       "rank": null
     },
     {
-      "station": "Sutphin Blvd-Archer Av-JFK Airport",
+      "station": "Sutphin Blvd-Archer Av/JFK Airport",
       "stationKey": "sutphin blvd archer av jfk airport",
       "services": [
         "E",
@@ -3129,7 +3131,7 @@
         "M"
       ],
       "division": "IND",
-      "line": "6 Av Line,8 Av Line",
+      "line": "6 Av Line, 8 Av Line",
       "accessibilityStatus": "Accessible",
       "accessibilityRaw": "♿",
       "plannedAda": false,
@@ -3258,7 +3260,7 @@
         "E"
       ],
       "division": "IND",
-      "line": "8 Av Line,Queens Blvd Line",
+      "line": "8 Av Line, Queens Blvd Line",
       "accessibilityStatus": "Partially accessible",
       "accessibilityRaw": "♿ (downtown)",
       "plannedAda": false,
@@ -7746,16 +7748,15 @@
       "rank": 233
     },
     {
-      "station": "Lexington Av/51 St",
-      "stationKey": "lexington av 51 st",
+      "station": "Lexington Av/53 St",
+      "stationKey": "lexington av 53 st",
       "services": [
-        "E",
-        "M"
+        "E"
       ],
       "division": "IND",
       "line": "Queens Blvd Line",
-      "accessibilityStatus": "Not accessible",
-      "accessibilityRaw": "❌",
+      "accessibilityStatus": "Accessible",
+      "accessibilityRaw": "♿",
       "plannedAda": false,
       "plannedAdaNote": "",
       "dateMadeAccessible": "",
@@ -8662,7 +8663,7 @@
       "rank": 375
     },
     {
-      "station": "Smith-Ninth Sts",
+      "station": "Smith - 9 Sts",
       "stationKey": "smith ninth sts",
       "services": [
         "F",

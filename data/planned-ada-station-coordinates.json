@@ -1,8 +1,8 @@
 {
   "source": "metro-memory/public/city-data/nyc-rapid-transit.json",
   "generatedFrom": "data/accessibility-stations.json",
-  "totalPlannedStations": 100,
-  "matchedStations": 100,
+  "totalPlannedStations": 102,
+  "matchedStations": 102,
   "missingStations": [],
   "stations": [
     {
@@ -625,6 +625,21 @@
       "matchedStationName": "Bedford - Nostrand Avs"
     },
     {
+      "id": "botanic garden-SF-Franklin Av Line",
+      "station": "Botanic Garden",
+      "line": "Franklin Av Line",
+      "services": [
+        "SF"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.670344,
+      "longitude": -73.959248,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Botanic Garden"
+    },
+    {
       "id": "briarwood-E-F-Queens Blvd Line",
       "station": "Briarwood",
       "line": "Queens Blvd Line",
@@ -996,6 +1011,24 @@
       "longitude": -73.897753,
       "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
       "matchedStationName": "Fordham Rd"
+    },
+    {
+      "id": "franklin av medgar evers college-2-3-4-5-Eastern Pkwy Line",
+      "station": "Franklin Av - Medgar Evers College",
+      "line": "Eastern Pkwy Line",
+      "services": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.670688,
+      "longitude": -73.958129,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Franklin Av - Medgar Evers College"
     },
     {
       "id": "forest av-M-Myrtle Av Line",
@@ -1400,7 +1433,7 @@
     },
     {
       "id": "smith ninth sts-F-G-Culver Line",
-      "station": "Smith-Ninth Sts",
+      "station": "Smith - 9 Sts",
       "line": "Culver Line",
       "services": [
         "F",

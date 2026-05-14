@@ -1,10 +1,12 @@
- "use client";
+"use client";
 
 import type { MtaAsset } from "@/lib/mta-assets";
 import accessibilityStations from "../../data/accessibility-stations.json";
 import { SubwayRouteIcons } from "@/components/subway-route-icons";
 import { formatStationLineDisplay } from "@/lib/asset-display";
-import { focusPlannedStationOnMap } from "@/lib/map-focus";
+import { focusStationOnMap } from "@/lib/map-focus";
+import { matchesNormalizedSearch } from "@/lib/search-normalization";
+import { useMemo, useState } from "react";
 
 type AccessibilitySummary = {
   accessible: number;
@@ -18,6 +20,19 @@ type AccessibilitySummary = {
   statenIslandStations: number;
   totalStations: number;
 };
+
+type Station = typeof accessibilityStations.stations[number];
+type StationFilterKey = "accessible" | "mixed" | "notAccessible" | "planned";
+
+const STATION_FILTERS: Array<{
+  key: StationFilterKey;
+  label: string;
+}> = [
+  { key: "accessible", label: "Accessible" },
+  { key: "mixed", label: "Partial accessibility" },
+  { key: "notAccessible", label: "Not accessible" },
+  { key: "planned", label: "Planned" },
+];
 
 export function AccessibilityDashboard({
   assets,
@@ -34,27 +49,25 @@ export function AccessibilityDashboard({
   );
   const elevatorStatus = getEquipmentStatusCounts(elevators);
   const escalatorStatus = getEquipmentStatusCounts(escalators);
-  const plannedStations = accessibilityStations.stations.filter(
-    (station) => station.plannedAda,
-  );
+
   return (
     <section className="mt-10 grid gap-4 lg:grid-cols-3">
       <DashboardPanel eyebrow="Accessibility dashboard" title="Stations">
         <DashboardMetric label="Total stations" value={summary.totalStations} />
         <DashboardMetric
-          label="♿ Accessible"
+          label={`${ACCESSIBILITY_ICON} Accessible`}
           total={summary.totalStations}
           value={summary.accessible}
           tone="green"
         />
         <DashboardMetric
-          label="♿ Partial"
+          label={`${ACCESSIBILITY_ICON} Partial`}
           total={summary.totalStations}
           value={summary.partiallyAccessible}
           tone="amber"
         />
         <DashboardMetric
-          label="♿ Not accessible"
+          label={`${ACCESSIBILITY_ICON} Not accessible`}
           total={summary.totalStations}
           value={summary.notAccessible}
           tone="red"
@@ -113,14 +126,15 @@ export function AccessibilityDashboard({
 
       <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-white/10 lg:col-span-3">
         <div className="font-mono text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500">
-          Planned ADA stations
+          Station browser
         </div>
         <h2 className="mt-1 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-          ✅ Planned to be ♿ accessible
+          All stations
         </h2>
-        <div className="mt-4 max-h-72 overflow-y-auto pr-2">
-          <StationList stations={plannedStations} />
-        </div>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          {accessibilityStations.stations.length.toLocaleString()} station rows from the accessibility workbook.
+        </p>
+        <StationBrowser />
       </div>
     </section>
   );
@@ -169,11 +183,86 @@ function getEquipmentStatusCounts(assets: MtaAsset[]) {
   );
 }
 
-function StationList({
-  stations,
-}: {
-  stations: typeof accessibilityStations.stations;
-}) {
+function StationBrowser() {
+  const [query, setQuery] = useState("");
+  const [filters, setFilters] = useState<Record<StationFilterKey, boolean>>({
+    accessible: true,
+    mixed: true,
+    notAccessible: true,
+    planned: true,
+  });
+
+  const stations = useMemo(
+    () =>
+      accessibilityStations.stations.filter(
+        (station) =>
+          matchesStationFilters(station, filters) &&
+          matchesNormalizedSearch(
+            [
+              station.station,
+              station.borough,
+              station.neighborhood,
+              station.line,
+              station.services.join(" "),
+              station.accessibilityStatus,
+              station.plannedAda ? "planned planned ada" : "",
+            ],
+            query,
+          ),
+      ),
+    [filters, query],
+  );
+
+  return (
+    <div className="mt-4">
+      <label
+        className="font-mono text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500"
+        htmlFor="all-stations-search"
+      >
+        Search stations
+      </label>
+      <input
+        className="mt-2 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-[var(--accent-600)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+        id="all-stations-search"
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder="Harlem-148 St"
+        type="search"
+        value={query}
+      />
+      <fieldset className="mt-4 flex flex-wrap gap-2">
+        <legend className="sr-only">Station accessibility filters</legend>
+        {STATION_FILTERS.map((filter) => (
+          <label
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            key={filter.key}
+          >
+            <input
+              checked={filters[filter.key]}
+              className="h-4 w-4 accent-[var(--accent-600)]"
+              onChange={() =>
+                setFilters((current) => ({
+                  ...current,
+                  [filter.key]: !current[filter.key],
+                }))
+              }
+              type="checkbox"
+            />
+            {filter.label}
+          </label>
+        ))}
+      </fieldset>
+      <div className="mt-4 max-h-96 overflow-y-auto pr-2">
+        <StationList stations={stations} />
+      </div>
+      <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+        Showing {stations.length.toLocaleString()} of{" "}
+        {accessibilityStations.stations.length.toLocaleString()} station rows.
+      </p>
+    </div>
+  );
+}
+
+function StationList({ stations }: { stations: Station[] }) {
   return (
     <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
       {stations.map((station) => (
@@ -184,36 +273,64 @@ function StationList({
           <div className="flex min-w-0 flex-wrap items-center gap-2 leading-none">
             <button
               className="truncate text-left text-sm font-semibold leading-5 text-zinc-800 underline-offset-4 transition hover:text-[var(--accent-600)] hover:underline dark:text-zinc-100"
-              onClick={() => focusPlannedStationOnMap(getPlannedStationFocusKey(station))}
+              onClick={() => focusStationOnMap(getPlannedStationFocusKey(station))}
               type="button"
             >
               {station.station}
             </button>
             <SubwayRouteIcons className="mt-0" routes={station.services} />
           </div>
-          <span
-            className={[
-              "shrink-0 rounded-full px-2 py-1 text-xs font-semibold",
-              station.accessibilityStatus === "Accessible"
-                ? "bg-green-50 text-green-700 ring-1 ring-green-600/20 dark:bg-green-500/15 dark:text-green-300"
-                : station.plannedAda
-                  ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20 dark:bg-emerald-500/15 dark:text-emerald-300"
-                  : "bg-red-50 text-red-700 ring-1 ring-red-600/20 dark:bg-red-500/15 dark:text-red-300",
-            ].join(" ")}
-          >
-            {station.plannedAda
-              ? "✅ Planned"
-              : formatStationAccessibility(station)}
-          </span>
+          <div className="flex shrink-0 flex-wrap justify-end gap-2">
+            <StationStatusBadge station={station} />
+            {station.plannedAda ? (
+              <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-600/20 dark:bg-emerald-500/15 dark:text-emerald-300">
+                Planned
+              </span>
+            ) : null}
+          </div>
         </div>
       ))}
     </div>
   );
 }
 
-function getPlannedStationFocusKey(
-  station: typeof accessibilityStations.stations[number],
+function StationStatusBadge({ station }: { station: Station }) {
+  return (
+    <span
+      className={[
+        "rounded-full px-2 py-1 text-xs font-semibold",
+        station.accessibilityStatus === "Accessible"
+          ? "bg-green-50 text-green-700 ring-1 ring-green-600/20 dark:bg-green-500/15 dark:text-green-300"
+          : station.accessibilityStatus === "Partially accessible"
+            ? "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20 dark:bg-amber-500/15 dark:text-amber-300"
+            : "bg-red-50 text-red-700 ring-1 ring-red-600/20 dark:bg-red-500/15 dark:text-red-300",
+      ].join(" ")}
+    >
+      {formatStationAccessibility(station)}
+    </span>
+  );
+}
+
+function matchesStationFilters(
+  station: Station,
+  filters: Record<StationFilterKey, boolean>,
 ) {
+  if (station.plannedAda && filters.planned) {
+    return true;
+  }
+
+  if (station.accessibilityStatus === "Accessible" && filters.accessible) {
+    return true;
+  }
+
+  if (station.accessibilityStatus === "Partially accessible" && filters.mixed) {
+    return true;
+  }
+
+  return station.accessibilityStatus === "Not accessible" && filters.notAccessible;
+}
+
+function getPlannedStationFocusKey(station: Station) {
   return [
     formatPlannedStationName(station.station),
     formatStationLineDisplay(station.line),
@@ -222,21 +339,31 @@ function getPlannedStationFocusKey(
 }
 
 function formatPlannedStationName(value: string) {
-  return value === "14 St/6 Av" || value === "14 St/Sixth Av"
-    ? "14 St - 6 Av"
-    : value;
+  if (value === "14 St/6 Av" || value === "14 St/Sixth Av") {
+    return "14 St - 6 Av";
+  }
+
+  if (value === "Court Sq-23 St") {
+    return "Court Sq - 23 St";
+  }
+
+  if (value === "Borough Hall") {
+    return "Borough Hall/Court St";
+  }
+
+  return value;
 }
 
-function formatStationAccessibility(
-  station: typeof accessibilityStations.stations[number],
-) {
+const ACCESSIBILITY_ICON = "\u267F";
+
+function formatStationAccessibility(station: Station) {
   const detail = station.accessibilityRaw.match(/\(([^)]+)\)/)?.[1]?.trim();
 
   if (station.accessibilityStatus === "Partially accessible" && detail) {
-    return `♿ ${station.accessibilityStatus} (${detail})`;
+    return `${ACCESSIBILITY_ICON} ${station.accessibilityStatus} (${detail})`;
   }
 
-  return `♿ ${station.accessibilityStatus}`;
+  return `${ACCESSIBILITY_ICON} ${station.accessibilityStatus}`;
 }
 
 function DashboardPanel({

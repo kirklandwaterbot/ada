@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { MtaAsset } from "@/lib/mta-assets";
 import {
   formatAssetCellValue,
@@ -8,6 +8,7 @@ import {
   getAssetRouteSortKey,
 } from "@/lib/asset-display";
 import { focusAssetOnMap } from "@/lib/map-focus";
+import { matchesNormalizedSearch } from "@/lib/search-normalization";
 import { SubwayRouteIcons } from "@/components/subway-route-icons";
 
 type SortDirection = "asc" | "desc";
@@ -110,6 +111,29 @@ export function AssetDataTable() {
     () => getUniqueValues(assets, "borough").filter((value) => value !== "-"),
     [assets],
   );
+  const boroughOptions = useMemo(
+    () => [
+      { label: "All", value: "All" },
+      ...boroughs.map((option) => ({ label: option, value: option })),
+    ],
+    [boroughs],
+  );
+  const tableColumnOptions = useMemo(
+    () =>
+      tableColumns.map((column) => ({
+        label: formatColumnLabel(column),
+        value: column,
+      })),
+    [tableColumns],
+  );
+  const sortColumnOptions = useMemo(
+    () =>
+      tableColumns.map((column) => ({
+        label: `Sort: ${formatColumnLabel(column)}`,
+        value: column,
+      })),
+    [tableColumns],
+  );
 
   const selectedFacetValues = facetValues[activeFacetColumn] ?? [];
   const facetOptions = useMemo(
@@ -118,13 +142,14 @@ export function AssetDataTable() {
   );
 
   const filteredAssets = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
     const filtered = assets.filter((asset) => {
-      const matchesQuery = !normalizedQuery
-        ? true
-        : tableColumns.some((column) =>
-            asset[column]?.toLowerCase().includes(normalizedQuery),
-          );
+      const matchesQuery = matchesNormalizedSearch(
+        tableColumns.flatMap((column) => [
+          asset[column],
+          formatAssetCellValue(asset, column),
+        ]),
+        query,
+      );
 
       const matchesBorough = borough === "All" ? true : asset.borough === borough;
       const matchesType = type === "All" ? true : asset.elevator_or_escalator === type;
@@ -294,49 +319,38 @@ export function AssetDataTable() {
             placeholder="Search any column"
             value={query}
           />
-          <select
-            aria-label="Filter by borough"
-            className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-            onChange={(event) => updateView({ borough: event.target.value })}
+          <CustomDropdown
+            ariaLabel="Filter by borough"
+            onChange={(value) => updateView({ borough: value })}
+            options={boroughOptions}
             value={borough}
-          >
-            <option>All</option>
-            {boroughs.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-          <select
-            aria-label="Filter by equipment type"
-            className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-            onChange={(event) => updateView({ type: event.target.value })}
+          />
+          <CustomDropdown
+            ariaLabel="Filter by equipment type"
+            onChange={(value) => updateView({ type: value })}
+            options={[
+              { label: "All", value: "All" },
+              { label: "Elevator", value: "Elevator" },
+              { label: "Escalator", value: "Escalator" },
+            ]}
             value={type}
-          >
-            <option>All</option>
-            <option>Elevator</option>
-            <option>Escalator</option>
-          </select>
-          <select
-            aria-label="Filter by ADA compliance"
-            className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-            onChange={(event) => updateView({ adaCompliant: event.target.value })}
+          />
+          <CustomDropdown
+            ariaLabel="Filter by ADA compliance"
+            onChange={(value) => updateView({ adaCompliant: value })}
+            options={[
+              { label: "ADA: YES", value: "YES" },
+              { label: "ADA: NO", value: "NO" },
+              { label: "ADA: All", value: "All" },
+            ]}
             value={adaCompliant}
-          >
-            <option value="YES">ADA: YES</option>
-            <option value="NO">ADA: NO</option>
-            <option value="All">ADA: All</option>
-          </select>
-          <select
-            aria-label="Sort column"
-            className="h-11 rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-            onChange={(event) => updateView({ sortColumn: event.target.value })}
+          />
+          <CustomDropdown
+            ariaLabel="Sort column"
+            onChange={(value) => updateView({ sortColumn: value })}
+            options={sortColumnOptions}
             value={activeSortColumn}
-          >
-            {tableColumns.map((column) => (
-              <option key={column} value={column}>
-                Sort: {formatColumnLabel(column)}
-              </option>
-            ))}
-          </select>
+          />
           <button
             className="h-11 min-w-0 rounded-md bg-zinc-100 px-4 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
             onClick={() =>
@@ -346,7 +360,7 @@ export function AssetDataTable() {
             }
             type="button"
           >
-            {sortDirection === "asc" ? "Ascending" : "Descending"}
+            {sortDirection === "asc" ? "↑ Ascending" : "↓ Descending"}
           </button>
         </div>
 
@@ -355,20 +369,16 @@ export function AssetDataTable() {
             <label className="font-mono text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500">
               Filter values by column
             </label>
-            <select
-              aria-label="Choose column for value filters"
-              className="mt-2 h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-              onChange={(event) => updateView({ facetColumn: event.target.value })}
-              value={activeFacetColumn}
-            >
-              {tableColumns.map((column) => (
-                <option key={column} value={column}>
-                  {formatColumnLabel(column)}
-                </option>
-              ))}
-            </select>
+            <div className="mt-2">
+              <CustomDropdown
+                ariaLabel="Choose column for value filters"
+                onChange={(value) => updateView({ facetColumn: value })}
+                options={tableColumnOptions}
+                value={activeFacetColumn}
+              />
+            </div>
           </div>
-          <div>
+          <div className="flex h-full flex-col">
             <div className="flex items-center justify-between gap-3">
               <p className="font-mono text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500">
                 Click values to include
@@ -381,7 +391,7 @@ export function AssetDataTable() {
                 Clear column
               </button>
             </div>
-            <div className="mt-2 flex max-h-32 flex-wrap gap-2 overflow-y-auto rounded-xl border border-zinc-100 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="mt-2 flex min-h-11 flex-1 flex-wrap content-center items-center gap-2 overflow-y-auto rounded-xl border border-zinc-100 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-900">
               {facetOptions.map((value) => {
                 const active = selectedFacetValues.includes(value);
 
@@ -644,6 +654,127 @@ function formatColumnLabel(column: string) {
   return column.replaceAll("_", " ");
 }
 
+function CustomDropdown({
+  ariaLabel,
+  onChange,
+  options,
+  value,
+}: {
+  ariaLabel: string;
+  onChange: (value: string) => void;
+  options: Array<{ label: string; value: string }>;
+  value: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const selectedOption = options.find((option) => option.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <button
+        aria-expanded={open}
+        aria-label={ariaLabel}
+        className={[
+          "flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-left text-sm text-zinc-900 shadow-sm outline-none transition focus:border-[var(--accent-600)] focus:ring-2 focus:ring-[var(--accent-ring)] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
+          open ? "border-[var(--accent-600)] ring-2 ring-[var(--accent-ring)]" : "",
+        ].join(" ")}
+        onClick={() => setOpen((current) => !current)}
+        type="button"
+      >
+        <span className="min-w-0 truncate">
+          {selectedOption?.label ?? value}
+        </span>
+        <ChevronDownIcon className={open ? "rotate-180" : ""} />
+      </button>
+
+      {open ? (
+        <div className="absolute left-0 z-50 mt-1 max-h-72 min-w-full w-max max-w-[calc(100vw-2rem)] overflow-y-auto rounded-lg border border-zinc-200 bg-white p-1 text-sm shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+          {options.map((option) => {
+            const selected = option.value === value;
+
+            return (
+              <button
+                className={[
+                  "flex w-full items-center justify-between gap-4 rounded-md px-3 py-2 text-left transition",
+                  selected
+                    ? "bg-[var(--accent-50)] font-semibold text-[var(--accent-700)] dark:bg-[rgb(var(--accent-600-rgb)_/_0.24)] dark:text-zinc-100"
+                    : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800",
+                ].join(" ")}
+                key={option.value}
+                onClick={() => {
+                  onChange(option.value);
+                  setOpen(false);
+                }}
+                type="button"
+              >
+                <span className="whitespace-nowrap">{option.label}</span>
+                {selected ? <CheckIcon /> : null}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function ChevronDownIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={`h-4 w-4 shrink-0 text-zinc-500 transition dark:text-zinc-400 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-4 w-4 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
 function formatAccessibilityStatus(asset: MtaAsset) {
   const status = asset.station_accessibility_status || "-";
   const detail = getAccessibilityDetail(asset.station_accessibility_raw);
@@ -660,7 +791,11 @@ function getAccessibilityDetail(value?: string) {
 }
 
 function isTableColumn(column: string) {
-  return column !== "station_services";
+  return (
+    column !== "station_services" &&
+    column !== "station_planned_ada" &&
+    column !== "station_planned_ada_note"
+  );
 }
 
 function getUniqueValues(assets: MtaAsset[], column: string) {

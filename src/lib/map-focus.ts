@@ -8,6 +8,10 @@ export type MapFocusDetail =
   | {
       key: string;
       kind: "planned";
+    }
+  | {
+      key: string;
+      kind: "station";
     };
 
 export function focusAssetOnMap(code: string) {
@@ -16,6 +20,10 @@ export function focusAssetOnMap(code: string) {
 
 export function focusPlannedStationOnMap(key: string) {
   dispatchMapFocusEvent({ key, kind: "planned" });
+}
+
+export function focusStationOnMap(key: string) {
+  dispatchMapFocusEvent({ key, kind: "station" });
 }
 
 function dispatchMapFocusEvent(detail: MapFocusDetail) {

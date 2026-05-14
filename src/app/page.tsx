@@ -51,13 +51,13 @@ export default async function Home() {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-col px-4 pb-16 pt-9 sm:px-8 lg:px-20">
-        <section className="max-w-5xl">
+        <section>
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-900 shadow-lg shadow-zinc-800/10 ring-1 ring-zinc-900/5 dark:bg-zinc-100 dark:ring-white/10">
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center">
                 <Image
                   alt="MTA logo"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   height={96}
                   priority
                   src="/MTA.png"
@@ -96,6 +96,11 @@ export default async function Home() {
             A searchable public view of active MTA subway elevator and escalator
             inventory, designed so people can browse the data without digging
             through export menus.
+          </p>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+            This independent website is not affiliated with, endorsed by, or
+            representative of the MTA, New York State, data.ny.gov, New York
+            City, or any government agency.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

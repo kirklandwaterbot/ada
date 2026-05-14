@@ -2,6 +2,7 @@ import initSqlJs from "sql.js";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import accessibilityStations from "../../data/accessibility-stations.json";
 import { getAssetRoutes } from "@/lib/asset-display";
+import { matchesNormalizedSearch } from "@/lib/search-normalization";
 
 export const DATASET_ID = "94fv-bak7";
 export const SOCRATA_API_URL = `https://data.ny.gov/resource/${DATASET_ID}.json`;
@@ -449,25 +450,50 @@ function rowToAsset(row: Record<string, string | null>): MtaAsset {
 
 function enrichAssetsWithAccessibility(assets: MtaAsset[]): MtaAsset[] {
   return assets.filter(isPublicAsset).map((asset) => {
-    const assetWithFallbacks = enrichAssetWithFallbackContext(asset);
-    const station = findAccessibleStation(assetWithFallbacks);
+    const assetWithFallbacks = enrichAssetWithFallbackContext(
+      normalizeAssetAccessibility(asset),
+    );
+    const matches = findAccessibleStationMatches(assetWithFallbacks);
+    const station = pickAccessibleStation(assetWithFallbacks, matches);
 
     if (!station) {
       return enrichAssetWithAdaFallback(assetWithFallbacks);
     }
+
+    const profileStations = getStationProfileMatches(
+      assetWithFallbacks,
+      station,
+      matches,
+    );
 
     return {
       ...assetWithFallbacks,
       borough: assetWithFallbacks.borough || station.borough,
       station_accessibility_raw: station.accessibilityRaw,
       station_accessibility_status: station.accessibilityStatus,
-      station_line: station.line,
+      station_line: uniqueValues(profileStations.map((item) => item.line)).join(","),
       station_neighborhood: station.neighborhood,
       station_planned_ada: station.plannedAda ? "✅" : "",
       station_planned_ada_note: station.plannedAdaNote,
-      station_services: station.services.join(","),
+      station_services: sortStationServices(
+        uniqueValues(profileStations.flatMap((item) => item.services)),
+      ).join(","),
     };
   });
+}
+
+function normalizeAssetAccessibility(asset: MtaAsset): MtaAsset {
+  if (
+    asset.elevator_or_escalator === "Escalator" &&
+    !asset.ada_compliant
+  ) {
+    return {
+      ...asset,
+      ada_compliant: "NO",
+    };
+  }
+
+  return asset;
 }
 
 function enrichAssetWithAdaFallback(asset: MtaAsset): MtaAsset {
@@ -499,7 +525,10 @@ function getKnownAssetNeighborhood(asset: MtaAsset) {
 }
 
 function isPublicAsset(asset: MtaAsset) {
-  return !EXCLUDED_ASSET_CODES.has(asset.equipment_code?.toUpperCase() ?? "");
+  return (
+    asset.revenue_machine !== "NO" &&
+    !EXCLUDED_ASSET_CODES.has(asset.equipment_code?.toUpperCase() ?? "")
+  );
 }
 
 function enrichAssetWithFallbackContext(asset: MtaAsset): MtaAsset {
@@ -520,16 +549,7 @@ function enrichAssetWithFallbackContext(asset: MtaAsset): MtaAsset {
     };
   }
 
-  if (!isNonRevenueAsset(asset)) {
-    return asset;
-  }
-
-  return {
-    ...asset,
-    station_description: getNonRevenueLocationLabel(asset),
-    station_line: "Non-revenue asset",
-    station_neighborhood: asset.borough,
-  };
+  return asset;
 }
 
 function getKnownMissingStation(asset: MtaAsset) {
@@ -544,31 +564,22 @@ function getKnownMissingStation(asset: MtaAsset) {
   return null;
 }
 
-function isNonRevenueAsset(asset: MtaAsset) {
-  return asset.revenue_machine === "NO";
-}
-
-function getNonRevenueLocationLabel(asset: MtaAsset) {
-  const note = asset.notes?.trim();
-
-  if (note && !/^3 landings$/i.test(note)) {
-    return toDisplayCase(note);
-  }
-
-  return "Unspecified non-revenue asset";
-}
-
-function findAccessibleStation(asset: MtaAsset): AccessibleStation | null {
+function findAccessibleStationMatches(asset: MtaAsset) {
   const stationKeys = getAssetStationKeys(asset);
 
   if (stationKeys.length === 0) {
-    return null;
+    return [];
   }
 
-  const matches = accessibilityStations.stations.filter(
+  return accessibilityStations.stations.filter(
     (station) => stationKeys.includes(station.stationKey),
   );
+}
 
+function pickAccessibleStation(
+  asset: MtaAsset,
+  matches: AccessibleStation[],
+): AccessibleStation | null {
   if (matches.length === 0) {
     return null;
   }
@@ -598,6 +609,136 @@ function findAccessibleStation(asset: MtaAsset): AccessibleStation | null {
   return lineMatch ?? matches[0] ?? null;
 }
 
+function getStationProfileMatches(
+  asset: MtaAsset,
+  station: AccessibleStation,
+  matches: AccessibleStation[],
+) {
+  const stationName = asset.station_name?.toUpperCase() ?? "";
+
+  if (stationName.includes("42ST-BRYANTPK")) {
+    const bryantParkMatches = accessibilityStations.stations.filter((match) =>
+      match.stationKey === "42 st bryant park 5 av" ||
+      match.stationKey === "42 st bryant park fifth av",
+    );
+
+    return bryantParkMatches.length > 0 ? bryantParkMatches : [station];
+  }
+
+  if (
+    stationName.includes("FULTONST") &&
+    asset.station_complex_mrn === "628"
+  ) {
+    const manhattanFultonMatches = matches.filter(
+      (match) =>
+        match.borough === "Manhattan" &&
+        !match.services.includes("G") &&
+        match.line !== "Crosstown Line",
+    );
+
+    return manhattanFultonMatches.length > 0
+      ? manhattanFultonMatches
+      : [station];
+  }
+
+  if (!usesComplexStationProfile(asset)) {
+    return [station];
+  }
+
+  const complexMatches = matches.filter(
+    (match) => match.stationKey === station.stationKey,
+  );
+
+  return complexMatches.length > 0 ? complexMatches : [station];
+}
+
+function usesComplexStationProfile(asset: MtaAsset) {
+  const stationName = asset.station_name?.toUpperCase() ?? "";
+
+  if (
+    stationName.includes("BWAY-LAFAYETTEST") ||
+    stationName.includes("BLEECKERST") ||
+    stationName.includes("WORLDTRADECENTER")
+  ) {
+    return false;
+  }
+
+  return Boolean(asset.station_complex_description) ||
+    stationName.includes("34ST-PENNSTATION");
+}
+
+function uniqueValues(values: string[]) {
+  const seen = new Set<string>();
+  const unique: string[] = [];
+
+  for (const value of values) {
+    const cleanValue = value.trim();
+
+    if (!cleanValue || seen.has(cleanValue)) {
+      continue;
+    }
+
+    seen.add(cleanValue);
+    unique.push(cleanValue);
+  }
+
+  return unique;
+}
+
+const STATION_SERVICE_ORDER = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "6X",
+  "7",
+  "7X",
+  "S",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "FX",
+  "G",
+  "J",
+  "L",
+  "M",
+  "N",
+  "Q",
+  "SF",
+  "R",
+  "W",
+  "SR",
+  "SIR",
+  "SIRX",
+  "Z",
+];
+const STATION_SERVICE_SORT_INDEX = new Map(
+  STATION_SERVICE_ORDER.map((service, index) => [service, index]),
+);
+
+function sortStationServices(services: string[]) {
+  return [...services].sort((a, b) => {
+    const routeA = STATION_SERVICE_SORT_INDEX.get(a);
+    const routeB = STATION_SERVICE_SORT_INDEX.get(b);
+
+    if (typeof routeA === "number" || typeof routeB === "number") {
+      if (typeof routeA !== "number") return 1;
+      if (typeof routeB !== "number") return -1;
+      return routeA - routeB;
+    }
+
+    return a.localeCompare(b, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  });
+}
+
 function getAssetStationKeys(asset: MtaAsset) {
   const keys = new Set<string>();
   const stationDescriptionKey = normalizeStationKey(
@@ -623,15 +764,21 @@ function getAssetStationKeys(asset: MtaAsset) {
 
 const STATION_KEY_ALIASES: Record<string, string> = {
   "42st port authority bus terminal": "42 st port authority bus terminal",
+  "42 st bryant pk": "42 st bryant park 5 av",
+  "14 st 6 av": "14 st",
+  "14 st sixth av": "14 st",
   "74 st broadway": "jackson heights roosevelt av 74 st",
   "atlantic av barclays ctr": "atlantic av barclays center",
+  "av h": "avenue h",
   "bleecker st": "broadway lafayette st bleecker st",
   "borough hall": "borough hall court st",
   "brooklyn bridge city hall": "brooklyn bridge city hall chambers st",
-  "court sq": "court sq 23 st",
+  "court st": "borough hall court st",
   "e 149 st": "east 149 st",
   "e 180 st": "east 180 st",
   "jay st metro tech": "jay st metrotech",
+  "lexington av 51 st": "51 st",
+  "smith 9 sts": "smith ninth sts",
   "w 4 st wash sq": "west 4 st washington sq",
   "whitehall st south ferry": "south ferry whitehall st",
   "world trade center": "chambers st world trade center park place cortlandt st",
@@ -677,10 +824,24 @@ function getAssetStationAlias(asset: MtaAsset) {
   }
 
   if (
+    stationName.includes("COURTSQ-23ST") ||
+    asset.station_description === "Court Sq-23 St - Station"
+  ) {
+    return "court sq 23 st";
+  }
+
+  if (
     stationName.includes("COURTSQ") ||
     asset.station_description === "Court Sq - Station"
   ) {
-    return "court sq 23 st";
+    return "court sq";
+  }
+
+  if (
+    stationName.includes("COURTST") ||
+    asset.station_description === "Court St - Station"
+  ) {
+    return "borough hall court st";
   }
 
   if (
@@ -721,21 +882,6 @@ function normalizeStationKey(value?: string) {
     .replace(/[^a-z0-9]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function toDisplayCase(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/\b\w/g, (letter) => letter.toUpperCase())
-    .replace(/\bAt\b/g, "at")
-    .replace(/\bAnd\b/g, "and")
-    .replace(/\bTo\b/g, "to")
-    .replace(/\bOf\b/g, "of")
-    .replace(/\bSub\b/g, "Sub")
-    .replace(/\bSt\b/g, "St")
-    .replace(/\bNd\b/g, "nd")
-    .replace(/\bRd\b/g, "rd")
-    .replace(/\bTh\b/g, "th");
 }
 
 function getPostgresClient() {
@@ -841,7 +987,11 @@ function getColumns(assets: MtaAsset[]) {
 }
 
 function isVisibleColumn(column: string) {
-  return column !== "station_services";
+  return (
+    column !== "station_services" &&
+    column !== "station_planned_ada" &&
+    column !== "station_planned_ada_note"
+  );
 }
 
 export function getAssetStats(assets: MtaAsset[]): AssetStats {
@@ -867,14 +1017,10 @@ export function filterAssets(
   assets: MtaAsset[],
   filters: { query?: string; borough?: string; type?: string },
 ) {
-  const query = filters.query?.trim().toLowerCase();
+  const query = filters.query?.trim() ?? "";
 
   return assets.filter((asset) => {
-    const matchesQuery = !query
-      ? true
-      : Object.values(asset)
-          .filter(Boolean)
-          .some((value) => value?.toLowerCase().includes(query));
+    const matchesQuery = matchesNormalizedSearch(Object.values(asset), query);
 
     const matchesBorough =
       !filters.borough || filters.borough === "All"

@@ -3,6 +3,7 @@ import type { MtaAsset } from "@/lib/mta-assets";
 export type AssetMapStatus = "accessible" | "not_accessible" | "work";
 
 const LINE_NAME_OVERRIDES: Record<string, string> = {
+  "BMT-38-38STYD": "BMT West End",
   "IND-A-8AV/FULTONST": "IND Fulton St",
   "IRT-K-CLARKST": "IRT Broadway/7 Av",
   "IRT-V-7AV": "IRT Broadway/7 Av",
@@ -99,9 +100,9 @@ const ROUTE_SORT_ORDER = [
   "M",
   "N",
   "Q",
+  "SF",
   "R",
   "W",
-  "SF",
   "SR",
   "SIR",
   "SIRX",
@@ -128,10 +129,39 @@ export function formatStationDescription(value?: string, stationName?: string) {
   }
 
   if (
+    normalizedStationName.includes("14ST-8AV") ||
+    normalizedStationName.includes("8AV-CNR-L")
+  ) {
+    return "8 Av - 14 St";
+  }
+
+  if (
     displayValue === "Borough Hall" &&
     normalizedStationName.includes("BOROUGHHALL")
   ) {
     return "Borough Hall/Court St";
+  }
+
+  if (
+    displayValue === "Court St" &&
+    normalizedStationName.includes("COURTST")
+  ) {
+    return "Borough Hall/Court St";
+  }
+
+  if (
+    displayValue === "Court Sq" &&
+    normalizedStationName.includes("COURTSQ-23ST")
+  ) {
+    return "Court Sq - 23 St";
+  }
+
+  if (
+    normalizedStationName.includes("CORTLANDTST-BWY") ||
+    normalizedStationName.includes("PARKPLACE-CLK") ||
+    normalizedStationName.includes("WORLDTRADECENTER-8AV")
+  ) {
+    return "Chambers St–World Trade Ctr/Park Pl/Cortlandt St";
   }
 
   if (
@@ -191,12 +221,25 @@ export function formatAssetCellValue(asset: MtaAsset, column: string) {
   }
 
   if (column === "subway_line") {
+    if (isSharedArcherAvStation(asset)) {
+      return "IND/BMT Archer Av";
+    }
+
     return asset.station_line
       ? formatStationLineDisplay(asset.station_line, rawValue)
       : formatSubwayLine(rawValue);
   }
 
   return formatCommaList(rawValue || "-");
+}
+
+function isSharedArcherAvStation(asset: MtaAsset) {
+  const stationName = asset.station_name?.toUpperCase() ?? "";
+
+  return (
+    stationName.includes("JAMAICACENTER-PARSONS/ARCHER") ||
+    stationName.includes("SUTPHINBLVD-ARCHERAV-JFKAIRPORT")
+  );
 }
 
 export function getAssetCoordinates(asset: MtaAsset) {
@@ -240,14 +283,14 @@ export function getAssetMapStatus(asset: MtaAsset): AssetMapStatus {
 }
 
 export function getAssetRoutes(asset: MtaAsset) {
+  if (isWhitehallSouthFerryComplex(asset)) {
+    return sortRoutes(["1", "R", "W"]);
+  }
+
   const stationSpecificRoutes = getStationSpecificRoutes(asset);
 
   if (stationSpecificRoutes.length > 0) {
     return stationSpecificRoutes;
-  }
-
-  if (asset.station_services) {
-    return sortRoutes(normalizeRoutes(asset.station_services.split(",")));
   }
 
   const complexRoutes = extractRoutesFromComplexDescription(
@@ -256,6 +299,10 @@ export function getAssetRoutes(asset: MtaAsset) {
 
   if (complexRoutes.length > 0) {
     return sortRoutes(complexRoutes);
+  }
+
+  if (asset.station_services) {
+    return sortRoutes(normalizeRoutes(asset.station_services.split(",")));
   }
 
   const stationNameParts = asset.station_name?.split("-") ?? [];
@@ -268,10 +315,83 @@ export function getAssetRoutes(asset: MtaAsset) {
   return sortRoutes(normalizeRoutes(routePart.split("/")));
 }
 
+function isWhitehallSouthFerryComplex(asset: MtaAsset) {
+  const stationName = asset.station_name?.toUpperCase() ?? "";
+  const stationDescription = asset.station_description?.toLowerCase() ?? "";
+  const complexDescription = asset.station_complex_description?.toLowerCase() ?? "";
+
+  return (
+    stationName.includes("WHITEHALLST-SOUTHFERRY") ||
+    stationName.includes("SOUTHFERRY-7AV") ||
+    stationDescription.includes("whitehall st-south ferry") ||
+    stationDescription.includes("south ferry") ||
+    complexDescription.includes("south ferry") ||
+    complexDescription.includes("whitehall st")
+  );
+}
+
 function getStationSpecificRoutes(asset: MtaAsset) {
   const stationName = asset.station_name?.toUpperCase() ?? "";
   const stationDescription = asset.station_description?.toLowerCase() ?? "";
   const subwayLine = asset.subway_line?.toUpperCase() ?? "";
+
+  if (stationName.includes("34ST-PENNSTATION")) {
+    return sortRoutes(["1", "2", "3", "A", "C", "E"]);
+  }
+
+  if (
+    stationName.includes("LEXINGTONAV/59ST") ||
+    stationName.includes("59ST-LEX")
+  ) {
+    return sortRoutes(["4", "5", "6", "N", "R", "W"]);
+  }
+
+  if (
+    stationName.includes("CORTLANDTST-BWY") ||
+    stationName.includes("PARKPLACE-CLK") ||
+    stationName.includes("WORLDTRADECENTER-8AV")
+  ) {
+    return sortRoutes(["2", "3", "A", "C", "E", "R", "W"]);
+  }
+
+  if (
+    stationName.includes("FRANKLINAV-FRK") ||
+    stationName.includes("FRANKLINAV-8AV") ||
+    stationDescription.includes("franklin av")
+  ) {
+    return sortRoutes(["C", "SF"]);
+  }
+
+  if (stationName.includes("14ST-UNIONSQ")) {
+    return sortRoutes(["4", "5", "6", "L", "N", "Q", "R", "W"]);
+  }
+
+  if (stationName.includes("34ST-HERALDSQ")) {
+    return sortRoutes(["B", "D", "F", "M", "N", "Q", "R", "W"]);
+  }
+
+  if (
+    stationName.includes("TIMESSQ-42ST") ||
+    stationName.includes("42ST/PORTAUTHORITY")
+  ) {
+    return sortRoutes(["1", "2", "3", "7", "S", "A", "C", "E", "N", "Q", "R", "W"]);
+  }
+
+  if (stationName.includes("49ST-BWY")) {
+    return sortRoutes(["N", "R", "W"]);
+  }
+
+  if (stationName.includes("57ST-7AV-BWY")) {
+    return sortRoutes(["N", "Q", "R", "W"]);
+  }
+
+  if (stationName.includes("ASTORIABLVD-AST")) {
+    return sortRoutes(["N", "W"]);
+  }
+
+  if (stationName.includes("QUEENSBOROPLAZA")) {
+    return sortRoutes(["7", "N", "W"]);
+  }
 
   if (
     stationName.includes("5AV/53ST") ||
@@ -286,7 +406,7 @@ function getStationSpecificRoutes(asset: MtaAsset) {
     stationDescription.includes("lexington av/53 st") ||
     stationDescription.includes("lexington av-53 st")
   ) {
-    return sortRoutes(["E", "F"]);
+    return sortRoutes(["E"]);
   }
 
   if (
@@ -302,22 +422,6 @@ function getStationSpecificRoutes(asset: MtaAsset) {
     stationDescription.includes("queens plaza")
   ) {
     return sortRoutes(["E", "F", "R"]);
-  }
-
-  if (stationName.includes("FULTONST-LEX")) {
-    return sortRoutes(["4", "5"]);
-  }
-
-  if (stationName.includes("FULTONST-CLK")) {
-    return sortRoutes(["2", "3"]);
-  }
-
-  if (stationName.includes("FULTONST-8AV")) {
-    return sortRoutes(["A", "C"]);
-  }
-
-  if (stationName.includes("FULTONST-NAS")) {
-    return sortRoutes(["J", "Z"]);
   }
 
   if (
@@ -344,16 +448,11 @@ function getStationSpecificRoutes(asset: MtaAsset) {
 
   if (
     stationName.includes("WHITEHALLST-SOUTHFERRY") ||
+    stationName.includes("SOUTHFERRY-7AV") ||
+    stationDescription.includes("south ferry") ||
     (stationDescription.includes("whitehall st") && subwayLine.includes("BROADWAY"))
   ) {
-    return sortRoutes(["R", "W"]);
-  }
-
-  if (
-    stationName.includes("SOUTHFERRY") ||
-    stationDescription.includes("south ferry")
-  ) {
-    return sortRoutes(["1"]);
+    return sortRoutes(["1", "R", "W"]);
   }
 
   if (
