@@ -2,6 +2,11 @@ import initSqlJs from "sql.js";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import accessibilityStations from "../../data/accessibility-stations.json";
 import { getAssetRoutes } from "@/lib/asset-display";
+import {
+  assertCompleteDataset,
+  assertPersistedRowCount,
+  getActualRowCountMatch,
+} from "@/lib/data-integrity";
 import { matchesNormalizedSearch } from "@/lib/search-normalization";
 
 export const DATASET_ID = "94fv-bak7";
@@ -14,6 +19,9 @@ export const DATASET_PAGE_URL = `https://data.ny.gov/d/${DATASET_ID}`;
 export const SQLITE_DB_PATH = "data/mta-subway-elevator-escalator-assets.sqlite";
 const POSTGRES_ASSETS_TABLE = "mta_subway_access_assets";
 const POSTGRES_METADATA_TABLE = "mta_subway_access_sync_metadata";
+const POSTGRES_SYNC_LOCK_ID = 947_002_117;
+const POSTGRES_INSERT_BATCH_SIZE = 100;
+const POSTGRES_STAGE_TABLE = "mta_subway_access_assets_stage";
 const EXCLUDED_ASSET_CODES = new Set([
   "EL147",
   "EL256X",
@@ -159,10 +167,11 @@ export async function syncMtaAssetsToPostgres() {
   ]);
   const syncedAt = new Date().toISOString();
   const loadedRowCount = assets.length;
-  const rowCountMatches =
-    typeof expectedRowCount === "number"
-      ? expectedRowCount === loadedRowCount
-      : null;
+  assertCompleteDataset(expectedRowCount, loadedRowCount, "live MTA dataset");
+  const rowCountMatches = getActualRowCountMatch(
+    expectedRowCount,
+    loadedRowCount,
+  );
   const metadata: RawMetadata = {
     count_api_url: COUNT_API_URL,
     csv_download_url: CSV_DOWNLOAD_URL,
@@ -179,7 +188,8 @@ export async function syncMtaAssetsToPostgres() {
     upstream_source: "live_api",
   };
 
-  await writePostgresDataset(assets, metadata);
+  const persistedRowCount = await writePostgresDataset(assets, metadata);
+  assertPersistedRowCount(loadedRowCount, persistedRowCount);
 
   return {
     loadedRowCount,
@@ -203,17 +213,22 @@ async function readPostgresDataset(): Promise<MtaAssetDataset | null> {
     )) as Array<Record<string, string | null>>;
     const assets = enrichAssetsWithAccessibility(assetRows.map((row) => rowToAsset(row)));
     const columns = getColumns(assets);
+    const metadata = normalizeMetadata(
+      Object.fromEntries(
+        metadataRows.map((row) => [row.key, row.value]),
+      ) as RawMetadata,
+      "sql",
+      assets.length,
+    );
+
+    if (metadata.validation.rowCountMatches === false) {
+      return null;
+    }
 
     return {
       assets,
       columns,
-      metadata: normalizeMetadata(
-        Object.fromEntries(
-          metadataRows.map((row) => [row.key, row.value]),
-        ) as RawMetadata,
-        "sql",
-        assets.length,
-      ),
+      metadata,
       stats: getAssetStats(assets),
     };
   } catch {
@@ -255,38 +270,88 @@ async function writePostgresDataset(
     `CREATE INDEX IF NOT EXISTS idx_mta_access_assets_type
      ON ${quoteIdentifier(POSTGRES_ASSETS_TABLE)} (elevator_or_escalator)`,
   );
-  await sql.query(`TRUNCATE TABLE ${quoteIdentifier(POSTGRES_ASSETS_TABLE)}`);
-
   const columnList = columns.map(quoteIdentifier).join(", ");
-  const placeholders = columns.map((_, index) => `$${index + 1}`).join(", ");
-  const updateList = columns
-    .filter((column) => column !== "equipment_code")
-    .map(
-      (column) =>
-        `${quoteIdentifier(column)} = EXCLUDED.${quoteIdentifier(column)}`,
-    )
+  const assetBatches = chunk(assets, POSTGRES_INSERT_BATCH_SIZE).map((batch) =>
+    buildAssetInsert(batch, columns),
+  );
+  const metadataEntries = Object.entries(metadata);
+  const metadataValues = metadataEntries.flatMap(([key, value]) => [
+    key,
+    normalizeValue(value),
+  ]);
+  const metadataPlaceholders = metadataEntries
+    .map((_, index) => `($${index * 2 + 1}, $${index * 2 + 2})`)
     .join(", ");
+  const stageTable = quoteIdentifier(POSTGRES_STAGE_TABLE);
+  const assetsTable = quoteIdentifier(POSTGRES_ASSETS_TABLE);
+  const metadataTable = quoteIdentifier(POSTGRES_METADATA_TABLE);
 
-  for (const asset of assets) {
-    await sql.query(
-      `INSERT INTO ${quoteIdentifier(POSTGRES_ASSETS_TABLE)}
-       (${columnList})
-       VALUES (${placeholders})
-       ON CONFLICT (equipment_code) DO UPDATE SET ${updateList}`,
-      columns.map((column) => normalizeValue(asset[column])),
-    );
+  await sql.transaction((transactionSql) => [
+    transactionSql.query(`SELECT pg_advisory_xact_lock(${POSTGRES_SYNC_LOCK_ID})`),
+    transactionSql.query(
+      `CREATE TEMP TABLE ${stageTable}
+       (LIKE ${assetsTable} INCLUDING ALL)
+       ON COMMIT DROP`,
+    ),
+    ...assetBatches.map(({ params, query }) =>
+      transactionSql.query(query, params),
+    ),
+    transactionSql.query(
+      `DO $mta_sync$
+       BEGIN
+         IF (SELECT COUNT(*) FROM ${stageTable}) <> ${assets.length} THEN
+           RAISE EXCEPTION 'Staged MTA asset count does not match the intended row count.';
+         END IF;
+       END
+       $mta_sync$`,
+    ),
+    transactionSql.query(`TRUNCATE TABLE ${assetsTable}`),
+    transactionSql.query(
+      `INSERT INTO ${assetsTable} (${columnList})
+       SELECT ${columnList} FROM ${stageTable}`,
+    ),
+    transactionSql.query(`TRUNCATE TABLE ${metadataTable}`),
+    transactionSql.query(
+      `INSERT INTO ${metadataTable} (key, value)
+       VALUES ${metadataPlaceholders}`,
+      metadataValues,
+    ),
+  ]);
+
+  const countRows = (await sql.query(
+    `SELECT COUNT(*)::int AS count FROM ${assetsTable}`,
+  )) as Array<{ count: number }>;
+
+  return Number(countRows[0]?.count ?? 0);
+}
+
+function buildAssetInsert(assets: MtaAsset[], columns: string[]) {
+  const params: Array<string | null> = [];
+  const rows = assets.map((asset) => {
+    const placeholders = columns.map((column) => {
+      params.push(normalizeValue(asset[column]));
+      return `$${params.length}`;
+    });
+
+    return `(${placeholders.join(", ")})`;
+  });
+
+  return {
+    params,
+    query: `INSERT INTO ${quoteIdentifier(POSTGRES_STAGE_TABLE)}
+      (${columns.map(quoteIdentifier).join(", ")})
+      VALUES ${rows.join(", ")}`,
+  };
+}
+
+function chunk<T>(values: T[], size: number) {
+  const batches: T[][] = [];
+
+  for (let index = 0; index < values.length; index += size) {
+    batches.push(values.slice(index, index + size));
   }
 
-  await sql.query(`TRUNCATE TABLE ${quoteIdentifier(POSTGRES_METADATA_TABLE)}`);
-
-  for (const [key, value] of Object.entries(metadata)) {
-    await sql.query(
-      `INSERT INTO ${quoteIdentifier(POSTGRES_METADATA_TABLE)} (key, value)
-       VALUES ($1, $2)
-       ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
-      [key, normalizeValue(value)],
-    );
-  }
+  return batches;
 }
 
 async function readSqliteDataset(): Promise<MtaAssetDataset | null> {
@@ -314,7 +379,7 @@ async function readSqliteDataset(): Promise<MtaAssetDataset | null> {
       return {
         assets,
         columns: getColumns(assets),
-        metadata: normalizeMetadata(metadata, "sql", assets.length),
+        metadata: normalizeMetadata(metadata, "local_snapshot", assets.length),
         stats: getAssetStats(assets),
       };
     } finally {
@@ -483,10 +548,7 @@ function enrichAssetsWithAccessibility(assets: MtaAsset[]): MtaAsset[] {
 }
 
 function normalizeAssetAccessibility(asset: MtaAsset): MtaAsset {
-  if (
-    asset.elevator_or_escalator === "Escalator" &&
-    !asset.ada_compliant
-  ) {
+  if (asset.elevator_or_escalator === "Escalator") {
     return {
       ...asset,
       ada_compliant: "NO",
@@ -778,6 +840,7 @@ const STATION_KEY_ALIASES: Record<string, string> = {
   "e 180 st": "east 180 st",
   "jay st metro tech": "jay st metrotech",
   "lexington av 51 st": "51 st",
+  "sheepshead bay": "sheepshead bay rd",
   "smith 9 sts": "smith ninth sts",
   "w 4 st wash sq": "west 4 st washington sq",
   "whitehall st south ferry": "south ferry whitehall st",
@@ -928,7 +991,10 @@ function normalizeMetadata(
   loadedRowCount: number,
 ): DataMetadata {
   const expectedRowCount = parseNullableNumber(metadata.row_count_expected);
-  const rowCountMatches = parseNullableBoolean(metadata.row_count_matches);
+  const rowCountMatches = getActualRowCountMatch(
+    expectedRowCount,
+    loadedRowCount,
+  );
 
   return {
     countApiUrl: metadata.count_api_url ?? COUNT_API_URL,
@@ -957,12 +1023,6 @@ function parseNullableNumber(value: string | null | undefined) {
   if (!value || value === "null") return null;
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
-}
-
-function parseNullableBoolean(value: string | null | undefined) {
-  if (value === "true") return true;
-  if (value === "false") return false;
-  return null;
 }
 
 function getColumns(assets: MtaAsset[]) {

@@ -5,12 +5,21 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "sync:data": "node scripts/sync-mta-assets.mjs",
+    "test": "npm run test:unit && npm run test:retry && npm run test:scripts",
+    "test:e2e": "playwright test",
+    "test:retry": "node --test scripts/fetch-with-retry.test.mjs",
+    "test:scripts": "node --check scripts/sync-mta-assets.mjs && node --check scripts/sync-mta-capital-projects.mjs && node --check src/lib/mta-capital-normalizer.mjs && node --check src/lib/mta-capital-source.mjs",
+    "test:unit": "vitest run",
+    "sync:assets": "node scripts/sync-mta-assets.mjs",
+    "sync:capital": "node scripts/sync-mta-capital-projects.mjs",
+    "sync:data": "npm run sync:assets && npm run sync:capital",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "lucide-react": "^1.25.0",
     "mapbox-gl": "^3.23.1",
     "next": "16.2.6",
     "react": "19.2.4",
@@ -18,6 +27,7 @@
     "sql.js": "^1.14.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -25,6 +35,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }

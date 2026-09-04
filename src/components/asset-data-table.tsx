@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Check, ChevronDown } from "lucide-react";
 import type { MtaAsset } from "@/lib/mta-assets";
 import {
   formatAssetCellValue,
@@ -10,6 +11,8 @@ import {
 import { focusAssetOnMap } from "@/lib/map-focus";
 import { matchesNormalizedSearch } from "@/lib/search-normalization";
 import { SubwayRouteIcons } from "@/components/subway-route-icons";
+import { SiteIcon } from "@/components/site-icon";
+import { getEquipmentState } from "@/lib/stations";
 
 type SortDirection = "asc" | "desc";
 
@@ -465,7 +468,11 @@ export function AssetDataTable() {
       </div>
 
       <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p
+          aria-atomic="true"
+          aria-live="polite"
+          className="text-sm text-zinc-600 dark:text-zinc-400"
+        >
           Showing all {filteredAssets.length.toLocaleString()} of{" "}
           {assets.length.toLocaleString()} loaded assets
         </p>
@@ -474,8 +481,13 @@ export function AssetDataTable() {
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-white/10">
-        <div className="overflow-x-auto">
+      <div className="surface-card overflow-hidden">
+        <div className="divide-y divide-[var(--border)] md:hidden">
+          {filteredAssets.map((asset) => (
+            <MobileAssetCard asset={asset} key={asset.equipment_code} />
+          ))}
+        </div>
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[1600px] border-collapse text-left text-[length:var(--asset-table-font-size)]">
             <thead className="bg-zinc-50 text-xs uppercase text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
               <tr>
@@ -506,6 +518,103 @@ export function AssetDataTable() {
           </table>
         </div>
       </div>
+    </div>
+  );
+}
+
+function MobileAssetCard({ asset }: { asset: MtaAsset }) {
+  const state = getEquipmentState(asset);
+  const stateStyles = {
+    operational:
+      "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
+    outage: "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300",
+    unknown:
+      "bg-slate-100 text-slate-600 dark:bg-slate-500/10 dark:text-slate-300",
+    work: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300",
+  };
+  const stateLabels = {
+    operational: "Listed in service",
+    outage: "Snapshot outage flag",
+    unknown: "Unknown",
+    work: "Work / repair",
+  };
+
+  return (
+    <article className="p-4 transition hover:bg-[var(--soft-blue)]">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--soft)] text-[var(--muted-strong)]">
+            <SiteIcon
+              className="text-[21px]"
+              name={
+                asset.elevator_or_escalator === "Elevator"
+                  ? "elevator"
+                  : "escalator"
+              }
+            />
+          </span>
+          <div className="min-w-0">
+            <p className="truncate font-extrabold text-[var(--ink)]">
+              {formatAssetCellValue(asset, "station_description")}
+            </p>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <span className="font-mono text-[11px] font-bold text-[var(--muted)]">
+                {asset.equipment_code}
+              </span>
+              <SubwayRouteIcons className="mt-0" routes={getAssetRoutes(asset)} />
+            </div>
+          </div>
+        </div>
+        <span
+          className={[
+            "shrink-0 rounded-full px-2 py-1 text-[10px] font-extrabold",
+            stateStyles[state],
+          ].join(" ")}
+        >
+          {stateLabels[state]}
+        </span>
+      </div>
+
+      <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
+        <MobileFact
+          label="Type"
+          value={asset.elevator_or_escalator || "-"}
+        />
+        <MobileFact
+          label="ADA compliant"
+          value={formatAssetCellValue(asset, "ada_compliant")}
+        />
+        <MobileFact
+          label="Borough"
+          value={formatAssetCellValue(asset, "borough")}
+        />
+        <MobileFact
+          label="Latest installation"
+          value={formatAssetCellValue(asset, "latest_installation_date")}
+        />
+      </dl>
+
+      <button
+        className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-600)] hover:underline"
+        onClick={() => focusAssetOnMap(asset.equipment_code)}
+        type="button"
+      >
+        <SiteIcon className="text-[17px]" name="my_location" />
+        Show asset on map
+      </button>
+    </article>
+  );
+}
+
+function MobileFact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl bg-[var(--soft)] p-2.5">
+      <dt className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">
+        {label}
+      </dt>
+      <dd className="mt-1 font-semibold leading-5 text-[var(--muted-strong)]">
+        {value}
+      </dd>
     </div>
   );
 }
@@ -707,7 +816,14 @@ function CustomDropdown({
         <span className="min-w-0 truncate">
           {selectedOption?.label ?? value}
         </span>
-        <ChevronDownIcon className={open ? "rotate-180" : ""} />
+        <ChevronDown
+          aria-hidden="true"
+          className={[
+            "h-4 w-4 shrink-0 text-zinc-500 transition dark:text-zinc-400",
+            open ? "rotate-180" : "",
+          ].join(" ")}
+          strokeWidth={2}
+        />
       </button>
 
       {open ? (
@@ -731,7 +847,7 @@ function CustomDropdown({
                 type="button"
               >
                 <span className="whitespace-nowrap">{option.label}</span>
-                {selected ? <CheckIcon /> : null}
+                {selected ? <Check aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} /> : null}
               </button>
             );
           })}
@@ -741,39 +857,6 @@ function CustomDropdown({
   );
 }
 
-function ChevronDownIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={`h-4 w-4 shrink-0 text-zinc-500 transition dark:text-zinc-400 ${className}`}
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-4 w-4 shrink-0"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
 
 function formatAccessibilityStatus(asset: MtaAsset) {
   const status = asset.station_accessibility_status || "-";

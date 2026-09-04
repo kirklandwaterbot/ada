@@ -83,13 +83,13 @@ export function AccessibilityDashboard({
       <DashboardPanel eyebrow="Elevator dashboard" title="Elevators">
         <DashboardMetric label="Total elevators" value={elevators.length} />
         <DashboardMetric
-          label="In service"
+          label="Listed in service"
           total={elevators.length}
           value={elevatorStatus.inService}
           tone="green"
         />
         <DashboardMetric
-          label="Out of service"
+          label="Snapshot outage flags"
           total={elevators.length}
           value={elevatorStatus.outOfService}
           tone="red"
@@ -105,13 +105,13 @@ export function AccessibilityDashboard({
       <DashboardPanel eyebrow="Escalator dashboard" title="Escalators">
         <DashboardMetric label="Total escalators" value={escalators.length} />
         <DashboardMetric
-          label="In service"
+          label="Listed in service"
           total={escalators.length}
           value={escalatorStatus.inService}
           tone="green"
         />
         <DashboardMetric
-          label="Out of service"
+          label="Snapshot outage flags"
           total={escalators.length}
           value={escalatorStatus.outOfService}
           tone="red"

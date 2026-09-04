@@ -1,23 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Monitor, Moon, Sun, X } from "lucide-react";
+import { SiteIcon } from "@/components/site-icon";
 import {
   accentOptions,
   themeOptions,
   useSettings,
 } from "@/components/settings-provider";
 
-export function SettingsButton() {
+export function SettingsButton({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <button
         aria-label="Open settings"
-        className="inline-flex h-10 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition hover:bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-white/10 dark:hover:bg-zinc-700"
+        className={[
+          "inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--panel)] text-sm font-semibold text-[var(--muted-strong)] shadow-sm transition hover:bg-[var(--soft)] hover:text-[var(--ink)]",
+          compact ? "px-3" : "px-4",
+        ].join(" ")}
         onClick={() => setOpen(true)}
         type="button"
       >
+        <SiteIcon className="text-[19px]" name="settings" />
         Settings
       </button>
       {open ? <SettingsPanel onClose={() => setOpen(false)} /> : null}
@@ -62,7 +68,7 @@ function SettingsPanel({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             type="button"
           >
-            x
+            <X aria-hidden="true" className="h-5 w-5" strokeWidth={2} />
           </button>
         </div>
 
@@ -80,7 +86,7 @@ function SettingsPanel({ onClose }: { onClose: () => void }) {
                   onClick={() => updateSettings({ theme: option.value })}
                   title={option.label}
                 >
-                  <MaterialIcon name={getThemeIconName(option.value)} />
+                  <ThemeIcon theme={option.value} />
                 </ChoiceButton>
               ))}
             </div>
@@ -186,36 +192,14 @@ function ChoiceButton({
   );
 }
 
-function MaterialIcon({ name }: { name: string }) {
-  const path =
-    name === "dark_mode"
-      ? "M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"
-      : name === "light_mode"
-        ? "M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650 155-751l57-57 101 101-57 57Zm492 498L647-253l57-57 101 101-57 57Zm-98-552 101-101 57 57-101 101-57-57ZM154-209l101-101 57 57-101 101-57-57Z"
-        : "M160-120q-33 0-56.5-23.5T80-200v-520q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v520q0 33-23.5 56.5T800-120H160Zm0-80h640v-520H160v520Zm160 160v-80h320v80H320Z";
+function ThemeIcon({
+  theme,
+}: {
+  theme: (typeof themeOptions)[number]["value"];
+}) {
+  const Icon = theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
 
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5"
-      fill="currentColor"
-      viewBox="0 -960 960 960"
-    >
-      <path d={path} />
-    </svg>
-  );
-}
-
-function getThemeIconName(value: (typeof themeOptions)[number]["value"]) {
-  if (value === "dark") {
-    return "dark_mode";
-  }
-
-  if (value === "light") {
-    return "light_mode";
-  }
-
-  return "computer";
+  return <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />;
 }
 
 function SettingsSavedToast() {

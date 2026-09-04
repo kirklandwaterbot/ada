@@ -1,26 +1,30 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createRoot, type Root } from "react-dom/client";
+import { Moon, Sun, X } from "lucide-react";
 import mapboxgl, { type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { MtaAsset } from "@/lib/mta-assets";
 import {
   formatStationLineDisplay,
-  formatAssetCellValue,
-  formatStationDescription,
-  formatSubwayLine,
-  getAssetCoordinates,
-  getAssetMapStatus,
-  getAssetRoutes,
   getSubwayRouteIconPath,
   type AssetMapStatus,
 } from "@/lib/asset-display";
 import { MAP_FOCUS_EVENT, type MapFocusDetail } from "@/lib/map-focus";
+import { normalizeSearchText } from "@/lib/search-normalization";
+import type { AssetMapMarker } from "@/lib/station-explorer-data";
 import plannedAdaStations from "../../data/planned-ada-station-coordinates.json";
 import accessibleStations from "../../data/accessible-station-coordinates.json";
 
 type MapMode = "combined" | "elevators" | "escalators";
 type MapTheme = "light" | "dark";
+type MapLayerKey = AssetMapStatus | "planned" | "stations";
+type AssetMapLayout = "full" | "split";
+
+export type AssetMapFocusRequest = {
+  detail: MapFocusDetail;
+  id: number;
+};
 
 type PlannedFeatureProperties = {
   color: string;
@@ -64,15 +68,19 @@ type MappableFeature = AssetFeature | PlannedFeature | AccessibleStationFeature;
 
 const MAP_MODE_STORAGE_KEY = "mta-access-assets-map-mode";
 const MAP_THEME_STORAGE_KEY = "mta-access-assets-map-theme";
+const MAP_RESULT_PAGE_SIZE = 40;
 const STATUS_COLORS: Record<AssetMapStatus, string> = {
   accessible: "#16a34a",
+  equipment: "#3b82f6",
   not_accessible: "#dc2626",
   work: "#eab308",
 };
 const PLANNED_ELEVATOR_COLOR = "#ec4899";
 const ACCESSIBLE_STATION_COLOR = "#22c55e";
+const PARTIAL_ACCESSIBLE_STATION_COLOR = "#f59e0b";
 const STATUS_LABELS: Record<AssetMapStatus, string> = {
   accessible: "♿ ADA accessible",
+  equipment: "Escalator equipment",
   not_accessible: "♿ Not ADA accessible",
   work: "Under construction or repair",
 };
@@ -81,13 +89,34 @@ const MAP_OPTIONS: Array<{ label: string; value: MapMode }> = [
   { label: "Elevators", value: "elevators" },
   { label: "Escalators", value: "escalators" },
 ];
+const popupIconRoots = new WeakMap<mapboxgl.Popup, Root>();
 
-export function AssetMap({ assets }: { assets: MtaAsset[] }) {
+export function AssetMap({
+  assets,
+  embedded = false,
+  focusRequest = null,
+  layout = "full",
+}: {
+  assets: AssetMapMarker[];
+  embedded?: boolean;
+  focusRequest?: AssetMapFocusRequest | null;
+  layout?: AssetMapLayout;
+}) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
   const [mode, setMode] = useState<MapMode>(() => readStoredMapMode());
   const [mapTheme, setMapTheme] = useState<MapTheme>(() => readStoredMapTheme());
+  const [layers, setLayers] = useState<Record<MapLayerKey, boolean>>({
+    accessible: true,
+    equipment: true,
+    not_accessible: true,
+    planned: true,
+    stations: true,
+    work: true,
+  });
+  const [mapResultLimit, setMapResultLimit] = useState(MAP_RESULT_PAGE_SIZE);
+  const [mapResultAnnouncement, setMapResultAnnouncement] = useState("");
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
   useEffect(() => {
@@ -99,42 +128,29 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
   }, [mapTheme]);
 
   const allFeatures = useMemo(() => {
-    return assets
-      .map((asset): AssetFeature | null => {
-        const coordinates = getAssetCoordinates(asset);
-
-        if (!coordinates) {
-          return null;
-        }
-
-        const status = getAssetMapStatus(asset);
-
-        return {
-          type: "Feature" as const,
-          geometry: {
-            type: "Point" as const,
-            coordinates: [coordinates.longitude, coordinates.latitude],
-          },
-          properties: {
-            ada: asset.ada_compliant || "-",
-            code: asset.equipment_code,
-            color: STATUS_COLORS[status],
-            line: formatAssetCellValue(asset, "subway_line") || formatSubwayLine(asset.subway_line),
-            routes: getAssetRoutes(asset).join(","),
-            status,
-            statusLabel: STATUS_LABELS[status],
-            station: formatStationDescription(
-              asset.station_description,
-              asset.station_name,
-            ),
-            type: asset.elevator_or_escalator || "-",
-          },
-        };
-      })
-      .filter((feature): feature is AssetFeature => Boolean(feature));
+    return assets.map(
+      (asset): AssetFeature => ({
+        type: "Feature" as const,
+        geometry: {
+          type: "Point" as const,
+          coordinates: [asset.longitude, asset.latitude],
+        },
+        properties: {
+          ada: asset.ada,
+          code: asset.code,
+          color: STATUS_COLORS[asset.status],
+          line: asset.line,
+          routes: asset.routes,
+          status: asset.status,
+          statusLabel: STATUS_LABELS[asset.status],
+          station: asset.station,
+          type: asset.type,
+        },
+      }),
+    );
   }, [assets]);
 
-  const features = useMemo(() => {
+  const modeFeatures = useMemo(() => {
     const allowedType =
       mode === "elevators"
         ? "Elevator"
@@ -146,37 +162,71 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
       allowedType ? feature.properties.type === allowedType : true,
     );
   }, [allFeatures, mode]);
+  const features = useMemo(
+    () => modeFeatures.filter((feature) => layers[feature.properties.status]),
+    [layers, modeFeatures],
+  );
   const allPlannedFeatures = useMemo(() => {
-    return plannedAdaStations.stations.map((station): PlannedFeature => ({
-      type: "Feature" as const,
-      geometry: {
-        type: "Point" as const,
-        coordinates: [station.longitude, station.latitude],
-      },
-      properties: {
-        color: PLANNED_ELEVATOR_COLOR,
-        key: getPlannedFeatureKey(
-          formatPlannedStationName(station.station),
-          formatStationLineDisplay(station.line),
-          station.services.join(","),
+    const liveAssetStationRoutes = new Set(
+      allFeatures
+        .filter(
+          (feature) =>
+            feature.properties.status === "accessible" ||
+            feature.properties.status === "not_accessible",
+        )
+        .flatMap((feature) =>
+          feature.properties.routes
+            .split(",")
+            .filter(Boolean)
+            .map(
+              (route) =>
+                normalizeSearchText(feature.properties.station) +
+                "|" +
+                normalizeMapRoute(route),
+            ),
         ),
-        line: formatStationLineDisplay(station.line),
-        note: station.plannedAdaNote,
-        routes: station.services.join(","),
-        station: formatPlannedStationName(station.station),
-        statusLabel: "Planned ADA elevator",
-        type: "Planned elevator",
-      },
-    }));
-  }, []);
+    );
+
+    return plannedAdaStations.stations
+      .filter((station) => {
+        const stationKey = normalizeSearchText(
+          formatPlannedStationName(station.station),
+        );
+
+        return !station.services.some((route) =>
+          liveAssetStationRoutes.has(stationKey + "|" + normalizeMapRoute(route)),
+        );
+      })
+      .map((station): PlannedFeature => ({
+        type: "Feature" as const,
+        geometry: {
+          type: "Point" as const,
+          coordinates: [station.longitude, station.latitude],
+        },
+        properties: {
+          color: PLANNED_ELEVATOR_COLOR,
+          key: getPlannedFeatureKey(
+            formatPlannedStationName(station.station),
+            formatStationLineDisplay(station.line),
+            station.services.join(","),
+          ),
+          line: formatStationLineDisplay(station.line),
+          note: station.plannedAdaNote,
+          routes: station.services.join(","),
+          station: formatPlannedStationName(station.station),
+          statusLabel: "Planned ADA elevator",
+          type: "Planned elevator",
+        },
+      }));
+  }, [allFeatures]);
 
   const plannedFeatures = useMemo(() => {
-    if (mode === "escalators") {
+    if (mode === "escalators" || !layers.planned) {
       return [];
     }
 
     return allPlannedFeatures;
-  }, [allPlannedFeatures, mode]);
+  }, [allPlannedFeatures, layers.planned, mode]);
   const allAccessibleStationFeatures = useMemo(() => {
     return accessibleStations.stations.map((station): AccessibleStationFeature => ({
       type: "Feature" as const,
@@ -185,7 +235,9 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
         coordinates: [station.longitude, station.latitude],
       },
       properties: {
-        color: ACCESSIBLE_STATION_COLOR,
+        color: station.statusLabel.startsWith("Partially accessible")
+          ? PARTIAL_ACCESSIBLE_STATION_COLOR
+          : ACCESSIBLE_STATION_COLOR,
         key: getPlannedFeatureKey(
           formatPlannedStationName(station.station),
           formatStationLineDisplay(station.line),
@@ -200,12 +252,12 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
     }));
   }, []);
   const accessibleStationFeatures = useMemo(() => {
-    if (mode !== "combined") {
+    if (mode !== "combined" || !layers.stations) {
       return [];
     }
 
     return allAccessibleStationFeatures;
-  }, [allAccessibleStationFeatures, mode]);
+  }, [allAccessibleStationFeatures, layers.stations, mode]);
 
   const collection = useMemo(
     () => ({
@@ -228,6 +280,15 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
     }),
     [accessibleStationFeatures],
   );
+  const mapResultFeatures = useMemo(
+    () => [
+      ...features,
+      ...plannedFeatures,
+      ...accessibleStationFeatures,
+    ],
+    [accessibleStationFeatures, features, plannedFeatures],
+  );
+  const visibleMapResults = mapResultFeatures.slice(0, mapResultLimit);
   const collectionRef = useRef(collection);
   const plannedCollectionRef = useRef(plannedCollection);
   const accessibleStationCollectionRef = useRef(accessibleStationCollection);
@@ -261,17 +322,17 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
   ]);
 
   const counts = useMemo(() => {
-    return features.reduce(
+    return modeFeatures.reduce(
       (total, feature) => {
         total[feature.properties.status] += 1;
         return total;
       },
-      { accessible: 0, not_accessible: 0, work: 0 } satisfies Record<
+      { accessible: 0, equipment: 0, not_accessible: 0, work: 0 } satisfies Record<
         AssetMapStatus,
         number
       >,
     );
-  }, [features]);
+  }, [modeFeatures]);
 
   useEffect(() => {
     if (!containerRef.current || !token || mapRef.current) {
@@ -382,24 +443,72 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
         },
       });
 
-      map.on("mouseenter", "asset-points", () => {
+      map.on("mouseenter", "asset-points", (event) => {
         map.getCanvas().style.cursor = "pointer";
+        const feature = event.features?.[0];
+        const coordinates =
+          feature?.geometry.type === "Point" ? feature.geometry.coordinates : null;
+        const properties = feature?.properties as
+          | AssetFeatureProperties
+          | undefined;
+
+        if (coordinates && properties) {
+          showAssetPopup(
+            map,
+            popupRef.current,
+            coordinates as [number, number],
+            properties,
+          );
+        }
       });
-      map.on("mouseenter", "planned-elevator-points", () => {
+      map.on("mouseenter", "planned-elevator-points", (event) => {
         map.getCanvas().style.cursor = "pointer";
+        const feature = event.features?.[0];
+        const coordinates =
+          feature?.geometry.type === "Point" ? feature.geometry.coordinates : null;
+        const properties = feature?.properties as
+          | PlannedFeatureProperties
+          | undefined;
+
+        if (coordinates && properties) {
+          showPlannedPopup(
+            map,
+            popupRef.current,
+            coordinates as [number, number],
+            properties,
+          );
+        }
       });
-      map.on("mouseenter", "accessible-station-points", () => {
+      map.on("mouseenter", "accessible-station-points", (event) => {
         map.getCanvas().style.cursor = "pointer";
+        const feature = event.features?.[0];
+        const coordinates =
+          feature?.geometry.type === "Point" ? feature.geometry.coordinates : null;
+        const properties = feature?.properties as
+          | AccessibleStationFeatureProperties
+          | undefined;
+
+        if (coordinates && properties) {
+          showAccessibleStationPopup(
+            map,
+            popupRef.current,
+            coordinates as [number, number],
+            properties,
+          );
+        }
       });
 
       map.on("mouseleave", "asset-points", () => {
         map.getCanvas().style.cursor = "";
+        popupRef.current?.remove();
       });
       map.on("mouseleave", "planned-elevator-points", () => {
         map.getCanvas().style.cursor = "";
+        popupRef.current?.remove();
       });
       map.on("mouseleave", "accessible-station-points", () => {
         map.getCanvas().style.cursor = "";
+        popupRef.current?.remove();
       });
 
       map.on("click", "asset-points", (event) => {
@@ -469,6 +578,14 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
   }, [mapTheme, token]);
 
   useEffect(() => {
+    const animationFrame = window.requestAnimationFrame(() => {
+      mapRef.current?.resize();
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [layout]);
+
+  useEffect(() => {
     const map = mapRef.current;
 
     if (!map || !map.isStyleLoaded()) {
@@ -523,6 +640,10 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
         }
 
         setMode("combined");
+        setLayers((current) => ({
+          ...current,
+          [feature.properties.status]: true,
+        }));
         focusMapFeature(map, feature);
         showAssetPopup(
           map,
@@ -539,6 +660,7 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
 
       if (plannedFeature) {
         setMode("combined");
+        setLayers((current) => ({ ...current, planned: true }));
         focusMapFeature(map, plannedFeature);
         showPlannedPopup(
           map,
@@ -558,6 +680,7 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
       }
 
       setMode("combined");
+      setLayers((current) => ({ ...current, stations: true }));
       focusMapFeature(map, accessibleStationFeature);
       showAccessibleStationPopup(
         map,
@@ -574,120 +697,350 @@ export function AssetMap({ assets }: { assets: MtaAsset[] }) {
     };
   }, []);
 
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map || !focusRequest) {
+      return;
+    }
+
+    let animationFrame: number | null = null;
+    const dispatchFocusRequest = () => {
+      animationFrame = window.requestAnimationFrame(() => {
+        window.dispatchEvent(
+          new CustomEvent<MapFocusDetail>(MAP_FOCUS_EVENT, {
+            detail: focusRequest.detail,
+          }),
+        );
+      });
+    };
+
+    if (map.isStyleLoaded()) {
+      dispatchFocusRequest();
+    } else {
+      map.once("load", dispatchFocusRequest);
+    }
+
+    return () => {
+      map.off("load", dispatchFocusRequest);
+
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [focusRequest]);
+
+  function focusMapResult(feature: MappableFeature) {
+    const map = mapRef.current;
+    const popup = popupRef.current;
+
+    if (!map || !popup) {
+      return;
+    }
+
+    focusMapFeature(map, feature);
+
+    if ("code" in feature.properties) {
+      showAssetPopup(
+        map,
+        popup,
+        feature.geometry.coordinates as [number, number],
+        feature.properties,
+      );
+    } else if (feature.properties.type === "Planned elevator") {
+      showPlannedPopup(
+        map,
+        popup,
+        feature.geometry.coordinates as [number, number],
+        feature.properties,
+      );
+    } else {
+      showAccessibleStationPopup(
+        map,
+        popup,
+        feature.geometry.coordinates as [number, number],
+        feature.properties,
+      );
+    }
+
+    setMapResultAnnouncement(
+      `${feature.properties.station}: ${feature.properties.statusLabel} selected on the map.`,
+    );
+  }
+
   return (
-    <section className="mt-10 scroll-mt-6" id="asset-map-section">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-            Asset map
-          </h2>
-          <div className="mt-2 flex flex-wrap gap-3 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-            <MapLegend color={STATUS_COLORS.accessible} label="♿ ADA accessible" value={counts.accessible} />
-            <MapLegend color={STATUS_COLORS.not_accessible} label="♿ Not ADA accessible" value={counts.not_accessible} />
-            <MapLegend color={STATUS_COLORS.work} label="Work/repair" value={counts.work} />
-            <MapLegend
-              color={PLANNED_ELEVATOR_COLOR}
-              label="Planned elevators"
-              value={plannedFeatures.length}
-            />
-            <MapLegend
-              color={ACCESSIBLE_STATION_COLOR}
-              label="Accessible stations"
-              value={accessibleStationFeatures.length}
-            />
+    <section
+      className={[
+        "scroll-mt-6",
+        embedded ? "surface-card overflow-hidden" : "mt-10",
+      ].join(" ")}
+      id="asset-map-section"
+    >
+      <div
+        className={[
+          "flex flex-col gap-4",
+          embedded
+            ? "border-b border-[var(--border)] p-4 sm:p-5"
+            : "mb-4",
+        ].join(" ")}
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
+              Interactive map
+            </p>
+            <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]">
+              {embedded ? "System accessibility map" : "Asset map"}
+            </h2>
+            <p className="mt-1 text-xs font-medium text-[var(--muted)]">
+              Daily inventory markers are not a real-time outage feed. Use the
+              accessible results list below or select a marker for details.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <div className="inline-flex w-fit rounded-xl bg-[var(--soft)] p-1">
+              {MAP_OPTIONS.map((option) => (
+                <button
+                  aria-pressed={mode === option.value}
+                  className={[
+                    "rounded-lg px-3 py-2 text-xs font-bold transition",
+                    mode === option.value
+                      ? "bg-[var(--panel)] text-[var(--ink)] shadow-sm"
+                      : "text-[var(--muted)] hover:text-[var(--ink)]",
+                  ].join(" ")}
+                  key={option.value}
+                  onClick={() => setMode(option.value)}
+                  type="button"
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <div className="inline-flex w-fit rounded-xl bg-[var(--soft)] p-1">
+              {(["light", "dark"] as const).map((theme) => (
+                <button
+                  aria-label={"Use " + theme + " map"}
+                  aria-pressed={mapTheme === theme}
+                  className={[
+                    "inline-flex h-9 w-10 items-center justify-center rounded-lg transition",
+                    mapTheme === theme
+                      ? "bg-[var(--panel)] text-[var(--ink)] shadow-sm"
+                      : "text-[var(--muted)] hover:text-[var(--ink)]",
+                  ].join(" ")}
+                  key={theme}
+                  onClick={() => setMapTheme(theme)}
+                  title={theme[0].toUpperCase() + theme.slice(1) + " map"}
+                  type="button"
+                >
+                  <MapThemeIcon theme={theme} />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <div className="inline-flex w-fit rounded-lg bg-zinc-100 p-1 dark:bg-zinc-900">
-            {MAP_OPTIONS.map((option) => (
-              <button
-                className={[
-                  "rounded-md px-3 py-1.5 text-sm font-semibold transition",
-                  mode === option.value
-                    ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-                ].join(" ")}
-                key={option.value}
-                onClick={() => setMode(option.value)}
-                type="button"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <div className="inline-flex w-fit rounded-lg bg-zinc-100 p-1 dark:bg-zinc-900">
-            {(["light", "dark"] as const).map((theme) => (
-              <button
-                aria-label={`Use ${theme} map`}
-                className={[
-                  "inline-flex h-8 w-9 items-center justify-center rounded-md text-sm font-semibold transition",
-                  mapTheme === theme
-                    ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-                ].join(" ")}
-                key={theme}
-                onClick={() => setMapTheme(theme)}
-                title={`${theme[0].toUpperCase()}${theme.slice(1)} map`}
-                type="button"
-              >
-                <MapThemeIcon theme={theme} />
-              </button>
-            ))}
-          </div>
+
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Map layers">
+          <MapLayerToggle
+            active={layers.accessible}
+            color={STATUS_COLORS.accessible}
+            label="ADA assets"
+            onToggle={() =>
+              setLayers((current) => ({ ...current, accessible: !current.accessible }))
+            }
+            value={counts.accessible}
+          />
+          <MapLayerToggle
+            active={layers.not_accessible}
+            color={STATUS_COLORS.not_accessible}
+            label="Non-ADA assets"
+            onToggle={() =>
+              setLayers((current) => ({
+                ...current,
+                not_accessible: !current.not_accessible,
+              }))
+            }
+            value={counts.not_accessible}
+          />
+          <MapLayerToggle
+            active={layers.equipment}
+            color={STATUS_COLORS.equipment}
+            label="Escalator assets"
+            onToggle={() =>
+              setLayers((current) => ({ ...current, equipment: !current.equipment }))
+            }
+            value={counts.equipment}
+          />
+          <MapLayerToggle
+            active={layers.work}
+            color={STATUS_COLORS.work}
+            label="Work / repair"
+            onToggle={() =>
+              setLayers((current) => ({ ...current, work: !current.work }))
+            }
+            value={counts.work}
+          />
+          <MapLayerToggle
+            active={layers.planned}
+            color={PLANNED_ELEVATOR_COLOR}
+            label="Planned"
+            onToggle={() =>
+              setLayers((current) => ({ ...current, planned: !current.planned }))
+            }
+            value={allPlannedFeatures.length}
+          />
+          <MapLayerToggle
+            active={layers.stations}
+            color={ACCESSIBLE_STATION_COLOR}
+            label="Station access markers"
+            onToggle={() =>
+              setLayers((current) => ({ ...current, stations: !current.stations }))
+            }
+            value={allAccessibleStationFeatures.length}
+          />
         </div>
       </div>
 
       {token ? (
-        <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-white/10">
-          <div className="h-[520px] w-full" ref={containerRef} />
+        <div
+          className={[
+            "overflow-hidden bg-[var(--panel)]",
+            embedded
+              ? ""
+              : "rounded-2xl border border-[var(--border)] shadow-[0_16px_40px_rgb(15_35_64_/_0.06)]",
+          ].join(" ")}
+        >
+          <div
+            aria-describedby="map-results-description"
+            aria-label="Interactive subway accessibility map"
+            className={
+              embedded
+                ? layout === "full"
+                  ? "h-[620px] w-full xl:h-[calc(100vh-19rem)] xl:min-h-[580px] xl:max-h-[900px]"
+                  : "h-[580px] w-full xl:h-[calc(100vh-22rem)] xl:min-h-[520px] xl:max-h-[760px]"
+                : "h-[560px] w-full"
+            }
+            ref={containerRef}
+            role="region"
+          />
         </div>
       ) : (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the asset map.
+        <div className={embedded ? "p-5" : ""}>
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+            Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the interactive system map.
+          </div>
         </div>
       )}
+
+      <div className="border-t border-[var(--border)] bg-[var(--panel)] p-4 sm:p-5">
+        <details>
+          <summary className="cursor-pointer text-sm font-extrabold text-[var(--ink)] marker:text-[var(--accent-600)]">
+            Browse {mapResultFeatures.length.toLocaleString()} enabled map markers
+          </summary>
+          <p
+            className="mt-2 text-xs leading-5 text-[var(--muted-strong)]"
+            id="map-results-description"
+          >
+            This keyboard-accessible list mirrors the current equipment mode and
+            enabled map layers. Statuses come from the daily inventory snapshot.
+          </p>
+          <p aria-atomic="true" aria-live="polite" className="sr-only">
+            {mapResultFeatures.length.toLocaleString()} map markers match the current
+            controls. {mapResultAnnouncement}
+          </p>
+
+          {visibleMapResults.length > 0 ? (
+            <ul className="mt-3 max-h-80 divide-y divide-[var(--border)] overflow-y-auto rounded-xl border border-[var(--border)]">
+              {visibleMapResults.map((feature) => (
+                <li key={getMapResultKey(feature)}>
+                  <button
+                    className="flex min-h-12 w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition hover:bg-[var(--soft-blue)] disabled:cursor-not-allowed disabled:opacity-60"
+                    disabled={!token}
+                    onClick={() => focusMapResult(feature)}
+                    type="button"
+                  >
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-bold text-[var(--ink)]">
+                        {feature.properties.station}
+                      </span>
+                      <span className="block truncate text-xs text-[var(--muted-strong)]">
+                        {feature.properties.line}
+                        {feature.properties.routes
+                          ? ` · Routes ${feature.properties.routes.replaceAll(",", ", ")}`
+                          : ""}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-right text-[11px] font-bold text-[var(--muted-strong)]">
+                      {feature.properties.statusLabel}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-3 rounded-xl bg-[var(--soft)] p-4 text-sm font-semibold text-[var(--muted-strong)]">
+              No markers match the enabled layers.
+            </p>
+          )}
+
+          {visibleMapResults.length < mapResultFeatures.length ? (
+            <button
+              className="mt-3 inline-flex min-h-10 items-center justify-center rounded-xl border border-[var(--border-strong)] bg-[var(--panel)] px-4 text-sm font-bold text-[var(--accent-700)] shadow-sm transition hover:bg-[var(--soft)]"
+              onClick={() =>
+                setMapResultLimit((limit) => limit + MAP_RESULT_PAGE_SIZE)
+              }
+              type="button"
+            >
+              Show more map results
+            </button>
+          ) : null}
+        </details>
+      </div>
     </section>
   );
 }
 
 function MapThemeIcon({ theme }: { theme: "dark" | "light" }) {
-  const path =
-    theme === "dark"
-      ? "M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"
-      : "M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650 155-751l57-57 101 101-57 57Zm492 498L647-253l57-57 101 101-57 57Zm-98-552 101-101 57 57-101 101-57-57ZM154-209l101-101 57 57-101 101-57-57Z";
+  const Icon = theme === "dark" ? Moon : Sun;
 
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5"
-      fill="currentColor"
-      viewBox="0 -960 960 960"
-    >
-      <path d={path} />
-    </svg>
-  );
+  return <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />;
 }
 
-function MapLegend({
+function MapLayerToggle({
+  active,
   color,
   label,
+  onToggle,
   value,
 }: {
+  active: boolean;
   color: string;
   label: string;
+  onToggle: () => void;
   value: number;
 }) {
   return (
-    <span className="inline-flex items-center gap-2">
+    <button
+      aria-pressed={active}
+      className={[
+        "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-bold transition",
+        active
+          ? "border-[var(--border-strong)] bg-[var(--panel)] text-[var(--ink)] shadow-sm"
+          : "border-transparent bg-[var(--soft)] text-[var(--muted)] opacity-60",
+      ].join(" ")}
+      onClick={onToggle}
+      type="button"
+    >
       <span
-        className="h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-zinc-950"
+        className="h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-slate-900"
         style={{ backgroundColor: color }}
       />
-      {label}: {value.toLocaleString()}
-    </span>
+      {label}
+      <span className="font-mono text-[10px] text-[var(--muted)]">
+        {value.toLocaleString()}
+      </span>
+    </button>
   );
 }
-
 function fitMapToFeatures(map: mapboxgl.Map, features: MappableFeature[]) {
   if (features.length === 0) {
     return;
@@ -710,9 +1063,15 @@ function focusMapFeature(map: mapboxgl.Map, feature: MappableFeature) {
   map.flyTo({
     center: feature.geometry.coordinates as [number, number],
     duration: 650,
-    essential: true,
+    essential: false,
     zoom: 15.5,
   });
+}
+
+function getMapResultKey(feature: MappableFeature) {
+  return "code" in feature.properties
+    ? `asset-${feature.properties.code}`
+    : `${feature.properties.type}-${feature.properties.key}`;
 }
 
 function showAssetPopup(
@@ -748,11 +1107,36 @@ function showPopup(
   coordinates: [number, number],
   html: string,
 ) {
-  popup?.setLngLat(coordinates).setHTML(html).addTo(map);
-  popup
-    ?.getElement()
-    ?.querySelector("[data-popup-close]")
-    ?.addEventListener("click", () => popup.remove(), { once: true });
+  if (!popup) {
+    return;
+  }
+
+  popupIconRoots.get(popup)?.unmount();
+  popupIconRoots.delete(popup);
+  popup.setLngLat(coordinates).setHTML(html).addTo(map);
+
+  const closeButton = popup
+    .getElement()
+    ?.querySelector<HTMLButtonElement>("[data-popup-close]");
+
+  if (!closeButton) {
+    return;
+  }
+
+  const iconRoot = createRoot(closeButton);
+  popupIconRoots.set(popup, iconRoot);
+  iconRoot.render(
+    <X aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={2} />,
+  );
+  closeButton.addEventListener(
+    "click",
+    () => {
+      iconRoot.unmount();
+      popupIconRoots.delete(popup);
+      popup.remove();
+    },
+    { once: true },
+  );
 }
 
 function getPopupHtml(properties: AssetFeatureProperties) {
@@ -765,10 +1149,10 @@ function getPopupHtml(properties: AssetFeatureProperties) {
   return `
     <div class="space-y-1 pr-6">
       ${popupCloseButtonHtml()}
-      <div class="font-semibold text-zinc-900">${escapeHtml(properties.station)}</div>
+      <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
-      <div class="text-xs text-zinc-500">${escapeHtml(properties.line)}</div>
-      <div class="mt-2 text-xs text-zinc-700">
+      <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
+      <div class="asset-popup-detail">
         ${escapeHtml(properties.type)} ${escapeHtml(properties.code)}
       </div>
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
@@ -788,9 +1172,9 @@ function getPlannedPopupHtml(properties: PlannedFeatureProperties) {
   return `
     <div class="space-y-1 pr-6">
       ${popupCloseButtonHtml()}
-      <div class="font-semibold text-zinc-900">${escapeHtml(properties.station)}</div>
+      <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
-      <div class="text-xs text-zinc-500">${escapeHtml(properties.line)}</div>
+      <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
         ${escapeHtml(properties.statusLabel)}
       </div>
@@ -810,9 +1194,9 @@ function getAccessibleStationPopupHtml(
   return `
     <div class="space-y-1 pr-6">
       ${popupCloseButtonHtml()}
-      <div class="font-semibold text-zinc-900">${escapeHtml(properties.station)}</div>
+      <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
-      <div class="text-xs text-zinc-500">${escapeHtml(properties.line)}</div>
+      <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
         ${escapeHtml(properties.statusLabel)}
       </div>
@@ -824,18 +1208,10 @@ function popupCloseButtonHtml() {
   return `
     <button
       aria-label="Close popup"
-      class="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
+      class="asset-popup-close"
       data-popup-close
       type="button"
     >
-      <svg
-        aria-hidden="true"
-        class="h-[18px] w-[18px]"
-        fill="currentColor"
-        viewBox="0 -960 960 960"
-      >
-        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-      </svg>
     </button>
   `;
 }
@@ -858,6 +1234,10 @@ function formatPlannedStationName(value: string) {
   }
 
   return value;
+}
+
+function normalizeMapRoute(value: string) {
+  return value.trim().toUpperCase().replace("6X", "6").replace("7X", "7");
 }
 
 function readStoredMapMode(): MapMode {

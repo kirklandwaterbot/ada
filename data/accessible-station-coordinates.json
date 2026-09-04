@@ -1,6 +1,6 @@
 {
   "generatedFrom": "data/accessibility-stations.json",
-  "coordinateSource": "Metro Memory NYC station coordinates",
+  "coordinateSource": "MTA station data and verified station coordinates",
   "stations": [
     {
       "id": "arthur kill-SIR-Staten Island Railway",
@@ -37,6 +37,87 @@
       "latitude": 40.57348,
       "longitude": -74.11721,
       "statusLabel": "Accessible station"
+    },
+    {
+      "id": "harlem 148 st-3-Lenox Av Line",
+      "station": "Harlem-148 St",
+      "line": "Lenox Av Line",
+      "services": ["3"],
+      "latitude": 40.824,
+      "longitude": -73.937,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "parkchester-6-Pelham Line",
+      "station": "Parkchester",
+      "line": "Pelham Line",
+      "services": ["6"],
+      "latitude": 40.833333,
+      "longitude": -73.860972,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "rockaway park beach 116 st-A-SR-Rockaway Line",
+      "station": "Rockaway Park-Beach 116 St",
+      "line": "Rockaway Line",
+      "services": ["A", "SR"],
+      "latitude": 40.580903,
+      "longitude": -73.835592,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "avenue h-Q-Brighton Line",
+      "station": "Avenue H",
+      "line": "Brighton Line",
+      "services": ["Q"],
+      "latitude": 40.62927,
+      "longitude": -73.961639,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "canarsie rockaway pkwy-L-Canarsie Line",
+      "station": "Canarsie/Rockaway Pkwy",
+      "line": "Canarsie Line",
+      "services": ["L"],
+      "latitude": 40.646654,
+      "longitude": -73.90185,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "hoyt st-2-3-Eastern Pkwy Line",
+      "station": "Hoyt St",
+      "line": "Eastern Pkwy Line",
+      "services": ["2", "3"],
+      "latitude": 40.690545,
+      "longitude": -73.985065,
+      "statusLabel": "Partially accessible station (southbound only)"
+    },
+    {
+      "id": "middle village metropolitan av-M-Myrtle Av Line",
+      "station": "Middle Village/Metropolitan Av",
+      "line": "Myrtle Av Line",
+      "services": ["M"],
+      "latitude": 40.711396,
+      "longitude": -73.889601,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "park place-SF-Franklin Av Line",
+      "station": "Park Place",
+      "line": "Franklin Av Line",
+      "services": ["SF"],
+      "latitude": 40.674772,
+      "longitude": -73.957624,
+      "statusLabel": "Accessible station"
+    },
+    {
+      "id": "wilson av-L-Canarsie Line",
+      "station": "Wilson Av",
+      "line": "Canarsie Line",
+      "services": ["L"],
+      "latitude": 40.688764,
+      "longitude": -73.904046,
+      "statusLabel": "Partially accessible station (Manhattan-bound only)"
     },
     {
       "id": "st george-SIR-Staten Island Railway",

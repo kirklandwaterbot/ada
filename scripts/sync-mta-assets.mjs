@@ -2,6 +2,8 @@ import initSqlJs from "sql.js";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
+import { fetchWithRetry } from "./fetch-with-retry.mjs";
+
 const datasetId = "94fv-bak7";
 const datasetPageUrl = `https://data.ny.gov/d/${datasetId}`;
 const csvUrl = `https://data.ny.gov/api/views/${datasetId}/rows.csv?accessType=DOWNLOAD`;
@@ -13,30 +15,10 @@ const jsonPath = resolve("data/mta-subway-elevator-escalator-assets.json");
 const dbPath = resolve("data/mta-subway-elevator-escalator-assets.sqlite");
 const metadataPath = resolve("data/sync-metadata.json");
 
-async function download(url, filePath) {
-  const response = await fetch(url, {
-    headers: { "User-Agent": "mta-access-assets/0.1" },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Download failed for ${url}: ${response.status}`);
-  }
-
-  await mkdir(dirname(filePath), { recursive: true });
-  const body = await response.text();
-  await writeFile(filePath, body, "utf8");
-
-  return body;
-}
-
 async function fetchText(url) {
-  const response = await fetch(url, {
+  const response = await fetchWithRetry(url, {
     headers: { "User-Agent": "mta-access-assets/0.1" },
   });
-
-  if (!response.ok) {
-    throw new Error(`Fetch failed for ${url}: ${response.status}`);
-  }
 
   return response.text();
 }
@@ -114,21 +96,41 @@ async function buildSqliteDatabase(rows, metadata) {
   }
   insertStatement.free();
 
-  await mkdir(dirname(dbPath), { recursive: true });
-  await writeFile(dbPath, Buffer.from(db.export()));
+  const databaseFile = Buffer.from(db.export());
   db.close();
+
+  return databaseFile;
 }
 
 const syncedAt = new Date().toISOString();
 const [csvText, jsonText, expectedRowCount] = await Promise.all([
-  download(csvUrl, csvPath),
-  download(jsonUrl, jsonPath),
+  fetchText(csvUrl),
+  fetchText(jsonUrl),
   getExpectedRowCount(),
 ]);
 const rows = JSON.parse(jsonText);
 const actualRowCount = Array.isArray(rows) ? rows.length : 0;
 const rowCountMatches =
   typeof expectedRowCount === "number" ? expectedRowCount === actualRowCount : null;
+
+if (!Array.isArray(rows) || actualRowCount === 0) {
+  throw new Error("Refusing to replace the local snapshot with an empty dataset.");
+}
+
+if (rowCountMatches === false) {
+  throw new Error(
+    `Refusing to replace the local snapshot: expected ${expectedRowCount} rows but loaded ${actualRowCount}.`,
+  );
+}
+
+const equipmentCodes = new Set(rows.map((row) => row.equipment_code));
+
+if (equipmentCodes.size !== actualRowCount || equipmentCodes.has(undefined)) {
+  throw new Error(
+    "Refusing to replace the local snapshot because equipment codes are missing or duplicated.",
+  );
+}
+
 const metadata = {
   dataset_id: datasetId,
   dataset_page_url: datasetPageUrl,
@@ -144,8 +146,15 @@ const metadata = {
   row_count_matches: rowCountMatches,
 };
 
-await buildSqliteDatabase(rows, metadata);
-await writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`, "utf8");
+const sqliteFile = await buildSqliteDatabase(rows, metadata);
+
+await mkdir(dirname(dbPath), { recursive: true });
+await Promise.all([
+  writeFile(csvPath, csvText, "utf8"),
+  writeFile(jsonPath, jsonText, "utf8"),
+  writeFile(dbPath, sqliteFile),
+  writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`, "utf8"),
+]);
 
 console.log(`Downloaded CSV to ${csvPath}`);
 console.log(`Downloaded JSON to ${jsonPath}`);

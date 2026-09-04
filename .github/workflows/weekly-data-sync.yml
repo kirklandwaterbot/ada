@@ -1,8 +1,8 @@
-name: Weekly MTA asset sync
+name: Daily MTA data snapshot sync
 
 on:
   schedule:
-    - cron: "0 9 * * 1"
+    - cron: "0 9 * * *"
   workflow_dispatch:
 
 permissions:
@@ -11,6 +11,7 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,5 +23,5 @@ jobs:
       - name: Commit updated data files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update MTA asset inventory"
-          file_pattern: data/mta-subway-elevator-escalator-assets.* data/sync-metadata.json
+          commit_message: "Update daily MTA data snapshots"
+          file_pattern: data/mta-subway-elevator-escalator-assets.* data/mta-capital-elevator-escalator-projects.json data/sync-metadata.json

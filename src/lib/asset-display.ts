@@ -1,6 +1,10 @@
 import type { MtaAsset } from "@/lib/mta-assets";
 
-export type AssetMapStatus = "accessible" | "not_accessible" | "work";
+export type AssetMapStatus =
+  | "accessible"
+  | "equipment"
+  | "not_accessible"
+  | "work";
 
 const LINE_NAME_OVERRIDES: Record<string, string> = {
   "BMT-38-38STYD": "BMT West End",
@@ -277,6 +281,10 @@ export function getAssetMapStatus(asset: MtaAsset): AssetMapStatus {
     )
   ) {
     return "work";
+  }
+
+  if (asset.elevator_or_escalator === "Escalator") {
+    return "equipment";
   }
 
   return asset.ada_compliant === "YES" ? "accessible" : "not_accessible";

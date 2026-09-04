@@ -1,8 +1,8 @@
 {
   "source": "metro-memory/public/city-data/nyc-rapid-transit.json",
   "generatedFrom": "data/accessibility-stations.json",
-  "totalPlannedStations": 102,
-  "matchedStations": 102,
+  "totalPlannedStations": 104,
+  "matchedStations": 104,
   "missingStations": [],
   "stations": [
     {
@@ -1201,6 +1201,55 @@
       "matchedStationName": "Kings Hwy"
     },
     {
+      "id": "kings hwy-N-Sea Beach Line",
+      "station": "Kings Hwy",
+      "line": "Sea Beach Line",
+      "services": [
+        "N"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Gravesend",
+      "plannedAdaNote": "✅",
+      "latitude": 40.603923,
+      "longitude": -73.980353,
+      "coordinateSource": "MTA Subway Stations and Complexes",
+      "matchedStationName": "Kings Hwy"
+    },
+    {
+      "id": "lexington av 59 st-N-R-W-Broadway Line",
+      "station": "Lexington Av/59 St",
+      "line": "Broadway Line",
+      "services": [
+        "N",
+        "R",
+        "W"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.762593,
+      "longitude": -73.9676125,
+      "coordinateSource": "MTA Subway Stations and Complexes",
+      "matchedStationName": "Lexington Av/59 St"
+    },
+    {
+      "id": "lexington av 59 st-4-5-6-Lexington Av Line",
+      "station": "Lexington Av/59 St",
+      "line": "Lexington Av Line",
+      "services": [
+        "4",
+        "5",
+        "6"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.762593,
+      "longitude": -73.9676125,
+      "coordinateSource": "MTA Subway Stations and Complexes",
+      "matchedStationName": "Lexington Av/59 St"
+    },
+    {
       "id": "middletown rd-6-Pelham Line",
       "station": "Middletown Rd",
       "line": "Pelham Line",
@@ -1415,21 +1464,6 @@
       "longitude": -73.901773,
       "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
       "matchedStationName": "Prospect Av"
-    },
-    {
-      "id": "rockaway blvd-A-Fulton St Line",
-      "station": "Rockaway Blvd",
-      "line": "Fulton St Line",
-      "services": [
-        "A"
-      ],
-      "borough": "Queens",
-      "neighborhood": "Ozone Park",
-      "plannedAdaNote": "✅",
-      "latitude": 40.680429,
-      "longitude": -73.843853,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "Rockaway Blvd"
     },
     {
       "id": "smith ninth sts-F-G-Culver Line",

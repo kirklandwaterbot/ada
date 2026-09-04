@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { syncMtaAssetsToPostgres } from "@/lib/mta-assets";
+import { syncMtaCapitalProjectsToPostgres } from "@/lib/mta-capital-projects";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,14 +22,37 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await syncMtaAssetsToPostgres();
+    const [assetResult, capitalResult] = await Promise.allSettled([
+      syncMtaAssetsToPostgres(),
+      syncMtaCapitalProjectsToPostgres(),
+    ]);
+
+    if (assetResult.status === "rejected" || capitalResult.status === "rejected") {
+      return NextResponse.json(
+        {
+          error: "One or more daily MTA datasets failed to synchronize.",
+          assets:
+            assetResult.status === "fulfilled"
+              ? { ok: true, loadedRowCount: assetResult.value.loadedRowCount }
+              : { ok: false, error: describeError(assetResult.reason) },
+          capitalProjects:
+            capitalResult.status === "fulfilled"
+              ? { ok: true, projectCount: capitalResult.value.projectCount }
+              : { ok: false, error: describeError(capitalResult.reason) },
+        },
+        { status: 502 },
+      );
+    }
 
     return NextResponse.json({
       ok: true,
-      datasetId: result.metadata.datasetId,
-      loadedRowCount: result.loadedRowCount,
-      rowCountMatches: result.rowCountMatches,
-      syncedAt: result.metadata.lastSyncedAt,
+      assets: {
+        datasetId: assetResult.value.metadata.datasetId,
+        loadedRowCount: assetResult.value.loadedRowCount,
+        rowCountMatches: assetResult.value.rowCountMatches,
+        syncedAt: assetResult.value.metadata.lastSyncedAt,
+      },
+      capitalProjects: capitalResult.value,
     });
   } catch (error) {
     return NextResponse.json(
@@ -39,4 +63,8 @@ export async function GET(request: Request) {
       { status: 502 },
     );
   }
+}
+
+function describeError(error: unknown) {
+  return error instanceof Error ? error.message : String(error);
 }
