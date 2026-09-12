@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Moon, Sun, X } from "lucide-react";
+import { X } from "lucide-react";
 import mapboxgl, { type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import {
@@ -17,7 +17,7 @@ import plannedAdaStations from "../../data/planned-ada-station-coordinates.json"
 import accessibleStations from "../../data/accessible-station-coordinates.json";
 
 type MapMode = "combined" | "elevators" | "escalators";
-type MapTheme = "light" | "dark";
+export type MapTheme = "light" | "dark";
 type MapLayerKey = AssetMapStatus | "planned" | "stations";
 type AssetMapLayout = "full" | "split";
 
@@ -67,7 +67,6 @@ type AccessibleStationFeature = GeoJSON.Feature<
 type MappableFeature = AssetFeature | PlannedFeature | AccessibleStationFeature;
 
 const MAP_MODE_STORAGE_KEY = "mta-access-assets-map-mode";
-const MAP_THEME_STORAGE_KEY = "mta-access-assets-map-theme";
 const MAP_RESULT_PAGE_SIZE = 40;
 const STATUS_COLORS: Record<AssetMapStatus, string> = {
   accessible: "#16a34a",
@@ -96,17 +95,18 @@ export function AssetMap({
   embedded = false,
   focusRequest = null,
   layout = "full",
+  mapTheme,
 }: {
   assets: AssetMapMarker[];
   embedded?: boolean;
   focusRequest?: AssetMapFocusRequest | null;
   layout?: AssetMapLayout;
+  mapTheme: MapTheme;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
   const [mode, setMode] = useState<MapMode>(() => readStoredMapMode());
-  const [mapTheme, setMapTheme] = useState<MapTheme>(() => readStoredMapTheme());
   const [layers, setLayers] = useState<Record<MapLayerKey, boolean>>({
     accessible: true,
     equipment: true,
@@ -122,10 +122,6 @@ export function AssetMap({
   useEffect(() => {
     window.localStorage.setItem(MAP_MODE_STORAGE_KEY, mode);
   }, [mode]);
-
-  useEffect(() => {
-    window.localStorage.setItem(MAP_THEME_STORAGE_KEY, mapTheme);
-  }, [mapTheme]);
 
   const allFeatures = useMemo(() => {
     return assets.map(
@@ -816,26 +812,6 @@ export function AssetMap({
                 </button>
               ))}
             </div>
-            <div className="inline-flex w-fit rounded-xl bg-[var(--soft)] p-1">
-              {(["light", "dark"] as const).map((theme) => (
-                <button
-                  aria-label={"Use " + theme + " map"}
-                  aria-pressed={mapTheme === theme}
-                  className={[
-                    "inline-flex h-9 w-10 items-center justify-center rounded-lg transition",
-                    mapTheme === theme
-                      ? "bg-[var(--panel)] text-[var(--ink)] shadow-sm"
-                      : "text-[var(--muted)] hover:text-[var(--ink)]",
-                  ].join(" ")}
-                  key={theme}
-                  onClick={() => setMapTheme(theme)}
-                  title={theme[0].toUpperCase() + theme.slice(1) + " map"}
-                  type="button"
-                >
-                  <MapThemeIcon theme={theme} />
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
@@ -997,12 +973,6 @@ export function AssetMap({
       </div>
     </section>
   );
-}
-
-function MapThemeIcon({ theme }: { theme: "dark" | "light" }) {
-  const Icon = theme === "dark" ? Moon : Sun;
-
-  return <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />;
 }
 
 function MapLayerToggle({
@@ -1252,18 +1222,6 @@ function readStoredMapMode(): MapMode {
     storedMode === "combined"
     ? storedMode
     : "combined";
-}
-
-function readStoredMapTheme(): MapTheme {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
-  const storedTheme = window.localStorage.getItem(MAP_THEME_STORAGE_KEY);
-
-  return storedTheme === "dark" || storedTheme === "light"
-    ? storedTheme
-    : "light";
 }
 
 function routeBadgeHtml(route: string) {

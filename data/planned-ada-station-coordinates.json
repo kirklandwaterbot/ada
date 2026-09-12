@@ -399,37 +399,6 @@
       "matchedStationName": "145 St"
     },
     {
-      "id": "149 st grand concourse-4-Jerome Av Line",
-      "station": "149 St-Grand Concourse",
-      "line": "Jerome Av Line",
-      "services": [
-        "4"
-      ],
-      "borough": "The Bronx",
-      "neighborhood": "Mott Haven",
-      "plannedAdaNote": "✅",
-      "latitude": 40.8185656,
-      "longitude": -73.9273142,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "149 St - Hostos"
-    },
-    {
-      "id": "149 st grand concourse-2-5-White Plains Rd Line",
-      "station": "149 St-Grand Concourse",
-      "line": "White Plains Rd Line",
-      "services": [
-        "2",
-        "5"
-      ],
-      "borough": "The Bronx",
-      "neighborhood": "Mott Haven",
-      "plannedAdaNote": "✅",
-      "latitude": 40.8185656,
-      "longitude": -73.9273142,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "149 St - Hostos"
-    },
-    {
       "id": "155 st-C-8 Av Line",
       "station": "155 St",
       "line": "8 Av Line",

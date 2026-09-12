@@ -21,7 +21,19 @@ export function getStationSlug(station: Station) {
 }
 
 export function getStationBySlug(slug: string) {
-  return stations.find((station) => getStationSlug(station) === slug);
+  const normalizedSlug = slug.toLowerCase();
+  const canonicalSlug = normalizedSlug.replace(
+    /^149-st-grand-concourse-/,
+    "149-st-hostos-",
+  );
+
+  return stations.find((station) => getStationSlug(station) === canonicalSlug);
+}
+
+export function getStationSearchAliases(station: Station) {
+  return station.station === "149 St-Hostos"
+    ? ["149 St-Grand Concourse"]
+    : [];
 }
 
 export function getStationAssets(station: Station, assets: MtaAsset[]) {
@@ -198,6 +210,7 @@ function stationNamesMatch(left: string, right: string) {
   }
 
   const aliases: Record<string, string[]> = {
+    "149 st hostos": ["149 st grand concourse"],
     "borough hall": ["borough hall court st"],
     "court sq 23 st": ["court sq"],
     "14 st 6 av": ["14 st sixth av"],

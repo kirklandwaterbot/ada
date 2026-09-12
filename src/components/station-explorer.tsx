@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useState } from "react";
-import type { AssetMapFocusRequest } from "@/components/asset-map";
+import { Moon, Sun } from "lucide-react";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import type { AssetMapFocusRequest, MapTheme } from "@/components/asset-map";
 import { SiteIcon } from "@/components/site-icon";
 import { StationStatusBadge } from "@/components/station-status-badge";
 import { SubwayRouteIcons } from "@/components/subway-route-icons";
@@ -13,9 +14,7 @@ import {
   type AssetMapMarker,
   type StationExplorerRecord,
 } from "@/lib/station-explorer-data";
-import {
-  type Station,
-} from "@/lib/stations";
+import { getStationSearchAliases, type Station } from "@/lib/stations";
 
 const AssetMap = dynamic(
   () => import("@/components/asset-map").then((module) => module.AssetMap),
@@ -42,6 +41,8 @@ type StatusFilter =
 type SortKey = "name" | "ridership";
 export type ExploreWorkspaceView = "explorer" | "map" | "split";
 const INITIAL_RESULT_COUNT = 30;
+const MAP_THEME_CHANGE_EVENT = "mta-access-assets-map-theme-change";
+const MAP_THEME_STORAGE_KEY = "mta-access-assets-map-theme";
 
 const WORKSPACE_VIEW_OPTIONS: Array<{
   description: string;
@@ -86,6 +87,11 @@ export function StationExplorer({
   const [workspaceView, setWorkspaceView] = useState<ExploreWorkspaceView>(
     initialView ?? "split",
   );
+  const mapTheme = useSyncExternalStore(
+    subscribeToMapTheme,
+    readStoredMapTheme,
+    getServerMapTheme,
+  );
   const [mapFocusRequest, setMapFocusRequest] =
     useState<AssetMapFocusRequest | null>(null);
   const [visibleResultCount, setVisibleResultCount] = useState(
@@ -117,6 +123,7 @@ export function StationExplorer({
         new Set(
           stationRecords.flatMap(({ lineDisplay, station }) => [
             station.station,
+            ...getStationSearchAliases(station),
             station.borough,
             station.neighborhood,
             lineDisplay,
@@ -133,6 +140,7 @@ export function StationExplorer({
       const queryMatches = matchesNormalizedSearch(
         [
           station.station,
+          ...getStationSearchAliases(station),
           station.line,
           lineDisplay,
           station.borough,
@@ -208,29 +216,55 @@ export function StationExplorer({
             The station explorer and system map now share one workspace.
           </p>
         </div>
-        <div
-          aria-label="Workspace view"
-          className="grid grid-cols-3 rounded-xl bg-[var(--soft)] p-1"
-          role="group"
-        >
-          {WORKSPACE_VIEW_OPTIONS.map((option) => (
-            <button
-              aria-pressed={workspaceView === option.value}
-              className={[
-                "inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-3 text-xs font-bold transition sm:min-w-28",
-                workspaceView === option.value
-                  ? "bg-[var(--panel)] text-[var(--ink)] shadow-sm"
-                  : "text-[var(--muted)] hover:text-[var(--ink)]",
-              ].join(" ")}
-              key={option.value}
-              onClick={() => selectWorkspaceView(option.value)}
-              title={option.description}
-              type="button"
-            >
-              <SiteIcon className="text-[17px]" name={option.icon} />
-              {option.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <div
+            aria-label="Map theme"
+            className="inline-flex w-fit rounded-xl bg-[var(--soft)] p-1"
+            role="group"
+          >
+            {(["light", "dark"] as const).map((theme) => (
+              <button
+                aria-label={`Use ${theme} map`}
+                aria-pressed={mapTheme === theme}
+                className={[
+                  "inline-flex h-10 w-11 items-center justify-center rounded-lg transition",
+                  mapTheme === theme
+                    ? "bg-[var(--panel)] text-[var(--ink)] shadow-sm"
+                    : "text-[var(--muted)] hover:text-[var(--ink)]",
+                ].join(" ")}
+                key={theme}
+                onClick={() => setStoredMapTheme(theme)}
+                title={`${theme[0].toUpperCase()}${theme.slice(1)} map`}
+                type="button"
+              >
+                <MapThemeIcon theme={theme} />
+              </button>
+            ))}
+          </div>
+          <div
+            aria-label="Workspace view"
+            className="grid grid-cols-3 rounded-xl bg-[var(--soft)] p-1"
+            role="group"
+          >
+            {WORKSPACE_VIEW_OPTIONS.map((option) => (
+              <button
+                aria-pressed={workspaceView === option.value}
+                className={[
+                  "inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-3 text-xs font-bold transition sm:min-w-28",
+                  workspaceView === option.value
+                    ? "bg-[var(--panel)] text-[var(--ink)] shadow-sm"
+                    : "text-[var(--muted)] hover:text-[var(--ink)]",
+                ].join(" ")}
+                key={option.value}
+                onClick={() => selectWorkspaceView(option.value)}
+                title={option.description}
+                type="button"
+              >
+                <SiteIcon className="text-[17px]" name={option.icon} />
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -423,12 +457,50 @@ export function StationExplorer({
             embedded
             focusRequest={mapFocusRequest}
             layout={workspaceView === "map" ? "full" : "split"}
+            mapTheme={mapTheme}
           />
         </div>
       ) : null}
       </div>
     </div>
   );
+}
+
+function MapThemeIcon({ theme }: { theme: MapTheme }) {
+  const Icon = theme === "dark" ? Moon : Sun;
+
+  return <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />;
+}
+
+function readStoredMapTheme(): MapTheme {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  const storedTheme = window.localStorage.getItem(MAP_THEME_STORAGE_KEY);
+
+  return storedTheme === "dark" || storedTheme === "light"
+    ? storedTheme
+    : "light";
+}
+
+function getServerMapTheme(): MapTheme {
+  return "light";
+}
+
+function setStoredMapTheme(theme: MapTheme) {
+  window.localStorage.setItem(MAP_THEME_STORAGE_KEY, theme);
+  window.dispatchEvent(new Event(MAP_THEME_CHANGE_EVENT));
+}
+
+function subscribeToMapTheme(onStoreChange: () => void) {
+  window.addEventListener("storage", onStoreChange);
+  window.addEventListener(MAP_THEME_CHANGE_EVENT, onStoreChange);
+
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener(MAP_THEME_CHANGE_EVENT, onStoreChange);
+  };
 }
 
 function StationResult({

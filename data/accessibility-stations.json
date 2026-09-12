@@ -1,11 +1,20 @@
 {
   "sourceWorkbook": "New York Metro Accessible Stations List.xlsx",
+  "sourceOverrides": [
+    {
+      "station": "149 St-Hostos",
+      "effectiveDate": "September 11, 2026",
+      "source": "Official MTA Subway GTFS",
+      "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
+      "evidence": "Parent stops 222 and 415 publish wheelchair_boarding=1."
+    }
+  ],
   "summary": {
     "totalStations": 493,
-    "accessible": 159,
+    "accessible": 161,
     "partiallyAccessible": 10,
-    "notAccessible": 324,
-    "plannedAda": 104,
+    "notAccessible": 322,
+    "plannedAda": 102,
     "statenIslandStations": 21,
     "sirAccessible": 6,
     "sirPlannedAda": 3,
@@ -3903,37 +3912,37 @@
       "rank": 364
     },
     {
-      "station": "149 St-Grand Concourse",
-      "stationKey": "149 st grand concourse",
+      "station": "149 St-Hostos",
+      "stationKey": "149 st hostos",
       "services": [
         "4"
       ],
       "division": "IRT",
       "line": "Jerome Av Line",
-      "accessibilityStatus": "Not accessible",
-      "accessibilityRaw": "❌",
-      "plannedAda": true,
-      "plannedAdaNote": "✅",
-      "dateMadeAccessible": "",
+      "accessibilityStatus": "Accessible",
+      "accessibilityRaw": "♿",
+      "plannedAda": false,
+      "plannedAdaNote": "",
+      "dateMadeAccessible": "September 11, 2026",
       "borough": "The Bronx",
       "neighborhood": "Mott Haven",
       "ridership2024": 2087669,
       "rank": 159
     },
     {
-      "station": "149 St-Grand Concourse",
-      "stationKey": "149 st grand concourse",
+      "station": "149 St-Hostos",
+      "stationKey": "149 st hostos",
       "services": [
         "2",
         "5"
       ],
       "division": "IRT",
       "line": "White Plains Rd Line",
-      "accessibilityStatus": "Not accessible",
-      "accessibilityRaw": "❌",
-      "plannedAda": true,
-      "plannedAdaNote": "✅",
-      "dateMadeAccessible": "",
+      "accessibilityStatus": "Accessible",
+      "accessibilityRaw": "♿",
+      "plannedAda": false,
+      "plannedAdaNote": "",
+      "dateMadeAccessible": "September 11, 2026",
       "borough": "The Bronx",
       "neighborhood": "Mott Haven",
       "ridership2024": 2087669,

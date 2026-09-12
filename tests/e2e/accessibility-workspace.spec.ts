@@ -32,6 +32,37 @@ test("switches between Explorer, Both, and Map without duplicate pages", async (
   await expect(page.getByTestId("station-result")).toHaveCount(0);
 });
 
+test("places the map theme control before the workspace view selector", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  await page.goto("/stations?view=explorer");
+
+  const mapTheme = page.getByRole("group", { name: "Map theme" });
+  const workspaceView = page.getByRole("group", { name: "Workspace view" });
+  await expect(mapTheme).toBeVisible();
+  await expect(workspaceView).toBeVisible();
+
+  const mapThemeBox = await mapTheme.boundingBox();
+  const workspaceViewBox = await workspaceView.boundingBox();
+  expect(mapThemeBox).not.toBeNull();
+  expect(workspaceViewBox).not.toBeNull();
+  expect(mapThemeBox!.x + mapThemeBox!.width).toBeLessThanOrEqual(
+    workspaceViewBox!.x,
+  );
+
+  await page.getByRole("button", { name: "Use dark map" }).click();
+  await expect(page.getByRole("button", { name: "Use dark map" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(() => localStorage.getItem("mta-access-assets-map-theme")),
+    )
+    .toBe("dark");
+});
+
 test("offers a keyboard-accessible list synchronized with map controls", async ({
   page,
 }) => {
@@ -64,6 +95,22 @@ test("mobile navigation opens and reaches the equipment inventory", async ({
   await expect(
     page.getByRole("heading", { name: "Every asset, one searchable view" }),
   ).toBeVisible({ timeout: 15_000 });
+});
+
+test("shows 149 St-Hostos as accessible and preserves its former name", async ({
+  page,
+}) => {
+  await page.goto("/stations?view=explorer");
+  await page
+    .getByPlaceholder("Station, line, route, or borough")
+    .fill("149 St-Grand Concourse");
+  await expect(page.getByRole("link", { name: /149 St-Hostos/ })).toHaveCount(2);
+
+  await page.goto("/stations/149-st-grand-concourse-jerome-av-line-4");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "149 St-Hostos" }),
+  ).toBeVisible();
+  await expect(page.getByText("Made accessible September 11, 2026")).toBeVisible();
 });
 
 test("aligns the project spotlight with the station directory on desktop", async ({
