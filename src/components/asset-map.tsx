@@ -18,8 +18,18 @@ import accessibleStations from "../../data/accessible-station-coordinates.json";
 
 type MapMode = "combined" | "elevators" | "escalators";
 export type MapTheme = "light" | "dark";
+export type AssetMapVisibilityFilters = {
+  elevatorStations: boolean;
+  elevators: boolean;
+  escalators: boolean;
+  partialStations: boolean;
+  plannedStations: boolean;
+  rampStations: boolean;
+  repairs: boolean;
+};
 type MapLayerKey = AssetMapStatus | "planned" | "stations";
 type AssetMapLayout = "full" | "split";
+type AssetMapPresentation = "canvas" | "card";
 
 export type AssetMapFocusRequest = {
   detail: MapFocusDetail;
@@ -38,6 +48,8 @@ type PlannedFeatureProperties = {
 };
 
 type AccessibleStationFeatureProperties = {
+  accessLabel: string;
+  accessMethod: AccessibleStationAccessMethod;
   color: string;
   key: string;
   line: string;
@@ -45,7 +57,14 @@ type AccessibleStationFeatureProperties = {
   station: string;
   statusLabel: string;
   type: "Accessible station";
+  underRepair: boolean;
 };
+
+type AccessibleStationAccessMethod =
+  | "accessible_entrance"
+  | "elevator"
+  | "ramp"
+  | "street_level";
 
 type AssetFeatureProperties = {
   ada: string;
@@ -68,6 +87,16 @@ type MappableFeature = AssetFeature | PlannedFeature | AccessibleStationFeature;
 
 const MAP_MODE_STORAGE_KEY = "mta-access-assets-map-mode";
 const MAP_RESULT_PAGE_SIZE = 40;
+const SUBWAY_ROUTE_DATA_URL = "/data/nyc-subway-routes.geojson";
+const DEFAULT_VISIBILITY_FILTERS: AssetMapVisibilityFilters = {
+  elevatorStations: true,
+  elevators: true,
+  escalators: true,
+  partialStations: true,
+  plannedStations: true,
+  rampStations: true,
+  repairs: true,
+};
 const STATUS_COLORS: Record<AssetMapStatus, string> = {
   accessible: "#16a34a",
   equipment: "#3b82f6",
@@ -76,12 +105,19 @@ const STATUS_COLORS: Record<AssetMapStatus, string> = {
 };
 const PLANNED_ELEVATOR_COLOR = "#ec4899";
 const ACCESSIBLE_STATION_COLOR = "#22c55e";
+const RAMP_ACCESSIBLE_STATION_COLOR = "#06b6d4";
 const PARTIAL_ACCESSIBLE_STATION_COLOR = "#f59e0b";
+const ACCESS_METHOD_LABELS: Record<AccessibleStationAccessMethod, string> = {
+  accessible_entrance: "Step-free accessible entrance",
+  elevator: "Elevator access",
+  ramp: "Ramp access",
+  street_level: "Street-level access",
+};
 const STATUS_LABELS: Record<AssetMapStatus, string> = {
   accessible: "♿ ADA accessible",
   equipment: "Escalator equipment",
   not_accessible: "♿ Not ADA accessible",
-  work: "Under construction or repair",
+  work: "Under repair / modernization",
 };
 const MAP_OPTIONS: Array<{ label: string; value: MapMode }> = [
   { label: "Combined", value: "combined" },
@@ -96,12 +132,18 @@ export function AssetMap({
   focusRequest = null,
   layout = "full",
   mapTheme,
+  minimal = false,
+  presentation = "card",
+  visibilityFilters = DEFAULT_VISIBILITY_FILTERS,
 }: {
   assets: AssetMapMarker[];
   embedded?: boolean;
   focusRequest?: AssetMapFocusRequest | null;
   layout?: AssetMapLayout;
   mapTheme: MapTheme;
+  minimal?: boolean;
+  presentation?: AssetMapPresentation;
+  visibilityFilters?: AssetMapVisibilityFilters;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -118,6 +160,7 @@ export function AssetMap({
   const [mapResultLimit, setMapResultLimit] = useState(MAP_RESULT_PAGE_SIZE);
   const [mapResultAnnouncement, setMapResultAnnouncement] = useState("");
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  const canvas = presentation === "canvas";
 
   useEffect(() => {
     window.localStorage.setItem(MAP_MODE_STORAGE_KEY, mode);
@@ -154,10 +197,35 @@ export function AssetMap({
           ? "Escalator"
           : null;
 
-    return allFeatures.filter((feature) =>
-      allowedType ? feature.properties.type === allowedType : true,
-    );
-  }, [allFeatures, mode]);
+    return allFeatures.filter((feature) => {
+      if (
+        feature.properties.status === "work" &&
+        !visibilityFilters.repairs
+      ) {
+        return false;
+      }
+
+      if (allowedType && feature.properties.type !== allowedType) {
+        return false;
+      }
+
+      if (feature.properties.type === "Elevator") {
+        return visibilityFilters.elevators;
+      }
+
+      if (feature.properties.type === "Escalator") {
+        return visibilityFilters.escalators;
+      }
+
+      return true;
+    });
+  }, [
+    allFeatures,
+    mode,
+    visibilityFilters.elevators,
+    visibilityFilters.escalators,
+    visibilityFilters.repairs,
+  ]);
   const features = useMemo(
     () => modeFeatures.filter((feature) => layers[feature.properties.status]),
     [layers, modeFeatures],
@@ -217,43 +285,100 @@ export function AssetMap({
   }, [allFeatures]);
 
   const plannedFeatures = useMemo(() => {
-    if (mode === "escalators" || !layers.planned) {
+    if (
+      mode === "escalators" ||
+      !layers.planned ||
+      !visibilityFilters.plannedStations
+    ) {
       return [];
     }
 
     return allPlannedFeatures;
-  }, [allPlannedFeatures, layers.planned, mode]);
+  }, [
+    allPlannedFeatures,
+    layers.planned,
+    mode,
+    visibilityFilters.plannedStations,
+  ]);
   const allAccessibleStationFeatures = useMemo(() => {
-    return accessibleStations.stations.map((station): AccessibleStationFeature => ({
-      type: "Feature" as const,
-      geometry: {
-        type: "Point" as const,
-        coordinates: [station.longitude, station.latitude],
+    return accessibleStations.stations.map(
+      (station): AccessibleStationFeature => {
+        const accessMethod = station.accessMethod as AccessibleStationAccessMethod;
+        const isPartial = station.statusLabel.startsWith("Partially accessible");
+        const underRepair = allFeatures.some(
+          (feature) =>
+            feature.properties.status === "work" &&
+            normalizeSearchText(feature.properties.station) ===
+              normalizeSearchText(formatPlannedStationName(station.station)),
+        );
+
+        return {
+          type: "Feature" as const,
+          geometry: {
+            type: "Point" as const,
+            coordinates: [station.longitude, station.latitude],
+          },
+          properties: {
+            accessLabel: ACCESS_METHOD_LABELS[accessMethod],
+            accessMethod,
+            color: isPartial
+              ? PARTIAL_ACCESSIBLE_STATION_COLOR
+              : isRampOrLevelAccess(accessMethod)
+                ? RAMP_ACCESSIBLE_STATION_COLOR
+                : ACCESSIBLE_STATION_COLOR,
+            key: getPlannedFeatureKey(
+              formatPlannedStationName(station.station),
+              formatStationLineDisplay(station.line),
+              station.services.join(","),
+            ),
+            line: formatStationLineDisplay(station.line),
+            routes: station.services.join(","),
+            station: formatPlannedStationName(station.station),
+            statusLabel: station.statusLabel,
+            type: "Accessible station",
+            underRepair,
+          },
+        };
       },
-      properties: {
-        color: station.statusLabel.startsWith("Partially accessible")
-          ? PARTIAL_ACCESSIBLE_STATION_COLOR
-          : ACCESSIBLE_STATION_COLOR,
-        key: getPlannedFeatureKey(
-          formatPlannedStationName(station.station),
-          formatStationLineDisplay(station.line),
-          station.services.join(","),
-        ),
-        line: formatStationLineDisplay(station.line),
-        routes: station.services.join(","),
-        station: formatPlannedStationName(station.station),
-        statusLabel: station.statusLabel,
-        type: "Accessible station",
-      },
-    }));
-  }, []);
+    );
+  }, [allFeatures]);
   const accessibleStationFeatures = useMemo(() => {
     if (mode !== "combined" || !layers.stations) {
       return [];
     }
 
-    return allAccessibleStationFeatures;
-  }, [allAccessibleStationFeatures, layers.stations, mode]);
+    return allAccessibleStationFeatures.filter((feature) => {
+      const isPartial = feature.properties.statusLabel.startsWith(
+        "Partially accessible",
+      );
+
+      if (isPartial) {
+        return (
+          visibilityFilters.partialStations &&
+          (!feature.properties.underRepair || visibilityFilters.repairs)
+        );
+      }
+
+      const accessTypeVisible = isRampOrLevelAccess(
+        feature.properties.accessMethod,
+      )
+        ? visibilityFilters.rampStations
+        : visibilityFilters.elevatorStations;
+
+      return (
+        accessTypeVisible &&
+        (!feature.properties.underRepair || visibilityFilters.repairs)
+      );
+    });
+  }, [
+    allAccessibleStationFeatures,
+    layers.stations,
+    mode,
+    visibilityFilters.elevatorStations,
+    visibilityFilters.partialStations,
+    visibilityFilters.rampStations,
+    visibilityFilters.repairs,
+  ]);
 
   const collection = useMemo(
     () => ({
@@ -359,6 +484,10 @@ export function AssetMap({
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
     map.on("load", () => {
+      map.addSource("subway-routes", {
+        type: "geojson",
+        data: SUBWAY_ROUTE_DATA_URL,
+      });
       map.addSource("assets", {
         type: "geojson",
         data: collectionRef.current,
@@ -372,6 +501,58 @@ export function AssetMap({
         data: accessibleStationCollectionRef.current,
       });
 
+      map.addLayer({
+        id: "subway-route-casing",
+        type: "line",
+        source: "subway-routes",
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+        },
+        paint: {
+          "line-color": mapTheme === "dark" ? "#020617" : "#ffffff",
+          "line-opacity": 0.78,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            8,
+            2.6,
+            10,
+            3.8,
+            13,
+            5.4,
+            16,
+            8.2,
+          ],
+        },
+      });
+      map.addLayer({
+        id: "subway-route-lines",
+        type: "line",
+        source: "subway-routes",
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+        },
+        paint: {
+          "line-color": ["get", "color"],
+          "line-opacity": 0.88,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            8,
+            1.5,
+            10,
+            2.4,
+            13,
+            3.6,
+            16,
+            6,
+          ],
+        },
+      });
       map.addLayer({
         id: "asset-points",
         type: "circle",
@@ -390,8 +571,18 @@ export function AssetMap({
             16,
             11,
           ],
-          "circle-stroke-color": "#ffffff",
-          "circle-stroke-width": 1.8,
+          "circle-stroke-color": [
+            "case",
+            ["==", ["get", "status"], "work"],
+            "#f97316",
+            "#ffffff",
+          ],
+          "circle-stroke-width": [
+            "case",
+            ["==", ["get", "status"], "work"],
+            3.6,
+            1.8,
+          ],
         },
       });
       map.addLayer({
@@ -434,8 +625,18 @@ export function AssetMap({
             16,
             11,
           ],
-          "circle-stroke-color": "#ffffff",
-          "circle-stroke-width": 2,
+          "circle-stroke-color": [
+            "case",
+            ["get", "underRepair"],
+            "#f97316",
+            "#ffffff",
+          ],
+          "circle-stroke-width": [
+            "case",
+            ["get", "underRepair"],
+            3.8,
+            2,
+          ],
         },
       });
 
@@ -767,28 +968,45 @@ export function AssetMap({
   return (
     <section
       className={[
-        "scroll-mt-6",
-        embedded ? "surface-card overflow-hidden" : "mt-10",
+        canvas
+          ? "relative h-full min-h-[34rem] w-full max-w-full overflow-hidden bg-slate-900"
+          : "scroll-mt-6",
+        canvas ? "" : embedded ? "surface-card overflow-hidden" : "mt-10",
       ].join(" ")}
       id="asset-map-section"
     >
-      <div
-        className={[
+      {!minimal && (
+        <div
+          className={[
           "flex flex-col gap-4",
-          embedded
-            ? "border-b border-[var(--border)] p-4 sm:p-5"
-            : "mb-4",
-        ].join(" ")}
-      >
+          canvas
+            ? "absolute left-3 right-3 top-3 z-10 max-w-3xl rounded-2xl border border-white/20 bg-[rgb(var(--panel-rgb)_/_0.9)] p-3 shadow-[0_20px_60px_rgb(0_0_0_/_0.22)] backdrop-blur-xl sm:left-4 sm:right-auto sm:top-4 sm:max-w-[min(46rem,calc(100%-7rem))]"
+            : embedded
+              ? "border-b border-[var(--border)] p-4 sm:p-5"
+              : "mb-4",
+          ].join(" ")}
+        >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
-              Interactive map
+              {canvas ? "Map layers" : "Interactive map"}
             </p>
-            <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]">
+            <h2
+              className={
+                canvas
+                  ? "sr-only"
+                  : "mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]"
+              }
+            >
               {embedded ? "System accessibility map" : "Asset map"}
             </h2>
-            <p className="mt-1 text-xs font-medium text-[var(--muted)]">
+            <p
+              className={
+                canvas
+                  ? "sr-only"
+                  : "mt-1 text-xs font-medium text-[var(--muted)]"
+              }
+            >
               Daily inventory markers are not a real-time outage feed. Use the
               accessible results list below or select a marker for details.
             </p>
@@ -815,7 +1033,15 @@ export function AssetMap({
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Map layers">
+        <div
+          className={
+            canvas
+              ? "flex max-w-full gap-2 overflow-x-auto pb-1"
+              : "flex flex-wrap gap-2"
+          }
+          role="group"
+          aria-label="Map layers"
+        >
           <MapLayerToggle
             active={layers.accessible}
             color={STATUS_COLORS.accessible}
@@ -874,22 +1100,27 @@ export function AssetMap({
             value={allAccessibleStationFeatures.length}
           />
         </div>
-      </div>
+        </div>
+      )}
 
       {token ? (
         <div
           className={[
             "overflow-hidden bg-[var(--panel)]",
-            embedded
-              ? ""
-              : "rounded-2xl border border-[var(--border)] shadow-[0_16px_40px_rgb(15_35_64_/_0.06)]",
+            canvas
+              ? "absolute inset-0"
+              : embedded
+                ? ""
+                : "rounded-2xl border border-[var(--border)] shadow-[0_16px_40px_rgb(15_35_64_/_0.06)]",
           ].join(" ")}
         >
           <div
-            aria-describedby="map-results-description"
-            aria-label="Interactive subway accessibility map"
+            aria-describedby={minimal ? undefined : "map-results-description"}
+            aria-label="Interactive subway accessibility map with present-day MTA routes"
             className={
-              embedded
+              canvas
+                ? "h-full min-h-[34rem] w-full"
+                : embedded
                 ? layout === "full"
                   ? "h-[620px] w-full xl:h-[calc(100vh-19rem)] xl:min-h-[580px] xl:max-h-[900px]"
                   : "h-[580px] w-full xl:h-[calc(100vh-22rem)] xl:min-h-[520px] xl:max-h-[760px]"
@@ -900,14 +1131,29 @@ export function AssetMap({
           />
         </div>
       ) : (
-        <div className={embedded ? "p-5" : ""}>
+        <div
+          className={
+            canvas
+              ? "absolute inset-0 grid place-items-center p-5"
+              : embedded
+                ? "p-5"
+                : ""
+          }
+        >
           <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
             Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the interactive system map.
           </div>
         </div>
       )}
 
-      <div className="border-t border-[var(--border)] bg-[var(--panel)] p-4 sm:p-5">
+      {!minimal && (
+        <div
+          className={
+            canvas
+              ? "absolute bottom-3 left-3 right-3 z-10 max-w-md rounded-2xl border border-white/20 bg-[rgb(var(--panel-rgb)_/_0.92)] p-3 shadow-[0_20px_60px_rgb(0_0_0_/_0.22)] backdrop-blur-xl sm:bottom-4 sm:left-4 sm:right-auto sm:w-[min(26rem,calc(100%-2rem))]"
+              : "border-t border-[var(--border)] bg-[var(--panel)] p-4 sm:p-5"
+          }
+        >
         <details>
           <summary className="cursor-pointer text-sm font-extrabold text-[var(--ink)] marker:text-[var(--accent-600)]">
             Browse {mapResultFeatures.length.toLocaleString()} enabled map markers
@@ -970,7 +1216,8 @@ export function AssetMap({
             </button>
           ) : null}
         </details>
-      </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -1167,11 +1414,17 @@ function getAccessibleStationPopupHtml(
       <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
       <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
+      <div class="asset-popup-meta">${escapeHtml(properties.accessLabel)}</div>
+      ${properties.underRepair ? '<div class="text-xs font-semibold text-orange-500">Station equipment flagged for repair / modernization</div>' : ""}
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
         ${escapeHtml(properties.statusLabel)}
       </div>
     </div>
   `;
+}
+
+function isRampOrLevelAccess(accessMethod: AccessibleStationAccessMethod) {
+  return accessMethod !== "elevator";
 }
 
 function popupCloseButtonHtml() {

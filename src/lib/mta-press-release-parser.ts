@@ -38,17 +38,17 @@ export function parsePressReleaseMarkup(markup: string) {
   return releases;
 }
 
-export function isSubwayAccessibilityRelease(title: string) {
+export function isMtaAccessibilityRelease(title: string) {
   const normalizedTitle = title.toLowerCase();
   const hasAccessibilitySubject =
-    /\b(accessib(?:le|ility)|ada|elevators?)\b/.test(normalizedTitle);
-  const hasStationSubject =
-    /\b(subway|stations?|elevators?)\b/.test(normalizedTitle);
+    /\b(accessib(?:le|ility)|ada|elevators?|escalators?|wheelchairs?|disabilit(?:y|ies)|paratransit|access-a-ride|wide[- ]aisle|tactile)\b/.test(
+      normalizedTitle,
+    );
   const isCommuterRailOnly =
     /\b(long island rail road|lirr|metro-north)\b/.test(normalizedTitle) &&
     !/\bsubway\b/.test(normalizedTitle);
 
-  return hasAccessibilitySubject && hasStationSubject && !isCommuterRailOnly;
+  return hasAccessibilitySubject && !isCommuterRailOnly;
 }
 
 function normalizeMtaPressReleaseImageUrl(value: string) {

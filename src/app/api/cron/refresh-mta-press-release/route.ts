@@ -41,7 +41,7 @@ export async function GET(request: Request) {
         error:
           error instanceof Error
             ? error.message
-            : "Unable to refresh the MTA project spotlight.",
+            : "Unable to refresh the MTA accessibility press release spotlight.",
       },
       { status: 502 },
     );

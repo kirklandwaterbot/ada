@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  isSubwayAccessibilityRelease,
+  isMtaAccessibilityRelease,
   parsePressReleaseMarkup,
 } from "@/lib/mta-press-release-parser";
 
@@ -34,12 +34,21 @@ describe("MTA press release parsing", () => {
     expect(release.imageUrl).toBeNull();
   });
 
-  it("filters commuter-rail-only accessibility releases", () => {
+  it("keeps MTA accessibility releases relevant to the subway system", () => {
     expect(
-      isSubwayAccessibilityRelease("LIRR opens accessible elevators at station"),
+      isMtaAccessibilityRelease("LIRR opens accessible elevators at station"),
     ).toBe(false);
     expect(
-      isSubwayAccessibilityRelease("MTA opens accessible elevators at subway station"),
+      isMtaAccessibilityRelease("MTA unveils accessibility upgrades at 149 St–Hostos Station"),
     ).toBe(true);
+    expect(
+      isMtaAccessibilityRelease("MTA opens new Access-A-Ride assessment center"),
+    ).toBe(true);
+    expect(
+      isMtaAccessibilityRelease("MTA installs wide-aisle fare gates at subway stations"),
+    ).toBe(true);
+    expect(isMtaAccessibilityRelease("MTA announces weekend service changes")).toBe(
+      false,
+    );
   });
 });

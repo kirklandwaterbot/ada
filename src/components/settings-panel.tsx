@@ -9,7 +9,13 @@ import {
   useSettings,
 } from "@/components/settings-provider";
 
-export function SettingsButton({ compact = false }: { compact?: boolean }) {
+export function SettingsButton({
+  compact = false,
+  iconOnly = false,
+}: {
+  compact?: boolean;
+  iconOnly?: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -18,13 +24,13 @@ export function SettingsButton({ compact = false }: { compact?: boolean }) {
         aria-label="Open settings"
         className={[
           "inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--panel)] text-sm font-semibold text-[var(--muted-strong)] shadow-sm transition hover:bg-[var(--soft)] hover:text-[var(--ink)]",
-          compact ? "px-3" : "px-4",
+          iconOnly ? "w-10 px-0" : compact ? "px-3" : "px-4",
         ].join(" ")}
         onClick={() => setOpen(true)}
         type="button"
       >
         <SiteIcon className="text-[19px]" name="settings" />
-        Settings
+        {iconOnly ? <span className="sr-only">Settings</span> : "Settings"}
       </button>
       {open ? <SettingsPanel onClose={() => setOpen(false)} /> : null}
       <SettingsSavedToast />

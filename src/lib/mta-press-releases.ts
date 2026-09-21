@@ -1,8 +1,9 @@
 import { unstable_cache } from "next/cache";
 import {
-  isSubwayAccessibilityRelease,
+  isMtaAccessibilityRelease,
   parsePressReleaseMarkup,
 } from "@/lib/mta-press-release-parser";
+import type { MtaPressRelease } from "@/lib/mta-press-release-parser";
 
 const MTA_ORIGIN = "https://www.mta.info";
 const MTA_PRESS_RELEASE_VIEW_URL = `${MTA_ORIGIN}/views/ajax`;
@@ -14,6 +15,13 @@ const DAILY_REFRESH_INTERVAL_MS = 24 * 60 * 60 * 1_000;
 const DAILY_REFRESH_OFFSET_MS = (5 * 60 + 15) * 60 * 1_000;
 
 export const MTA_PRESS_RELEASE_CACHE_TAG = "mta-press-release-spotlight";
+
+const LAST_KNOWN_MTA_ACCESSIBILITY_PRESS_RELEASE: MtaPressRelease = {
+  imageUrl: null,
+  publishedAt: "2026-09-18T17:30:00Z",
+  title: "MTA Unveils Accessibility Upgrades at 149 St–Hostos Station",
+  url: `${MTA_ORIGIN}/press-release/mta-unveils-accessibility-upgrades-149-st-hostos-station`,
+};
 
 export type { MtaPressRelease } from "@/lib/mta-press-release-parser";
 
@@ -35,9 +43,15 @@ export async function getLatestMtaAccessibilityPressRelease() {
     // Fall through to the previous daily snapshot when today's refresh fails.
   }
 
-  return getCachedMtaAccessibilityPressRelease(
-    String(Number(refreshBucket) - 1),
-  ).catch(() => null);
+  try {
+    const previousRelease = await getCachedMtaAccessibilityPressRelease(
+      String(Number(refreshBucket) - 1),
+    );
+
+    return previousRelease ?? LAST_KNOWN_MTA_ACCESSIBILITY_PRESS_RELEASE;
+  } catch {
+    return LAST_KNOWN_MTA_ACCESSIBILITY_PRESS_RELEASE;
+  }
 }
 
 export async function refreshLatestMtaAccessibilityPressRelease() {
@@ -54,7 +68,7 @@ export async function fetchLatestMtaAccessibilityPressRelease() {
 
   return (
     releases
-      .filter((release) => isSubwayAccessibilityRelease(release.title))
+      .filter((release) => isMtaAccessibilityRelease(release.title))
       .sort(
         (left, right) =>
           Date.parse(right.publishedAt) - Date.parse(left.publishedAt),

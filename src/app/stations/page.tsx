@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DataHealthNotice } from "@/components/data-health-notice";
 import { PageHeader } from "@/components/page-header";
 import {
   StationExplorer,
@@ -39,7 +38,6 @@ export default async function StationsPage({
         eyebrow="System explorer"
         title="Explore stations and accessibility"
       />
-      <DataHealthNotice metadata={dataset.metadata} />
       <StationExplorer
         initialView={initialView}
         mapAssets={explorerData.mapAssets}

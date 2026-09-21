@@ -8,15 +8,16 @@ import { SettingsButton } from "@/components/settings-panel";
 import { SiteIcon } from "@/components/site-icon";
 
 const navigation = [
-  { href: "/", icon: "space_dashboard", label: "Overview" },
-  { href: "/stations", icon: "map", label: "Explore system" },
+  { href: "/", icon: "map", label: "Map" },
+  { href: "/stations", icon: "search", label: "Stations" },
   { href: "/equipment", icon: "elevator", label: "Equipment" },
-  { href: "/projects", icon: "construction", label: "Capital projects" },
+  { href: "/projects", icon: "construction", label: "Projects" },
 ] as const;
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mapHome = pathname === "/";
 
   return (
     <div className="min-h-screen bg-[var(--app-bg)] text-[var(--ink)]">
@@ -26,24 +27,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 flex-col border-r border-[var(--border)] bg-[var(--panel)] lg:flex">
-        <Sidebar pathname={pathname} />
-      </aside>
+      {mapHome ? null : (
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col border-r border-white/10 bg-[#111820] lg:flex">
+          <Sidebar compact pathname={pathname} />
+        </aside>
+      )}
 
-      <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--border)] bg-[rgb(var(--panel-rgb)_/_0.92)] px-4 backdrop-blur-xl lg:hidden">
-        <Brand compact />
-        <button
-          aria-expanded={mobileOpen}
-          aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
-          className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--border)] bg-[var(--panel)] text-[var(--muted)] shadow-sm transition hover:text-[var(--ink)]"
-          onClick={() => setMobileOpen((open) => !open)}
-          type="button"
-        >
-          <SiteIcon className="text-[22px]" name={mobileOpen ? "close" : "menu"} />
-        </button>
-      </header>
+      {mapHome ? null : (
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--border)] bg-[rgb(var(--panel-rgb)_/_0.92)] px-4 backdrop-blur-xl lg:hidden">
+          <Brand compact />
+          <button
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+            className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--border)] bg-[var(--panel)] text-[var(--muted)] shadow-sm transition hover:text-[var(--ink)]"
+            onClick={() => setMobileOpen((open) => !open)}
+            type="button"
+          >
+            <SiteIcon className="text-[22px]" name={mobileOpen ? "close" : "menu"} />
+          </button>
+        </header>
+      )}
 
-      {mobileOpen ? (
+      {mobileOpen && !mapHome ? (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button
             aria-label="Close navigation"
@@ -57,9 +62,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       ) : null}
 
-      <div className="lg:pl-72">
+      <div className={mapHome ? "" : "lg:pl-20"}>
         <main
-          className="mx-auto min-h-screen w-full max-w-[1600px] px-4 py-6 sm:px-6 sm:py-8 xl:px-10"
+          className={
+            mapHome
+              ? "h-[100svh] min-h-[34rem] w-full p-0"
+              : "mx-auto min-h-screen w-full max-w-[1600px] px-4 py-6 sm:px-6 sm:py-8 xl:px-10"
+          }
           id="main-content"
           tabIndex={-1}
         >
@@ -71,23 +80,36 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 }
 
 function Sidebar({
+  compact = false,
   onNavigate,
   pathname,
 }: {
+  compact?: boolean;
   onNavigate?: () => void;
   pathname: string;
 }) {
   return (
     <>
-      <div className="border-b border-[var(--border)] px-6 py-6">
-        <Brand onNavigate={onNavigate} />
+      <div
+        className={
+          compact
+            ? "border-b border-white/10 px-3 py-4"
+            : "border-b border-[var(--border)] px-6 py-6"
+        }
+      >
+        <Brand iconOnly={compact} onNavigate={onNavigate} />
       </div>
 
-      <nav aria-label="Primary navigation" className="flex-1 px-4 py-5">
-        <p className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
-          Explore
-        </p>
-        <div className="mt-3 space-y-1.5">
+      <nav
+        aria-label="Primary navigation"
+        className={compact ? "flex-1 px-3 py-4" : "flex-1 px-4 py-5"}
+      >
+        {compact ? null : (
+          <p className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+            Explore
+          </p>
+        )}
+        <div className={compact ? "space-y-2" : "mt-3 space-y-1.5"}>
           {navigation.map((item) => {
             const active =
               item.href === "/"
@@ -98,26 +120,36 @@ function Sidebar({
               <Link
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition",
-                  active
-                    ? "bg-[var(--nav-active)] text-white shadow-[0_10px_24px_rgb(10_61_126_/_0.22)]"
-                    : "text-[var(--muted-strong)] hover:bg-[var(--soft)] hover:text-[var(--ink)]",
+                  "group flex items-center rounded-xl text-sm font-semibold transition",
+                  compact ? "h-12 justify-center px-0" : "gap-3 px-3 py-3",
+                  compact
+                    ? active
+                      ? "bg-[#2f8fd8] text-white shadow-[0_12px_30px_rgb(0_0_0_/_0.28)]"
+                      : "text-slate-400 hover:bg-white/10 hover:text-white"
+                    : active
+                      ? "bg-[var(--nav-active)] text-white shadow-[0_10px_24px_rgb(10_61_126_/_0.22)]"
+                      : "text-[var(--muted-strong)] hover:bg-[var(--soft)] hover:text-[var(--ink)]",
                 ].join(" ")}
                 href={item.href}
                 key={item.href}
                 onClick={onNavigate}
+                title={compact ? item.label : undefined}
               >
                 <SiteIcon
                   className={[
-                    "text-[20px]",
-                    active
-                      ? "text-cyan-200"
-                      : "text-[var(--muted)] group-hover:text-[var(--accent-600)]",
+                    compact ? "text-[22px]" : "text-[20px]",
+                    compact
+                      ? active
+                        ? "text-white"
+                        : "text-slate-400 group-hover:text-white"
+                      : active
+                        ? "text-cyan-200"
+                        : "text-[var(--muted)] group-hover:text-[var(--accent-600)]",
                   ].join(" ")}
                   name={item.icon}
                 />
-                {item.label}
-                {active ? (
+                {compact ? <span className="sr-only">{item.label}</span> : item.label}
+                {active && !compact ? (
                   <span className="ml-auto h-1.5 w-1.5 rounded-full bg-cyan-300" />
                 ) : null}
               </Link>
@@ -126,27 +158,23 @@ function Sidebar({
         </div>
       </nav>
 
-      <div className="space-y-4 border-t border-[var(--border)] p-4">
-        <div className="rounded-2xl bg-[var(--nav-active)] p-4 text-white shadow-[0_14px_34px_rgb(10_61_126_/_0.22)]">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-cyan-200">
-            <span className="h-2 w-2 rounded-full bg-emerald-300" />
-            Daily data snapshot
+      <div
+        className={
+          compact
+            ? "grid place-items-center border-t border-white/10 p-4"
+            : "border-t border-[var(--border)] p-4"
+        }
+      >
+        {compact ? (
+          <SettingsButton iconOnly />
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <SettingsButton compact />
+            <span className="text-[11px] font-medium text-[var(--muted)]">
+              Official data, checked daily
+            </span>
           </div>
-          <p className="mt-2 text-sm leading-5 text-blue-100">
-            Equipment and capital project data are checked against official sources daily.
-          </p>
-          <Link
-            className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
-            href="/equipment"
-          >
-            Review equipment
-            <SiteIcon className="text-[16px]" name="arrow_forward" />
-          </Link>
-        </div>
-        <div className="flex items-center justify-between gap-3">
-          <SettingsButton compact />
-          <span className="text-[11px] font-medium text-[var(--muted)]">Independent tool</span>
-        </div>
+        )}
       </div>
     </>
   );
@@ -154,13 +182,23 @@ function Sidebar({
 
 function Brand({
   compact = false,
+  iconOnly = false,
   onNavigate,
 }: {
   compact?: boolean;
+  iconOnly?: boolean;
   onNavigate?: () => void;
 }) {
   return (
-    <Link className="flex min-w-0 items-center gap-3" href="/" onClick={onNavigate}>
+    <Link
+      aria-label={iconOnly ? "Access NYC home" : undefined}
+      className={[
+        "flex min-w-0 items-center",
+        iconOnly ? "justify-center" : "gap-3",
+      ].join(" ")}
+      href="/"
+      onClick={onNavigate}
+    >
       <span
         className={[
           compact ? "h-9 w-9" : "h-11 w-11",
@@ -176,14 +214,14 @@ function Brand({
           width={44}
         />
       </span>
-      <span className="min-w-0">
+      {iconOnly ? null : <span className="min-w-0">
         <span className="block truncate text-sm font-extrabold tracking-[-0.01em] text-[var(--ink)]">
           Access NYC
         </span>
         <span className="block truncate text-xs font-medium text-[var(--muted)]">
           Subway accessibility
         </span>
-      </span>
+      </span>}
     </Link>
   );
 }

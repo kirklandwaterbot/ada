@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AssetDataTable } from "@/components/asset-data-table";
-import { DataHealthNotice } from "@/components/data-health-notice";
 import { PageHeader } from "@/components/page-header";
 import { SiteIcon } from "@/components/site-icon";
 import {
@@ -50,8 +49,6 @@ export default async function EquipmentPage() {
         eyebrow="Equipment inventory"
         title="Every asset, one searchable view"
       />
-
-      <DataHealthNotice metadata={dataset.metadata} />
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         <EquipmentMetric icon="database" label="Assets" value={counts.total} />

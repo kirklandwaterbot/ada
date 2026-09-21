@@ -84,12 +84,22 @@ test("keeps the legacy map URL as a redirect to the consolidated workspace", asy
   await expect(page).toHaveURL(/\/stations\?view=map$/);
 });
 
-test("mobile navigation opens and reaches the equipment inventory", async ({
+test("mobile map tools reach the equipment inventory", async ({
   page,
 }) => {
   await page.setViewportSize({ height: 844, width: 390 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Open navigation" }).click();
+  await page.getByRole("button", { name: "Filter map" }).click();
+  const mobileFilters = page.getByRole("region", { name: "Map filters" });
+  await expect(mobileFilters).toBeVisible();
+  const mobileFilterBox = await mobileFilters.boundingBox();
+
+  expect(mobileFilterBox).not.toBeNull();
+  expect(mobileFilterBox!.x).toBeGreaterThanOrEqual(0);
+  expect(mobileFilterBox!.y).toBeGreaterThanOrEqual(0);
+  expect(mobileFilterBox!.x + mobileFilterBox!.width).toBeLessThanOrEqual(390);
+  expect(mobileFilterBox!.y + mobileFilterBox!.height).toBeLessThanOrEqual(844);
+  await mobileFilters.getByRole("button", { name: "Close map filters" }).click();
   await page.getByRole("link", { name: "Equipment", exact: true }).click();
   await expect(page).toHaveURL(/\/equipment$/);
   await expect(
@@ -113,28 +123,89 @@ test("shows 149 St-Hostos as accessible and preserves its former name", async ({
   await expect(page.getByText("Made accessible September 11, 2026")).toBeVisible();
 });
 
-test("aligns the project spotlight with the station directory on desktop", async ({
+test("opens with a clean map canvas and compact atlas tools", async ({
   page,
 }) => {
   await page.setViewportSize({ height: 1000, width: 1440 });
   await page.goto("/");
 
-  const spotlight = page.getByTestId("project-spotlight");
-  const directory = page.getByTestId("station-directory");
-  await expect(spotlight).toBeVisible({ timeout: 15_000 });
-  await expect(directory).toBeVisible({ timeout: 15_000 });
-
-  const spotlightBox = await spotlight.boundingBox();
-  const directoryBox = await directory.boundingBox();
-
-  expect(spotlightBox).not.toBeNull();
-  expect(directoryBox).not.toBeNull();
-  expect(
-    Math.abs(
-      spotlightBox!.y + spotlightBox!.height -
-        (directoryBox!.y + directoryBox!.height),
+  await expect(
+    page.getByRole("heading", {
+      name: "Where are NYC's accessible subway stations?",
+    }),
+  ).toBeVisible({ timeout: 15_000 });
+  await expect(
+    page.getByLabel(
+      "Interactive subway accessibility map with present-day MTA routes",
     ),
-  ).toBeLessThanOrEqual(2);
+  ).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText("Map layers", { exact: true })).toHaveCount(0);
+  await expect(page.getByText(/Browse .* enabled map markers/)).toHaveCount(0);
+  await expect(
+    page.getByPlaceholder("Station, route, or neighborhood"),
+  ).toHaveCount(0);
+
+  const filterButton = page.getByRole("button", { name: "Filter map" });
+  const themeButton = page.getByRole("button", { name: /Use .* map/ });
+  const filterButtonBox = await filterButton.boundingBox();
+  const themeButtonBox = await themeButton.boundingBox();
+
+  expect(filterButtonBox).not.toBeNull();
+  expect(themeButtonBox).not.toBeNull();
+  expect(filterButtonBox!.y + filterButtonBox!.height).toBeLessThanOrEqual(
+    themeButtonBox!.y,
+  );
+
+  await filterButton.click();
+  const mapFilters = page.getByRole("region", { name: "Map filters" });
+  await expect(mapFilters).toBeVisible();
+  const rampFilter = mapFilters.getByRole("button", {
+    name: /Accessible via ramp \/ level entrance.*10/,
+  });
+  await expect(rampFilter).toHaveAttribute("aria-pressed", "true");
+  const elevatorStationFilter = mapFilters.getByRole("button", {
+    name: /Accessible via elevator.*5/,
+  });
+  await expect(elevatorStationFilter).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    mapFilters.getByRole("button", { name: /Planned ADA stations/ }),
+  ).toHaveAttribute("aria-pressed", "true");
+  const repairFilter = mapFilters.getByRole("button", {
+    name: /Under repair \/ modernization/,
+  });
+  await expect(repairFilter).toHaveAttribute("aria-pressed", "true");
+  await repairFilter.click();
+  await expect(repairFilter).toHaveAttribute("aria-pressed", "false");
+  const partialFilter = mapFilters.getByRole("button", {
+    name: /Partially accessible.*2/,
+  });
+  await expect(partialFilter).toHaveAttribute("aria-pressed", "true");
+  await partialFilter.click();
+  await expect(partialFilter).toHaveAttribute("aria-pressed", "false");
+  await mapFilters.getByRole("button", { name: "Show all" }).click();
+  await expect(partialFilter).toHaveAttribute("aria-pressed", "true");
+  await expect(repairFilter).toHaveAttribute("aria-pressed", "true");
+  await mapFilters.getByRole("button", { name: "Close map filters" }).click();
+  await expect(mapFilters).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Search stations" }).click();
+  const search = page.getByPlaceholder("Station, route, or neighborhood");
+  await expect(search).toBeVisible();
+  await search.fill("149 St-Hostos");
+  await expect(
+    page.getByRole("button", { name: /Show 149 St-Hostos on map/ }).first(),
+  ).toBeVisible();
+
+  const spotlight = page.getByTestId("project-spotlight");
+  await expect(spotlight).toBeVisible({ timeout: 15_000 });
+  await expect(spotlight).toHaveAttribute(
+    "href",
+    /^https:\/\/www\.mta\.info\/press-release\//,
+  );
+  await expect(spotlight).toHaveAttribute(
+    "aria-label",
+    /^Latest MTA accessibility release:/,
+  );
 });
 
 test("searches Capital Plan projects and opens budget history", async ({ page }) => {
