@@ -7,14 +7,20 @@ import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { AssetMapFocusRequest, MapTheme } from "@/components/asset-map";
 import { SiteIcon } from "@/components/site-icon";
 import { StationStatusBadge } from "@/components/station-status-badge";
-import { SubwayRouteIcons } from "@/components/subway-route-icons";
+import { TransitRouteIcons } from "@/components/transit-route-icons";
 import type { MapFocusDetail } from "@/lib/map-focus";
 import { matchesNormalizedSearch } from "@/lib/search-normalization";
 import {
   type AssetMapMarker,
+  type DirectoryStation,
   type StationExplorerRecord,
 } from "@/lib/station-explorer-data";
-import { getStationSearchAliases, type Station } from "@/lib/stations";
+import { getStationSearchAliases } from "@/lib/stations";
+import {
+  normalizeStoredPositiveInteger,
+  normalizeStoredString,
+  usePersistentState,
+} from "@/hooks/use-persistent-state";
 
 const AssetMap = dynamic(
   () => import("@/components/asset-map").then((module) => module.AssetMap),
@@ -43,6 +49,14 @@ export type ExploreWorkspaceView = "explorer" | "map" | "split";
 const INITIAL_RESULT_COUNT = 30;
 const MAP_THEME_CHANGE_EVENT = "mta-access-assets-map-theme-change";
 const MAP_THEME_STORAGE_KEY = "mta-access-assets-map-theme";
+const STATION_EXPLORER_STORAGE_KEYS = {
+  query: "access-nyc:station-explorer-query:v1",
+  route: "access-nyc:station-explorer-route:v1",
+  sort: "access-nyc:station-explorer-sort:v1",
+  status: "access-nyc:station-explorer-status:v1",
+  system: "access-nyc:station-explorer-system:v1",
+  visibleResults: "access-nyc:station-explorer-visible-results:v1",
+} as const;
 
 const WORKSPACE_VIEW_OPTIONS: Array<{
   description: string;
@@ -79,11 +93,31 @@ export function StationExplorer({
   mapAssets: AssetMapMarker[];
   stationRecords: StationExplorerRecord[];
 }) {
-  const [query, setQuery] = useState("");
-  const [borough, setBorough] = useState("All");
-  const [route, setRoute] = useState("All");
-  const [status, setStatus] = useState<StatusFilter>("all");
-  const [sort, setSort] = useState<SortKey>("ridership");
+  const [query, setQuery] = usePersistentState(
+    STATION_EXPLORER_STORAGE_KEYS.query,
+    "",
+    normalizeStoredString,
+  );
+  const [system, setSystem] = usePersistentState(
+    STATION_EXPLORER_STORAGE_KEYS.system,
+    "All",
+    normalizeStoredString,
+  );
+  const [route, setRoute] = usePersistentState(
+    STATION_EXPLORER_STORAGE_KEYS.route,
+    "All",
+    normalizeStoredString,
+  );
+  const [status, setStatus] = usePersistentState<StatusFilter>(
+    STATION_EXPLORER_STORAGE_KEYS.status,
+    "all",
+    normalizeStoredStationStatus,
+  );
+  const [sort, setSort] = usePersistentState<SortKey>(
+    STATION_EXPLORER_STORAGE_KEYS.sort,
+    "name",
+    normalizeStoredSort,
+  );
   const [workspaceView, setWorkspaceView] = useState<ExploreWorkspaceView>(
     initialView ?? "split",
   );
@@ -94,15 +128,17 @@ export function StationExplorer({
   );
   const [mapFocusRequest, setMapFocusRequest] =
     useState<AssetMapFocusRequest | null>(null);
-  const [visibleResultCount, setVisibleResultCount] = useState(
+  const [visibleResultCount, setVisibleResultCount] = usePersistentState(
+    STATION_EXPLORER_STORAGE_KEYS.visibleResults,
     INITIAL_RESULT_COUNT,
+    normalizeStoredPositiveInteger,
   );
   const focusRequestId = useRef(0);
 
-  const boroughs = useMemo(
+  const systems = useMemo(
     () =>
       Array.from(
-        new Set(stationRecords.map(({ station }) => station.borough)),
+        new Set(stationRecords.flatMap(({ station }) => station.agencies)),
       ).sort(),
     [stationRecords],
   );
@@ -121,11 +157,11 @@ export function StationExplorer({
     () =>
       Array.from(
         new Set(
-          stationRecords.flatMap(({ lineDisplay, station }) => [
+          stationRecords.flatMap(({ lineDisplay, locationLabel, station }) => [
             station.station,
             ...getStationSearchAliases(station),
-            station.borough,
-            station.neighborhood,
+            ...station.agencies,
+            locationLabel,
             lineDisplay,
           ]),
         ),
@@ -136,42 +172,45 @@ export function StationExplorer({
   );
 
   const filteredStations = useMemo(() => {
-    const matches = stationRecords.filter(({ lineDisplay, station, tone }) => {
+    const matches = stationRecords.filter(
+      ({ lineDisplay, locationLabel, station, tone }) => {
       const queryMatches = matchesNormalizedSearch(
         [
           station.station,
           ...getStationSearchAliases(station),
           station.line,
           lineDisplay,
-          station.borough,
-          station.neighborhood,
+          ...station.agencies,
+          locationLabel,
           station.services.join(" "),
           station.accessibilityStatus,
           station.plannedAda ? "planned ada construction" : "",
         ],
         query,
       );
-      const boroughMatches = borough === "All" || station.borough === borough;
+      const systemMatches =
+        system === "All" || station.agencies.includes(system);
       const routeMatches = route === "All" || station.services.includes(route);
       const statusMatches = status === "all" || tone === status;
 
-      return queryMatches && boroughMatches && routeMatches && statusMatches;
-    });
+      return queryMatches && systemMatches && routeMatches && statusMatches;
+      },
+    );
 
     return matches.sort((left, right) =>
       sort === "name"
         ? left.station.station.localeCompare(right.station.station)
         : (right.station.ridership2024 ?? 0) - (left.station.ridership2024 ?? 0),
     );
-  }, [borough, query, route, sort, stationRecords, status]);
+  }, [query, route, sort, stationRecords, status, system]);
   const visibleStations = filteredStations.slice(0, visibleResultCount);
 
   const hasFilters =
-    query !== "" || borough !== "All" || route !== "All" || status !== "all";
+    query !== "" || system !== "All" || route !== "All" || status !== "all";
 
   function clearFilters() {
     setQuery("");
-    setBorough("All");
+    setSystem("All");
     setRoute("All");
     setStatus("all");
     setVisibleResultCount(INITIAL_RESULT_COUNT);
@@ -281,7 +320,7 @@ export function StationExplorer({
         <div className="border-b border-[var(--border)] p-4 sm:p-5">
           <div className="relative">
             <label className="sr-only" htmlFor="station-search">
-              Search by station, subway line, neighborhood, or borough
+              Search by station, route, transit system, or location
             </label>
             <SiteIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[20px] text-[var(--muted)]" name="search" />
             <input
@@ -290,7 +329,7 @@ export function StationExplorer({
               id="station-search"
               list="station-search-suggestions"
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Station, line, route, or borough"
+              placeholder="Station, line, agency, or location"
               type="search"
               value={query}
             />
@@ -313,10 +352,10 @@ export function StationExplorer({
 
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
             <FilterSelect
-              label="Borough"
-              onChange={setBorough}
-              options={boroughs}
-              value={borough}
+              label="System"
+              onChange={setSystem}
+              options={systems}
+              value={system}
             />
             <FilterSelect
               label="Route"
@@ -328,7 +367,7 @@ export function StationExplorer({
               className="col-span-2 sm:col-span-1"
               label="Sort"
               onChange={(value) => setSort(value as SortKey)}
-              options={["ridership", "name"]}
+              options={["name", "ridership"]}
               renderLabel={(value) => (value === "ridership" ? "Most used" : "A-Z")}
               showAll={false}
               value={sort}
@@ -392,12 +431,22 @@ export function StationExplorer({
           {visibleStations.length > 0 ? (
             <>
             {visibleStations.map(
-              ({ equipment, focusDetail, ridershipLabel, slug, station }) => (
+              ({
+                equipment,
+                focusDetail,
+                locationLabel,
+                regionalBadges,
+                ridershipLabel,
+                slug,
+                station,
+              }) => (
                  <StationResult
                    equipment={equipment}
                    focusDetail={focusDetail}
                    key={slug}
+                   locationLabel={locationLabel}
                    onShowOnMap={showOnMap}
+                   regionalBadges={regionalBadges}
                    ridershipLabel={ridershipLabel}
                    slug={slug}
                    station={station}
@@ -430,7 +479,7 @@ export function StationExplorer({
                 </span>
                 <h2 className="mt-4 font-extrabold text-[var(--ink)]">No matching stations</h2>
                 <p className="mt-2 text-sm leading-6 text-[var(--muted-strong)]">
-                  Try another station name, route, borough, or accessibility status.
+                  Try another station name, route, system, or accessibility status.
                 </p>
                 <button
                   className="mt-4 text-sm font-bold text-[var(--accent-600)] hover:underline"
@@ -506,17 +555,21 @@ function subscribeToMapTheme(onStoreChange: () => void) {
 function StationResult({
   equipment,
   focusDetail,
+  locationLabel,
   onShowOnMap,
+  regionalBadges,
   ridershipLabel,
   slug,
   station,
 }: {
   equipment: StationExplorerRecord["equipment"];
   focusDetail: MapFocusDetail | null;
+  locationLabel: string;
   onShowOnMap: (detail: MapFocusDetail) => void;
+  regionalBadges: StationExplorerRecord["regionalBadges"];
   ridershipLabel: string;
   slug: string;
-  station: Station;
+  station: DirectoryStation;
 }) {
   return (
     <article
@@ -532,10 +585,15 @@ function StationResult({
             >
               {station.station}
             </Link>
-            <SubwayRouteIcons className="mt-0" routes={station.services} />
+            <TransitRouteIcons
+              agency={station.agency}
+              className="mt-0"
+              regionalBadges={regionalBadges}
+              routes={station.services}
+            />
           </div>
           <p className="mt-1 text-xs font-semibold text-[var(--muted)]">
-            {station.neighborhood} - {station.borough}
+            {locationLabel}
           </p>
         </div>
         <StationStatusBadge compact station={station} />
@@ -543,7 +601,9 @@ function StationResult({
 
       <div className="mt-4 grid grid-cols-2 gap-3 rounded-xl bg-[var(--soft)] p-3 text-xs">
         <div>
-          <p className="font-semibold text-[var(--muted)]">Annual ridership</p>
+          <p className="font-semibold text-[var(--muted)]">
+            {station.agency === "NYCTA" ? "Annual ridership" : "Ridership data"}
+          </p>
           <p className="mt-1 font-mono font-bold text-[var(--ink)]">
             {ridershipLabel}
           </p>
@@ -591,7 +651,7 @@ function EquipmentFlag({
     return (
       <span className="mt-1 inline-flex items-center gap-1 font-bold text-red-600 dark:text-red-300">
         <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-        {equipment.outage} snapshot outage {equipment.outage === 1 ? "flag" : "flags"}
+        {equipment.outage} current {equipment.outage === 1 ? "outage" : "outages"}
       </span>
     );
   }
@@ -609,12 +669,32 @@ function EquipmentFlag({
     return (
       <span className="mt-1 inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-300">
         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-        No snapshot outage flags
+        No current outages
       </span>
     );
   }
 
   return <span className="mt-1 block font-bold text-[var(--muted)]">No assets matched</span>;
+}
+
+function normalizeStoredStationStatus(
+  storedValue: unknown,
+  fallback: StatusFilter,
+): StatusFilter {
+  return ["all", "accessible", "not-accessible", "partial", "planned"].includes(
+    String(storedValue),
+  )
+    ? (storedValue as StatusFilter)
+    : fallback;
+}
+
+function normalizeStoredSort(
+  storedValue: unknown,
+  fallback: SortKey,
+): SortKey {
+  return storedValue === "name" || storedValue === "ridership"
+    ? storedValue
+    : fallback;
 }
 
 function FilterSelect({

@@ -1,0 +1,16 @@
+0 verbose cli C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.2
+2 info using node@v22.14.0
+3 silly config load:file:C:\Users\kirk\AppData\Local\nvm\v22.14.0\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\kirk\.npmrc
+5 silly config load:file:C:\nvm4w\nodejs\etc\npmrc
+6 verbose title npm prefix
+7 verbose argv "prefix" "--global"
+8 verbose logfile logs-max:10 dir:C:\Users\kirk\Downloads\Coding Projects\ada\.tmp\agent-browser-npm-cache\_logs\2026-09-24T02_31_58_202Z-
+9 verbose logfile C:\Users\kirk\Downloads\Coding Projects\ada\.tmp\agent-browser-npm-cache\_logs\2026-09-24T02_31_58_202Z-debug-0.log
+10 verbose cwd C:\Users\kirk\Downloads\Coding Projects\ada\.tmp\agent-browser-npm-cache\_npx\6de2aa2fded2970c\node_modules\agent-browser
+11 verbose os Windows_NT 10.0.26200
+12 verbose node v22.14.0
+13 verbose npm  v10.9.2
+14 verbose exit 0
+15 info ok

@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "accessibilityUrl": "https://www.jfkairport.com/transportation/airtrain",
+    "generatedAt": "2026-09-24T21:46:46.364Z",
+    "source": "Port Authority accessibility guidance and Metro Memory map data",
+    "stationCount": 9
+  },
+  "stations": [
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD,JAMAICA",
+      "branchName": "Howard Beach / Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.659814,
+      "longitude": -73.803502,
+      "name": "Federal Circle",
+      "stationCode": "JFK-3",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD",
+      "branchName": "Howard Beach",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.661051,
+      "longitude": -73.829638,
+      "name": "Howard Beach",
+      "stationCode": "JFK-2",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "JAMAICA",
+      "branchName": "Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.698942,
+      "longitude": -73.808416,
+      "name": "Jamaica",
+      "stationCode": "JFK-4",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD,JAMAICA,TERMINALS",
+      "branchName": "All Terminals Loop / Howard Beach / Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.643616,
+      "longitude": -73.789437,
+      "name": "JFK Terminal 1",
+      "stationCode": "JFK-8",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD,JAMAICA,TERMINALS",
+      "branchName": "All Terminals Loop / Howard Beach / Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.644072,
+      "longitude": -73.782367,
+      "name": "JFK Terminal 4",
+      "stationCode": "JFK-6",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD,JAMAICA,TERMINALS",
+      "branchName": "All Terminals Loop / Howard Beach / Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.6469,
+      "longitude": -73.780067,
+      "name": "JFK Terminal 5",
+      "stationCode": "JFK-5",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD,JAMAICA,TERMINALS",
+      "branchName": "All Terminals Loop / Howard Beach / Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.648207,
+      "longitude": -73.783171,
+      "name": "JFK Terminal 7",
+      "stationCode": "JFK-9",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD,JAMAICA,TERMINALS",
+      "branchName": "All Terminals Loop / Howard Beach / Jamaica",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.646734,
+      "longitude": -73.788997,
+      "name": "JFK Terminal 8",
+      "stationCode": "JFK-7",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    },
+    {
+      "accessMethods": [
+        "Elevator",
+        "Escalator",
+        "Level boarding"
+      ],
+      "accessibilityStatus": "Accessible",
+      "agency": "JFK AirTrain",
+      "branchColor": "#EF3941",
+      "branchId": "HOWARD",
+      "branchName": "Howard Beach",
+      "elevators": [],
+      "escalators": [],
+      "latitude": 40.661767,
+      "longitude": -73.824456,
+      "name": "Lefferts Blvd",
+      "stationCode": "JFK-1",
+      "stationDetailUrl": "https://www.jfkairport.com/transportation/airtrain",
+      "wheelchairBoarding": 1
+    }
+  ]
+}

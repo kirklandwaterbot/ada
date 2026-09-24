@@ -16,11 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Access NYC | Subway accessibility",
+    default: "Access NYC | Regional transit accessibility",
     template: "%s | Access NYC",
   },
   description:
-    "Explore accessibility, equipment status, and planned ADA improvements across New York City subway stations.",
+    "Explore accessible stations, equipment status, and ADA improvements across subway, PATH, AirTrain, commuter rail, light rail, and CTrail.",
 };
 
 export default function RootLayout({
@@ -30,6 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
+      data-scroll-behavior="smooth"
       lang="en"
       suppressHydrationWarning
       className={[geistSans.variable, geistMono.variable, "h-full antialiased"].join(" ")}

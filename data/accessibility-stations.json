@@ -5998,6 +5998,7 @@
       "station": "Beach 90 St",
       "stationKey": "beach 90 st",
       "services": [
+        "A",
         "SR"
       ],
       "division": "IND",

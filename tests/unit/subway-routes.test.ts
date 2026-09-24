@@ -56,4 +56,15 @@ describe("present-day subway route geometry", () => {
       ),
     ).toBe(true);
   });
+
+  it("uses the requested blue for Staten Island Railway", () => {
+    const sirFeatures = routeCollection.features.filter(
+      (feature) => feature.properties.routeId === "SI",
+    );
+
+    expect(sirFeatures.length).toBeGreaterThan(0);
+    expect(new Set(sirFeatures.map((feature) => feature.properties.color))).toEqual(
+      new Set(["#057FD4"]),
+    );
+  });
 });

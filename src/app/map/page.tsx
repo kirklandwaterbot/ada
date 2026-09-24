@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 export const metadata: Metadata = {
   title: "System map",
   description:
-    "Interactive map of subway accessibility, elevator and escalator assets, and planned ADA work.",
+    "Interactive accessibility map for subway, PATH, AirTrain, commuter rail, light rail, and CTrail stations.",
 };
 
 export default function MapPage() {

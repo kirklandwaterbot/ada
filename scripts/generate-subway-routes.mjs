@@ -101,7 +101,10 @@ for (const [shapeId, shapePoints] of pointsByShape) {
     features.push({
       type: "Feature",
       properties: {
-        color: `#${route.route_color || "7C858C"}`.toUpperCase(),
+        color:
+          routeId === "SI"
+            ? "#057FD4"
+            : `#${route.route_color || "7C858C"}`.toUpperCase(),
         description: route.route_long_name,
         route: route.route_short_name || route.route_id,
         routeId,

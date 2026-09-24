@@ -1,0 +1,3473 @@
+{
+  "checkedAt": "2026-09-24T03:23:59.483Z",
+  "generatedFrom": [
+    "data/planned-ada-station-coordinates.json",
+    "data/accessibility-stations.json",
+    "data/mta-capital-elevator-escalator-projects.json",
+    "data/mta-subway-elevator-escalator-assets.json",
+    "data/mta-regional-rail-accessibility.json"
+  ],
+  "methodology": "Each marker receives one primary status. New-station and already-accessible upgrade scopes take precedence over project phase; remaining projects are grouped by construction, design/study, or funded/planned phase.",
+  "sourceUrls": [
+    "https://capitaldashboard.mta.info/",
+    "https://www.mta.info/document/174186",
+    "https://www.mta.info/document/186856"
+  ],
+  "statusCounts": {
+    "under_construction": 33,
+    "funded_planned": 63,
+    "design_study": 13,
+    "planned_new_station": 3,
+    "upgrade_to_accessible_station": 25
+  },
+  "stations": [
+    {
+      "id": "2 av-F-6 Av Line",
+      "station": "2 Av",
+      "line": "6 Av Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "East Village",
+      "plannedAdaNote": "✅",
+      "latitude": 40.7234,
+      "longitude": -73.989939,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "2 Av",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades - Package 10",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12754",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "3 av 138 st-6-Pelham Line",
+      "station": "3 Av-138 St",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Mott Haven",
+      "plannedAdaNote": "✅",
+      "latitude": 40.810474,
+      "longitude": -73.926139,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "3 Av - 138 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "The Bronx",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-3-av-149-st-2-5",
+      "latitude": 40.816125,
+      "line": "White Plains Rd Line",
+      "longitude": -73.91788700000001,
+      "neighborhood": "Mott Haven",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 14 Elevators At 5 Locations",
+      "services": [
+        "2",
+        "5"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040715",
+      "station": "3 Av-149 St",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "4 av 9 st-R-4 Av Line",
+      "station": "4 Av/9 St",
+      "line": "4 Av Line",
+      "services": [
+        "R"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Park Slope",
+      "plannedAdaNote": "✅",
+      "latitude": 40.6699366,
+      "longitude": -73.9890724,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "4 Av - 9 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "4 av 9 st-F-G-Culver Line",
+      "station": "4 Av/9 St",
+      "line": "Culver Line",
+      "services": [
+        "F",
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Park Slope",
+      "plannedAdaNote": "✅",
+      "latitude": 40.6699366,
+      "longitude": -73.9890724,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "4 Av - 9 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:F",
+        "NYCTA:G"
+      ]
+    },
+    {
+      "id": "7 av-B-D-E-6 Av Line,Queens Blvd Line",
+      "station": "7 Av",
+      "line": "6 Av Line,Queens Blvd Line",
+      "services": [
+        "B",
+        "D",
+        "E"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.763176,
+      "longitude": -73.98238,
+      "coordinateSource": "data.ny.gov asset coordinates",
+      "matchedStationName": "7 Av (B/D/E)",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades - Package 10",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12754",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:D",
+        "NYCTA:E"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-8-av-L",
+      "latitude": 40.739805,
+      "line": "Canarsie Line",
+      "longitude": -74.0025325,
+      "neighborhood": "",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "L"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "8 Av",
+      "transitRouteKeys": [
+        "NYCTA:L"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-14-st-A-C-E",
+      "latitude": 40.740282,
+      "line": "8 Av Line",
+      "longitude": -74.00214,
+      "neighborhood": "",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "A",
+        "C",
+        "E"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "14 St",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C",
+        "NYCTA:E"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-14-st-union-sq-L-N-Q-R-W",
+      "latitude": 40.73495225,
+      "line": "Broadway/Canarsie Lines",
+      "longitude": -73.99051675000001,
+      "neighborhood": "Union Square",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "L",
+        "N",
+        "Q",
+        "R",
+        "W"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "14 St-Union Sq",
+      "transitRouteKeys": [
+        "NYCTA:L",
+        "NYCTA:N",
+        "NYCTA:Q",
+        "NYCTA:R",
+        "NYCTA:W"
+      ]
+    },
+    {
+      "id": "18 av-D-West End Line",
+      "station": "18 Av",
+      "line": "West End Line",
+      "services": [
+        "D"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bensonhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.607954,
+      "longitude": -74.001735,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "18 Av",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 8",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12752",
+      "transitRouteKeys": [
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "23 st-C-E-8 Av Line",
+      "station": "23 St",
+      "line": "8 Av Line",
+      "services": [
+        "C",
+        "E"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chelsea",
+      "plannedAdaNote": "✅",
+      "latitude": 40.745906,
+      "longitude": -73.998042,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "23 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:C",
+        "NYCTA:E"
+      ]
+    },
+    {
+      "id": "23 st-1-Broadway-7 Av Line",
+      "station": "23 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chelsea",
+      "plannedAdaNote": "✅",
+      "latitude": 40.744078,
+      "longitude": -73.995651,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "23 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "id": "33 st rawson st-7-Flushing Line",
+      "station": "33 St-Rawson St",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Sunnyside",
+      "plannedAdaNote": "✅",
+      "latitude": 40.744592,
+      "longitude": -73.930996,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "33 St - Rawson St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:7"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-34-st-penn-station-A-C-E",
+      "latitude": 40.75213475,
+      "line": "8 Av Line",
+      "longitude": -73.99344475,
+      "neighborhood": "Midtown",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 14 Elevators At 5 Locations",
+      "services": [
+        "A",
+        "C",
+        "E"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040715",
+      "station": "34 St-Penn Station",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C",
+        "NYCTA:E"
+      ]
+    },
+    {
+      "id": "36 st-D-N-R-4 Av Line",
+      "station": "36 St",
+      "line": "4 Av Line",
+      "services": [
+        "D",
+        "N",
+        "R"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Sunset Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.655144,
+      "longitude": -74.00355,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "36 St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:D",
+        "NYCTA:N",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "42 st bryant park 5 av-B-D-F-M-6 Av Line",
+      "station": "42 St-Bryant Park/5 Av",
+      "line": "6 Av Line",
+      "services": [
+        "B",
+        "D",
+        "F",
+        "M"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.754218,
+      "longitude": -73.984558,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "42 St - Bryant Pk",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: 42 St - Bryant Park Complex",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=13479",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:D",
+        "NYCTA:F",
+        "NYCTA:M"
+      ]
+    },
+    {
+      "id": "42 st bryant park fifth av-7-Flushing Line",
+      "station": "42 St-Bryant Park/Fifth Av",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.754218,
+      "longitude": -73.984558,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "42 St - Bryant Pk",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: 42 St - Bryant Park Complex",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=13479",
+      "transitRouteKeys": [
+        "NYCTA:7"
+      ]
+    },
+    {
+      "id": "46 st bliss st-7-Flushing Line",
+      "station": "46 St-Bliss St",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Sunnyside",
+      "plannedAdaNote": "✅",
+      "latitude": 40.74316,
+      "longitude": -73.918483,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "46 St - Bliss St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:7"
+      ]
+    },
+    {
+      "id": "53 st-R-4 Av Line",
+      "station": "53 St",
+      "line": "4 Av Line",
+      "services": [
+        "R"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Sunset Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.64507,
+      "longitude": -74.014036,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "53 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "63 dr rego park-M-R-Queens Blvd Line",
+      "station": "63 Dr-Rego Park",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Rego Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.729852,
+      "longitude": -73.8616,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "63 Dr - Rego Park",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-66-st-lincoln-center-1",
+      "latitude": 40.773666000000006,
+      "line": "Broadway-7 Av Line",
+      "longitude": -73.98222000000001,
+      "neighborhood": "Upper West Side",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "1"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "66 St-Lincoln Center",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-72-st-1-2-3",
+      "latitude": 40.7790715,
+      "line": "Broadway-7 Av Line",
+      "longitude": -73.98183499999999,
+      "neighborhood": "Upper West Side",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "72 St",
+      "transitRouteKeys": [
+        "NYCTA:1",
+        "NYCTA:2",
+        "NYCTA:3"
+      ]
+    },
+    {
+      "id": "81 st museum of natural history-B-C-8 Av Line",
+      "station": "81 St-Museum of Natural History",
+      "line": "8 Av Line",
+      "services": [
+        "B",
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Upper West Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.781434,
+      "longitude": -73.972146,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "81 St - Museum Of Natural History",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:C"
+      ]
+    },
+    {
+      "id": "88 st-A-Fulton St Line",
+      "station": "88 St",
+      "line": "Fulton St Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Ozone Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.679846,
+      "longitude": -73.85147,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "88 St - Boyd Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:A"
+      ]
+    },
+    {
+      "id": "96 st-B-C-8 Av Line",
+      "station": "96 St",
+      "line": "8 Av Line",
+      "services": [
+        "B",
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Upper West Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.791641,
+      "longitude": -73.964695,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "96 St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:C"
+      ]
+    },
+    {
+      "id": "103 st corona plaza-7-Flushing Line",
+      "station": "103 St-Corona Plaza",
+      "line": "Flushing Line",
+      "services": [
+        "7"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Corona",
+      "plannedAdaNote": "✅",
+      "latitude": 40.749887,
+      "longitude": -73.862704,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "103 St - Corona Plaza",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:7"
+      ]
+    },
+    {
+      "id": "planned-new-106-st-second-av-line",
+      "latitude": 40.79002,
+      "longitude": -73.94315,
+      "station": "106 St",
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "Approximate Second Avenue Subway Phase 2 station location",
+      "line": "Second Av Line",
+      "neighborhood": "East Harlem",
+      "note": "New ADA-accessible station planned as part of Second Avenue Subway Phase 2.",
+      "projectPhase": "Construction",
+      "projectStatus": "planned_new_station",
+      "projectTitle": "Second Avenue Subway Phase 2",
+      "services": [
+        "Q"
+      ],
+      "sourceUrl": "https://www.mta.info/document/186856",
+      "transitRouteKeys": [
+        "NYCTA:Q"
+      ]
+    },
+    {
+      "id": "110 st-6-Lexington Av Line",
+      "station": "110 St",
+      "line": "Lexington Av Line",
+      "services": [
+        "6"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "East Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.795019,
+      "longitude": -73.944249,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "110 St",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 11",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=13429",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "110 st malcolm x plaza-2-3-Lenox Av Line",
+      "station": "110 St-Malcolm X Plaza",
+      "line": "Lenox Av Line",
+      "services": [
+        "2",
+        "3"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.798665,
+      "longitude": -73.952174,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "110 St - Malcolm X Plaza",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:3"
+      ]
+    },
+    {
+      "id": "116 st-B-C-8 Av Line",
+      "station": "116 St",
+      "line": "8 Av Line",
+      "services": [
+        "B",
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.804421,
+      "longitude": -73.955364,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "116 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:C"
+      ]
+    },
+    {
+      "id": "planned-new-116-st-second-av-line",
+      "latitude": 40.79886,
+      "longitude": -73.93864,
+      "station": "116 St",
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "Approximate Second Avenue Subway Phase 2 station location",
+      "line": "Second Av Line",
+      "neighborhood": "East Harlem",
+      "note": "New ADA-accessible station planned as part of Second Avenue Subway Phase 2.",
+      "projectPhase": "Construction",
+      "projectStatus": "planned_new_station",
+      "projectTitle": "Second Avenue Subway Phase 2",
+      "services": [
+        "Q"
+      ],
+      "sourceUrl": "https://www.mta.info/document/186856",
+      "transitRouteKeys": [
+        "NYCTA:Q"
+      ]
+    },
+    {
+      "id": "121 st-J-Jamaica Line",
+      "station": "121 St",
+      "line": "Jamaica Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Richmond Hill",
+      "plannedAdaNote": "✅",
+      "latitude": 40.700489,
+      "longitude": -73.828293,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "121 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:J"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-125-st-A-B-C-D",
+      "latitude": 40.81093333333334,
+      "line": "8 Av Line",
+      "longitude": -73.95253333333334,
+      "neighborhood": "Harlem",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "125 St",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:B",
+        "NYCTA:C",
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "125 st-2-3-Lenox Av Line",
+      "station": "125 St",
+      "line": "Lenox Av Line",
+      "services": [
+        "2",
+        "3"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8077749,
+      "longitude": -73.9455321,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "125 St - Lenox Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:3"
+      ]
+    },
+    {
+      "id": "planned-new-125-st-second-av-line",
+      "latitude": 40.80418,
+      "longitude": -73.93742,
+      "station": "125 St",
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "Approximate Second Avenue Subway Phase 2 station location",
+      "line": "Second Av Line",
+      "neighborhood": "East Harlem",
+      "note": "New ADA-accessible station planned as part of Second Avenue Subway Phase 2.",
+      "projectPhase": "Construction",
+      "projectStatus": "planned_new_station",
+      "projectTitle": "Second Avenue Subway Phase 2",
+      "services": [
+        "Q"
+      ],
+      "sourceUrl": "https://www.mta.info/document/186856",
+      "transitRouteKeys": [
+        "NYCTA:Q"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "active-ada-package-137-st-city-college-1",
+      "latitude": 40.819643750000004,
+      "line": "Broadway-7 Av Line",
+      "longitude": -73.95634050000001,
+      "neighborhood": "Hamilton Heights",
+      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 4",
+      "services": [
+        "1"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
+      "station": "137 St-City College",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "id": "145 st-A-B-C-D-8 Av Line,Concourse Line",
+      "station": "145 St",
+      "line": "8 Av Line,Concourse Line",
+      "services": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Harlem",
+      "plannedAdaNote": "✅",
+      "latitude": 40.824783,
+      "longitude": -73.944217,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "145 St",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 11",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=13429",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:B",
+        "NYCTA:C",
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "155 st-C-8 Av Line",
+      "station": "155 St",
+      "line": "8 Av Line",
+      "services": [
+        "C"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.830518,
+      "longitude": -73.941514,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "155 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:C"
+      ]
+    },
+    {
+      "id": "157 st-1-Broadway-7 Av Line",
+      "station": "157 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.83404,
+      "longitude": -73.944887,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "157 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "The Bronx",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-161-st-yankee-stadium-B-D-4",
+      "latitude": 40.82782171428572,
+      "line": "Concourse/Jerome Av Lines",
+      "longitude": -73.925742,
+      "neighborhood": "Highbridge",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 14 Elevators At 5 Locations",
+      "services": [
+        "B",
+        "D",
+        "4"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040715",
+      "station": "161 St-Yankee Stadium",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:D",
+        "NYCTA:4"
+      ]
+    },
+    {
+      "id": "167 st-D-Concourse Line",
+      "station": "167 St",
+      "line": "Concourse Line",
+      "services": [
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Highbridge",
+      "plannedAdaNote": "✅",
+      "latitude": 40.833771,
+      "longitude": -73.91844,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "167 St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA: Package 7",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12751",
+      "transitRouteKeys": [
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "168 st-1-Broadway-7 Av Line",
+      "station": "168 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.840554,
+      "longitude": -73.940128,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "168 St - Washington Hts",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-175-st-A",
+      "latitude": 40.847749,
+      "line": "8 Av Line",
+      "longitude": -73.93952,
+      "neighborhood": "Washington Heights",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "A"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "175 St",
+      "transitRouteKeys": [
+        "NYCTA:A"
+      ]
+    },
+    {
+      "id": "182 183 sts-D-Concourse Line",
+      "station": "182-183 Sts",
+      "line": "Concourse Line",
+      "services": [
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Fordham",
+      "plannedAdaNote": "✅",
+      "latitude": 40.856093,
+      "longitude": -73.900741,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "182-183 Sts",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "190 st-A-8 Av Line",
+      "station": "190 St",
+      "line": "8 Av Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.859022,
+      "longitude": -73.93418,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "190 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:A"
+      ]
+    },
+    {
+      "id": "191 st-1-Broadway-7 Av Line",
+      "station": "191 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Washington Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.855224,
+      "longitude": -73.92941,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "191 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-atlantic-av-barclays-ctr-D-N-R-2-3-4-5",
+      "latitude": 40.68390266666667,
+      "line": "4 Av/Eastern Pkwy Lines",
+      "longitude": -73.97744733333333,
+      "neighborhood": "Downtown Brooklyn",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 17 Elevators At 8 Stations",
+      "services": [
+        "D",
+        "N",
+        "R",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040719",
+      "station": "Atlantic Av-Barclays Ctr",
+      "transitRouteKeys": [
+        "NYCTA:D",
+        "NYCTA:N",
+        "NYCTA:R",
+        "NYCTA:2",
+        "NYCTA:3",
+        "NYCTA:4",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "av i-F-Culver Line",
+      "station": "Av I",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Midwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.625322,
+      "longitude": -73.976124,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Avenue I",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 6",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12750",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "av n-F-Culver Line",
+      "station": "Av N",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bensonhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.61514,
+      "longitude": -73.974194,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Avenue N",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "agency": "LIRR",
+      "coordinateSource": "MTA regional rail accessibility and GTFS data",
+      "id": "lirr-ada-package-12654-babylon",
+      "latitude": 40.700764,
+      "line": "Babylon",
+      "longitude": -73.324088,
+      "neighborhood": "",
+      "note": "The MTA Capital Program Dashboard lists this regional-rail accessibility project in construction.",
+      "plannedAdaNote": "✅",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "LIRR ADA Station Improvements: Package 2",
+      "services": [
+        "1",
+        "5"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12654",
+      "station": "Babylon",
+      "transitRouteKeys": [
+        "LIRR:1",
+        "LIRR:5"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "active-ada-package-bay-ridge-95-st-R",
+      "latitude": 40.616623,
+      "line": "4 Av Line",
+      "longitude": -74.030876,
+      "neighborhood": "Bay Ridge",
+      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 4",
+      "services": [
+        "R"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
+      "station": "Bay Ridge-95 St",
+      "transitRouteKeys": [
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "baychester av-5-Dyre Av Line",
+      "station": "Baychester Av",
+      "line": "Dyre Av Line",
+      "services": [
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Eastchester",
+      "plannedAdaNote": "✅",
+      "latitude": 40.878666,
+      "longitude": -73.838598,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Baychester Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "beach 36 st-A-Rockaway Line",
+      "station": "Beach 36 St",
+      "line": "Rockaway Line",
+      "services": [
+        "A"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Edgemere",
+      "plannedAdaNote": "✅",
+      "latitude": 40.595397,
+      "longitude": -73.768174,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Beach 36 St - Edgemere",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:A"
+      ]
+    },
+    {
+      "id": "beach 90 st-A-SR-Rockaway Line",
+      "station": "Beach 90 St",
+      "line": "Rockaway Line",
+      "services": [
+        "A",
+        "SR"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Rockaway Beach",
+      "plannedAdaNote": "✅",
+      "latitude": 40.588045,
+      "longitude": -73.813648,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Beach 90 St - Holland",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:H"
+      ]
+    },
+    {
+      "id": "bedford nostrand avs-G-Crosstown Line",
+      "station": "Bedford-Nostrand Avs",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.689626,
+      "longitude": -73.953522,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Bedford - Nostrand Avs",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:G"
+      ]
+    },
+    {
+      "agency": "LIRR",
+      "coordinateSource": "MTA regional rail accessibility and GTFS data",
+      "id": "lirr-ada-package-14768-bellerose",
+      "latitude": 40.722218,
+      "line": "Hempstead",
+      "longitude": -73.716485,
+      "neighborhood": "",
+      "note": "This regional-rail accessibility package is in active procurement; construction is not yet shown as active.",
+      "plannedAdaNote": "✅",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "ADA Station Improvements - Package 3",
+      "services": [
+        "2"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=14768",
+      "station": "Bellerose",
+      "transitRouteKeys": [
+        "LIRR:2"
+      ]
+    },
+    {
+      "id": "botanic garden-SF-Franklin Av Line",
+      "station": "Botanic Garden",
+      "line": "Franklin Av Line",
+      "services": [
+        "SF"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.670344,
+      "longitude": -73.959248,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Botanic Garden",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:FS"
+      ]
+    },
+    {
+      "id": "briarwood-E-F-Queens Blvd Line",
+      "station": "Briarwood",
+      "line": "Queens Blvd Line",
+      "services": [
+        "E",
+        "F"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Briarwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.709178,
+      "longitude": -73.820576,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Briarwood",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 9",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12753",
+      "transitRouteKeys": [
+        "NYCTA:E",
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "brighton beach-B-Q-Brighton Line",
+      "station": "Brighton Beach",
+      "line": "Brighton Line",
+      "services": [
+        "B",
+        "Q"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Brighton Beach",
+      "plannedAdaNote": "✅",
+      "latitude": 40.577631,
+      "longitude": -73.96138,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Brighton Beach",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:Q"
+      ]
+    },
+    {
+      "id": "broadway-N-W-Astoria Line",
+      "station": "Broadway",
+      "line": "Astoria Line",
+      "services": [
+        "N",
+        "W"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "plannedAdaNote": "✅",
+      "latitude": 40.761818,
+      "longitude": -73.925505,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Broadway",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:N",
+        "NYCTA:W"
+      ]
+    },
+    {
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "broadway-junction-complex",
+      "latitude": 40.67856,
+      "line": "Broadway Junction Complex",
+      "longitude": -73.90392,
+      "neighborhood": "East New York",
+      "note": "Construction is making the entire A/C, J/Z, and L complex fully ADA accessible, including seven new elevators and circulation improvements.",
+      "plannedAdaNote": "✅",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Broadway Junction",
+      "agency": "NYCTA",
+      "services": [
+        "A",
+        "C",
+        "J",
+        "Z",
+        "L"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=11134",
+      "station": "Broadway Junction",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C",
+        "NYCTA:J",
+        "NYCTA:Z",
+        "NYCTA:L"
+      ]
+    },
+    {
+      "id": "brook av-6-Pelham Line",
+      "station": "Brook Av",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Mott Haven",
+      "plannedAdaNote": "✅",
+      "latitude": 40.807564,
+      "longitude": -73.919242,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Brook Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "burnside av-4-Jerome Av Line",
+      "station": "Burnside Av",
+      "line": "Jerome Av Line",
+      "services": [
+        "4"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Morris Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.853454,
+      "longitude": -73.907686,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Burnside Av",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 6",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12750",
+      "transitRouteKeys": [
+        "NYCTA:4"
+      ]
+    },
+    {
+      "id": "canal st-A-C-E-8 Av Line",
+      "station": "Canal St",
+      "line": "8 Av Line",
+      "services": [
+        "A",
+        "C",
+        "E"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Tribeca",
+      "plannedAdaNote": "✅",
+      "latitude": 40.720824,
+      "longitude": -74.005229,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C",
+        "NYCTA:E"
+      ]
+    },
+    {
+      "id": "canal st-N-Q-Broadway Line",
+      "station": "Canal St",
+      "line": "Broadway Line",
+      "services": [
+        "N",
+        "Q"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chinatown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718383,
+      "longitude": -74.00046,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:N",
+        "NYCTA:Q"
+      ]
+    },
+    {
+      "id": "canal st-R-W-Broadway Line",
+      "station": "Canal St",
+      "line": "Broadway Line",
+      "services": [
+        "R",
+        "W"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chinatown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.719524,
+      "longitude": -74.001769,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:R",
+        "NYCTA:W"
+      ]
+    },
+    {
+      "id": "canal st-1-Broadway-7 Av Line",
+      "station": "Canal St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "SoHo",
+      "plannedAdaNote": "✅",
+      "latitude": 40.722855,
+      "longitude": -74.006288,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-canal-st-6",
+      "latitude": 40.7181,
+      "line": "Lexington Av Line",
+      "longitude": -74.000767,
+      "neighborhood": "Chinatown",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "6"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "Canal St",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "canal st-J-Nassau St Line",
+      "station": "Canal St",
+      "line": "Nassau St Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Chinatown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718093,
+      "longitude": -73.999894,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Canal St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:J"
+      ]
+    },
+    {
+      "id": "cathedral pkwy 110 st-1-Broadway-7 Av Line",
+      "station": "Cathedral Pkwy-110 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Morningside Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8006,
+      "longitude": -73.958154,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Cathedral Pkwy - 110 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-church-av-2-5",
+      "latitude": 40.6507395,
+      "line": "Nostrand Av Line",
+      "longitude": -73.949565,
+      "neighborhood": "East Flatbush",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 17 Elevators At 8 Stations",
+      "services": [
+        "2",
+        "5"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040719",
+      "station": "Church Av",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "classon av-G-Crosstown Line",
+      "station": "Classon Av",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.68887,
+      "longitude": -73.960069,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Classon Av",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:G"
+      ]
+    },
+    {
+      "id": "clifton-SIR-Staten Island Railway",
+      "station": "Clifton",
+      "line": "Staten Island Railway",
+      "services": [
+        "SIR"
+      ],
+      "borough": "Staten Island",
+      "neighborhood": "Clifton",
+      "plannedAdaNote": "✅",
+      "latitude": 40.621324,
+      "longitude": -74.071386,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Clifton",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:SI"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-coney-island-stillwell-av-D-F-N-Q",
+      "latitude": 40.577423,
+      "line": "Sea Beach Line",
+      "longitude": -73.98123,
+      "neighborhood": "Coney Island",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 17 Elevators At 8 Stations",
+      "services": [
+        "D",
+        "F",
+        "N",
+        "Q"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040719",
+      "station": "Coney Island-Stillwell Av",
+      "transitRouteKeys": [
+        "NYCTA:D",
+        "NYCTA:F",
+        "NYCTA:N",
+        "NYCTA:Q"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-crown-hts-utica-av-3-4",
+      "latitude": 40.668902,
+      "line": "Eastern Pkwy Line",
+      "longitude": -73.93191,
+      "neighborhood": "",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 17 Elevators At 8 Stations",
+      "services": [
+        "3",
+        "4"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040719",
+      "station": "Crown Hts-Utica Av",
+      "transitRouteKeys": [
+        "NYCTA:3",
+        "NYCTA:4"
+      ]
+    },
+    {
+      "id": "cypress hills-J-Jamaica Line",
+      "station": "Cypress Hills",
+      "line": "Jamaica Line",
+      "services": [
+        "J"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.689941,
+      "longitude": -73.87255,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Cypress Hills",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:J"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-dekalb-av-B-Q-R",
+      "latitude": 40.690432799999996,
+      "line": "4 Av Line",
+      "longitude": -73.98167,
+      "neighborhood": "Downtown",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 17 Elevators At 8 Stations",
+      "services": [
+        "B",
+        "Q",
+        "R"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040719",
+      "station": "DeKalb Av",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:Q",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "delancey st essex st-F-M-6 Av Line",
+      "station": "Delancey St/Essex St",
+      "line": "6 Av Line",
+      "services": [
+        "F",
+        "M"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Lower East Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718613,
+      "longitude": -73.988119,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Delancey St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:F",
+        "NYCTA:M"
+      ]
+    },
+    {
+      "id": "delancey st essex st-J-M-Z-Nassau St Line",
+      "station": "Delancey St/Essex St",
+      "line": "Nassau St Line",
+      "services": [
+        "J",
+        "M",
+        "Z"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Lower East Side",
+      "plannedAdaNote": "✅",
+      "latitude": 40.718526,
+      "longitude": -73.988159,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Essex St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:J",
+        "NYCTA:M",
+        "NYCTA:Z"
+      ]
+    },
+    {
+      "id": "eastchester dyre av-5-Dyre Av Line",
+      "station": "Eastchester-Dyre Av",
+      "line": "Dyre Av Line",
+      "services": [
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Eastchester",
+      "plannedAdaNote": "✅",
+      "latitude": 40.8883,
+      "longitude": -73.830834,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Eastchester - Dyre Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "elder av-6-Pelham Line",
+      "station": "Elder Av",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Soundview",
+      "plannedAdaNote": "✅",
+      "latitude": 40.828586,
+      "longitude": -73.879159,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Elder Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "elmhurst av-M-R-Queens Blvd Line",
+      "station": "Elmhurst Av",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Elmhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.742455,
+      "longitude": -73.882016,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Elmhurst Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Brooklyn",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-euclid-av-A-C",
+      "latitude": 40.675490333333336,
+      "line": "8 Av Line",
+      "longitude": -73.87181333333334,
+      "neighborhood": "East New York",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 14 Elevators At 5 Locations",
+      "services": [
+        "A",
+        "C"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040715",
+      "station": "Euclid Av",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C"
+      ]
+    },
+    {
+      "agency": "LIRR",
+      "coordinateSource": "MTA regional rail accessibility and GTFS data",
+      "id": "lirr-ada-package-14768-floral-park",
+      "latitude": 40.724657,
+      "line": "Hempstead",
+      "longitude": -73.706059,
+      "neighborhood": "",
+      "note": "This regional-rail accessibility package is in active procurement; construction is not yet shown as active.",
+      "plannedAdaNote": "✅",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "ADA Station Improvements - Package 3",
+      "services": [
+        "2",
+        "4",
+        "10"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=14768",
+      "station": "Floral Park",
+      "transitRouteKeys": [
+        "LIRR:2",
+        "LIRR:4",
+        "LIRR:10"
+      ]
+    },
+    {
+      "id": "flushing av-G-Crosstown Line",
+      "station": "Flushing Av",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.700378,
+      "longitude": -73.950222,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Flushing Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:G"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Queens",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-flushing-main-st-7",
+      "latitude": 40.75991725,
+      "line": "Flushing Line",
+      "longitude": -73.82886500000001,
+      "neighborhood": "Flushing",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "7"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "Flushing-Main St",
+      "transitRouteKeys": [
+        "NYCTA:7"
+      ]
+    },
+    {
+      "id": "fordham rd-B-D-Concourse Line",
+      "station": "Fordham Rd",
+      "line": "Concourse Line",
+      "services": [
+        "B",
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Fordham",
+      "plannedAdaNote": "✅",
+      "latitude": 40.861297,
+      "longitude": -73.897753,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Fordham Rd",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:B",
+        "NYCTA:D"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "The Bronx",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-fordham-rd-4",
+      "latitude": 40.862783666666665,
+      "line": "Jerome Av Line",
+      "longitude": -73.90102333333333,
+      "neighborhood": "University Heights",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "4"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "Fordham Rd",
+      "transitRouteKeys": [
+        "NYCTA:4"
+      ]
+    },
+    {
+      "id": "forest av-M-Myrtle Av Line",
+      "station": "Forest Av",
+      "line": "Myrtle Av Line",
+      "services": [
+        "M"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Ridgewood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.704426,
+      "longitude": -73.903078,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Forest Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:M"
+      ]
+    },
+    {
+      "agency": "LIRR",
+      "coordinateSource": "MTA regional rail accessibility and GTFS data",
+      "id": "lirr-ada-package-12654-forest-hills",
+      "latitude": 40.719599,
+      "line": "City Terminal Zone",
+      "longitude": -73.844835,
+      "neighborhood": "",
+      "note": "The MTA Capital Program Dashboard lists this regional-rail accessibility project in construction.",
+      "plannedAdaNote": "✅",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "LIRR ADA Station Improvements: Package 2",
+      "services": [
+        "1",
+        "2",
+        "4",
+        "6",
+        "7",
+        "8",
+        "10",
+        "12"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12654",
+      "station": "Forest Hills",
+      "transitRouteKeys": [
+        "LIRR:1",
+        "LIRR:2",
+        "LIRR:4",
+        "LIRR:6",
+        "LIRR:7",
+        "LIRR:8",
+        "LIRR:10"
+      ]
+    },
+    {
+      "id": "fort hamilton pkwy-D-West End Line",
+      "station": "Fort Hamilton Pkwy",
+      "line": "West End Line",
+      "services": [
+        "D"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Borough Park",
+      "plannedAdaNote": "✅",
+      "latitude": 40.640914,
+      "longitude": -73.994302,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Fort Hamilton Pkwy",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 8",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12752",
+      "transitRouteKeys": [
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "franklin av medgar evers college-2-3-4-5-Eastern Pkwy Line",
+      "station": "Franklin Av - Medgar Evers College",
+      "line": "Eastern Pkwy Line",
+      "services": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.670688,
+      "longitude": -73.958129,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Franklin Av - Medgar Evers College",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:3",
+        "NYCTA:4",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "fulton st-G-Crosstown Line",
+      "station": "Fulton St",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Fort Greene",
+      "plannedAdaNote": "✅",
+      "latitude": 40.687119,
+      "longitude": -73.975375,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Fulton St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:G"
+      ]
+    },
+    {
+      "id": "gates av-J-Z-Jamaica Line",
+      "station": "Gates Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.68963,
+      "longitude": -73.92227,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Gates Av",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 9",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12753",
+      "transitRouteKeys": [
+        "NYCTA:J",
+        "NYCTA:Z"
+      ]
+    },
+    {
+      "id": "grand army plaza-2-3-Eastern Pkwy Line",
+      "station": "Grand Army Plaza",
+      "line": "Eastern Pkwy Line",
+      "services": [
+        "2",
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Park Slope",
+      "plannedAdaNote": "✅",
+      "latitude": 40.675235,
+      "longitude": -73.971046,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Grand Army Plaza",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:3"
+      ]
+    },
+    {
+      "id": "grand av newtown-M-R-Queens Blvd Line",
+      "station": "Grand Av-Newtown",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Elmhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.737015,
+      "longitude": -73.877223,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Grand Av - Newtown",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "agency": "LIRR",
+      "coordinateSource": "MTA regional rail accessibility and GTFS data",
+      "id": "lirr-ada-package-12654-hollis",
+      "latitude": 40.710227,
+      "line": "Hempstead",
+      "longitude": -73.766608,
+      "neighborhood": "",
+      "note": "The MTA Capital Program Dashboard lists this regional-rail accessibility project in construction.",
+      "plannedAdaNote": "✅",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "LIRR ADA Station Improvements: Package 2",
+      "services": [
+        "2",
+        "4",
+        "10"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12654",
+      "station": "Hollis",
+      "transitRouteKeys": [
+        "LIRR:2",
+        "LIRR:4",
+        "LIRR:10"
+      ]
+    },
+    {
+      "id": "hoyt schermerhorn sts-A-C-G-Crosstown Line,Fulton St Line",
+      "station": "Hoyt-Schermerhorn Sts",
+      "line": "Crosstown Line,Fulton St Line",
+      "services": [
+        "A",
+        "C",
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Downtown Brooklyn",
+      "plannedAdaNote": "✅",
+      "latitude": 40.688484,
+      "longitude": -73.985001,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Hoyt - Schermerhorn Sts",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C",
+        "NYCTA:G"
+      ]
+    },
+    {
+      "id": "huguenot-SIR-Staten Island Railway",
+      "station": "Huguenot",
+      "line": "Staten Island Railway",
+      "services": [
+        "SIR"
+      ],
+      "borough": "Staten Island",
+      "neighborhood": "Huguenot",
+      "plannedAdaNote": "✅",
+      "latitude": 40.533668,
+      "longitude": -74.191784,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Huguenot",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:SI"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Queens",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-jackson-hts-roosevelt-av-E-F-M-R-7",
+      "latitude": 40.7467948888889,
+      "line": "Queens Blvd/Flushing Lines",
+      "longitude": -73.89169311111111,
+      "neighborhood": "",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "E",
+        "F",
+        "M",
+        "R",
+        "7"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "Jackson Hts-Roosevelt Av",
+      "transitRouteKeys": [
+        "NYCTA:E",
+        "NYCTA:F",
+        "NYCTA:M",
+        "NYCTA:R",
+        "NYCTA:7"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Queens",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-jamaica-179-st-F",
+      "latitude": 40.71265733333333,
+      "line": "Queens Blvd Line",
+      "longitude": -73.7836,
+      "neighborhood": "Jamaica",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "F"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "Jamaica-179 St",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "jefferson st-L-Canarsie Line",
+      "station": "Jefferson St",
+      "line": "Canarsie Line",
+      "services": [
+        "L"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bushwick",
+      "plannedAdaNote": "✅",
+      "latitude": 40.706607,
+      "longitude": -73.922913,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Jefferson St",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 8",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12752",
+      "transitRouteKeys": [
+        "NYCTA:L"
+      ]
+    },
+    {
+      "id": "junius st-3-New Lots Line",
+      "station": "Junius St",
+      "line": "New Lots Line",
+      "services": [
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Brownsville",
+      "plannedAdaNote": "✅",
+      "latitude": 40.6636698,
+      "longitude": -73.9014451,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Junius St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 3",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12420",
+      "transitRouteKeys": [
+        "NYCTA:3"
+      ]
+    },
+    {
+      "id": "kings hwy-F-Culver Line",
+      "station": "Kings Hwy",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Gravesend",
+      "plannedAdaNote": "✅",
+      "latitude": 40.603218,
+      "longitude": -73.972374,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Kings Hwy",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 3",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12420",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "kings hwy-N-Sea Beach Line",
+      "station": "Kings Hwy",
+      "line": "Sea Beach Line",
+      "services": [
+        "N"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Gravesend",
+      "plannedAdaNote": "✅",
+      "latitude": 40.603923,
+      "longitude": -73.980353,
+      "coordinateSource": "MTA Subway Stations and Complexes",
+      "matchedStationName": "Kings Hwy",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:N"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-lexington-av-53-st-E-M",
+      "latitude": 40.7578697,
+      "line": "Queens Blvd Line",
+      "longitude": -73.9702904,
+      "neighborhood": "Midtown",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "E",
+        "M"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "Lexington Av/53 St",
+      "transitRouteKeys": [
+        "NYCTA:E",
+        "NYCTA:M"
+      ]
+    },
+    {
+      "id": "lexington av 59 st-N-R-W-Broadway Line",
+      "station": "Lexington Av/59 St",
+      "line": "Broadway Line",
+      "services": [
+        "N",
+        "R",
+        "W"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.762593,
+      "longitude": -73.9676125,
+      "coordinateSource": "MTA Subway Stations and Complexes",
+      "matchedStationName": "Lexington Av/59 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:N",
+        "NYCTA:R",
+        "NYCTA:W"
+      ]
+    },
+    {
+      "id": "lexington av 59 st-4-5-6-Lexington Av Line",
+      "station": "Lexington Av/59 St",
+      "line": "Lexington Av Line",
+      "services": [
+        "4",
+        "5",
+        "6"
+      ],
+      "borough": "Manhattan",
+      "neighborhood": "Midtown",
+      "plannedAdaNote": "✅",
+      "latitude": 40.762593,
+      "longitude": -73.9676125,
+      "coordinateSource": "MTA Subway Stations and Complexes",
+      "matchedStationName": "Lexington Av/59 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:4",
+        "NYCTA:5",
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "middletown rd-6-Pelham Line",
+      "station": "Middletown Rd",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Pelham Bay",
+      "plannedAdaNote": "✅",
+      "latitude": 40.843869,
+      "longitude": -73.83633,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Middletown Rd",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 6",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12750",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "morrison av soundview-6-Pelham Line",
+      "station": "Morrison Av-Soundview",
+      "line": "Pelham Line",
+      "services": [
+        "6"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Soundview",
+      "plannedAdaNote": "✅",
+      "latitude": 40.829532,
+      "longitude": -73.874522,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Morrison Av- Sound View",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades - Package 10",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12754",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "myrtle av-J-M-Z-Jamaica Line",
+      "station": "Myrtle Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "M",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.697203,
+      "longitude": -73.935661,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Myrtle Av",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 6",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12750",
+      "transitRouteKeys": [
+        "NYCTA:J",
+        "NYCTA:M",
+        "NYCTA:Z"
+      ]
+    },
+    {
+      "id": "myrtle willoughby avs-G-Crosstown Line",
+      "station": "Myrtle-Willoughby Avs",
+      "line": "Crosstown Line",
+      "services": [
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.695273,
+      "longitude": -73.949193,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Myrtle - Willoughby Avs",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:G"
+      ]
+    },
+    {
+      "id": "neptune av-F-Culver Line",
+      "station": "Neptune Av",
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Coney Island",
+      "plannedAdaNote": "✅",
+      "latitude": 40.581011,
+      "longitude": -73.974572,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Neptune Av",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 8",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12752",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "new lots av-3-New Lots Line",
+      "station": "New Lots Av",
+      "line": "New Lots Line",
+      "services": [
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.666235,
+      "longitude": -73.884079,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "New Lots Av",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:3"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Queens",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "active-ada-package-northern-blvd-M-R",
+      "latitude": 40.752884,
+      "line": "Queens Blvd Line",
+      "longitude": -73.906006,
+      "neighborhood": "Woodside",
+      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 4",
+      "services": [
+        "M",
+        "R"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
+      "station": "Northern Blvd",
+      "transitRouteKeys": [
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "norwood av-J-Z-Jamaica Line",
+      "station": "Norwood Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Cypress Hills",
+      "plannedAdaNote": "✅",
+      "latitude": 40.681409,
+      "longitude": -73.880039,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Norwood Av",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 6",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12750",
+      "transitRouteKeys": [
+        "NYCTA:J",
+        "NYCTA:Z"
+      ]
+    },
+    {
+      "id": "norwood 205 st-D-Concourse Line",
+      "station": "Norwood-205 St",
+      "line": "Concourse Line",
+      "services": [
+        "D"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Norwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.874811,
+      "longitude": -73.878855,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Norwood - 205 St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:D"
+      ]
+    },
+    {
+      "id": "nostrand av-3-Eastern Pkwy Line",
+      "station": "Nostrand Av",
+      "line": "Eastern Pkwy Line",
+      "services": [
+        "3"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.669856,
+      "longitude": -73.950465,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Nostrand Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:3"
+      ]
+    },
+    {
+      "id": "nostrand av-A-C-Fulton St Line",
+      "station": "Nostrand Av",
+      "line": "Fulton St Line",
+      "services": [
+        "A",
+        "C"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Bedford-Stuyvesant",
+      "plannedAdaNote": "✅",
+      "latitude": 40.680439,
+      "longitude": -73.950426,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Nostrand Av",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 8",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12752",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:C"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "The Bronx",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "active-ada-package-parkchester-6",
+      "latitude": 40.86442533333334,
+      "line": "Pelham Line",
+      "longitude": -73.87662999999999,
+      "neighborhood": "Parkchester",
+      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 4",
+      "services": [
+        "6"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
+      "station": "Parkchester",
+      "transitRouteKeys": [
+        "NYCTA:6"
+      ]
+    },
+    {
+      "id": "parsons blvd-F-Queens Blvd Line",
+      "station": "Parsons Blvd",
+      "line": "Queens Blvd Line",
+      "services": [
+        "F"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Jamaica",
+      "plannedAdaNote": "✅",
+      "latitude": 40.707564,
+      "longitude": -73.803326,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Parsons Blvd",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 9",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12753",
+      "transitRouteKeys": [
+        "NYCTA:F"
+      ]
+    },
+    {
+      "id": "president st medgar evers college-2-5-Nostrand Av Line",
+      "station": "President St - Medgar Evers College",
+      "line": "Nostrand Av Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Crown Heights",
+      "plannedAdaNote": "✅",
+      "latitude": 40.667883,
+      "longitude": -73.950684,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "President St - Medgar Evers College",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "prince s bay-SIR-Staten Island Railway",
+      "station": "Prince's Bay",
+      "line": "Staten Island Railway",
+      "services": [
+        "SIR"
+      ],
+      "borough": "Staten Island",
+      "neighborhood": "Prince's Bay",
+      "plannedAdaNote": "✅",
+      "latitude": 40.525503,
+      "longitude": -74.20006,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Prince's Bay",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:SI"
+      ]
+    },
+    {
+      "id": "prospect av-2-5-White Plains Rd Line",
+      "station": "Prospect Av",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Longwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.819588,
+      "longitude": -73.901773,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Prospect Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Queens",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-queens-plaza-E-M-R",
+      "latitude": 40.74890766666667,
+      "line": "Queens Blvd Line",
+      "longitude": -73.937718,
+      "neighborhood": "Long Island City",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 20 Elevators At 9 Stations",
+      "services": [
+        "E",
+        "M",
+        "R"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040720",
+      "station": "Queens Plaza",
+      "transitRouteKeys": [
+        "NYCTA:E",
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "smith ninth sts-F-G-Culver Line",
+      "station": "Smith - 9 Sts",
+      "line": "Culver Line",
+      "services": [
+        "F",
+        "G"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Gowanus",
+      "plannedAdaNote": "✅",
+      "latitude": 40.673582,
+      "longitude": -73.995957,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Smith - 9 Sts",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:F",
+        "NYCTA:G"
+      ]
+    },
+    {
+      "id": "steinway st-M-R-Queens Blvd Line",
+      "station": "Steinway St",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "plannedAdaNote": "✅",
+      "latitude": 40.756878,
+      "longitude": -73.920739,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Steinway St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 3",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12420",
+      "transitRouteKeys": [
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "sterling st-2-5-Nostrand Av Line",
+      "station": "Sterling St",
+      "line": "Nostrand Av Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "Prospect Lefferts Gardens",
+      "plannedAdaNote": "✅",
+      "latitude": 40.662743,
+      "longitude": -73.95084,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Sterling St",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-times-sq-42-st-N-Q-R-W",
+      "latitude": 40.755258,
+      "line": "Broadway Line",
+      "longitude": -73.967505,
+      "neighborhood": "Times Square",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "N",
+        "Q",
+        "R",
+        "W"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "Times Sq-42 St",
+      "transitRouteKeys": [
+        "NYCTA:N",
+        "NYCTA:Q",
+        "NYCTA:R",
+        "NYCTA:W"
+      ]
+    },
+    {
+      "id": "van cortlandt park 242 st-1-Broadway-7 Av Line",
+      "station": "Van Cortlandt Park-242 St",
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Riverdale",
+      "plannedAdaNote": "✅",
+      "latitude": 40.889248,
+      "longitude": -73.898583,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Van Cortlandt Park - 242 St",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 5",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12630",
+      "transitRouteKeys": [
+        "NYCTA:1"
+      ]
+    },
+    {
+      "id": "van siclen av-C-Fulton St Line",
+      "station": "Van Siclen Av",
+      "line": "Fulton St Line",
+      "services": [
+        "C"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.672709,
+      "longitude": -73.890358,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Van Siclen Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:C"
+      ]
+    },
+    {
+      "id": "van siclen av-J-Z-Jamaica Line",
+      "station": "Van Siclen Av",
+      "line": "Jamaica Line",
+      "services": [
+        "J",
+        "Z"
+      ],
+      "borough": "Brooklyn",
+      "neighborhood": "East New York",
+      "plannedAdaNote": "✅",
+      "latitude": 40.678032,
+      "longitude": -73.89169,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Van Siclen Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:J",
+        "NYCTA:Z"
+      ]
+    },
+    {
+      "agency": "NYCTA",
+      "borough": "Manhattan",
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "id": "accessible-upgrade-w-4-st-wash-sq-A-B-C-D-E-F-M",
+      "latitude": 40.7321664,
+      "line": "8 Av Line",
+      "longitude": -74.000596,
+      "neighborhood": "",
+      "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
+      "projectPhase": "Construction",
+      "projectStatus": "upgrade_to_accessible_station",
+      "projectTitle": "Replace 19 Elevators At Various Locations",
+      "services": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "M"
+      ],
+      "sourceUrl": "https://capitaldashboard.mta.info/?acepId=T8040717",
+      "station": "W 4 St-Wash Sq",
+      "transitRouteKeys": [
+        "NYCTA:A",
+        "NYCTA:B",
+        "NYCTA:C",
+        "NYCTA:D",
+        "NYCTA:E",
+        "NYCTA:F",
+        "NYCTA:M"
+      ]
+    },
+    {
+      "id": "wakefield 241 st-2-White Plains Rd Line",
+      "station": "Wakefield-241 St",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Wakefield",
+      "plannedAdaNote": "✅",
+      "latitude": 40.903125,
+      "longitude": -73.85062,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Wakefield - 241 St",
+      "agency": "NYCTA",
+      "note": "ADA design, study, or active procurement work is underway; construction is not yet shown as active.",
+      "projectPhase": "Active Procurement",
+      "projectStatus": "design_study",
+      "projectTitle": "Design-Build Services for ADA Upgrades Package 11",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=13429",
+      "transitRouteKeys": [
+        "NYCTA:2"
+      ]
+    },
+    {
+      "id": "west farms sq east tremont av-2-5-White Plains Rd Line",
+      "station": "West Farms Sq-East Tremont Av",
+      "line": "White Plains Rd Line",
+      "services": [
+        "2",
+        "5"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "West Farms",
+      "plannedAdaNote": "✅",
+      "latitude": 40.850409,
+      "longitude": -73.905224,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Tremont Av",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:2",
+        "NYCTA:5"
+      ]
+    },
+    {
+      "id": "woodhaven blvd-M-R-Queens Blvd Line",
+      "station": "Woodhaven Blvd",
+      "line": "Queens Blvd Line",
+      "services": [
+        "M",
+        "R"
+      ],
+      "borough": "Queens",
+      "neighborhood": "Elmhurst",
+      "plannedAdaNote": "✅",
+      "latitude": 40.733106,
+      "longitude": -73.869229,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Woodhaven Blvd",
+      "agency": "NYCTA",
+      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
+      "projectPhase": "Construction",
+      "projectStatus": "under_construction",
+      "projectTitle": "NYCT ADA Station Improvements: Package 3",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12420",
+      "transitRouteKeys": [
+        "NYCTA:M",
+        "NYCTA:R"
+      ]
+    },
+    {
+      "id": "woodlawn-4-Jerome Av Line",
+      "station": "Woodlawn",
+      "line": "Jerome Av Line",
+      "services": [
+        "4"
+      ],
+      "borough": "The Bronx",
+      "neighborhood": "Norwood",
+      "plannedAdaNote": "✅",
+      "latitude": 40.886037,
+      "longitude": -73.878751,
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "matchedStationName": "Woodlawn",
+      "agency": "NYCTA",
+      "note": "Funded or identified for a future ADA accessibility project.",
+      "projectPhase": "Planned",
+      "projectStatus": "funded_planned",
+      "projectTitle": "25-29 NYCT ADA Improvements (including SIR)",
+      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=9999902",
+      "transitRouteKeys": [
+        "NYCTA:4"
+      ]
+    }
+  ]
+}

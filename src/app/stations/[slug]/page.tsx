@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { RegionalStationDetail } from "@/components/regional-station-detail";
 import { SiteIcon } from "@/components/site-icon";
 import { StationStatusBadge } from "@/components/station-status-badge";
 import { SubwayRouteIcons } from "@/components/subway-route-icons";
@@ -19,6 +20,8 @@ import {
   getAvailabilityHistory,
   type AvailabilityPoint,
 } from "@/lib/mta-availability";
+import { getRegionalStationServices } from "@/lib/regional-station-merge";
+import { getRegionalStationBySlug } from "@/lib/regional-transit-data";
 import {
   formatRidership,
   getEquipmentCounts,
@@ -41,6 +44,7 @@ export async function generateMetadata({
 }: StationPageProps): Promise<Metadata> {
   const { slug } = await params;
   const station = getStationBySlug(slug);
+  const regionalStation = getRegionalStationBySlug(slug);
 
   return station
     ? {
@@ -50,12 +54,24 @@ export async function generateMetadata({
           station.station +
           ".",
       }
-    : { title: "Station not found" };
+    : regionalStation
+      ? {
+          title: regionalStation.name,
+          description: `Accessibility, equipment, and service details for ${regionalStation.name} on ${getRegionalStationServices(regionalStation)
+            .map((service) => service.branchName)
+            .join(", ")}.`,
+        }
+      : { title: "Station not found" };
 }
 
 export default async function StationDetailPage({ params }: StationPageProps) {
   const { slug } = await params;
   const station = getStationBySlug(slug);
+  const regionalStation = getRegionalStationBySlug(slug);
+
+  if (regionalStation) {
+    return <RegionalStationDetail station={regionalStation} />;
+  }
 
   if (!station) {
     notFound();
@@ -160,7 +176,7 @@ export default async function StationDetailPage({ params }: StationPageProps) {
         <div className="space-y-6">
           <div className="surface-card overflow-hidden">
             <SectionHeader
-              description="Daily inventory status for equipment matched to this station."
+              description="Official current and future MTA equipment status for assets matched to this station."
               icon="elevator"
               title="ADA features and equipment"
             />
@@ -195,7 +211,7 @@ export default async function StationDetailPage({ params }: StationPageProps) {
               />
             )}
             <div className="border-t border-[var(--border)] bg-[var(--soft)] px-5 py-3 text-xs leading-5 text-[var(--muted-strong)] sm:px-6">
-              Monthly reliability is historical, not a live outage feed. Daily snapshot flags are shown in the equipment cards above.
+              Monthly reliability is historical. Current and scheduled outages are shown in the equipment cards above.
             </div>
           </div>
         </div>
@@ -274,7 +290,7 @@ export default async function StationDetailPage({ params }: StationPageProps) {
             </div>
             <dl className="mt-5 space-y-3">
               <StatusRow color="bg-emerald-500" label="Listed in service" value={equipment.operational} />
-              <StatusRow color="bg-red-500" label="Snapshot outage flags" value={equipment.outage} />
+              <StatusRow color="bg-red-500" label="Current outages" value={equipment.outage} />
               <StatusRow color="bg-amber-400" label="Work / repair" value={equipment.work} />
               <StatusRow color="bg-slate-400" label="Unknown" value={equipment.unknown} />
             </dl>
@@ -382,6 +398,13 @@ function EquipmentCard({ asset }: { asset: MtaAsset }) {
         </span>
       </div>
 
+      {asset.current_outage === "YES" ? (
+        <EquipmentOutageNotice asset={asset} timeframe="current" />
+      ) : null}
+      {asset.future_outage === "YES" ? (
+        <EquipmentOutageNotice asset={asset} timeframe="future" />
+      ) : null}
+
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <DetailBlock
           icon="door_open"
@@ -416,6 +439,44 @@ function EquipmentCard({ asset }: { asset: MtaAsset }) {
         </a>
       ) : null}
     </article>
+  );
+}
+
+function EquipmentOutageNotice({
+  asset,
+  timeframe,
+}: {
+  asset: MtaAsset;
+  timeframe: "current" | "future";
+}) {
+  const current = timeframe === "current";
+  const reason = current
+    ? asset.current_outage_reason
+    : asset.future_outage_reason;
+  const start = current ? asset.current_outage_start : asset.future_outage_start;
+  const estimatedReturn = current
+    ? asset.current_outage_estimated_return
+    : asset.future_outage_estimated_return;
+
+  return (
+    <div className="mt-4 rounded-xl border border-amber-400/35 bg-amber-50 p-3 text-xs leading-5 text-amber-950 dark:bg-amber-500/10 dark:text-amber-100">
+      <p className="font-black">
+        {current ? "Current outage" : "Future outage scheduled"}
+        {reason ? ` · ${reason}` : ""}
+      </p>
+      {start ? (
+        <p>{current ? "Out since" : "Starts"}: {start}</p>
+      ) : null}
+      {estimatedReturn ? <p>Estimated return: {estimatedReturn}</p> : null}
+      <a
+        className="mt-1 inline-flex font-bold underline decoration-amber-500/60 underline-offset-2"
+        href="https://www.mta.info/elevator-escalator-status"
+        rel="noreferrer"
+        target="_blank"
+      >
+        Official MTA equipment status ↗
+      </a>
+    </div>
   );
 }
 
@@ -633,12 +694,12 @@ function getStatePresentation(state: EquipmentState) {
       className:
         "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
       dot: "bg-emerald-500",
-      label: "Listed in service",
+      label: "Currently in service",
     },
     outage: {
       className: "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300",
       dot: "bg-red-500",
-      label: "Snapshot outage flag",
+      label: "Current outage",
     },
     unknown: {
       className:

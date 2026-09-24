@@ -53,28 +53,16 @@
       "statusLabel": "Accessible station"
     },
     {
-      "id": "149 st hostos-4-Jerome Av Line",
+      "id": "149 st hostos-2-4-5-Jerome Av and White Plains Rd Lines",
       "station": "149 St-Hostos",
-      "line": "Jerome Av Line",
-      "services": ["4"],
+      "line": "Jerome Av and White Plains Rd Lines",
+      "services": ["2", "4", "5"],
       "latitude": 40.818375,
-      "longitude": -73.927351,
+      "longitude": -73.92735,
       "accessMethod": "elevator",
       "statusLabel": "Accessible station",
-      "coordinateSource": "Official MTA Subway GTFS",
-      "sourceStopId": "415"
-    },
-    {
-      "id": "149 st hostos-2-5-White Plains Rd Line",
-      "station": "149 St-Hostos",
-      "line": "White Plains Rd Line",
-      "services": ["2", "5"],
-      "latitude": 40.81841,
-      "longitude": -73.926718,
-      "accessMethod": "elevator",
-      "statusLabel": "Accessible station",
-      "coordinateSource": "Official MTA Subway GTFS",
-      "sourceStopId": "222"
+      "coordinateSource": "Official MTA equipment inventory",
+      "sourceStopIds": ["222", "415"]
     },
     {
       "id": "parkchester-6-Pelham Line",

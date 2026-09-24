@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "checkedAt": "2026-09-21T15:38:11.735Z",
+    "checkedAt": "2026-09-24T03:23:59.483Z",
     "legacyProjectCount": 80,
     "modernProjectCount": 18,
     "pageSourceMode": "local_snapshot",
@@ -8,7 +8,7 @@
     "sourceCounts": {
       "modernDetails": 156,
       "modernBudgets": 4928,
-      "modernSchedules": 419,
+      "modernSchedules": 416,
       "legacySummaryHistory": 1540,
       "legacyBudgetDetails": 5839
     }
@@ -3302,18 +3302,18 @@
           "state": "Complete"
         },
         {
-          "endDate": "2025-12-01",
+          "endDate": "2025-12-31",
           "milestones": [
             {
               "date": "2023-03-01",
-              "description": "Budget: $167,726,921; Goal Completion Date: 09/01/2025",
+              "description": "Budget: $167,726,921; Goal Completion Date: 09/15/2025",
               "flagged": false,
               "title": "Baselines Set"
             },
             {
               "date": "2023-10-01",
               "description": "Completion date revised to reflect contractor's schedule.",
-              "flagged": false,
+              "flagged": true,
               "title": "Schedule Adjustment"
             },
             {
@@ -3333,12 +3333,6 @@
               "description": "Work at St Albans mentioned in our weekly newsletter.",
               "flagged": false,
               "title": "Progress Update"
-            },
-            {
-              "date": "2026-03-01",
-              "description": "Project is in Construction Closeout",
-              "flagged": true,
-              "title": "Project Update"
             }
           ],
           "name": "Construction",
@@ -3351,7 +3345,7 @@
           "milestones": [],
           "name": "Financial Closeout",
           "sequence": 4,
-          "startDate": "2025-12-01",
+          "startDate": "2025-12-31",
           "state": "Active"
         }
       ],
@@ -3360,7 +3354,7 @@
       "services": [],
       "slug": "modern-12648",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Complete",
       "startDate": "2022-12-01",
@@ -3874,11 +3868,11 @@
           "state": "Complete"
         },
         {
-          "endDate": "2027-05-01",
+          "endDate": "2027-05-23",
           "milestones": [
             {
               "date": "2025-01-01",
-              "description": "Budget: $159,675,688; Goal Completion Date: 05/01/2027",
+              "description": "Budget: $159,675,688; Goal Completion Date: 05/23/2027",
               "flagged": false,
               "title": "Baselines Set"
             },
@@ -3893,12 +3887,6 @@
               "description": "Work at project stations mentioned in our weekly newsletter.",
               "flagged": false,
               "title": "Progress Update"
-            },
-            {
-              "date": "2026-03-01",
-              "description": "This project contains several subprojects. The active work is combined with M8020209 (3 Bronx Stations) and the dates reflect this.",
-              "flagged": true,
-              "title": "Project Update"
             }
           ],
           "name": "Construction",
@@ -3923,7 +3911,7 @@
       ],
       "slug": "modern-12040",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2024-10-01",
@@ -4922,11 +4910,11 @@
           "state": "Complete"
         },
         {
-          "endDate": "2026-05-01",
+          "endDate": "2026-08-06",
           "milestones": [
             {
               "date": "2023-03-01",
-              "description": "Budget: $167,216,178; Goal Completion Date: 04/01/2025",
+              "description": "Budget: $167,216,178; Goal Completion Date: 04/28/2025",
               "flagged": false,
               "title": "Baselines Set"
             },
@@ -4951,12 +4939,6 @@
             {
               "date": "2025-10-01",
               "description": "Completion delay due to field issues related to the elevator work.",
-              "flagged": false,
-              "title": "Schedule Adjustment"
-            },
-            {
-              "date": "2026-03-01",
-              "description": "Schedule updated to reflect current work plan; completion delay due to various factors, including systems integration, utility issues and inclement winter weather, and right-of-way dependent activities.",
               "flagged": true,
               "title": "Schedule Adjustment"
             }
@@ -4983,7 +4965,7 @@
       ],
       "slug": "modern-11097",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2022-12-01",
@@ -5185,12 +5167,12 @@
           "state": "Complete"
         },
         {
-          "endDate": "2028-11-01",
+          "endDate": "2028-11-30",
           "milestones": [
             {
               "date": "2026-03-01",
               "description": "Budget: $134,356,237; Goal Completion Date: 11/30/2028",
-              "flagged": true,
+              "flagged": false,
               "title": "Baselines Set"
             }
           ],
@@ -5219,7 +5201,7 @@
       ],
       "slug": "modern-13479",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2025-12-01",
@@ -6834,11 +6816,11 @@
           "state": "Complete"
         },
         {
-          "endDate": "2026-05-01",
+          "endDate": "2026-07-31",
           "milestones": [
             {
               "date": "2020-11-01",
-              "description": "Budget: $160,409,177; Goal Completion Date: 07/01/2023",
+              "description": "Budget: $160,409,177; Goal Completion Date: 07/04/2023",
               "flagged": false,
               "title": "Baselines Set"
             },
@@ -6905,7 +6887,7 @@
       ],
       "slug": "modern-8356",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2020-08-01",
@@ -8061,11 +8043,11 @@
           "state": "Complete"
         },
         {
-          "endDate": "2027-09-01",
+          "endDate": "2027-09-07",
           "milestones": [
             {
               "date": "2024-03-01",
-              "description": "Budget: $380,648,885; Goal Completion Date: 09/01/2027",
+              "description": "Budget: $380,648,885; Goal Completion Date: 09/07/2027",
               "flagged": false,
               "title": "Baselines Set"
             },
@@ -8078,7 +8060,7 @@
             {
               "date": "2025-07-01",
               "description": "Work at Broadway Junction mentioned in our weekly newsletter.",
-              "flagged": true,
+              "flagged": false,
               "title": "Progress Update"
             }
           ],
@@ -8107,7 +8089,7 @@
       ],
       "slug": "modern-11134",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2023-12-01",
@@ -11696,19 +11678,13 @@
           "state": "Complete"
         },
         {
-          "endDate": "2026-12-01",
+          "endDate": "2026-12-31",
           "milestones": [
             {
               "date": "2023-03-01",
-              "description": "Budget: $664,470,802; Goal Completion Date: 06/01/2026",
+              "description": "Budget: $664,470,802; Goal Completion Date: 09/30/2026",
               "flagged": false,
               "title": "Baselines Set"
-            },
-            {
-              "date": "2023-05-01",
-              "description": "Schedule updated to reflect current work plan.",
-              "flagged": false,
-              "title": "Schedule Adjustment"
             },
             {
               "date": "2025-02-01",
@@ -11748,7 +11724,7 @@
             },
             {
               "date": "2026-03-01",
-              "description": "This project is part of a bundle contract; completion delay due to phasing of activities related to the connector bridge.",
+              "description": "This project is part of a bundle contract; completion delay due to phasing of activities related to the connector bridge",
               "flagged": true,
               "title": "Schedule Adjustment"
             }
@@ -11782,7 +11758,7 @@
       ],
       "slug": "modern-12420",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2022-12-01",
@@ -14364,11 +14340,11 @@
           "state": "Complete"
         },
         {
-          "endDate": "2026-06-01",
+          "endDate": "2026-09-30",
           "milestones": [
             {
               "date": "2023-03-01",
-              "description": "Budget: $229,059,322; Goal Completion Date: 06/01/2025",
+              "description": "Budget: $229,059,322; Goal Completion Date: 06/16/2025",
               "flagged": false,
               "title": "Baselines Set"
             },
@@ -14409,10 +14385,10 @@
               "title": "Schedule Adjustment"
             },
             {
-              "date": "2026-03-01",
-              "description": "This project is part of multi project contract. Schedule updated to reflect current work plan; completion delay due to utility relocation work related to the ADA Accessibility at 137 Street on the Broadway-7 Avenue Line project. Budget increase due to additional work orders required during construction.",
+              "date": "2026-06-01",
+              "description": "Schedule updated to reflect current workplan; change due to continued utility relocation coordination.",
               "flagged": true,
-              "title": "Schedule and Budget Adjustment"
+              "title": "Schedule Adjustment"
             }
           ],
           "name": "Construction",
@@ -14439,7 +14415,7 @@
       ],
       "slug": "modern-12411",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2022-12-01",
@@ -18327,19 +18303,13 @@
           "state": "Complete"
         },
         {
-          "endDate": "2027-12-01",
+          "endDate": "2027-12-31",
           "milestones": [
             {
               "date": "2024-03-01",
-              "description": "Budget: $854,310,538; Goal Completion Date: 12/01/2026",
+              "description": "Budget: $854,310,538; Goal Completion Date: 12/23/2026",
               "flagged": false,
               "title": "Baselines Set"
-            },
-            {
-              "date": "2025-04-01",
-              "description": "Work at 81 St Museum of Natural History mentioned in our weekly newsletter.",
-              "flagged": false,
-              "title": "Progress Update"
             },
             {
               "date": "2025-04-01",
@@ -18348,14 +18318,20 @@
               "title": "Progress Update"
             },
             {
-              "date": "2025-06-01",
-              "description": "Work at 33 St-Rawson St and 46 St-Bliss St mentioned in our weekly newsletter.",
+              "date": "2025-04-01",
+              "description": "Work at 81 St Museum of Natural History mentioned in our weekly newsletter.",
               "flagged": false,
               "title": "Progress Update"
             },
             {
               "date": "2025-06-01",
               "description": "Work at Harlem-148 St mentioned in our weekly newsletter.",
+              "flagged": false,
+              "title": "Progress Update"
+            },
+            {
+              "date": "2025-06-01",
+              "description": "Work at 33 St-Rawson St and 46 St-Bliss St mentioned in our weekly newsletter.",
               "flagged": false,
               "title": "Progress Update"
             },
@@ -18368,12 +18344,6 @@
             {
               "date": "2025-12-01",
               "description": "Schedule updated to reflect current work plan; completion delay due to track access and external coordination.",
-              "flagged": false,
-              "title": "Schedule Adjustment"
-            },
-            {
-              "date": "2026-03-01",
-              "description": "Schedule updated to reflect current work plan; completion delay due to track access and outside agency issues.",
               "flagged": true,
               "title": "Schedule Adjustment"
             }
@@ -18414,7 +18384,7 @@
       ],
       "slug": "modern-12630",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2023-12-01",
@@ -19544,18 +19514,18 @@
           "state": "Complete"
         },
         {
-          "endDate": "2028-10-01",
+          "endDate": "2028-10-11",
           "milestones": [
             {
               "date": "2025-03-01",
-              "description": "Budget: $426,201,510; Goal Completion Date: 11/01/2028",
+              "description": "Budget: $426,201,510; Goal Completion Date: 11/11/2028",
               "flagged": false,
               "title": "Baselines Set"
             },
             {
               "date": "2025-05-01",
               "description": "Work at Avenue I mentioned in our weekly newsletter.",
-              "flagged": true,
+              "flagged": false,
               "title": "Progress Update"
             }
           ],
@@ -19585,7 +19555,7 @@
       ],
       "slug": "modern-12750",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2024-12-01",
@@ -19927,12 +19897,12 @@
           "state": "Complete"
         },
         {
-          "endDate": "2028-12-01",
+          "endDate": "2028-12-30",
           "milestones": [
             {
               "date": "2026-03-01",
               "description": "Budget: $273,547,648; Goal Completion Date: 12/30/2028",
-              "flagged": true,
+              "flagged": false,
               "title": "Baselines Set"
             }
           ],
@@ -19960,7 +19930,7 @@
       ],
       "slug": "modern-12753",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2025-12-01",
@@ -27565,11 +27535,11 @@
           "state": "Complete"
         },
         {
-          "endDate": "2024-04-01",
+          "endDate": "2024-04-30",
           "milestones": [
             {
               "date": "2021-03-01",
-              "description": "Budget: $595,277,507; Goal Completion Date: 08/01/2023",
+              "description": "Budget: $595,277,507; Goal Completion Date: 08/31/2023",
               "flagged": false,
               "title": "Baselines Set"
             },
@@ -27584,12 +27554,6 @@
               "description": "Change in schedule reflects delay in fire alarm testing due to ConEd power issues at Metropolitan Av station.",
               "flagged": false,
               "title": "Schedule Adjustment"
-            },
-            {
-              "date": "2024-03-01",
-              "description": "Schedule updated to reflect current work plan; completion delay due to real estate and utility issues. Budget increased during construction to perform additional platform girder repair work.",
-              "flagged": false,
-              "title": "Schedule and Budget Adjustment"
             },
             {
               "date": "2026-03-01",
@@ -27608,7 +27572,7 @@
           "milestones": [],
           "name": "Financial Closeout",
           "sequence": 4,
-          "startDate": "2024-04-01",
+          "startDate": "2024-04-30",
           "state": "Active"
         }
       ],
@@ -27625,7 +27589,7 @@
       ],
       "slug": "modern-12197",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Complete",
       "startDate": "2020-12-01",
@@ -33525,25 +33489,19 @@
           "state": "Complete"
         },
         {
-          "endDate": "2024-12-01",
+          "endDate": "2024-12-31",
           "milestones": [
             {
               "date": "2022-03-01",
-              "description": "Budget: $456,746,155; Goal Completion Date: 01/01/2024",
+              "description": "Budget: $456,746,154; Goal Completion Date: 01/31/2024",
               "flagged": false,
               "title": "Baselines Set"
             },
             {
               "date": "2024-10-01",
               "description": "Change in schedule due to additional steel defects to be addressed.",
-              "flagged": false,
+              "flagged": true,
               "title": "Schedule Adjustment"
-            },
-            {
-              "date": "2025-01-01",
-              "description": "Work at Woodhaven Blvd mentioned in our weekly newsletter.",
-              "flagged": false,
-              "title": "Progress Update"
             },
             {
               "date": "2025-01-01",
@@ -33552,10 +33510,10 @@
               "title": "Progress Update"
             },
             {
-              "date": "2025-03-01",
-              "description": "Schedule updated to reflect current work plan; additional time required for contract packaging and procurement process. Some of the construction for this project is funded in the 2020-24 capital program - see project ADA Accessibility at Woodhaven Boulevard on the Jamaica Line. Budget reflects latest estimate; additional funding provided for support costs.",
-              "flagged": true,
-              "title": "Schedule and Budget Adjustment"
+              "date": "2025-01-01",
+              "description": "Work at Woodhaven Blvd mentioned in our weekly newsletter.",
+              "flagged": false,
+              "title": "Progress Update"
             }
           ],
           "name": "Construction",
@@ -33568,7 +33526,7 @@
           "milestones": [],
           "name": "Financial Closeout",
           "sequence": 4,
-          "startDate": "2024-12-01",
+          "startDate": "2024-12-31",
           "state": "Active"
         }
       ],
@@ -33586,7 +33544,7 @@
       ],
       "slug": "modern-12338",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Complete",
       "startDate": "2021-12-01",
@@ -33903,12 +33861,12 @@
           "state": "Complete"
         },
         {
-          "endDate": "2028-08-01",
+          "endDate": "2028-08-03",
           "milestones": [
             {
               "date": "2026-02-01",
               "description": "Budget: $179,622,991; Goal Completion Date: 08/03/2028",
-              "flagged": true,
+              "flagged": false,
               "title": "Baselines Set"
             }
           ],
@@ -33935,7 +33893,7 @@
       ],
       "slug": "modern-12751",
       "source": "modern",
-      "sourceRecordAsOf": "2026-05-01",
+      "sourceRecordAsOf": "2026-07-01",
       "sourceUrl": "https://data.ny.gov/d/9hy6-8j6t",
       "stage": "Construction",
       "startDate": "2025-11-01",

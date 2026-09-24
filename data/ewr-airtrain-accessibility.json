@@ -1,0 +1,201 @@
+{
+  "metadata": {
+    "generatedAt": "2026-09-23T01:44:18.897Z",
+    "source": "Port Authority of New York and New Jersey and OpenStreetMap",
+    "airTrainUrl": "https://www.newarkairport.com/transportation/airtrain",
+    "accessibilityUrl": "https://www.newarkairport.com/explore-ewr/accessibility-services/handicap-transportation",
+    "geometrySourceUrl": "https://www.openstreetmap.org/copyright",
+    "attribution": "© OpenStreetMap contributors",
+    "stationCount": 6,
+    "accessibleStationCount": 6,
+    "equipmentStatusNote": "The airport confirms station elevators and escalators but does not publish live unit-level status; listed equipment therefore uses unknown status."
+  },
+  "stations": [
+    {
+      "agency": "EWR AirTrain",
+      "stationCode": "EWR-AIRPORT",
+      "osmElement": "node/7015002885",
+      "name": "Newark RailLink",
+      "branchId": "AIRTRAIN",
+      "branchName": "AirTrain Newark",
+      "branchColor": "#C81858",
+      "latitude": 40.7041859,
+      "longitude": -74.1900889,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.newarkairport.com/transportation/airtrain",
+      "elevators": [
+        {
+          "unitId": "EWR-AIRPORT-elevator-service",
+          "location": "Station elevator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EWR-AIRPORT-escalator-service",
+          "location": "Station escalator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "EWR AirTrain",
+      "stationCode": "EWR-P4",
+      "osmElement": "node/7754734431",
+      "name": "EWR P4",
+      "branchId": "AIRTRAIN",
+      "branchName": "AirTrain Newark",
+      "branchColor": "#C81858",
+      "latitude": 40.696751,
+      "longitude": -74.182182,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.newarkairport.com/transportation/airtrain",
+      "elevators": [
+        {
+          "unitId": "EWR-P4-elevator-service",
+          "location": "Station elevator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EWR-P4-escalator-service",
+          "location": "Station escalator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "EWR AirTrain",
+      "stationCode": "EWR-TERMINAL-C",
+      "osmElement": "node/7754734430",
+      "name": "EWR Terminal C",
+      "branchId": "AIRTRAIN",
+      "branchName": "AirTrain Newark",
+      "branchColor": "#C81858",
+      "latitude": 40.6959975,
+      "longitude": -74.1775216,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.newarkairport.com/transportation/airtrain",
+      "elevators": [
+        {
+          "unitId": "EWR-TERMINAL-C-elevator-service",
+          "location": "Station elevator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EWR-TERMINAL-C-escalator-service",
+          "location": "Station escalator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "EWR AirTrain",
+      "stationCode": "EWR-TERMINAL-B",
+      "osmElement": "node/7754734429",
+      "name": "EWR Terminal B",
+      "branchId": "AIRTRAIN",
+      "branchName": "AirTrain Newark",
+      "branchColor": "#C81858",
+      "latitude": 40.690757,
+      "longitude": -74.1766324,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.newarkairport.com/transportation/airtrain",
+      "elevators": [
+        {
+          "unitId": "EWR-TERMINAL-B-elevator-service",
+          "location": "Station elevator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EWR-TERMINAL-B-escalator-service",
+          "location": "Station escalator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "EWR AirTrain",
+      "stationCode": "EWR-P3",
+      "osmElement": "node/7754734427",
+      "name": "EWR P3",
+      "branchId": "AIRTRAIN",
+      "branchName": "AirTrain Newark",
+      "branchColor": "#C81858",
+      "latitude": 40.6896473,
+      "longitude": -74.1873747,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.newarkairport.com/transportation/airtrain",
+      "elevators": [
+        {
+          "unitId": "EWR-P3-elevator-service",
+          "location": "Station elevator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EWR-P3-escalator-service",
+          "location": "Station escalator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "EWR AirTrain",
+      "stationCode": "EWR-TERMINAL-A",
+      "osmElement": "node/7754734426",
+      "name": "EWR Terminal A",
+      "branchId": "AIRTRAIN",
+      "branchName": "AirTrain Newark",
+      "branchColor": "#C81858",
+      "latitude": 40.6873529,
+      "longitude": -74.1907716,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.newarkairport.com/transportation/airtrain",
+      "elevators": [
+        {
+          "unitId": "EWR-TERMINAL-A-elevator-service",
+          "location": "Station elevator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EWR-TERMINAL-A-escalator-service",
+          "location": "Station escalator service",
+          "status": "unknown",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": "Terminal A is reached from this station by a covered walkway or shuttle; AirTrain does not connect directly to the terminal."
+    }
+  ]
+}

@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Explore stations and the system map",
   description:
-    "Search NYC subway stations and inspect accessibility, equipment, and planned work on one interactive map.",
+    "Search subway, PATH, AirTrain, commuter rail, light rail, and CTrail stations and inspect accessibility on one interactive map.",
 };
 
 export default async function StationsPage({
@@ -28,13 +28,13 @@ export default async function StationsPage({
     requestedView === "split"
       ? requestedView
       : undefined;
-  const dataset = await getMtaAssetDataset();
-  const explorerData = createStationExplorerData(dataset.assets);
+  const dataset = await getMtaAssetDataset().catch(() => null);
+  const explorerData = createStationExplorerData(dataset?.assets ?? []);
 
   return (
     <div className="page-enter space-y-7">
       <PageHeader
-        description="Search and filter stations beside the accessibility map, or switch to a full-width explorer or map whenever you need more room."
+        description="Search and filter NYCTA, PATH, AirTrain, LIRR, Metro-North, NJ Transit, and CTrail stations beside the accessibility map."
         eyebrow="System explorer"
         title="Explore stations and accessibility"
       />

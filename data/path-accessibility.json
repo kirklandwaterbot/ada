@@ -1,0 +1,353 @@
+{
+  "metadata": {
+    "generatedAt": "2026-09-23T03:14:28.749Z",
+    "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
+    "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
+    "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
+    "accessibilityUrl": "https://www.panynj.gov/path/en/accessibility.html",
+    "stationStatusUrl": "https://www.panynj.gov/path/en/alerts/elevator-and-escalator.html",
+    "stationStatusModelUrl": "https://www.panynj.gov/content/path/en/alerts/elevator-and-escalator.model.json",
+    "gtfsUrl": "https://rapid.nationalrtap.org/GTFSFileManagement/UserUploadFiles/14843/PATHGTFS.zip",
+    "stationCount": 13,
+    "accessibleStationCount": 9,
+    "activeVerticalTransitAlertCount": 0,
+    "feedVersion": null,
+    "validFrom": "20260720",
+    "validTo": "20261114"
+  },
+  "stations": [
+    {
+      "agency": "PATH",
+      "stationCode": "NWK",
+      "gtfsStopId": "781719",
+      "name": "Newark",
+      "branchId": "red",
+      "branchName": "NWK-WTC",
+      "branchColor": "#D93A30",
+      "latitude": 40.734435,
+      "longitude": -74.164059,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "NWK-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "NWK-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "HAR",
+      "gtfsStopId": "781721",
+      "name": "Harrison",
+      "branchId": "red",
+      "branchName": "NWK-WTC",
+      "branchColor": "#D93A30",
+      "latitude": 40.739382,
+      "longitude": -74.15561,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "HAR-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "HAR-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "JSQ",
+      "gtfsStopId": "781722",
+      "name": "Journal Square",
+      "branchId": "red,yellow",
+      "branchName": "NWK-WTC / JSQ-33",
+      "branchColor": "#D93A30",
+      "latitude": 40.73199,
+      "longitude": -74.062854,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "JSQ-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "JSQ-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "GRV",
+      "gtfsStopId": "781727",
+      "name": "Grove Street",
+      "branchId": "red,yellow",
+      "branchName": "NWK-WTC / JSQ-33",
+      "branchColor": "#D93A30",
+      "latitude": 40.719264,
+      "longitude": -74.04257,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "GRV-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "GRV-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "EXP",
+      "gtfsStopId": "781731",
+      "name": "Exchange Place",
+      "branchId": "red,green",
+      "branchName": "NWK-WTC / HOB-WTC",
+      "branchColor": "#D93A30",
+      "latitude": 40.716798,
+      "longitude": -74.032451,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "EXP-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "EXP-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "WTC",
+      "gtfsStopId": "781747",
+      "name": "World Trade Center",
+      "branchId": "red,green",
+      "branchName": "NWK-WTC / HOB-WTC",
+      "branchColor": "#D93A30",
+      "latitude": 40.71224,
+      "longitude": -74.012522,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "WTC-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "WTC-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "NEW",
+      "gtfsStopId": "781728",
+      "name": "Newport",
+      "branchId": "yellow,green",
+      "branchName": "JSQ-33 / HOB-WTC",
+      "branchColor": "#FF9900",
+      "latitude": 40.727091,
+      "longitude": -74.034645,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "NEW-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [
+        {
+          "unitId": "NEW-escalator-service",
+          "location": "Station escalator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "HOB",
+      "gtfsStopId": "781743",
+      "name": "Hoboken",
+      "branchId": "green,blue",
+      "branchName": "HOB-WTC / HOB-33",
+      "branchColor": "#65C100",
+      "latitude": 40.735331,
+      "longitude": -74.029005,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "HOB-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "CHR",
+      "gtfsStopId": "781733",
+      "name": "Christopher Street",
+      "branchId": "yellow,blue",
+      "branchName": "JSQ-33 / HOB-33",
+      "branchColor": "#FF9900",
+      "latitude": 40.732942,
+      "longitude": -74.007081,
+      "accessibilityStatus": "Not accessible",
+      "wheelchairBoarding": 2,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [],
+      "escalators": [],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "09S",
+      "gtfsStopId": "781735",
+      "name": "9th Street",
+      "branchId": "yellow,blue",
+      "branchName": "JSQ-33 / HOB-33",
+      "branchColor": "#FF9900",
+      "latitude": 40.734267,
+      "longitude": -73.999006,
+      "accessibilityStatus": "Not accessible",
+      "wheelchairBoarding": 2,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [],
+      "escalators": [],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "14S",
+      "gtfsStopId": "781737",
+      "name": "14th Street",
+      "branchId": "yellow,blue",
+      "branchName": "JSQ-33 / HOB-33",
+      "branchColor": "#FF9900",
+      "latitude": 40.7373,
+      "longitude": -73.996858,
+      "accessibilityStatus": "Not accessible",
+      "wheelchairBoarding": 2,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [],
+      "escalators": [],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "23S",
+      "gtfsStopId": "781739",
+      "name": "23rd Street",
+      "branchId": "yellow,blue",
+      "branchName": "JSQ-33 / HOB-33",
+      "branchColor": "#FF9900",
+      "latitude": 40.74286,
+      "longitude": -73.992792,
+      "accessibilityStatus": "Not accessible",
+      "wheelchairBoarding": 2,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [],
+      "escalators": [],
+      "serviceAlert": ""
+    },
+    {
+      "agency": "PATH",
+      "stationCode": "33S",
+      "gtfsStopId": "781740",
+      "name": "33rd Street",
+      "branchId": "yellow,blue",
+      "branchName": "JSQ-33 / HOB-33",
+      "branchColor": "#FF9900",
+      "latitude": 40.748591,
+      "longitude": -73.988633,
+      "accessibilityStatus": "Accessible",
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.panynj.gov/path/en/accessibility.html",
+      "elevators": [
+        {
+          "unitId": "33S-elevator-service",
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
+        }
+      ],
+      "escalators": [],
+      "serviceAlert": ""
+    }
+  ]
+}

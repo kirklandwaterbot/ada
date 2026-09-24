@@ -27,6 +27,7 @@ export async function fetchWithRetry(
     baseDelayMs = 1_000,
     timeoutMs = 30_000,
     fetchImpl = globalThis.fetch,
+    consume,
     sleepImpl = sleep,
     logger = console,
   } = {},
@@ -55,7 +56,22 @@ export async function fetchWithRetry(
     }
 
     if (response.ok) {
-      return response;
+      if (!consume) return response;
+
+      try {
+        return await consume(response);
+      } catch (error) {
+        if (options.signal?.aborted || attempt === maxAttempts) {
+          throw createRequestError(url, attempt, error);
+        }
+
+        const delayMs = baseDelayMs * 2 ** (attempt - 1);
+        logger.warn(
+          `Response body attempt ${attempt}/${maxAttempts} failed for ${url}: ${describeError(error)}. Retrying in ${delayMs}ms.`,
+        );
+        await sleepImpl(delayMs);
+        continue;
+      }
     }
 
     const error = new Error(`HTTP ${response.status} ${response.statusText}`.trim());

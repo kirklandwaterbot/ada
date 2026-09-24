@@ -6,7 +6,12 @@ import { SubwayRouteIcons } from "@/components/subway-route-icons";
 import { formatStationLineDisplay } from "@/lib/asset-display";
 import { focusStationOnMap } from "@/lib/map-focus";
 import { matchesNormalizedSearch } from "@/lib/search-normalization";
-import { useMemo, useState } from "react";
+import { getEquipmentState } from "@/lib/stations";
+import {
+  normalizeStoredString,
+  usePersistentState,
+} from "@/hooks/use-persistent-state";
+import { useMemo } from "react";
 
 type AccessibilitySummary = {
   accessible: number;
@@ -23,6 +28,17 @@ type AccessibilitySummary = {
 
 type Station = typeof accessibilityStations.stations[number];
 type StationFilterKey = "accessible" | "mixed" | "notAccessible" | "planned";
+
+const STATION_BROWSER_STORAGE_KEYS = {
+  filters: "access-nyc:station-browser-filters:v1",
+  query: "access-nyc:station-browser-query:v1",
+} as const;
+const DEFAULT_STATION_FILTERS: Record<StationFilterKey, boolean> = {
+  accessible: true,
+  mixed: true,
+  notAccessible: true,
+  planned: true,
+};
 
 const STATION_FILTERS: Array<{
   key: StationFilterKey;
@@ -89,7 +105,7 @@ export function AccessibilityDashboard({
           tone="green"
         />
         <DashboardMetric
-          label="Snapshot outage flags"
+          label="Current outages"
           total={elevators.length}
           value={elevatorStatus.outOfService}
           tone="red"
@@ -98,6 +114,12 @@ export function AccessibilityDashboard({
           label="Work/repair"
           total={elevators.length}
           value={elevatorStatus.workOrRepair}
+          tone="amber"
+        />
+        <DashboardMetric
+          label="Future outages"
+          total={elevators.length}
+          value={elevatorStatus.futureScheduled}
           tone="amber"
         />
       </DashboardPanel>
@@ -111,7 +133,7 @@ export function AccessibilityDashboard({
           tone="green"
         />
         <DashboardMetric
-          label="Snapshot outage flags"
+          label="Current outages"
           total={escalators.length}
           value={escalatorStatus.outOfService}
           tone="red"
@@ -120,6 +142,12 @@ export function AccessibilityDashboard({
           label="Work/repair"
           total={escalators.length}
           value={escalatorStatus.workOrRepair}
+          tone="amber"
+        />
+        <DashboardMetric
+          label="Future outages"
+          total={escalators.length}
+          value={escalatorStatus.futureScheduled}
           tone="amber"
         />
       </DashboardPanel>
@@ -143,54 +171,52 @@ export function AccessibilityDashboard({
 function getEquipmentStatusCounts(assets: MtaAsset[]) {
   return assets.reduce(
     (counts, asset) => {
-      const statusCode = asset.service_status_code?.toUpperCase() ?? "";
-      const statusText = [
-        asset.service_status,
-        asset.notes,
-        asset.alternative_route,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      if (
-        /\b(construction|repair|rehab|rehabilitation|modernization|temporar|closed|closure)\b/.test(
-          statusText,
-        )
-      ) {
-        counts.workOrRepair += 1;
-      }
-
-      if (statusCode === "IFIS") {
-        counts.inService += 1;
-      } else if (
-        statusCode === "RNOS" ||
-        /\b(out of service|removed|non function)/i.test(statusText)
-      ) {
-        counts.outOfService += 1;
-      } else {
-        counts.unknown += 1;
-      }
+      const state = getEquipmentState(asset);
+      if (state === "operational") counts.inService += 1;
+      if (state === "outage") counts.outOfService += 1;
+      if (state === "unknown") counts.unknown += 1;
+      if (state === "work") counts.workOrRepair += 1;
+      if (asset.future_outage === "YES") counts.futureScheduled += 1;
 
       return counts;
     },
     {
       inService: 0,
       outOfService: 0,
+      futureScheduled: 0,
       unknown: 0,
       workOrRepair: 0,
     },
   );
 }
 
+function normalizeStoredStationFilters(
+  storedValue: unknown,
+  fallback: Record<StationFilterKey, boolean>,
+) {
+  if (!storedValue || typeof storedValue !== "object") return fallback;
+  const stored = storedValue as Partial<Record<StationFilterKey, boolean>>;
+  return Object.fromEntries(
+    Object.entries(fallback).map(([key, value]) => [
+      key,
+      typeof stored[key as StationFilterKey] === "boolean"
+        ? stored[key as StationFilterKey]
+        : value,
+    ]),
+  ) as Record<StationFilterKey, boolean>;
+}
+
 function StationBrowser() {
-  const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState<Record<StationFilterKey, boolean>>({
-    accessible: true,
-    mixed: true,
-    notAccessible: true,
-    planned: true,
-  });
+  const [query, setQuery] = usePersistentState(
+    STATION_BROWSER_STORAGE_KEYS.query,
+    "",
+    normalizeStoredString,
+  );
+  const [filters, setFilters] = usePersistentState(
+    STATION_BROWSER_STORAGE_KEYS.filters,
+    DEFAULT_STATION_FILTERS,
+    normalizeStoredStationFilters,
+  );
 
   const stations = useMemo(
     () =>

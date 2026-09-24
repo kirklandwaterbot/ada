@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  getEquipmentState,
   getStationBySlug,
   getStationCoordinate,
   getStationSearchAliases,
   stationSummary,
   stations,
 } from "@/lib/stations";
+import type { MtaAsset } from "@/lib/mta-assets";
 
 describe("149 St-Hostos accessibility update", () => {
   it("marks both connected line groups accessible from September 11, 2026", () => {
@@ -37,7 +39,7 @@ describe("149 St-Hostos accessibility update", () => {
     });
   });
 
-  it("uses the official GTFS coordinates for both station components", () => {
+  it("focuses both station components on one consolidated complex marker", () => {
     const fourTrainStation = stations.find(
       (station) =>
         station.station === "149 St-Hostos" && station.services.includes("4"),
@@ -51,11 +53,11 @@ describe("149 St-Hostos accessibility update", () => {
     expect(twoFiveStation).toBeDefined();
     expect(getStationCoordinate(fourTrainStation!)).toEqual({
       latitude: 40.818375,
-      longitude: -73.927351,
+      longitude: -73.92735,
     });
     expect(getStationCoordinate(twoFiveStation!)).toEqual({
-      latitude: 40.81841,
-      longitude: -73.926718,
+      latitude: 40.818375,
+      longitude: -73.92735,
     });
   });
 
@@ -77,5 +79,40 @@ describe("149 St-Hostos accessibility update", () => {
         )!,
       ),
     ).toContain("149 St-Grand Concourse");
+  });
+});
+
+describe("Beach 90 St service", () => {
+  it("lists both A and Rockaway Shuttle service", () => {
+    const beach90 = stations.find((station) => station.station === "Beach 90 St");
+
+    expect(beach90?.services).toEqual(["A", "SR"]);
+  });
+});
+
+describe("live subway equipment status", () => {
+  it("marks a current outage unavailable without treating future work as current", () => {
+    const base = {
+      ada_compliant: "YES",
+      elevator_or_escalator: "Elevator",
+      equipment_code: "EL1",
+      service_status_code: "IFIS",
+    } as MtaAsset;
+
+    expect(
+      getEquipmentState({
+        ...base,
+        current_outage: "YES",
+        live_equipment_status: "outage",
+      }),
+    ).toBe("outage");
+    expect(
+      getEquipmentState({
+        ...base,
+        current_outage: "NO",
+        future_outage: "YES",
+        live_equipment_status: "operational",
+      }),
+    ).toBe("operational");
   });
 });

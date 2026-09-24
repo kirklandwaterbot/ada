@@ -1,0 +1,10 @@
+.tmp/
+.env
+.env.*
+.git/
+.next/
+.vercel/
+coverage/
+node_modules/
+playwright-report/
+test-results/

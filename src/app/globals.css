@@ -172,6 +172,21 @@ select:focus-visible {
   margin-top: 0.5rem;
 }
 
+.asset-popup-line-badges {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.asset-popup-line-logo {
+  display: block;
+  height: 1.25rem;
+  object-fit: contain;
+  width: 1.25rem;
+}
+
 .asset-popup-close {
   align-items: center;
   border-radius: 9999px;

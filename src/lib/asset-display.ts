@@ -6,6 +6,13 @@ export type AssetMapStatus =
   | "not_accessible"
   | "work";
 
+export const ASSET_MAP_STATUS_COLORS: Record<AssetMapStatus, string> = {
+  accessible: "#16a34a",
+  equipment: "#a8a29e",
+  not_accessible: "#dc2626",
+  work: "#eab308",
+};
+
 const LINE_NAME_OVERRIDES: Record<string, string> = {
   "BMT-38-38STYD": "BMT West End",
   "IND-A-8AV/FULTONST": "IND Fulton St",
@@ -124,6 +131,13 @@ export function formatStationDescription(value?: string, stationName?: string) {
     .replace(/^42St\/Port Authority-Bus Terminal$/i, "42 St/Port Authority-Bus Terminal")
     .replace(/\s*-\s*/g, " - ");
   const normalizedStationName = stationName?.toUpperCase() ?? "";
+
+  if (
+    normalizedStationName.includes("149ST-GRANDCONCOURSE") ||
+    /^149 St\s*-\s*Grand Concourse$/i.test(displayValue)
+  ) {
+    return "149 St-Hostos";
+  }
 
   if (
     displayValue === "6 Av" ||
@@ -247,6 +261,13 @@ function isSharedArcherAvStation(asset: MtaAsset) {
 }
 
 export function getAssetCoordinates(asset: MtaAsset) {
+  // The upstream inventory currently publishes EL487 near Whitestone even
+  // though its station and location notes identify Rockaway Blvd. Keep this
+  // correction here so daily snapshot refreshes cannot move it back.
+  if (asset.equipment_code?.trim().toUpperCase() === "EL487") {
+    return { latitude: 40.680429, longitude: -73.843853 };
+  }
+
   const latitude = Number(asset.x_coordinate);
   const longitude = Number(asset.y_coordinate);
 
@@ -265,6 +286,13 @@ export function getAssetCoordinates(asset: MtaAsset) {
 }
 
 export function getAssetMapStatus(asset: MtaAsset): AssetMapStatus {
+  if (
+    asset.current_outage === "YES" ||
+    asset.live_equipment_status === "outage"
+  ) {
+    return "work";
+  }
+
   const statusText = [
     asset.service_status,
     asset.service_status_code,

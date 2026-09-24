@@ -3,6 +3,10 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 import { fetchWithRetry } from "./fetch-with-retry.mjs";
+import {
+  fetchMtaEquipmentStatus,
+  mergeMtaEquipmentStatus,
+} from "../src/lib/mta-equipment-status.mjs";
 
 const datasetId = "94fv-bak7";
 const datasetPageUrl = `https://data.ny.gov/d/${datasetId}`;
@@ -14,6 +18,7 @@ const csvPath = resolve("data/mta-subway-elevator-escalator-assets.csv");
 const jsonPath = resolve("data/mta-subway-elevator-escalator-assets.json");
 const dbPath = resolve("data/mta-subway-elevator-escalator-assets.sqlite");
 const metadataPath = resolve("data/sync-metadata.json");
+const equipmentStatusPath = resolve("data/mta-equipment-status.json");
 
 async function fetchText(url) {
   const response = await fetchWithRetry(url, {
@@ -103,12 +108,16 @@ async function buildSqliteDatabase(rows, metadata) {
 }
 
 const syncedAt = new Date().toISOString();
-const [csvText, jsonText, expectedRowCount] = await Promise.all([
+const [csvText, jsonText, expectedRowCount, equipmentStatus] = await Promise.all([
   fetchText(csvUrl),
   fetchText(jsonUrl),
   getExpectedRowCount(),
+  fetchMtaEquipmentStatus(),
 ]);
-const rows = JSON.parse(jsonText);
+const inventoryRows = JSON.parse(jsonText);
+const rows = Array.isArray(inventoryRows)
+  ? mergeMtaEquipmentStatus(inventoryRows, equipmentStatus)
+  : inventoryRows;
 const actualRowCount = Array.isArray(rows) ? rows.length : 0;
 const rowCountMatches =
   typeof expectedRowCount === "number" ? expectedRowCount === actualRowCount : null;
@@ -144,6 +153,10 @@ const metadata = {
   row_count_loaded: actualRowCount,
   row_count_expected: expectedRowCount,
   row_count_matches: rowCountMatches,
+  equipment_status_source_url: equipmentStatus.metadata.sourceUrl,
+  equipment_status_checked_at: equipmentStatus.metadata.generatedAt,
+  current_outage_count: equipmentStatus.metadata.currentOutageCount,
+  future_outage_count: equipmentStatus.metadata.futureOutageCount,
 };
 
 const sqliteFile = await buildSqliteDatabase(rows, metadata);
@@ -151,7 +164,12 @@ const sqliteFile = await buildSqliteDatabase(rows, metadata);
 await mkdir(dirname(dbPath), { recursive: true });
 await Promise.all([
   writeFile(csvPath, csvText, "utf8"),
-  writeFile(jsonPath, jsonText, "utf8"),
+  writeFile(jsonPath, `${JSON.stringify(rows, null, 2)}\n`, "utf8"),
+  writeFile(
+    equipmentStatusPath,
+    `${JSON.stringify(equipmentStatus, null, 2)}\n`,
+    "utf8",
+  ),
   writeFile(dbPath, sqliteFile),
   writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`, "utf8"),
 ]);
@@ -160,6 +178,9 @@ console.log(`Downloaded CSV to ${csvPath}`);
 console.log(`Downloaded JSON to ${jsonPath}`);
 console.log(`Created SQLite database at ${dbPath}`);
 console.log(`Loaded ${actualRowCount} rows`);
+console.log(
+  `MTA equipment status: ${equipmentStatus.metadata.currentOutageCount} current / ${equipmentStatus.metadata.futureOutageCount} future outages`,
+);
 console.log(
   `Socrata count check: ${expectedRowCount ?? "unavailable"} expected / ${actualRowCount} loaded`,
 );

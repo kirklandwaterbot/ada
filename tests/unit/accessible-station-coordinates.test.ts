@@ -9,7 +9,7 @@ const RAMP_OR_LEVEL_METHODS = new Set([
 
 describe("accessible station coordinate classifications", () => {
   it("classifies every fallback marker by its step-free access method", () => {
-    expect(accessibleStations.stations).toHaveLength(17);
+    expect(accessibleStations.stations).toHaveLength(16);
     expect(
       accessibleStations.stations.every((station) =>
         ["accessible_entrance", "elevator", "ramp", "street_level"].includes(
@@ -31,17 +31,20 @@ describe("accessible station coordinate classifications", () => {
     ).toHaveLength(10);
     expect(
       fullAccess.filter((station) => station.accessMethod === "elevator"),
-    ).toHaveLength(5);
+    ).toHaveLength(4);
   });
 
-  it("identifies 149 St-Hostos as elevator-served on both line groups", () => {
+  it("uses one elevator-served marker for the entire 149 St-Hostos complex", () => {
     const hostosMarkers = accessibleStations.stations.filter(
       (station) => station.station === "149 St-Hostos",
     );
 
-    expect(hostosMarkers).toHaveLength(2);
-    expect(
-      hostosMarkers.every((station) => station.accessMethod === "elevator"),
-    ).toBe(true);
+    expect(hostosMarkers).toEqual([
+      expect.objectContaining({
+        accessMethod: "elevator",
+        services: ["2", "4", "5"],
+        sourceStopIds: ["222", "415"],
+      }),
+    ]);
   });
 });

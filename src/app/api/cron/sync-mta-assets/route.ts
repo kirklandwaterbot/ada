@@ -51,6 +51,10 @@ export async function GET(request: Request) {
         loadedRowCount: assetResult.value.loadedRowCount,
         rowCountMatches: assetResult.value.rowCountMatches,
         syncedAt: assetResult.value.metadata.lastSyncedAt,
+        equipmentStatusCheckedAt:
+          assetResult.value.metadata.equipmentStatusCheckedAt,
+        currentOutageCount: assetResult.value.metadata.currentOutageCount,
+        futureOutageCount: assetResult.value.metadata.futureOutageCount,
       },
       capitalProjects: capitalResult.value,
     });

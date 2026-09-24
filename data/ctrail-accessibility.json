@@ -1,0 +1,633 @@
+{
+  "metadata": {
+    "generatedAt": "2026-09-24T22:41:37.401Z",
+    "source": "CTrail and Amtrak GTFS with CTrail elevator status",
+    "ctrailUrl": "https://portal.ct.gov/CTrail",
+    "hartfordGtfsUrl": "https://ctrides.com/hlgtfs.zip",
+    "shoreLineEastGtfsUrl": "https://content.amtrak.com/content/gtfs/GTFS.zip",
+    "mnrCoordinateGtfsUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfsmnr.zip",
+    "shoreLineEastScheduleUrl": "https://shorelineeast.com/schedules/",
+    "elevatorStatusUrl": "https://elevatorstatus.ctrail.com/",
+    "stationCount": 21,
+    "accessibleStationCount": 21,
+    "equipmentStationCount": 12,
+    "stationWithoutListedElevatorCount": 9,
+    "activeElevatorOutageCount": 1,
+    "feeds": [
+      {
+        "name": "Hartford Line",
+        "feedVersion": "S1000057",
+        "validFrom": "20260711",
+        "validTo": "20270712"
+      },
+      {
+        "name": "Shore Line East",
+        "feedVersion": "20260924",
+        "validFrom": "20260925",
+        "validTo": "20261001"
+      }
+    ]
+  },
+  "stations": [
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:BERLIN",
+      "gtfsStopId": "5",
+      "name": "Berlin",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.636136,
+      "longitude": -72.765192,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-BERLIN-1",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-BERLIN-2",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:BNF",
+      "gtfsStopId": "BNF",
+      "name": "Branford",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.274549,
+      "longitude": -72.817225,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-BRANFORD-3",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-BRANFORD-4",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE-THRU:2BP",
+      "gtfsStopId": "140",
+      "name": "Bridgeport",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.178677,
+      "longitude": -73.187076,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:CLN",
+      "gtfsStopId": "CLN",
+      "name": "Clinton",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.279458,
+      "longitude": -72.528314,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-CLINTON-5",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-CLINTON-6",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:GUI",
+      "gtfsStopId": "GUI",
+      "name": "Guilford",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.275603,
+      "longitude": -72.673513,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-GUILFORD-7",
+          "location": "Track 1",
+          "status": "outage",
+          "lastUpdated": null,
+          "note": "The elevator on Track 1 at Guilford is currently out of service. A technician has been notified."
+        },
+        {
+          "unitId": "CTRAIL-GUILFORD-8",
+          "location": "Track 4",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:HARTFORD",
+      "gtfsStopId": "6",
+      "name": "Hartford Union Station",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.76896,
+      "longitude": -72.681831,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-HARTFORD-UNION-9",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:MDS",
+      "gtfsStopId": "MDS",
+      "name": "Madison",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.283577,
+      "longitude": -72.599444,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:MERIDEN",
+      "gtfsStopId": "4",
+      "name": "Meriden",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.538894,
+      "longitude": -72.801485,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-MERIDEN-10",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-MERIDEN-11",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE-THRU:2MI",
+      "gtfsStopId": "145",
+      "name": "Milford",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.223231,
+      "longitude": -73.057647,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:STATESTR+SLE:STS",
+      "gtfsStopId": "2,STS",
+      "name": "New Haven State Street",
+      "branchId": "HART,SLE",
+      "branchName": "Hartford Line / Shore Line East",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.305092,
+      "longitude": -72.921692,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-STATE-STREET-12",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-STATE-STREET-13",
+          "location": "Track 4 & 6",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:NEWHAVEN+SLE:NHV",
+      "gtfsStopId": "1,NHV",
+      "name": "New Haven Union Station",
+      "branchId": "HART,SLE",
+      "branchName": "Hartford Line / Shore Line East",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.297172,
+      "longitude": -72.925945,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-UNION-14",
+          "location": "East Lobby",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-UNION-15",
+          "location": "Track 1 & 3",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-UNION-16",
+          "location": "Track 12 & 14",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-UNION-17",
+          "location": "Track 2 & 4",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-UNION-18",
+          "location": "Track 8 & 10",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-NEW-HAVEN-UNION-19",
+          "location": "West Lobby",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:NLC",
+      "gtfsStopId": "NLC",
+      "name": "New London",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.354267,
+      "longitude": -72.093225,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:OSB",
+      "gtfsStopId": "OSB",
+      "name": "Old Saybrook",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.30039,
+      "longitude": -72.376818,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-OLD-SAYBROOK-20",
+          "location": "Track 1 & 3",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-OLD-SAYBROOK-21",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:SPRNGFLD",
+      "gtfsStopId": "9",
+      "name": "Springfield Union Station",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 42.106137,
+      "longitude": -72.593041,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-SPRINGFIELD-UNION-22",
+          "location": "Platform C - Track 4 & 6",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-SPRINGFIELD-UNION-23",
+          "location": "Platform D - Track 8",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE-THRU:2SM",
+      "gtfsStopId": "124",
+      "name": "Stamford",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.046611,
+      "longitude": -73.542846,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE-THRU:2SR",
+      "gtfsStopId": "143",
+      "name": "Stratford",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.194255,
+      "longitude": -73.131532,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:WALLNGFRD",
+      "gtfsStopId": "3",
+      "name": "Wallingford",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.461695,
+      "longitude": -72.82273,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-WALLINGFORD-24",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-WALLINGFORD-25",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE-THRU:2WH",
+      "gtfsStopId": "190",
+      "name": "West Haven",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.27142,
+      "longitude": -72.963488,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "SLE:WSB",
+      "gtfsStopId": "WSB",
+      "name": "Westbrook",
+      "branchId": "SLE",
+      "branchName": "Shore Line East",
+      "branchColor": "#ED0A28",
+      "latitude": 41.288787,
+      "longitude": -72.448,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Elevator access"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://shorelineeast.com/",
+      "elevators": [
+        {
+          "unitId": "CTRAIL-WESTBROOK-26",
+          "location": "Track 1",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        },
+        {
+          "unitId": "CTRAIL-WESTBROOK-27",
+          "location": "Track 2",
+          "status": "operational",
+          "lastUpdated": null,
+          "note": null
+        }
+      ],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:WINDSOR",
+      "gtfsStopId": "7",
+      "name": "Windsor",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.852058,
+      "longitude": -72.642139,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [],
+      "escalators": []
+    },
+    {
+      "agency": "CTrail",
+      "stationCode": "HART:WINDSORLK",
+      "gtfsStopId": "8",
+      "name": "Windsor Locks",
+      "branchId": "HART",
+      "branchName": "Hartford Line",
+      "branchColor": "#EA0D2A",
+      "latitude": 41.913938,
+      "longitude": -72.625967,
+      "accessibilityStatus": "Accessible",
+      "accessMethods": [
+        "Step-free access (no CTrail elevator listed)"
+      ],
+      "wheelchairBoarding": 1,
+      "stationDetailUrl": "https://www.hartfordline.com/",
+      "elevators": [],
+      "escalators": []
+    }
+  ]
+}

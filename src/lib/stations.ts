@@ -10,6 +10,10 @@ import type { MtaAsset } from "@/lib/mta-assets";
 
 export type Station = (typeof accessibilityData.stations)[number];
 export type EquipmentState = "operational" | "outage" | "work" | "unknown";
+export type StationAccessibilityView = Pick<
+  Station,
+  "accessibilityStatus" | "plannedAda"
+>;
 
 export const stations = accessibilityData.stations;
 export const stationSummary = accessibilityData.summary;
@@ -30,7 +34,7 @@ export function getStationBySlug(slug: string) {
   return stations.find((station) => getStationSlug(station) === canonicalSlug);
 }
 
-export function getStationSearchAliases(station: Station) {
+export function getStationSearchAliases(station: Pick<Station, "station">) {
   return station.station === "149 St-Hostos"
     ? ["149 St-Grand Concourse"]
     : [];
@@ -68,6 +72,17 @@ export function getStationAssets(station: Station, assets: MtaAsset[]) {
 }
 
 export function getEquipmentState(asset: MtaAsset): EquipmentState {
+  if (
+    asset.current_outage === "YES" ||
+    asset.live_equipment_status === "outage"
+  ) {
+    return "outage";
+  }
+
+  if (asset.live_equipment_status === "operational") {
+    return "operational";
+  }
+
   const code = asset.service_status_code?.trim().toUpperCase() ?? "";
   const statusText = [
     asset.service_status,
@@ -155,7 +170,7 @@ export function getStationCoordinate(station: Station) {
     : null;
 }
 
-export function getAccessibilityTone(station: Station) {
+export function getAccessibilityTone(station: StationAccessibilityView) {
   if (station.accessibilityStatus === "Accessible") {
     return "accessible" as const;
   }

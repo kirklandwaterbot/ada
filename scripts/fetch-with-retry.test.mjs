@@ -100,3 +100,28 @@ test("reports the URL and attempt count after exhausting retries", async () => {
 
   assert.equal(attempts, 3);
 });
+
+test("retries a response body that terminates after successful headers", async () => {
+  const delays = [];
+  let attempts = 0;
+
+  const contents = await fetchWithRetry(
+    "https://example.test/feed.zip",
+    {},
+    {
+      baseDelayMs: 10,
+      consume: async (response) => {
+        attempts += 1;
+        if (attempts === 1) throw new TypeError("terminated");
+        return response.text();
+      },
+      fetchImpl: async () => new Response("complete"),
+      sleepImpl: async (delayMs) => delays.push(delayMs),
+      logger: silentLogger,
+    },
+  );
+
+  assert.equal(contents, "complete");
+  assert.equal(attempts, 2);
+  assert.deepEqual(delays, [10]);
+});

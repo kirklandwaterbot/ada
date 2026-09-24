@@ -1,9 +1,12 @@
 import { SiteIcon } from "@/components/site-icon";
-import { getAccessibilityTone, type Station } from "@/lib/stations";
+import {
+  getAccessibilityTone,
+  type StationAccessibilityView,
+} from "@/lib/stations";
 
 type StationStatusBadgeProps = {
   compact?: boolean;
-  station: Station;
+  station: StationAccessibilityView;
 };
 
 const toneClasses = {

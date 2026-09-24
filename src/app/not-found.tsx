@@ -15,7 +15,7 @@ export default function NotFound() {
           This stop is not in the directory
         </h1>
         <p className="mt-3 text-sm leading-6 text-[var(--muted-strong)]">
-          The station link may be outdated, or the station name may have changed in the source workbook.
+          The station link may be outdated, or the station name may have changed in one of the connected operator datasets.
         </p>
         <Link
           className="mt-6 inline-flex h-11 items-center gap-2 rounded-xl bg-[var(--nav-active)] px-4 text-sm font-bold text-white"

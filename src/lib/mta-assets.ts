@@ -8,6 +8,10 @@ import {
   getActualRowCountMatch,
 } from "@/lib/data-integrity";
 import { matchesNormalizedSearch } from "@/lib/search-normalization";
+import {
+  fetchMtaEquipmentStatus,
+  mergeMtaEquipmentStatus,
+} from "@/lib/mta-equipment-status.mjs";
 
 export const DATASET_ID = "94fv-bak7";
 export const SOCRATA_API_URL = `https://data.ny.gov/resource/${DATASET_ID}.json`;
@@ -42,6 +46,15 @@ const PRIORITY_COLUMNS = [
   "elevator_or_escalator",
   "original_installation_date",
   "latest_installation_date",
+  "live_equipment_status",
+  "current_outage",
+  "current_outage_reason",
+  "current_outage_start",
+  "current_outage_estimated_return",
+  "future_outage",
+  "future_outage_reason",
+  "future_outage_start",
+  "future_outage_estimated_return",
 ];
 
 export type MtaAsset = {
@@ -68,6 +81,21 @@ export type MtaAsset = {
   latest_installation_date?: string;
   service_status_code?: string;
   service_status?: string;
+  live_equipment_status?: "operational" | "outage" | string;
+  current_outage?: "YES" | "NO" | string;
+  current_outage_count?: string;
+  current_outage_reason?: string;
+  current_outage_start?: string;
+  current_outage_estimated_return?: string;
+  current_outage_details?: string;
+  future_outage?: "YES" | "NO" | string;
+  future_outage_count?: string;
+  future_outage_reason?: string;
+  future_outage_start?: string;
+  future_outage_estimated_return?: string;
+  future_outage_details?: string;
+  equipment_status_checked_at?: string;
+  equipment_status_source_url?: string;
   service_life?: string;
   nyct_owned?: string;
   maintained_by?: string;
@@ -105,6 +133,10 @@ export type DataMetadata = {
   jsonApiUrl: string;
   lastSyncedAt: string | null;
   localSnapshotWrittenAt: string | null;
+  equipmentStatusSourceUrl: string | null;
+  equipmentStatusCheckedAt: string | null;
+  currentOutageCount: number | null;
+  futureOutageCount: number | null;
   pageSourceMode: DataSourceMode;
   sqlitePath: string;
   upstreamSource: "live_api" | "local_snapshot" | "unknown";
@@ -127,22 +159,22 @@ export async function getMtaAssetDataset(): Promise<MtaAssetDataset> {
   const postgresDataset = await readPostgresDataset();
 
   if (postgresDataset) {
-    return postgresDataset;
+    return refreshEquipmentStatus(postgresDataset);
   }
 
   const sqlDataset = await readSqliteDataset();
 
   if (sqlDataset) {
-    return sqlDataset;
+    return refreshEquipmentStatus(sqlDataset);
   }
 
   const fallback = await readFallbackDataset();
   const stats = getAssetStats(fallback.assets);
 
-  return {
+  return refreshEquipmentStatus({
     ...fallback,
     stats,
-  };
+  });
 }
 
 export async function getMtaAssets(): Promise<MtaAsset[]> {
@@ -161,10 +193,12 @@ export async function syncMtaAssetsToPostgres() {
     throw new Error("DATABASE_URL is not configured.");
   }
 
-  const [assets, expectedRowCount] = await Promise.all([
+  const [inventoryAssets, expectedRowCount, equipmentStatus] = await Promise.all([
     fetchLiveAssets(),
     fetchExpectedRowCount(),
+    fetchMtaEquipmentStatus(),
   ]);
+  const assets = mergeMtaEquipmentStatus(inventoryAssets, equipmentStatus) as MtaAsset[];
   const syncedAt = new Date().toISOString();
   const loadedRowCount = assets.length;
   assertCompleteDataset(expectedRowCount, loadedRowCount, "live MTA dataset");
@@ -186,6 +220,10 @@ export async function syncMtaAssetsToPostgres() {
       typeof rowCountMatches === "boolean" ? String(rowCountMatches) : null,
     synced_at: syncedAt,
     upstream_source: "live_api",
+    equipment_status_source_url: equipmentStatus.metadata.sourceUrl,
+    equipment_status_checked_at: equipmentStatus.metadata.generatedAt,
+    current_outage_count: String(equipmentStatus.metadata.currentOutageCount),
+    future_outage_count: String(equipmentStatus.metadata.futureOutageCount),
   };
 
   const persistedRowCount = await writePostgresDataset(assets, metadata);
@@ -408,6 +446,10 @@ async function readFallbackDataset(): Promise<
         jsonApiUrl: SOCRATA_API_URL,
         lastSyncedAt: null,
         localSnapshotWrittenAt: null,
+        equipmentStatusSourceUrl: null,
+        equipmentStatusCheckedAt: null,
+        currentOutageCount: null,
+        futureOutageCount: null,
         pageSourceMode: "live_api",
         sqlitePath: SQLITE_DB_PATH,
         upstreamSource: "live_api",
@@ -435,6 +477,10 @@ async function readFallbackDataset(): Promise<
         jsonApiUrl: SOCRATA_API_URL,
         lastSyncedAt: null,
         localSnapshotWrittenAt: null,
+        equipmentStatusSourceUrl: null,
+        equipmentStatusCheckedAt: null,
+        currentOutageCount: null,
+        futureOutageCount: null,
         pageSourceMode: "local_snapshot",
         sqlitePath: SQLITE_DB_PATH,
         upstreamSource: "local_snapshot",
@@ -445,6 +491,38 @@ async function readFallbackDataset(): Promise<
         },
       },
     };
+  }
+}
+
+async function refreshEquipmentStatus(
+  dataset: MtaAssetDataset,
+): Promise<MtaAssetDataset> {
+  try {
+    const status = await fetchMtaEquipmentStatus();
+    const assets = mergeMtaEquipmentStatus(
+      dataset.assets,
+      status,
+    ) as MtaAsset[];
+
+    return {
+      ...dataset,
+      assets,
+      columns: getColumns(assets),
+      metadata: {
+        ...dataset.metadata,
+        equipmentStatusSourceUrl: status.metadata.sourceUrl,
+        equipmentStatusCheckedAt: status.metadata.generatedAt,
+        currentOutageCount: status.metadata.currentOutageCount,
+        futureOutageCount: status.metadata.futureOutageCount,
+      },
+      stats: getAssetStats(assets),
+    };
+  } catch (error) {
+    console.warn(
+      "Unable to refresh live MTA equipment status; using saved status",
+      error,
+    );
+    return dataset;
   }
 }
 
@@ -991,9 +1069,11 @@ function normalizeMetadata(
   loadedRowCount: number,
 ): DataMetadata {
   const expectedRowCount = parseNullableNumber(metadata.row_count_expected);
+  const validatedLoadedRowCount =
+    parseNullableNumber(metadata.row_count_loaded) ?? loadedRowCount;
   const rowCountMatches = getActualRowCountMatch(
     expectedRowCount,
-    loadedRowCount,
+    validatedLoadedRowCount,
   );
 
   return {
@@ -1004,6 +1084,10 @@ function normalizeMetadata(
     jsonApiUrl: metadata.json_api_url ?? SOCRATA_API_URL,
     lastSyncedAt: metadata.synced_at ?? null,
     localSnapshotWrittenAt: metadata.local_snapshot_written_at ?? null,
+    equipmentStatusSourceUrl: metadata.equipment_status_source_url ?? null,
+    equipmentStatusCheckedAt: metadata.equipment_status_checked_at ?? null,
+    currentOutageCount: parseNullableNumber(metadata.current_outage_count),
+    futureOutageCount: parseNullableNumber(metadata.future_outage_count),
     pageSourceMode,
     sqlitePath: SQLITE_DB_PATH,
     upstreamSource:
@@ -1013,7 +1097,7 @@ function normalizeMetadata(
         : "unknown",
     validation: {
       expectedRowCount,
-      loadedRowCount,
+      loadedRowCount: validatedLoadedRowCount,
       rowCountMatches,
     },
   };
@@ -1050,7 +1134,9 @@ function isVisibleColumn(column: string) {
   return (
     column !== "station_services" &&
     column !== "station_planned_ada" &&
-    column !== "station_planned_ada_note"
+    column !== "station_planned_ada_note" &&
+    column !== "current_outage_details" &&
+    column !== "future_outage_details"
   );
 }
 

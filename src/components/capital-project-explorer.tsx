@@ -1,8 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useMemo } from "react";
 import { SiteIcon } from "@/components/site-icon";
+import {
+  normalizeStoredPositiveInteger,
+  normalizeStoredString,
+  usePersistentState,
+} from "@/hooks/use-persistent-state";
 import {
   formatCapitalDate,
   formatCapitalMoney,
@@ -11,17 +16,44 @@ import type { CapitalProjectSummary } from "@/lib/mta-capital-types";
 import { matchesNormalizedSearch } from "@/lib/search-normalization";
 
 const INITIAL_RESULT_COUNT = 24;
+const CAPITAL_EXPLORER_STORAGE_KEYS = {
+  agency: "access-nyc:capital-explorer-agency:v1",
+  phase: "access-nyc:capital-explorer-phase:v1",
+  query: "access-nyc:capital-explorer-query:v1",
+  source: "access-nyc:capital-explorer-source:v1",
+  visibleResults: "access-nyc:capital-explorer-visible-results:v1",
+} as const;
 
 export function CapitalProjectExplorer({
   projects,
 }: {
   projects: CapitalProjectSummary[];
 }) {
-  const [agency, setAgency] = useState("All");
-  const [phase, setPhase] = useState("All");
-  const [query, setQuery] = useState("");
-  const [source, setSource] = useState("All");
-  const [visibleCount, setVisibleCount] = useState(INITIAL_RESULT_COUNT);
+  const [agency, setAgency] = usePersistentState(
+    CAPITAL_EXPLORER_STORAGE_KEYS.agency,
+    "All",
+    normalizeStoredString,
+  );
+  const [phase, setPhase] = usePersistentState(
+    CAPITAL_EXPLORER_STORAGE_KEYS.phase,
+    "All",
+    normalizeStoredString,
+  );
+  const [query, setQuery] = usePersistentState(
+    CAPITAL_EXPLORER_STORAGE_KEYS.query,
+    "",
+    normalizeStoredString,
+  );
+  const [source, setSource] = usePersistentState(
+    CAPITAL_EXPLORER_STORAGE_KEYS.source,
+    "All",
+    normalizeStoredString,
+  );
+  const [visibleCount, setVisibleCount] = usePersistentState(
+    CAPITAL_EXPLORER_STORAGE_KEYS.visibleResults,
+    INITIAL_RESULT_COUNT,
+    normalizeStoredPositiveInteger,
+  );
   const deferredQuery = useDeferredValue(query);
   const agencies = useMemo(
     () =>

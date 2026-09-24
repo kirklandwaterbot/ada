@@ -564,10 +564,11 @@
       "matchedStationName": "Beach 36 St - Edgemere"
     },
     {
-      "id": "beach 90 st-SR-Rockaway Line",
+      "id": "beach 90 st-A-SR-Rockaway Line",
       "station": "Beach 90 St",
       "line": "Rockaway Line",
       "services": [
+        "A",
         "SR"
       ],
       "borough": "Queens",
@@ -657,50 +658,23 @@
       "matchedStationName": "Broadway"
     },
     {
-      "id": "broadway junction-L-Canarsie Line",
+      "id": "broadway-junction-complex",
       "station": "Broadway Junction",
-      "line": "Canarsie Line",
+      "line": "Broadway Junction Complex",
       "services": [
+        "A",
+        "C",
+        "J",
+        "Z",
         "L"
       ],
       "borough": "Brooklyn",
       "neighborhood": "East New York",
       "plannedAdaNote": "✅",
-      "latitude": 40.706092,
-      "longitude": -73.950308,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "Broadway"
-    },
-    {
-      "id": "broadway junction-A-C-Fulton St Line",
-      "station": "Broadway Junction",
-      "line": "Fulton St Line",
-      "services": [
-        "A",
-        "C"
-      ],
-      "borough": "Brooklyn",
-      "neighborhood": "East New York",
-      "plannedAdaNote": "✅",
-      "latitude": 40.706092,
-      "longitude": -73.950308,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "Broadway"
-    },
-    {
-      "id": "broadway junction-J-Jamaica Line",
-      "station": "Broadway Junction",
-      "line": "Jamaica Line",
-      "services": [
-        "J"
-      ],
-      "borough": "Brooklyn",
-      "neighborhood": "East New York",
-      "plannedAdaNote": "✅",
-      "latitude": 40.706092,
-      "longitude": -73.950308,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "Broadway"
+      "latitude": 40.67856,
+      "longitude": -73.90392,
+      "coordinateSource": "MTA elevator and escalator equipment inventory",
+      "matchedStationName": "Broadway Junction"
     },
     {
       "id": "brook av-6-Pelham Line",

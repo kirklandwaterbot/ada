@@ -219,7 +219,7 @@ function Brand({
           Access NYC
         </span>
         <span className="block truncate text-xs font-medium text-[var(--muted)]">
-          Subway accessibility
+          Regional transit accessibility
         </span>
       </span>}
     </Link>

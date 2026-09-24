@@ -1,0 +1,23 @@
+0 verbose cli C:\nvm4w\nodejs\node.exe C:\Users\kirk\AppData\Local\nvm\v22.14.0\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.2
+2 info using node@v22.14.0
+3 silly config load:file:C:\Users\kirk\AppData\Local\nvm\v22.14.0\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\kirk\Downloads\Coding Projects\ada\.npmrc
+5 silly config load:file:C:\Users\kirk\.npmrc
+6 silly config load:file:C:\nvm4w\nodejs\etc\npmrc
+7 verbose title npm exec agent-browser --session ada-routing open http://127.0.0.1:3000
+8 verbose argv "exec" "--cache" ".tmp\\npm-cache" "--yes" "--" "agent-browser" "--session" "ada-routing" "open" "http://127.0.0.1:3000"
+9 verbose logfile logs-max:10 dir:C:\Users\kirk\Downloads\Coding Projects\ada\.tmp\npm-cache\_logs\2026-09-24T18_12_57_126Z-
+10 verbose logfile C:\Users\kirk\Downloads\Coding Projects\ada\.tmp\npm-cache\_logs\2026-09-24T18_12_57_126Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+13 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules
+14 http fetch GET 200 https://registry.npmjs.org/agent-browser 295ms (cache revalidated)
+15 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+16 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+17 verbose cwd C:\Users\kirk\Downloads\Coding Projects\ada
+18 verbose os Windows_NT 10.0.26200
+19 verbose node v22.14.0
+20 verbose npm  v10.9.2
+21 verbose exit 1
+22 verbose code 1

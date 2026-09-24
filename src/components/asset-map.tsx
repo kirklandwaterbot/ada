@@ -6,24 +6,62 @@ import { X } from "lucide-react";
 import mapboxgl, { type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import {
+  ASSET_MAP_STATUS_COLORS,
   formatStationLineDisplay,
   getSubwayRouteIconPath,
   type AssetMapStatus,
 } from "@/lib/asset-display";
+import {
+  ADA_PROJECT_STATUS_META,
+  type AdaProjectStatus,
+} from "@/lib/ada-project-status";
 import { MAP_FOCUS_EVENT, type MapFocusDetail } from "@/lib/map-focus";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { normalizeSearchText } from "@/lib/search-normalization";
+import {
+  getRegionalTransitBranding,
+  type RegionalTransitBadge,
+  type RegionalTransitAgency,
+} from "@/lib/regional-transit-branding";
+import {
+  getRegionalStationServices,
+  type RegionalStationService,
+} from "@/lib/regional-station-merge";
+import {
+  regionalStations,
+  type RegionalAccessibilityStatus as RegionalRailAccessibilityStatus,
+  type RegionalEquipmentUnit as RegionalRailEquipment,
+  type RegionalStation as RegionalRailStation,
+} from "@/lib/regional-transit-data";
 import type { AssetMapMarker } from "@/lib/station-explorer-data";
-import plannedAdaStations from "../../data/planned-ada-station-coordinates.json";
+import {
+  DEFAULT_ENABLED_TRANSIT_ROUTES,
+  getEnabledTransitRouteIds,
+  getTransitRouteKeysForServices,
+  TRANSIT_ROUTE_FILTERS,
+} from "@/lib/transit-filter-catalog";
+import adaProjectStatuses from "../../data/ada-project-statuses.json";
 import accessibleStations from "../../data/accessible-station-coordinates.json";
 
 type MapMode = "combined" | "elevators" | "escalators";
 export type MapTheme = "light" | "dark";
 export type AssetMapVisibilityFilters = {
+  airTrainStations: boolean;
+  ctrailStations: boolean;
   elevatorStations: boolean;
   elevators: boolean;
   escalators: boolean;
+  enabledTransitRoutes: string[];
+  lirrStations: boolean;
+  metroNorthStations: boolean;
+  njTransitStations: boolean;
+  pathStations: boolean;
   partialStations: boolean;
-  plannedStations: boolean;
+  plannedAccessibleUpgrades: boolean;
+  plannedDesignStudy: boolean;
+  plannedFunded: boolean;
+  plannedNewStations: boolean;
+  plannedUnderConstruction: boolean;
   rampStations: boolean;
   repairs: boolean;
 };
@@ -37,14 +75,20 @@ export type AssetMapFocusRequest = {
 };
 
 type PlannedFeatureProperties = {
+  agency: string;
   color: string;
   key: string;
   line: string;
   note: string;
+  projectPhase: string;
+  projectStatus: AdaProjectStatus;
+  projectTitle: string;
   routes: string;
+  sourceUrl: string;
   station: string;
   statusLabel: string;
-  type: "Planned elevator";
+  transitRouteKeys: string;
+  type: "ADA project";
 };
 
 type AccessibleStationFeatureProperties = {
@@ -70,6 +114,11 @@ type AssetFeatureProperties = {
   ada: string;
   code: string;
   color: string;
+  currentOutage: boolean;
+  currentOutageDetails: string;
+  equipmentCodesAtLocation: string;
+  futureOutage: boolean;
+  futureOutageDetails: string;
   line: string;
   routes: string;
   status: AssetMapStatus;
@@ -77,36 +126,93 @@ type AssetFeatureProperties = {
   station: string;
   type: string;
 };
+type RegionalRailFeatureProperties = {
+  accessMethods: string;
+  accessibilityStatus: RegionalRailAccessibilityStatus;
+  agency: RegionalTransitAgency;
+  agencies: string;
+  branch: string;
+  color: string;
+  equipmentSummary: string;
+  hasOutage: boolean;
+  key: string;
+  line: string;
+  lineBadges: string;
+  routes: string;
+  serviceAlert: string;
+  station: string;
+  stationDetailUrl: string;
+  statusLabel: string;
+  transitRouteKeys: string;
+  type: "Transit station";
+};
 type AssetFeature = GeoJSON.Feature<GeoJSON.Point, AssetFeatureProperties>;
 type PlannedFeature = GeoJSON.Feature<GeoJSON.Point, PlannedFeatureProperties>;
 type AccessibleStationFeature = GeoJSON.Feature<
   GeoJSON.Point,
   AccessibleStationFeatureProperties
 >;
-type MappableFeature = AssetFeature | PlannedFeature | AccessibleStationFeature;
+type RegionalRailFeature = GeoJSON.Feature<
+  GeoJSON.Point,
+  RegionalRailFeatureProperties
+>;
+type MappableFeature =
+  | AssetFeature
+  | PlannedFeature
+  | AccessibleStationFeature
+  | RegionalRailFeature;
 
-const MAP_MODE_STORAGE_KEY = "mta-access-assets-map-mode";
+const MAP_MODE_STORAGE_KEY = "mta-access-assets-map-mode:v2";
+const MAP_LAYERS_STORAGE_KEY = "mta-access-assets-map-layers:v1";
 const MAP_RESULT_PAGE_SIZE = 40;
 const SUBWAY_ROUTE_DATA_URL = "/data/nyc-subway-routes.geojson";
+const REGIONAL_RAIL_ROUTE_DATA_URL = "/data/mta-regional-rail-routes.geojson";
+const PATH_ROUTE_DATA_URL = "/data/path-routes.geojson";
+const AIRTRAIN_ROUTE_DATA_URL = "/data/ewr-airtrain-routes.geojson";
+const JFK_AIRTRAIN_ROUTE_DATA_URL = "/data/jfk-airtrain-routes.geojson";
+const NJ_TRANSIT_ROUTE_DATA_URL = "/data/nj-transit-routes.geojson";
+const CTRAIL_ROUTE_DATA_URL = "/data/ctrail-routes.geojson";
+const REGIONAL_RAIL_STATIONS = regionalStations;
 const DEFAULT_VISIBILITY_FILTERS: AssetMapVisibilityFilters = {
+  airTrainStations: true,
+  ctrailStations: true,
   elevatorStations: true,
   elevators: true,
   escalators: true,
+  enabledTransitRoutes: DEFAULT_ENABLED_TRANSIT_ROUTES,
+  lirrStations: true,
+  metroNorthStations: true,
+  njTransitStations: true,
+  pathStations: true,
   partialStations: true,
-  plannedStations: true,
+  plannedAccessibleUpgrades: true,
+  plannedDesignStudy: true,
+  plannedFunded: true,
+  plannedNewStations: true,
+  plannedUnderConstruction: true,
   rampStations: true,
   repairs: true,
 };
-const STATUS_COLORS: Record<AssetMapStatus, string> = {
-  accessible: "#16a34a",
-  equipment: "#3b82f6",
-  not_accessible: "#dc2626",
-  work: "#eab308",
+const DEFAULT_MAP_LAYERS: Record<MapLayerKey, boolean> = {
+  accessible: true,
+  equipment: true,
+  not_accessible: true,
+  planned: true,
+  stations: true,
+  work: true,
 };
-const PLANNED_ELEVATOR_COLOR = "#ec4899";
 const ACCESSIBLE_STATION_COLOR = "#22c55e";
 const RAMP_ACCESSIBLE_STATION_COLOR = "#06b6d4";
 const PARTIAL_ACCESSIBLE_STATION_COLOR = "#f59e0b";
+const REGIONAL_ACCESSIBILITY_COLORS: Record<
+  RegionalRailAccessibilityStatus,
+  string
+> = {
+  Accessible: "#22c55e",
+  "Partially accessible": "#f59e0b",
+  "Not accessible": "#64748b",
+  Unknown: "#94a3b8",
+};
 const ACCESS_METHOD_LABELS: Record<AccessibleStationAccessMethod, string> = {
   accessible_entrance: "Step-free accessible entrance",
   elevator: "Elevator access",
@@ -148,23 +254,21 @@ export function AssetMap({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
-  const [mode, setMode] = useState<MapMode>(() => readStoredMapMode());
-  const [layers, setLayers] = useState<Record<MapLayerKey, boolean>>({
-    accessible: true,
-    equipment: true,
-    not_accessible: true,
-    planned: true,
-    stations: true,
-    work: true,
-  });
+  const popupCloseTimerRef = useRef<number | null>(null);
+  const [mode, setMode] = usePersistentState<MapMode>(
+    MAP_MODE_STORAGE_KEY,
+    "combined",
+    normalizeStoredMapMode,
+  );
+  const [layers, setLayers] = usePersistentState(
+    MAP_LAYERS_STORAGE_KEY,
+    DEFAULT_MAP_LAYERS,
+    normalizeStoredMapLayers,
+  );
   const [mapResultLimit, setMapResultLimit] = useState(MAP_RESULT_PAGE_SIZE);
   const [mapResultAnnouncement, setMapResultAnnouncement] = useState("");
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
   const canvas = presentation === "canvas";
-
-  useEffect(() => {
-    window.localStorage.setItem(MAP_MODE_STORAGE_KEY, mode);
-  }, [mode]);
 
   const allFeatures = useMemo(() => {
     return assets.map(
@@ -177,11 +281,20 @@ export function AssetMap({
         properties: {
           ada: asset.ada,
           code: asset.code,
-          color: STATUS_COLORS[asset.status],
+          color: ASSET_MAP_STATUS_COLORS[asset.status],
+          currentOutage: asset.currentOutage,
+          currentOutageDetails: asset.currentOutageDetails,
+          equipmentCodesAtLocation: asset.equipmentCodesAtLocation,
+          futureOutage: asset.futureOutage,
+          futureOutageDetails: asset.futureOutageDetails,
           line: asset.line,
           routes: asset.routes,
           status: asset.status,
-          statusLabel: STATUS_LABELS[asset.status],
+          statusLabel: asset.currentOutage
+            ? "Current outage"
+            : asset.futureOutage
+              ? "In service · future outage scheduled"
+              : STATUS_LABELS[asset.status],
           station: asset.station,
           type: asset.type,
         },
@@ -198,6 +311,10 @@ export function AssetMap({
           : null;
 
     return allFeatures.filter((feature) => {
+      if (!hasEnabledNyctaRoute(feature.properties.routes, visibilityFilters)) {
+        return false;
+      }
+
       if (
         feature.properties.status === "work" &&
         !visibilityFilters.repairs
@@ -222,83 +339,65 @@ export function AssetMap({
   }, [
     allFeatures,
     mode,
-    visibilityFilters.elevators,
-    visibilityFilters.escalators,
-    visibilityFilters.repairs,
+    visibilityFilters,
   ]);
   const features = useMemo(
     () => modeFeatures.filter((feature) => layers[feature.properties.status]),
     [layers, modeFeatures],
   );
   const allPlannedFeatures = useMemo(() => {
-    const liveAssetStationRoutes = new Set(
-      allFeatures
-        .filter(
-          (feature) =>
-            feature.properties.status === "accessible" ||
-            feature.properties.status === "not_accessible",
-        )
-        .flatMap((feature) =>
-          feature.properties.routes
-            .split(",")
-            .filter(Boolean)
-            .map(
-              (route) =>
-                normalizeSearchText(feature.properties.station) +
-                "|" +
-                normalizeMapRoute(route),
-            ),
-        ),
-    );
+    return adaProjectStatuses.stations.map((station): PlannedFeature => {
+      const projectStatus = station.projectStatus as AdaProjectStatus;
+      const statusMeta = ADA_PROJECT_STATUS_META[projectStatus];
 
-    return plannedAdaStations.stations
-      .filter((station) => {
-        const stationKey = normalizeSearchText(
-          formatPlannedStationName(station.station),
-        );
-
-        return !station.services.some((route) =>
-          liveAssetStationRoutes.has(stationKey + "|" + normalizeMapRoute(route)),
-        );
-      })
-      .map((station): PlannedFeature => ({
+      return {
         type: "Feature" as const,
         geometry: {
           type: "Point" as const,
           coordinates: [station.longitude, station.latitude],
         },
         properties: {
-          color: PLANNED_ELEVATOR_COLOR,
+          agency: station.agency,
+          color: statusMeta.color,
           key: getPlannedFeatureKey(
             formatPlannedStationName(station.station),
             formatStationLineDisplay(station.line),
             station.services.join(","),
           ),
           line: formatStationLineDisplay(station.line),
-          note: station.plannedAdaNote,
+          note: station.note,
+          projectPhase: station.projectPhase,
+          projectStatus,
+          projectTitle: station.projectTitle,
           routes: station.services.join(","),
+          sourceUrl: station.sourceUrl,
           station: formatPlannedStationName(station.station),
-          statusLabel: "Planned ADA elevator",
-          type: "Planned elevator",
+          statusLabel: statusMeta.label,
+          transitRouteKeys: station.transitRouteKeys.join(","),
+          type: "ADA project",
         },
-      }));
-  }, [allFeatures]);
+      };
+    });
+  }, []);
 
   const plannedFeatures = useMemo(() => {
-    if (
-      mode === "escalators" ||
-      !layers.planned ||
-      !visibilityFilters.plannedStations
-    ) {
+    if (mode === "escalators" || !layers.planned) {
       return [];
     }
 
-    return allPlannedFeatures;
+    return allPlannedFeatures.filter(
+      (feature) =>
+        isAdaProjectVisible(feature.properties.projectStatus, visibilityFilters) &&
+        hasEnabledProjectRoute(
+          feature.properties.transitRouteKeys,
+          visibilityFilters,
+        ),
+    );
   }, [
     allPlannedFeatures,
     layers.planned,
     mode,
-    visibilityFilters.plannedStations,
+    visibilityFilters,
   ]);
   const allAccessibleStationFeatures = useMemo(() => {
     return accessibleStations.stations.map(
@@ -348,6 +447,10 @@ export function AssetMap({
     }
 
     return allAccessibleStationFeatures.filter((feature) => {
+      if (!hasEnabledNyctaRoute(feature.properties.routes, visibilityFilters)) {
+        return false;
+      }
+
       const isPartial = feature.properties.statusLabel.startsWith(
         "Partially accessible",
       );
@@ -374,10 +477,72 @@ export function AssetMap({
     allAccessibleStationFeatures,
     layers.stations,
     mode,
-    visibilityFilters.elevatorStations,
-    visibilityFilters.partialStations,
-    visibilityFilters.rampStations,
-    visibilityFilters.repairs,
+    visibilityFilters,
+  ]);
+  const allRegionalRailFeatures = useMemo(
+    () =>
+      REGIONAL_RAIL_STATIONS.map((station): RegionalRailFeature => {
+        const services = getRegionalStationServices(station);
+        const equipment = [...station.elevators, ...station.escalators];
+        const hasOutage = equipment.some(
+          (item) =>
+            item.status === "outage" || item.status === "long_term_outage",
+        );
+
+        return {
+          type: "Feature" as const,
+          geometry: {
+            type: "Point" as const,
+            coordinates: [station.longitude, station.latitude],
+          },
+          properties: {
+            accessMethods: (station.accessMethods || []).join(" · "),
+            accessibilityStatus: station.accessibilityStatus,
+            agency: station.agency,
+            agencies: [...new Set(services.map((service) => service.agency))].join(","),
+            branch: services.map((service) => service.branchName).join(" / "),
+            color: REGIONAL_ACCESSIBILITY_COLORS[station.accessibilityStatus],
+            equipmentSummary: formatRegionalEquipmentSummary(station),
+            hasOutage,
+            key: `${station.agency}:${station.stationCode}`,
+            line: services
+              .map((service) => `${service.agency} · ${service.branchName}`)
+              .join(" / "),
+            lineBadges: JSON.stringify(getRegionalLineBadges(services)),
+            routes: "",
+            serviceAlert: station.serviceAlert || "",
+            station: station.name,
+            stationDetailUrl: station.stationDetailUrl || "",
+            statusLabel: station.accessibilityStatus,
+            transitRouteKeys: getStationTransitRouteKeys(station).join(","),
+            type: "Transit station",
+          },
+        };
+      }),
+    [],
+  );
+  const regionalRailFeatures = useMemo(() => {
+    if (mode !== "combined") return [];
+
+    return allRegionalRailFeatures.filter((feature) => {
+      const hasEnabledLine = feature.properties.transitRouteKeys
+        .split(",")
+        .some((key) => visibilityFilters.enabledTransitRoutes.includes(key));
+      if (!hasEnabledLine) return false;
+
+      return feature.properties.agencies
+        .split(",")
+        .some((agency) =>
+          isRegionalAgencyVisible(
+            agency as RegionalTransitAgency,
+            visibilityFilters,
+          ),
+        );
+    });
+  }, [
+    allRegionalRailFeatures,
+    mode,
+    visibilityFilters,
   ]);
 
   const collection = useMemo(
@@ -401,45 +566,65 @@ export function AssetMap({
     }),
     [accessibleStationFeatures],
   );
+  const regionalRailCollection = useMemo(
+    () => ({
+      type: "FeatureCollection" as const,
+      features: [...regionalRailFeatures],
+    }),
+    [regionalRailFeatures],
+  );
   const mapResultFeatures = useMemo(
     () => [
       ...features,
       ...plannedFeatures,
       ...accessibleStationFeatures,
+      ...regionalRailFeatures,
     ],
-    [accessibleStationFeatures, features, plannedFeatures],
+    [accessibleStationFeatures, features, plannedFeatures, regionalRailFeatures],
   );
   const visibleMapResults = mapResultFeatures.slice(0, mapResultLimit);
   const collectionRef = useRef(collection);
   const plannedCollectionRef = useRef(plannedCollection);
   const accessibleStationCollectionRef = useRef(accessibleStationCollection);
+  const regionalRailCollectionRef = useRef(regionalRailCollection);
   const allFeaturesRef = useRef(allFeatures);
   const allPlannedFeaturesRef = useRef(allPlannedFeatures);
   const allAccessibleStationFeaturesRef = useRef(allAccessibleStationFeatures);
+  const allRegionalRailFeaturesRef = useRef(allRegionalRailFeatures);
   const featuresRef = useRef(features);
   const plannedFeaturesRef = useRef(plannedFeatures);
   const accessibleStationFeaturesRef = useRef(accessibleStationFeatures);
+  const regionalRailFeaturesRef = useRef(regionalRailFeatures);
+  const visibilityFiltersRef = useRef(visibilityFilters);
 
   useEffect(() => {
     collectionRef.current = collection;
     plannedCollectionRef.current = plannedCollection;
     accessibleStationCollectionRef.current = accessibleStationCollection;
+    regionalRailCollectionRef.current = regionalRailCollection;
     allFeaturesRef.current = allFeatures;
     allPlannedFeaturesRef.current = allPlannedFeatures;
     allAccessibleStationFeaturesRef.current = allAccessibleStationFeatures;
+    allRegionalRailFeaturesRef.current = allRegionalRailFeatures;
     featuresRef.current = features;
     plannedFeaturesRef.current = plannedFeatures;
     accessibleStationFeaturesRef.current = accessibleStationFeatures;
+    regionalRailFeaturesRef.current = regionalRailFeatures;
+    visibilityFiltersRef.current = visibilityFilters;
   }, [
     accessibleStationCollection,
     accessibleStationFeatures,
     allAccessibleStationFeatures,
     allFeatures,
     allPlannedFeatures,
+    allRegionalRailFeatures,
     collection,
     features,
     plannedCollection,
     plannedFeatures,
+    regionalRailCollection,
+    regionalRailFeatures,
+    visibilityFilters,
   ]);
 
   const counts = useMemo(() => {
@@ -479,6 +664,26 @@ export function AssetMap({
       className: "asset-popup",
       offset: 12,
     });
+    const cancelPopupClose = () => {
+      if (popupCloseTimerRef.current !== null) {
+        window.clearTimeout(popupCloseTimerRef.current);
+        popupCloseTimerRef.current = null;
+      }
+    };
+    const schedulePopupClose = () => {
+      cancelPopupClose();
+      popupCloseTimerRef.current = window.setTimeout(() => {
+        popupRef.current?.remove();
+        popupCloseTimerRef.current = null;
+      }, 5_000);
+    };
+    const keepPopupInteractive = () => {
+      cancelPopupClose();
+      const popupElement = popupRef.current?.getElement();
+      if (!popupElement) return;
+      popupElement.onmouseenter = cancelPopupClose;
+      popupElement.onmouseleave = schedulePopupClose;
+    };
 
     map.addControl(new mapboxgl.FullscreenControl(), "top-right");
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
@@ -487,6 +692,30 @@ export function AssetMap({
       map.addSource("subway-routes", {
         type: "geojson",
         data: SUBWAY_ROUTE_DATA_URL,
+      });
+      map.addSource("regional-rail-routes", {
+        type: "geojson",
+        data: REGIONAL_RAIL_ROUTE_DATA_URL,
+      });
+      map.addSource("path-routes", {
+        type: "geojson",
+        data: PATH_ROUTE_DATA_URL,
+      });
+      map.addSource("airtrain-routes", {
+        type: "geojson",
+        data: AIRTRAIN_ROUTE_DATA_URL,
+      });
+      map.addSource("jfk-airtrain-routes", {
+        type: "geojson",
+        data: JFK_AIRTRAIN_ROUTE_DATA_URL,
+      });
+      map.addSource("nj-transit-routes", {
+        type: "geojson",
+        data: NJ_TRANSIT_ROUTE_DATA_URL,
+      });
+      map.addSource("ctrail-routes", {
+        type: "geojson",
+        data: CTRAIL_ROUTE_DATA_URL,
       });
       map.addSource("assets", {
         type: "geojson",
@@ -500,11 +729,16 @@ export function AssetMap({
         type: "geojson",
         data: accessibleStationCollectionRef.current,
       });
+      map.addSource("regional-rail-stations", {
+        type: "geojson",
+        data: regionalRailCollectionRef.current,
+      });
 
       map.addLayer({
         id: "subway-route-casing",
         type: "line",
         source: "subway-routes",
+        filter: getRouteIdFilter(visibilityFiltersRef.current, "NYCTA"),
         layout: {
           "line-cap": "round",
           "line-join": "round",
@@ -531,6 +765,7 @@ export function AssetMap({
         id: "subway-route-lines",
         type: "line",
         source: "subway-routes",
+        filter: getRouteIdFilter(visibilityFiltersRef.current, "NYCTA"),
         layout: {
           "line-cap": "round",
           "line-join": "round",
@@ -553,6 +788,186 @@ export function AssetMap({
           ],
         },
       });
+      map.addLayer({
+        id: "regional-rail-route-casing",
+        type: "line",
+        source: "regional-rail-routes",
+        filter: getRegionalRailRouteFilter(visibilityFiltersRef.current),
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+        },
+        paint: {
+          "line-color": mapTheme === "dark" ? "#020617" : "#ffffff",
+          "line-opacity": 0.7,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            7,
+            2.4,
+            10,
+            3.4,
+            14,
+            5.4,
+          ],
+        },
+      });
+      map.addLayer({
+        id: "regional-rail-route-lines",
+        type: "line",
+        source: "regional-rail-routes",
+        filter: getRegionalRailRouteFilter(visibilityFiltersRef.current),
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+        },
+        paint: {
+          "line-color": ["get", "color"],
+          "line-opacity": 0.82,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            7,
+            1.25,
+            10,
+            2,
+            14,
+            3.5,
+          ],
+        },
+      });
+      map.addLayer({
+        id: "path-route-casing",
+        type: "line",
+        source: "path-routes",
+        filter: getRouteIdFilter(visibilityFiltersRef.current, "PATH"),
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+          visibility: getPathRouteVisibility(visibilityFiltersRef.current),
+        },
+        paint: {
+          "line-color": mapTheme === "dark" ? "#020617" : "#ffffff",
+          "line-offset": ["get", "offset"],
+          "line-opacity": 0.78,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            8,
+            2.8,
+            12,
+            4.4,
+            16,
+            7.2,
+          ],
+        },
+      });
+      map.addLayer({
+        id: "path-route-lines",
+        type: "line",
+        source: "path-routes",
+        filter: getRouteIdFilter(visibilityFiltersRef.current, "PATH"),
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+          visibility: getPathRouteVisibility(visibilityFiltersRef.current),
+        },
+        paint: {
+          "line-color": ["get", "color"],
+          "line-offset": ["get", "offset"],
+          "line-opacity": 0.9,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            8,
+            1.6,
+            12,
+            2.8,
+            16,
+            5.2,
+          ],
+        },
+      });
+      map.addLayer({
+        id: "airtrain-route-casing",
+        type: "line",
+        source: "airtrain-routes",
+        filter: getRouteIdFilter(visibilityFiltersRef.current, "EWR AirTrain"),
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+          visibility: getAirTrainRouteVisibility(visibilityFiltersRef.current),
+        },
+        paint: {
+          "line-color": mapTheme === "dark" ? "#020617" : "#ffffff",
+          "line-opacity": 0.78,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            2.8,
+            13,
+            4.4,
+            17,
+            7.2,
+          ],
+        },
+      });
+      map.addLayer({
+        id: "airtrain-route-lines",
+        type: "line",
+        source: "airtrain-routes",
+        filter: getRouteIdFilter(visibilityFiltersRef.current, "EWR AirTrain"),
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+          visibility: getAirTrainRouteVisibility(visibilityFiltersRef.current),
+        },
+        paint: {
+          "line-color": ["get", "color"],
+          "line-opacity": 0.92,
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            1.6,
+            13,
+            2.8,
+            17,
+            5.2,
+          ],
+        },
+      });
+      addToggleableRouteLayers(
+        map,
+        "jfk-airtrain",
+        "jfk-airtrain-routes",
+        mapTheme,
+        getAirTrainRouteVisibility(visibilityFiltersRef.current),
+        getRouteIdFilter(visibilityFiltersRef.current, "JFK AirTrain"),
+      );
+      addToggleableRouteLayers(
+        map,
+        "nj-transit",
+        "nj-transit-routes",
+        mapTheme,
+        getNjTransitRouteVisibility(visibilityFiltersRef.current),
+        getRouteIdFilter(visibilityFiltersRef.current, "NJ Transit"),
+      );
+      addToggleableRouteLayers(
+        map,
+        "ctrail",
+        "ctrail-routes",
+        mapTheme,
+        getCTrailRouteVisibility(visibilityFiltersRef.current),
+        getRouteIdFilter(visibilityFiltersRef.current, "CTrail"),
+      );
       map.addLayer({
         id: "asset-points",
         type: "circle",
@@ -639,6 +1054,38 @@ export function AssetMap({
           ],
         },
       });
+      map.addLayer({
+        id: "regional-rail-station-points",
+        type: "circle",
+        source: "regional-rail-stations",
+        paint: {
+          "circle-color": ["get", "color"],
+          "circle-opacity": 0.9,
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            7,
+            3.5,
+            11,
+            6,
+            15,
+            10,
+          ],
+          "circle-stroke-color": [
+            "case",
+            ["get", "hasOutage"],
+            "#f97316",
+            "#ffffff",
+          ],
+          "circle-stroke-width": [
+            "case",
+            ["get", "hasOutage"],
+            3.2,
+            1.8,
+          ],
+        },
+      });
 
       map.on("mouseenter", "asset-points", (event) => {
         map.getCanvas().style.cursor = "pointer";
@@ -656,6 +1103,7 @@ export function AssetMap({
             coordinates as [number, number],
             properties,
           );
+          keepPopupInteractive();
         }
       });
       map.on("mouseenter", "planned-elevator-points", (event) => {
@@ -674,6 +1122,7 @@ export function AssetMap({
             coordinates as [number, number],
             properties,
           );
+          keepPopupInteractive();
         }
       });
       map.on("mouseenter", "accessible-station-points", (event) => {
@@ -692,20 +1141,44 @@ export function AssetMap({
             coordinates as [number, number],
             properties,
           );
+          keepPopupInteractive();
+        }
+      });
+      map.on("mouseenter", "regional-rail-station-points", (event) => {
+        map.getCanvas().style.cursor = "pointer";
+        const feature = event.features?.[0];
+        const coordinates =
+          feature?.geometry.type === "Point" ? feature.geometry.coordinates : null;
+        const properties = feature?.properties as
+          | RegionalRailFeatureProperties
+          | undefined;
+
+        if (coordinates && properties) {
+          showRegionalRailPopup(
+            map,
+            popupRef.current,
+            coordinates as [number, number],
+            properties,
+          );
+          keepPopupInteractive();
         }
       });
 
       map.on("mouseleave", "asset-points", () => {
         map.getCanvas().style.cursor = "";
-        popupRef.current?.remove();
+        schedulePopupClose();
       });
       map.on("mouseleave", "planned-elevator-points", () => {
         map.getCanvas().style.cursor = "";
-        popupRef.current?.remove();
+        schedulePopupClose();
       });
       map.on("mouseleave", "accessible-station-points", () => {
         map.getCanvas().style.cursor = "";
-        popupRef.current?.remove();
+        schedulePopupClose();
+      });
+      map.on("mouseleave", "regional-rail-station-points", () => {
+        map.getCanvas().style.cursor = "";
+        schedulePopupClose();
       });
 
       map.on("click", "asset-points", (event) => {
@@ -721,7 +1194,9 @@ export function AssetMap({
           return;
         }
 
+        cancelPopupClose();
         showAssetPopup(map, popupRef.current, coordinates as [number, number], properties);
+        keepPopupInteractive();
       });
       map.on("click", "planned-elevator-points", (event) => {
         const feature = event.features?.[0];
@@ -736,7 +1211,9 @@ export function AssetMap({
           return;
         }
 
+        cancelPopupClose();
         showPlannedPopup(map, popupRef.current, coordinates as [number, number], properties);
+        keepPopupInteractive();
       });
       map.on("click", "accessible-station-points", (event) => {
         const feature = event.features?.[0];
@@ -757,16 +1234,39 @@ export function AssetMap({
           coordinates as [number, number],
           properties,
         );
+        keepPopupInteractive();
+      });
+      map.on("click", "regional-rail-station-points", (event) => {
+        const feature = event.features?.[0];
+        const coordinates =
+          feature?.geometry.type === "Point" ? feature.geometry.coordinates : null;
+        const properties = feature?.properties as
+          | RegionalRailFeatureProperties
+          | undefined;
+
+        if (!coordinates || !properties) {
+          return;
+        }
+
+        showRegionalRailPopup(
+          map,
+          popupRef.current,
+          coordinates as [number, number],
+          properties,
+        );
+        keepPopupInteractive();
       });
 
       fitMapToFeatures(map, [
         ...featuresRef.current,
         ...plannedFeaturesRef.current,
         ...accessibleStationFeaturesRef.current,
+        ...regionalRailFeaturesRef.current,
       ]);
     });
 
     return () => {
+      cancelPopupClose();
       popupRef.current?.remove();
       map.remove();
       mapRef.current = null;
@@ -785,25 +1285,61 @@ export function AssetMap({
   useEffect(() => {
     const map = mapRef.current;
 
-    if (!map || !map.isStyleLoaded()) {
-      return;
+    if (!map) return;
+
+    const applyMapState = () => {
+      if (!map.isStyleLoaded()) return;
+      map.off("styledata", applyMapState);
+
+      const source = map.getSource("assets") as GeoJSONSource | undefined;
+      const plannedSource = map.getSource("planned-elevators") as
+        | GeoJSONSource
+        | undefined;
+      const accessibleStationSource = map.getSource("accessible-stations") as
+        | GeoJSONSource
+        | undefined;
+      const regionalRailSource = map.getSource("regional-rail-stations") as
+        | GeoJSONSource
+        | undefined;
+      source?.setData(collection);
+      plannedSource?.setData(plannedCollection);
+      accessibleStationSource?.setData(accessibleStationCollection);
+      regionalRailSource?.setData(regionalRailCollection);
+      setRegionalRailRouteFilter(map, visibilityFilters);
+      setRouteIdFilter(map, visibilityFilters, "NYCTA", [
+        "subway-route-casing",
+        "subway-route-lines",
+      ]);
+      setPathRouteVisibility(map, visibilityFilters);
+      setAirTrainRouteVisibility(map, visibilityFilters);
+      setRouteIdFilter(map, visibilityFilters, "JFK AirTrain", [
+        "jfk-airtrain-route-casing",
+        "jfk-airtrain-route-lines",
+      ]);
+      setToggleableRouteVisibility(
+        map,
+        "jfk-airtrain",
+        getAirTrainRouteVisibility(visibilityFilters),
+      );
+      setNjTransitRouteVisibility(map, visibilityFilters);
+      setCTrailRouteVisibility(map, visibilityFilters);
+      fitMapToFeatures(map, [
+        ...features,
+        ...plannedFeatures,
+        ...accessibleStationFeatures,
+        ...regionalRailFeatures,
+      ]);
+    };
+
+    if (map.isStyleLoaded()) {
+      applyMapState();
+    } else {
+      map.on("styledata", applyMapState);
     }
 
-    const source = map.getSource("assets") as GeoJSONSource | undefined;
-    const plannedSource = map.getSource("planned-elevators") as
-      | GeoJSONSource
-      | undefined;
-    const accessibleStationSource = map.getSource("accessible-stations") as
-      | GeoJSONSource
-      | undefined;
-    source?.setData(collection);
-    plannedSource?.setData(plannedCollection);
-    accessibleStationSource?.setData(accessibleStationCollection);
-    fitMapToFeatures(map, [
-      ...features,
-      ...plannedFeatures,
-      ...accessibleStationFeatures,
-    ]);
+    return () => {
+      map.off("styledata", applyMapState);
+    };
   }, [
     accessibleStationCollection,
     accessibleStationFeatures,
@@ -811,6 +1347,9 @@ export function AssetMap({
     features,
     plannedCollection,
     plannedFeatures,
+    regionalRailCollection,
+    regionalRailFeatures,
+    visibilityFilters,
   ]);
 
   useEffect(() => {
@@ -847,6 +1386,24 @@ export function AssetMap({
           popupRef.current,
           feature.geometry.coordinates as [number, number],
           feature.properties,
+        );
+        return;
+      }
+
+      if (detail.kind === "regional") {
+        const regionalFeature = allRegionalRailFeaturesRef.current.find(
+          (item) => item.properties.key === detail.key,
+        );
+
+        if (!regionalFeature) return;
+
+        setMode("combined");
+        focusMapFeature(map, regionalFeature);
+        showRegionalRailPopup(
+          map,
+          popupRef.current,
+          regionalFeature.geometry.coordinates as [number, number],
+          regionalFeature.properties,
         );
         return;
       }
@@ -892,7 +1449,7 @@ export function AssetMap({
     return () => {
       window.removeEventListener(MAP_FOCUS_EVENT, handleMapFocus);
     };
-  }, []);
+  }, [setLayers, setMode]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -944,8 +1501,15 @@ export function AssetMap({
         feature.geometry.coordinates as [number, number],
         feature.properties,
       );
-    } else if (feature.properties.type === "Planned elevator") {
+    } else if (feature.properties.type === "ADA project") {
       showPlannedPopup(
+        map,
+        popup,
+        feature.geometry.coordinates as [number, number],
+        feature.properties,
+      );
+    } else if (feature.properties.type === "Transit station") {
+      showRegionalRailPopup(
         map,
         popup,
         feature.geometry.coordinates as [number, number],
@@ -1007,8 +1571,8 @@ export function AssetMap({
                   : "mt-1 text-xs font-medium text-[var(--muted)]"
               }
             >
-              Daily inventory markers are not a real-time outage feed. Use the
-              accessible results list below or select a marker for details.
+              Current and future subway equipment outages are synchronized from
+              the official MTA status page. Select a marker for its schedule.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -1044,7 +1608,7 @@ export function AssetMap({
         >
           <MapLayerToggle
             active={layers.accessible}
-            color={STATUS_COLORS.accessible}
+            color={ASSET_MAP_STATUS_COLORS.accessible}
             label="ADA assets"
             onToggle={() =>
               setLayers((current) => ({ ...current, accessible: !current.accessible }))
@@ -1053,7 +1617,7 @@ export function AssetMap({
           />
           <MapLayerToggle
             active={layers.not_accessible}
-            color={STATUS_COLORS.not_accessible}
+            color={ASSET_MAP_STATUS_COLORS.not_accessible}
             label="Non-ADA assets"
             onToggle={() =>
               setLayers((current) => ({
@@ -1065,7 +1629,7 @@ export function AssetMap({
           />
           <MapLayerToggle
             active={layers.equipment}
-            color={STATUS_COLORS.equipment}
+            color={ASSET_MAP_STATUS_COLORS.equipment}
             label="Escalator assets"
             onToggle={() =>
               setLayers((current) => ({ ...current, equipment: !current.equipment }))
@@ -1074,7 +1638,7 @@ export function AssetMap({
           />
           <MapLayerToggle
             active={layers.work}
-            color={STATUS_COLORS.work}
+            color={ASSET_MAP_STATUS_COLORS.work}
             label="Work / repair"
             onToggle={() =>
               setLayers((current) => ({ ...current, work: !current.work }))
@@ -1083,8 +1647,8 @@ export function AssetMap({
           />
           <MapLayerToggle
             active={layers.planned}
-            color={PLANNED_ELEVATOR_COLOR}
-            label="Planned"
+            color={ADA_PROJECT_STATUS_META.funded_planned.color}
+            label="ADA projects"
             onToggle={() =>
               setLayers((current) => ({ ...current, planned: !current.planned }))
             }
@@ -1116,7 +1680,7 @@ export function AssetMap({
         >
           <div
             aria-describedby={minimal ? undefined : "map-results-description"}
-            aria-label="Interactive subway accessibility map with present-day MTA routes"
+            aria-label="Interactive subway, PATH, AirTrain, and regional rail accessibility map with present-day transit routes"
             className={
               canvas
                 ? "h-full min-h-[34rem] w-full"
@@ -1163,7 +1727,8 @@ export function AssetMap({
             id="map-results-description"
           >
             This keyboard-accessible list mirrors the current equipment mode and
-            enabled map layers. Statuses come from the daily inventory snapshot.
+            enabled map layers. Current and scheduled outage details come from
+            the official MTA equipment status feed.
           </p>
           <p aria-atomic="true" aria-live="polite" className="sr-only">
             {mapResultFeatures.length.toLocaleString()} map markers match the current
@@ -1318,6 +1883,15 @@ function showAccessibleStationPopup(
   showPopup(map, popup, coordinates, getAccessibleStationPopupHtml(properties));
 }
 
+function showRegionalRailPopup(
+  map: mapboxgl.Map,
+  popup: mapboxgl.Popup | null,
+  coordinates: [number, number],
+  properties: RegionalRailFeatureProperties,
+) {
+  showPopup(map, popup, coordinates, getRegionalRailPopupHtml(properties));
+}
+
 function showPopup(
   map: mapboxgl.Map,
   popup: mapboxgl.Popup | null,
@@ -1362,39 +1936,98 @@ function getPopupHtml(properties: AssetFeatureProperties) {
     .filter(Boolean)
     .map(routeBadgeHtml)
     .join("");
+  const equipmentCodesAtLocation = properties.equipmentCodesAtLocation
+    .split(",")
+    .filter(Boolean);
 
   return `
     <div class="space-y-1 pr-6">
       ${popupCloseButtonHtml()}
       <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
-      <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
       <div class="asset-popup-detail">
         ${escapeHtml(properties.type)} ${escapeHtml(properties.code)}
       </div>
+      ${
+        equipmentCodesAtLocation.length > 1
+          ? `<div class="asset-popup-meta">All equipment at this map point: ${equipmentCodesAtLocation.map(escapeHtml).join(" · ")}</div>`
+          : ""
+      }
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
         ${escapeHtml(properties.statusLabel)}
       </div>
+      ${getMtaOutageScheduleHtml("Current outage", properties.currentOutageDetails, "current")}
+      ${getMtaOutageScheduleHtml("Future outage", properties.futureOutageDetails, "future")}
+      ${
+        properties.currentOutage || properties.futureOutage
+          ? '<a class="asset-popup-link" href="https://www.mta.info/elevator-escalator-status" rel="noreferrer" target="_blank">Official MTA equipment status ↗</a>'
+          : ""
+      }
     </div>
   `;
 }
 
-function getPlannedPopupHtml(properties: PlannedFeatureProperties) {
-  const routeBadges = properties.routes
-    .split(",")
-    .filter(Boolean)
-    .map(routeBadgeHtml)
+type SubwayEquipmentOutage = {
+  estimatedReturnToService?: string;
+  outageStart?: string;
+  reason?: string;
+  serving?: string;
+};
+
+function getMtaOutageScheduleHtml(
+  label: string,
+  serialized: string,
+  timeframe: "current" | "future",
+) {
+  const outages = parseSubwayEquipmentOutages(serialized);
+  if (outages.length === 0) return "";
+
+  return outages
+    .map((outage) => {
+      const startLabel = timeframe === "current" ? "Out since" : "Starts";
+      return `
+        <div class="mt-2 rounded-lg border border-orange-400/30 bg-orange-500/10 p-2">
+          <div class="text-xs font-bold text-orange-500">${escapeHtml(label)} · ${escapeHtml(outage.reason || "Outage")}</div>
+          ${outage.serving ? `<div class="asset-popup-meta">${escapeHtml(outage.serving)}</div>` : ""}
+          ${outage.outageStart ? `<div class="asset-popup-meta">${startLabel}: ${escapeHtml(outage.outageStart)}</div>` : ""}
+          ${outage.estimatedReturnToService ? `<div class="asset-popup-meta">Estimated return: ${escapeHtml(outage.estimatedReturnToService)}</div>` : ""}
+        </div>
+      `;
+    })
     .join("");
+}
+
+function parseSubwayEquipmentOutages(value: string) {
+  try {
+    const parsed = JSON.parse(value) as SubwayEquipmentOutage[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function getPlannedPopupHtml(properties: PlannedFeatureProperties) {
+  const routeBadges = projectRouteBadgesHtml(
+    properties.transitRouteKeys,
+    properties.routes,
+  );
 
   return `
     <div class="space-y-1 pr-6">
       ${popupCloseButtonHtml()}
       <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
-      <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
         ${escapeHtml(properties.statusLabel)}
       </div>
+      <div class="asset-popup-detail">${escapeHtml(properties.projectTitle)}</div>
+      <div class="asset-popup-meta">Project phase: ${escapeHtml(properties.projectPhase)}</div>
+      ${properties.note ? `<div class="asset-popup-meta">${escapeHtml(properties.note)}</div>` : ""}
+      ${
+        properties.sourceUrl
+          ? `<a class="asset-popup-link" href="${escapeHtml(properties.sourceUrl)}" rel="noreferrer" target="_blank">Official project details ↗</a>`
+          : ""
+      }
     </div>
   `;
 }
@@ -1413,7 +2046,6 @@ function getAccessibleStationPopupHtml(
       ${popupCloseButtonHtml()}
       <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
       ${routeBadges ? `<div class="mt-1 flex flex-wrap gap-1">${routeBadges}</div>` : ""}
-      <div class="asset-popup-meta">${escapeHtml(properties.line)}</div>
       <div class="asset-popup-meta">${escapeHtml(properties.accessLabel)}</div>
       ${properties.underRepair ? '<div class="text-xs font-semibold text-orange-500">Station equipment flagged for repair / modernization</div>' : ""}
       <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
@@ -1421,6 +2053,364 @@ function getAccessibleStationPopupHtml(
       </div>
     </div>
   `;
+}
+
+function getRegionalRailPopupHtml(properties: RegionalRailFeatureProperties) {
+  const lineBadges = parseRegionalLineBadges(properties.lineBadges)
+    .map(
+      (line) =>
+        `<img class="asset-popup-line-logo" src="${escapeHtml(line.imagePath)}" alt="${escapeHtml(line.label)}" title="${escapeHtml(line.label)}" />`,
+    )
+    .join("");
+  const stationLink = properties.stationDetailUrl
+    ? `<a class="mt-2 inline-flex text-xs font-bold text-sky-600 hover:text-sky-500" href="${escapeHtml(properties.stationDetailUrl)}" rel="noreferrer" target="_blank">Official station accessibility details ↗</a>`
+    : "";
+
+  return `
+    <div class="space-y-1 pr-6">
+      ${popupCloseButtonHtml()}
+      <div class="asset-popup-title">${escapeHtml(properties.station)}</div>
+      ${lineBadges ? `<div class="asset-popup-line-badges">${lineBadges}</div>` : ""}
+      <div class="text-xs font-semibold" style="color:${escapeHtml(properties.color)}">
+        ${escapeHtml(properties.statusLabel)}
+      </div>
+      ${properties.accessMethods ? `<div class="asset-popup-detail">Access: ${escapeHtml(properties.accessMethods)}</div>` : ""}
+      <div class="asset-popup-detail">${escapeHtml(properties.equipmentSummary)}</div>
+      ${properties.hasOutage ? '<div class="text-xs font-semibold text-orange-500">Elevator or escalator outage reported</div>' : ""}
+      ${properties.serviceAlert ? `<div class="asset-popup-detail">${escapeHtml(properties.serviceAlert)}</div>` : ""}
+      ${stationLink}
+    </div>
+  `;
+}
+
+function formatRegionalEquipmentSummary(station: RegionalRailStation) {
+  const summaries = [
+    formatEquipmentType("Elevators", station.elevators),
+    formatEquipmentType("Escalators", station.escalators),
+  ].filter(Boolean);
+
+  return summaries.length > 0
+    ? summaries.join(" · ")
+    : "No elevator or escalator service listed";
+}
+
+function formatEquipmentType(label: string, equipment: RegionalRailEquipment[]) {
+  if (equipment.length === 0) return "";
+
+  const outageCount = equipment.filter(
+    (item) => item.status === "outage" || item.status === "long_term_outage",
+  ).length;
+  const operationalCount = equipment.filter(
+    (item) => item.status === "operational",
+  ).length;
+  const statusParts = [];
+
+  if (operationalCount > 0) statusParts.push(`${operationalCount} working`);
+  if (outageCount > 0) statusParts.push(`${outageCount} out`);
+  if (statusParts.length === 0) statusParts.push(`${equipment.length} listed`);
+
+  return `${label}: ${statusParts.join(", ")}`;
+}
+
+function addToggleableRouteLayers(
+  map: mapboxgl.Map,
+  layerPrefix: string,
+  source: string,
+  mapTheme: MapTheme,
+  visibility: "none" | "visible",
+  filter?: mapboxgl.FilterSpecification,
+) {
+  map.addLayer({
+    id: `${layerPrefix}-route-casing`,
+    type: "line",
+    source,
+    filter,
+    layout: {
+      "line-cap": "round",
+      "line-join": "round",
+      visibility,
+    },
+    paint: {
+      "line-color": mapTheme === "dark" ? "#020617" : "#ffffff",
+      "line-opacity": 0.72,
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        7,
+        2.4,
+        10,
+        3.4,
+        14,
+        5.4,
+      ],
+    },
+  });
+  map.addLayer({
+    id: `${layerPrefix}-route-lines`,
+    type: "line",
+    source,
+    filter,
+    layout: {
+      "line-cap": "round",
+      "line-join": "round",
+      visibility,
+    },
+    paint: {
+      "line-color": ["get", "color"],
+      "line-opacity": 0.86,
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        7,
+        1.25,
+        10,
+        2,
+        14,
+        3.5,
+      ],
+    },
+  });
+}
+
+function getRegionalRailRouteFilter(
+  filters: AssetMapVisibilityFilters,
+): mapboxgl.FilterSpecification {
+  return [
+    "any",
+    [
+      "all",
+      ["==", ["get", "agency"], "LIRR"],
+      filters.lirrStations,
+      getRouteIdFilter(filters, "LIRR"),
+    ],
+    [
+      "all",
+      ["==", ["get", "agency"], "MNR"],
+      filters.metroNorthStations,
+      getRouteIdFilter(filters, "MNR"),
+    ],
+  ];
+}
+
+function getRouteIdFilter(
+  filters: AssetMapVisibilityFilters,
+  agency: string,
+): mapboxgl.FilterSpecification {
+  const routeIds = getEnabledTransitRouteIds(
+    agency,
+    filters.enabledTransitRoutes,
+  );
+
+  return ["in", ["get", "routeId"], ["literal", routeIds]];
+}
+
+function setRouteIdFilter(
+  map: mapboxgl.Map,
+  filters: AssetMapVisibilityFilters,
+  agency: string,
+  layerIds: string[],
+) {
+  const filter = getRouteIdFilter(filters, agency);
+  for (const layerId of layerIds) {
+    if (map.getLayer(layerId)) map.setFilter(layerId, filter);
+  }
+}
+
+function setRegionalRailRouteFilter(
+  map: mapboxgl.Map,
+  filters: AssetMapVisibilityFilters,
+) {
+  const filter = getRegionalRailRouteFilter(filters);
+
+  for (const layerId of [
+    "regional-rail-route-casing",
+    "regional-rail-route-lines",
+  ]) {
+    if (map.getLayer(layerId)) map.setFilter(layerId, filter);
+  }
+}
+
+function getPathRouteVisibility(
+  filters: AssetMapVisibilityFilters,
+): "none" | "visible" {
+  return filters.pathStations ? "visible" : "none";
+}
+
+function setPathRouteVisibility(
+  map: mapboxgl.Map,
+  filters: AssetMapVisibilityFilters,
+) {
+  const visibility = getPathRouteVisibility(filters);
+  setRouteIdFilter(map, filters, "PATH", [
+    "path-route-casing",
+    "path-route-lines",
+  ]);
+
+  for (const layerId of ["path-route-casing", "path-route-lines"]) {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, "visibility", visibility);
+    }
+  }
+}
+
+function getAirTrainRouteVisibility(
+  filters: AssetMapVisibilityFilters,
+): "none" | "visible" {
+  return filters.airTrainStations ? "visible" : "none";
+}
+
+function setAirTrainRouteVisibility(
+  map: mapboxgl.Map,
+  filters: AssetMapVisibilityFilters,
+) {
+  const visibility = getAirTrainRouteVisibility(filters);
+  setRouteIdFilter(map, filters, "EWR AirTrain", [
+    "airtrain-route-casing",
+    "airtrain-route-lines",
+  ]);
+
+  for (const layerId of ["airtrain-route-casing", "airtrain-route-lines"]) {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, "visibility", visibility);
+    }
+  }
+}
+
+function getNjTransitRouteVisibility(
+  filters: AssetMapVisibilityFilters,
+): "none" | "visible" {
+  return filters.njTransitStations ? "visible" : "none";
+}
+
+function setNjTransitRouteVisibility(
+  map: mapboxgl.Map,
+  filters: AssetMapVisibilityFilters,
+) {
+  setToggleableRouteVisibility(
+    map,
+    "nj-transit",
+    getNjTransitRouteVisibility(filters),
+  );
+  setRouteIdFilter(map, filters, "NJ Transit", [
+    "nj-transit-route-casing",
+    "nj-transit-route-lines",
+  ]);
+}
+
+function getCTrailRouteVisibility(
+  filters: AssetMapVisibilityFilters,
+): "none" | "visible" {
+  return filters.ctrailStations ? "visible" : "none";
+}
+
+function setCTrailRouteVisibility(
+  map: mapboxgl.Map,
+  filters: AssetMapVisibilityFilters,
+) {
+  setToggleableRouteVisibility(
+    map,
+    "ctrail",
+    getCTrailRouteVisibility(filters),
+  );
+  setRouteIdFilter(map, filters, "CTrail", [
+    "ctrail-route-casing",
+    "ctrail-route-lines",
+  ]);
+}
+
+function hasEnabledNyctaRoute(
+  routes: string,
+  filters: AssetMapVisibilityFilters,
+) {
+  const stationRoutes = new Set(
+    routes
+      .split(/[\s,/]+/)
+      .map((route) => normalizeMapRoute(route))
+      .filter(Boolean),
+  );
+  return TRANSIT_ROUTE_FILTERS.some(
+    (route) =>
+      route.key.startsWith("NYCTA:") &&
+      filters.enabledTransitRoutes.includes(route.key) &&
+      (route.stationRouteIds || [route.routeId]).some((routeId) =>
+        stationRoutes.has(normalizeMapRoute(routeId)),
+      ),
+  );
+}
+
+function hasEnabledProjectRoute(
+  transitRouteKeys: string,
+  filters: AssetMapVisibilityFilters,
+) {
+  return transitRouteKeys
+    .split(",")
+    .filter(Boolean)
+    .some((key) => filters.enabledTransitRoutes.includes(key));
+}
+
+function isAdaProjectVisible(
+  status: AdaProjectStatus,
+  filters: AssetMapVisibilityFilters,
+) {
+  return filters[ADA_PROJECT_STATUS_META[status].filterKey];
+}
+
+function getStationTransitRouteKeys(station: RegionalRailStation) {
+  return getTransitRouteKeysForServices(getRegionalStationServices(station));
+}
+
+function getRegionalLineBadges(services: RegionalStationService[]) {
+  return services
+    .flatMap((service) =>
+      getRegionalTransitBranding(
+        service.agency,
+        service.branchId,
+        service.serviceRouteIds.join(","),
+      ).lines,
+    )
+    .filter(
+      (badge, index, badges) =>
+        badges.findIndex((candidate) => candidate.imagePath === badge.imagePath) ===
+        index,
+    );
+}
+
+function parseRegionalLineBadges(value: string): RegionalTransitBadge[] {
+  try {
+    const badges = JSON.parse(value) as RegionalTransitBadge[];
+    return Array.isArray(badges) ? badges : [];
+  } catch {
+    return [];
+  }
+}
+
+function isRegionalAgencyVisible(
+  agency: RegionalTransitAgency,
+  filters: AssetMapVisibilityFilters,
+) {
+  if (agency === "LIRR") return filters.lirrStations;
+  if (agency === "MNR") return filters.metroNorthStations;
+  if (agency === "PATH") return filters.pathStations;
+  if (agency === "NJ Transit") return filters.njTransitStations;
+  if (agency === "CTrail") return filters.ctrailStations;
+  return filters.airTrainStations;
+}
+
+function setToggleableRouteVisibility(
+  map: mapboxgl.Map,
+  layerPrefix: string,
+  visibility: "none" | "visible",
+) {
+  for (const layerId of [
+    `${layerPrefix}-route-casing`,
+    `${layerPrefix}-route-lines`,
+  ]) {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, "visibility", visibility);
+    }
+  }
 }
 
 function isRampOrLevelAccess(accessMethod: AccessibleStationAccessMethod) {
@@ -1463,18 +2453,31 @@ function normalizeMapRoute(value: string) {
   return value.trim().toUpperCase().replace("6X", "6").replace("7X", "7");
 }
 
-function readStoredMapMode(): MapMode {
-  if (typeof window === "undefined") {
-    return "combined";
-  }
+function normalizeStoredMapMode(
+  storedValue: unknown,
+  fallback: MapMode,
+): MapMode {
+  return storedValue === "elevators" ||
+    storedValue === "escalators" ||
+    storedValue === "combined"
+    ? storedValue
+    : fallback;
+}
 
-  const storedMode = window.localStorage.getItem(MAP_MODE_STORAGE_KEY);
-
-  return storedMode === "elevators" ||
-    storedMode === "escalators" ||
-    storedMode === "combined"
-    ? storedMode
-    : "combined";
+function normalizeStoredMapLayers(
+  storedValue: unknown,
+  fallback: Record<MapLayerKey, boolean>,
+) {
+  if (!storedValue || typeof storedValue !== "object") return fallback;
+  const stored = storedValue as Partial<Record<MapLayerKey, boolean>>;
+  return Object.fromEntries(
+    Object.entries(fallback).map(([key, value]) => [
+      key,
+      typeof stored[key as MapLayerKey] === "boolean"
+        ? stored[key as MapLayerKey]
+        : value,
+    ]),
+  ) as Record<MapLayerKey, boolean>;
 }
 
 function routeBadgeHtml(route: string) {
@@ -1488,6 +2491,35 @@ function routeBadgeHtml(route: string) {
       width="20"
     />
   `;
+}
+
+function projectRouteBadgesHtml(transitRouteKeys: string, routes: string) {
+  const badges = transitRouteKeys
+    .split(",")
+    .filter(Boolean)
+    .flatMap((key) => {
+      const route = TRANSIT_ROUTE_FILTERS.find((candidate) => candidate.key === key);
+      if (!route) return [];
+      return route.imagePaths.map(
+        (imagePath) => `
+          <img
+            alt="${escapeHtml(route.label)}"
+            height="20"
+            src="${escapeHtml(imagePath)}"
+            style="display:inline-block;height:20px;width:20px;object-fit:contain"
+            title="${escapeHtml(route.label)}"
+            width="20"
+          />
+        `,
+      );
+    });
+
+  if (badges.length > 0) return badges.join("");
+  return routes
+    .split(",")
+    .filter(Boolean)
+    .map(routeBadgeHtml)
+    .join("");
 }
 
 function escapeHtml(value: string) {

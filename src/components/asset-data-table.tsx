@@ -533,8 +533,8 @@ function MobileAssetCard({ asset }: { asset: MtaAsset }) {
     work: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300",
   };
   const stateLabels = {
-    operational: "Listed in service",
-    outage: "Snapshot outage flag",
+    operational: "Currently in service",
+    outage: "Current outage",
     unknown: "Unknown",
     work: "Work / repair",
   };
@@ -593,6 +593,13 @@ function MobileAssetCard({ asset }: { asset: MtaAsset }) {
           value={formatAssetCellValue(asset, "latest_installation_date")}
         />
       </dl>
+
+      {asset.future_outage === "YES" ? (
+        <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+          Future outage scheduled
+          {asset.future_outage_start ? ` · ${asset.future_outage_start}` : ""}
+        </p>
+      ) : null}
 
       <button
         className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-600)] hover:underline"

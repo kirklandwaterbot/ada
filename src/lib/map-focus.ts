@@ -12,6 +12,10 @@ export type MapFocusDetail =
   | {
       key: string;
       kind: "station";
+    }
+  | {
+      key: string;
+      kind: "regional";
     };
 
 export function focusAssetOnMap(code: string) {
