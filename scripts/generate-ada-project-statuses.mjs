@@ -57,9 +57,18 @@ const UNDER_CONSTRUCTION = [
 
 const ACTIVE_PROJECTS_AT_ACCESSIBLE_STATIONS = [
   equipmentProject("Bay Ridge-95 St", "4 Av Line", ["R"], ["BAYRIDGE-95ST-4AV-R"], "12411", "NYCT ADA Station Improvements: Package 4"),
-  equipmentProject("137 St-City College", "Broadway-7 Av Line", ["1"], ["137ST-CITYCOLLEGE-BWY7-1"], "12411", "NYCT ADA Station Improvements: Package 4"),
-  equipmentProject("Northern Blvd", "Queens Blvd Line", ["M", "R"], ["NORTHERNBLVD-QBL-M/R"], "12411", "NYCT ADA Station Improvements: Package 4"),
-  equipmentProject("Parkchester", "Pelham Line", ["6"], ["PARKCHESTER-PEL-6"], "12411", "NYCT ADA Station Improvements: Package 4"),
+  equipmentProject(
+    "137 St-City College",
+    "Broadway-7 Av Line",
+    ["1"],
+    ["137ST-CITYCOLLEGE-BWY7-1"],
+    "12411",
+    "NYCT ADA Station Improvements: Package 4",
+    {
+      note: "Uptown access is open via EL519; downtown accessibility remains under construction.",
+      onlyInServiceCoordinates: true,
+    },
+  ),
 ];
 
 const COMPLEX_PROJECT_MARKERS = [
@@ -191,7 +200,9 @@ const activeAccessibleStationMarkers = ACTIVE_PROJECTS_AT_ACCESSIBLE_STATIONS.ma
   (station) =>
     createEquipmentProjectMarker(station, {
       idPrefix: "active-ada-package",
-      note: "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
+      note:
+        station.note ??
+        "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
       projectStatus: "under_construction",
     }),
 );
@@ -245,7 +256,14 @@ function createEquipmentProjectMarker(station, options) {
     throw new Error(`No equipment coordinates found for ${station.station}.`);
   }
 
-  const coordinates = matchedAssets
+  const inServiceAssets = matchedAssets.filter(
+    (asset) => asset.service_status_code?.trim().toUpperCase() === "IFIS",
+  );
+  const coordinateAssets =
+    station.onlyInServiceCoordinates && inServiceAssets.length > 0
+      ? inServiceAssets
+      : matchedAssets;
+  const coordinates = coordinateAssets
     .map((asset) => asset.georeference?.coordinates)
     .filter(
       (value) =>
@@ -372,6 +390,7 @@ function equipmentProject(
   assetStationNames,
   projectId,
   projectTitle,
+  overrides = {},
 ) {
   return {
     assetStationNames,
@@ -381,6 +400,7 @@ function equipmentProject(
     projectTitle,
     services,
     station,
+    ...overrides,
   };
 }
 

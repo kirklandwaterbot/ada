@@ -7,6 +7,24 @@
       "source": "Official MTA Subway GTFS",
       "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
       "evidence": "Parent stops 222 and 415 publish wheelchair_boarding=1."
+    },
+    {
+      "station": "137 St-City College",
+      "source": "MTA Subway Elevator and Escalator Asset Inventory",
+      "sourceUrl": "https://data.ny.gov/d/94fv-bak7",
+      "evidence": "EL519 is an in-service ADA elevator to the uptown platform; downtown accessibility remains under construction."
+    },
+    {
+      "station": "Northern Blvd",
+      "source": "MTA Subway Elevator and Escalator Asset Inventory",
+      "sourceUrl": "https://data.ny.gov/d/94fv-bak7",
+      "evidence": "EL485 and EL486 are in-service ADA elevators serving both directions."
+    },
+    {
+      "station": "Parkchester",
+      "source": "MTA Subway Elevator and Escalator Asset Inventory",
+      "sourceUrl": "https://data.ny.gov/d/94fv-bak7",
+      "evidence": "EL521 and EL522 are in-service ADA elevators serving both directions."
     }
   ],
   "summary": {
@@ -14,7 +32,7 @@
     "accessible": 161,
     "partiallyAccessible": 10,
     "notAccessible": 322,
-    "plannedAda": 102,
+    "plannedAda": 103,
     "statenIslandStations": 21,
     "sirAccessible": 6,
     "sirPlannedAda": 3,
@@ -3405,8 +3423,8 @@
       "line": "Broadway-7 Av Line",
       "accessibilityStatus": "Partially accessible",
       "accessibilityRaw": "♿ (uptown)",
-      "plannedAda": false,
-      "plannedAdaNote": "",
+      "plannedAda": true,
+      "plannedAdaNote": "Downtown elevator access remains under construction.",
       "dateMadeAccessible": "May 1, 2026",
       "borough": "Manhattan",
       "neighborhood": "Hamilton Heights",

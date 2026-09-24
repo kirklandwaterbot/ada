@@ -22,6 +22,25 @@ describe("asset coordinate corrections", () => {
       longitude: -73.843853,
     });
   });
+
+  it.each(["EL521", "EL522"])(
+    "keeps %s at Parkchester when the upstream point is wrong",
+    (equipmentCode) => {
+      const asset = {
+        asset_class: "Elevator Traction",
+        elevator_or_escalator: "Elevator",
+        equipment_code: equipmentCode,
+        station_description: "Parkchester - Station",
+        x_coordinate: "40.880028",
+        y_coordinate: "-73.88435",
+      } satisfies MtaAsset;
+
+      expect(getAssetCoordinates(asset)).toEqual({
+        latitude: 40.833333,
+        longitude: -73.860972,
+      });
+    },
+  );
 });
 
 describe("149 St-Hostos equipment display", () => {

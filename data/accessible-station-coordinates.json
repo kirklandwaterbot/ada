@@ -65,6 +65,30 @@
       "sourceStopIds": ["222", "415"]
     },
     {
+      "id": "137 st city college-1-Broadway-7 Av Line",
+      "station": "137 St-City College",
+      "line": "Broadway-7 Av Line",
+      "services": ["1"],
+      "latitude": 40.821575,
+      "longitude": -73.95381,
+      "accessMethod": "elevator",
+      "statusLabel": "Partially accessible station (uptown only; downtown elevator under construction)",
+      "coordinateSource": "Official MTA equipment inventory",
+      "equipmentCodes": ["EL519"]
+    },
+    {
+      "id": "northern blvd-M-R-Queens Blvd Line",
+      "station": "Northern Blvd",
+      "line": "Queens Blvd Line",
+      "services": ["M", "R"],
+      "latitude": 40.752884,
+      "longitude": -73.906006,
+      "accessMethod": "elevator",
+      "statusLabel": "Accessible station",
+      "coordinateSource": "Official MTA equipment inventory",
+      "equipmentCodes": ["EL485", "EL486"]
+    },
+    {
       "id": "parkchester-6-Pelham Line",
       "station": "Parkchester",
       "line": "Pelham Line",
@@ -72,7 +96,9 @@
       "latitude": 40.833333,
       "longitude": -73.860972,
       "accessMethod": "elevator",
-      "statusLabel": "Accessible station"
+      "statusLabel": "Accessible station",
+      "coordinateSource": "Verified station coordinates",
+      "equipmentCodes": ["EL521", "EL522"]
     },
     {
       "id": "rockaway park beach 116 st-A-SR-Rockaway Line",

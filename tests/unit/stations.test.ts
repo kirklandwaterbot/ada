@@ -35,7 +35,7 @@ describe("149 St-Hostos accessibility update", () => {
     expect(stationSummary).toMatchObject({
       accessible: 161,
       notAccessible: 322,
-      plannedAda: 102,
+      plannedAda: 103,
     });
   });
 
@@ -79,6 +79,51 @@ describe("149 St-Hostos accessibility update", () => {
         )!,
       ),
     ).toContain("149 St-Grand Concourse");
+  });
+});
+
+describe("Package 4 station accessibility corrections", () => {
+  it("distinguishes partial 137 St access from fully accessible stations", () => {
+    const cityCollege = stations.find(
+      (station) => station.station === "137 St-City College",
+    );
+    const northernBlvd = stations.find(
+      (station) => station.station === "Northern Blvd",
+    );
+    const parkchester = stations.find(
+      (station) => station.station === "Parkchester",
+    );
+
+    expect(cityCollege).toMatchObject({
+      accessibilityRaw: "♿ (uptown)",
+      accessibilityStatus: "Partially accessible",
+      plannedAda: true,
+      plannedAdaNote: "Downtown elevator access remains under construction.",
+    });
+    expect(northernBlvd).toMatchObject({
+      accessibilityStatus: "Accessible",
+      plannedAda: false,
+    });
+    expect(parkchester).toMatchObject({
+      accessibilityStatus: "Accessible",
+      plannedAda: false,
+    });
+    expect(stationSummary.plannedAda).toBe(103);
+  });
+
+  it("focuses all three corrected stations on their station markers", () => {
+    for (const [stationName, expected] of [
+      ["137 St-City College", { latitude: 40.821575, longitude: -73.95381 }],
+      ["Northern Blvd", { latitude: 40.752884, longitude: -73.906006 }],
+      ["Parkchester", { latitude: 40.833333, longitude: -73.860972 }],
+    ] as const) {
+      const station = stations.find(
+        (candidate) => candidate.station === stationName,
+      );
+
+      expect(station).toBeDefined();
+      expect(getStationCoordinate(station!)).toEqual(expected);
+    }
   });
 });
 

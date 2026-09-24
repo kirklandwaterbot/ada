@@ -9,7 +9,7 @@ const RAMP_OR_LEVEL_METHODS = new Set([
 
 describe("accessible station coordinate classifications", () => {
   it("classifies every fallback marker by its step-free access method", () => {
-    expect(accessibleStations.stations).toHaveLength(16);
+    expect(accessibleStations.stations).toHaveLength(18);
     expect(
       accessibleStations.stations.every((station) =>
         ["accessible_entrance", "elevator", "ramp", "street_level"].includes(
@@ -31,7 +31,7 @@ describe("accessible station coordinate classifications", () => {
     ).toHaveLength(10);
     expect(
       fullAccess.filter((station) => station.accessMethod === "elevator"),
-    ).toHaveLength(4);
+    ).toHaveLength(5);
   });
 
   it("uses one elevator-served marker for the entire 149 St-Hostos complex", () => {
@@ -46,5 +46,33 @@ describe("accessible station coordinate classifications", () => {
         sourceStopIds: ["222", "415"],
       }),
     ]);
+  });
+
+  it("publishes the corrected accessibility markers for Package 4 stations", () => {
+    expect(
+      accessibleStations.stations.find(
+        (station) => station.station === "137 St-City College",
+      ),
+    ).toMatchObject({
+      equipmentCodes: ["EL519"],
+      statusLabel:
+        "Partially accessible station (uptown only; downtown elevator under construction)",
+    });
+    expect(
+      accessibleStations.stations.find(
+        (station) => station.station === "Northern Blvd",
+      ),
+    ).toMatchObject({
+      equipmentCodes: ["EL485", "EL486"],
+      statusLabel: "Accessible station",
+    });
+    expect(
+      accessibleStations.stations.find(
+        (station) => station.station === "Parkchester",
+      ),
+    ).toMatchObject({
+      equipmentCodes: ["EL521", "EL522"],
+      statusLabel: "Accessible station",
+    });
   });
 });

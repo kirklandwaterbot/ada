@@ -200,7 +200,7 @@ test("opens with a clean map canvas and compact atlas tools", async ({
   });
   await expect(rampFilter).toHaveAttribute("aria-pressed", "true");
   const elevatorStationFilter = mapFilters.getByRole("button", {
-    name: /Accessible via elevator.*4/,
+    name: /Accessible via elevator.*5/,
   });
   await expect(elevatorStationFilter).toHaveAttribute("aria-pressed", "true");
   for (const statusLabel of [
@@ -229,7 +229,7 @@ test("opens with a clean map canvas and compact atlas tools", async ({
   await repairFilter.click();
   await expect(repairFilter).toHaveAttribute("aria-pressed", "false");
   const partialFilter = mapFilters.getByRole("button", {
-    name: /Partially accessible.*2/,
+    name: /Partially accessible.*3/,
   });
   await expect(partialFilter).toHaveAttribute("aria-pressed", "true");
   await partialFilter.click();

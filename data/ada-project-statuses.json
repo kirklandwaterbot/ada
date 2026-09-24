@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-24T03:23:59.483Z",
+  "checkedAt": "2026-09-24T14:00:39.563Z",
   "generatedFrom": [
     "data/planned-ada-station-coordinates.json",
     "data/accessibility-stations.json",
@@ -14,7 +14,7 @@
     "https://www.mta.info/document/186856"
   ],
   "statusCounts": {
-    "under_construction": 33,
+    "under_construction": 31,
     "funded_planned": 63,
     "design_study": 13,
     "planned_new_station": 3,
@@ -902,11 +902,11 @@
       "borough": "Manhattan",
       "coordinateSource": "MTA elevator and escalator equipment inventory",
       "id": "active-ada-package-137-st-city-college-1",
-      "latitude": 40.819643750000004,
+      "latitude": 40.821575,
       "line": "Broadway-7 Av Line",
-      "longitude": -73.95634050000001,
+      "longitude": -73.95381,
       "neighborhood": "Hamilton Heights",
-      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
+      "note": "Uptown access is open via EL519; downtown accessibility remains under construction.",
       "projectPhase": "Construction",
       "projectStatus": "under_construction",
       "projectTitle": "NYCT ADA Station Improvements: Package 4",
@@ -2884,30 +2884,6 @@
       ]
     },
     {
-      "agency": "NYCTA",
-      "borough": "Queens",
-      "coordinateSource": "MTA elevator and escalator equipment inventory",
-      "id": "active-ada-package-northern-blvd-M-R",
-      "latitude": 40.752884,
-      "line": "Queens Blvd Line",
-      "longitude": -73.906006,
-      "neighborhood": "Woodside",
-      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
-      "projectPhase": "Construction",
-      "projectStatus": "under_construction",
-      "projectTitle": "NYCT ADA Station Improvements: Package 4",
-      "services": [
-        "M",
-        "R"
-      ],
-      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
-      "station": "Northern Blvd",
-      "transitRouteKeys": [
-        "NYCTA:M",
-        "NYCTA:R"
-      ]
-    },
-    {
       "id": "norwood av-J-Z-Jamaica Line",
       "station": "Norwood Av",
       "line": "Jamaica Line",
@@ -3005,28 +2981,6 @@
       "transitRouteKeys": [
         "NYCTA:A",
         "NYCTA:C"
-      ]
-    },
-    {
-      "agency": "NYCTA",
-      "borough": "The Bronx",
-      "coordinateSource": "MTA elevator and escalator equipment inventory",
-      "id": "active-ada-package-parkchester-6",
-      "latitude": 40.86442533333334,
-      "line": "Pelham Line",
-      "longitude": -73.87662999999999,
-      "neighborhood": "Parkchester",
-      "note": "The MTA Capital Program Dashboard still lists this station accessibility package in construction.",
-      "projectPhase": "Construction",
-      "projectStatus": "under_construction",
-      "projectTitle": "NYCT ADA Station Improvements: Package 4",
-      "services": [
-        "6"
-      ],
-      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
-      "station": "Parkchester",
-      "transitRouteKeys": [
-        "NYCTA:6"
       ]
     },
     {

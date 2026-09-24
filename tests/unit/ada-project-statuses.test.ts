@@ -71,7 +71,7 @@ describe("ADA project status classifications", () => {
 
   it("publishes all current missing-package stations with agency-aware route keys", () => {
     const expectedPackages = new Map([
-      ["12411", new Set(["137 St-City College", "Bay Ridge-95 St", "Northern Blvd", "Parkchester"])],
+      ["12411", new Set(["137 St-City College", "Bay Ridge-95 St"])],
       ["12754", new Set(["2 Av", "7 Av", "Morrison Av-Soundview"])],
       ["13429", new Set(["110 St", "145 St", "Wakefield-241 St"])],
       ["12654", new Set(["Babylon", "Forest Hills", "Hollis"])],
@@ -95,6 +95,30 @@ describe("ADA project status classifications", () => {
           station.transitRouteKeys.every((key) => validRouteKeys.has(key)),
       ),
     ).toBe(true);
+  });
+
+  it("keeps only the unfinished 137 St direction in construction", () => {
+    const packageFourProjects = adaProjectStatuses.stations.filter((station) =>
+      station.sourceUrl.includes("12411"),
+    );
+    const cityCollege = packageFourProjects.find(
+      (station) => station.station === "137 St-City College",
+    );
+
+    expect(cityCollege).toMatchObject({
+      latitude: 40.821575,
+      longitude: -73.95381,
+      projectStatus: "under_construction",
+    });
+    expect(cityCollege?.note).toMatch(
+      /uptown access is open.*downtown.*under construction/i,
+    );
+    expect(packageFourProjects.map((station) => station.station)).not.toContain(
+      "Northern Blvd",
+    );
+    expect(packageFourProjects.map((station) => station.station)).not.toContain(
+      "Parkchester",
+    );
   });
 
   it("publishes Broadway Junction as one correctly located full-complex construction project", () => {

@@ -268,6 +268,16 @@ export function getAssetCoordinates(asset: MtaAsset) {
     return { latitude: 40.680429, longitude: -73.843853 };
   }
 
+  // EL521 and EL522 serve Parkchester, but the inventory currently publishes
+  // both points near Bronx Park. Keep the elevator markers at their station.
+  if (
+    ["EL521", "EL522"].includes(
+      asset.equipment_code?.trim().toUpperCase() ?? "",
+    )
+  ) {
+    return { latitude: 40.833333, longitude: -73.860972 };
+  }
+
   const latitude = Number(asset.x_coordinate);
   const longitude = Number(asset.y_coordinate);
 
