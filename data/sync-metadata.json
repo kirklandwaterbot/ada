@@ -5,8 +5,13 @@
   "json_api_url": "https://data.ny.gov/resource/94fv-bak7.json?$limit=5000&$order=equipment_code",
   "count_api_url": "https://data.ny.gov/resource/94fv-bak7.json?$select=count(*)",
   "upstream_source": "live_api",
+<<<<<<< HEAD
   "synced_at": "2026-09-24T03:23:53.458Z",
   "local_snapshot_written_at": "2026-09-24T03:23:53.458Z",
+=======
+  "synced_at": "2026-09-24T14:00:01.310Z",
+  "local_snapshot_written_at": "2026-09-24T14:00:01.310Z",
+>>>>>>> 30137cabf0ef5a31ab81385738d3f3a0f3f52fe0
   "csv_bytes": 468787,
   "row_count_loaded": 759,
   "row_count_expected": 759,

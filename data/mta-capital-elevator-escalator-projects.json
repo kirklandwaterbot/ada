@@ -1,6 +1,10 @@
 {
   "metadata": {
+<<<<<<< HEAD
     "checkedAt": "2026-09-24T03:23:59.483Z",
+=======
+    "checkedAt": "2026-09-24T14:00:39.563Z",
+>>>>>>> 30137cabf0ef5a31ab81385738d3f3a0f3f52fe0
     "legacyProjectCount": 80,
     "modernProjectCount": 18,
     "pageSourceMode": "local_snapshot",
