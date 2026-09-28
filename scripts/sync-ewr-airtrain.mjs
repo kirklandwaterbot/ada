@@ -52,16 +52,17 @@ const overpassOptions = {
   body: new URLSearchParams({ data: OVERPASS_QUERY }).toString(),
 };
 
-const [airTrainResponse, accessibilityResponse, overpassResponse] =
-  await Promise.all([
-    fetchWithRetry(AIRTRAIN_URL),
-    fetchWithRetry(ACCESSIBILITY_URL),
-    fetchWithRetry(OVERPASS_URL, overpassOptions, { timeoutMs: 45_000 }),
-  ]);
 const [airTrainHtml, accessibilityHtml, overpass] = await Promise.all([
-  airTrainResponse.text(),
-  accessibilityResponse.text(),
-  overpassResponse.json(),
+  fetchWithRetry(AIRTRAIN_URL, {}, {
+    consume: (response) => response.text(),
+  }),
+  fetchWithRetry(ACCESSIBILITY_URL, {}, {
+    consume: (response) => response.text(),
+  }),
+  fetchWithRetry(OVERPASS_URL, overpassOptions, {
+    consume: (response) => response.json(),
+    timeoutMs: 45_000,
+  }),
 ]);
 
 const officialText = normalizeHtmlText(`${airTrainHtml} ${accessibilityHtml}`);

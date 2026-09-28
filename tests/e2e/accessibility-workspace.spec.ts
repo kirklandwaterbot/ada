@@ -103,7 +103,9 @@ test("mobile map tools reach the equipment inventory", async ({
   await page.getByRole("link", { name: "Equipment", exact: true }).click();
   await expect(page).toHaveURL(/\/equipment$/);
   await expect(
-    page.getByRole("heading", { name: "Every asset, one searchable view" }),
+    page.getByRole("heading", {
+      name: "Elevators and escalators across every system",
+    }),
   ).toBeVisible({ timeout: 15_000 });
 });
 
@@ -146,7 +148,7 @@ test("shows 149 St-Hostos as accessible and preserves its former name", async ({
 }) => {
   await page.goto("/stations?view=explorer");
   await page
-    .getByPlaceholder("Station, line, route, or borough")
+    .getByPlaceholder("Station, line, agency, or location")
     .fill("149 St-Grand Concourse");
   await expect(page.getByRole("link", { name: /149 St-Hostos/ })).toHaveCount(2);
 
@@ -214,14 +216,20 @@ test("opens with a clean map canvas and compact atlas tools", async ({
       mapFilters.getByRole("button", { name: new RegExp(statusLabel) }),
     ).toHaveAttribute("aria-pressed", "true");
   }
-  await expect(mapFilters.getByText("Long Island Rail Road", { exact: true })).toBeVisible();
-  await expect(mapFilters.getByText("Metro-North Railroad", { exact: true })).toBeVisible();
+  await expect(
+    mapFilters.locator("summary").filter({ hasText: /^Long Island Rail Road/ }),
+  ).toBeVisible();
+  await expect(
+    mapFilters.locator("summary").filter({ hasText: /^Metro-North Railroad/ }),
+  ).toBeVisible();
   await expect(mapFilters.getByText("City Terminal Zone", { exact: true })).toHaveCount(0);
   await expect(mapFilters.getByText("Harlem / Wassaic", { exact: true })).toHaveCount(0);
   await expect(mapFilters.getByText("Harlem", { exact: true })).toHaveCount(1);
-  await expect(mapFilters.getByText("PATH", { exact: true })).toBeVisible();
-  await expect(mapFilters.getByText("AirTrain JFK", { exact: true })).toBeVisible();
-  await expect(mapFilters.getByText("AirTrain Newark", { exact: true })).toBeVisible();
+  for (const system of ["PATH", "AirTrain JFK", "AirTrain Newark"]) {
+    await expect(
+      mapFilters.locator("summary").filter({ hasText: new RegExp(`^${system}`) }),
+    ).toBeVisible();
+  }
   const repairFilter = mapFilters.getByRole("button", {
     name: /Outages \/ repair \/ modernization/,
   });
@@ -525,28 +533,24 @@ test("serves corrected regional transit data and filters to the map", async ({
   await expect(
     filters.getByText("Newark Light Rail", { exact: true }),
   ).toHaveCount(0);
-  const pathFilter = filters.getByText("All PATH", { exact: true });
-  const airTrainFilter = filters.getByText("All AirTrain Newark", {
-    exact: true,
-  });
-  const njTransitFilter = filters.getByText("All NJ Transit", { exact: true });
-  const ctrailFilter = filters.getByText("All CTrail", { exact: true });
-  await pathFilter.click();
-  await airTrainFilter.click();
-  await njTransitFilter.click();
-  await ctrailFilter.click();
-  await expect(pathFilter).toHaveAttribute("aria-pressed", "false");
-  await expect(airTrainFilter).toHaveAttribute("aria-pressed", "false");
-  await expect(njTransitFilter).toHaveAttribute("aria-pressed", "false");
-  await expect(ctrailFilter).toHaveAttribute("aria-pressed", "false");
-  await pathFilter.click();
-  await airTrainFilter.click();
-  await njTransitFilter.click();
-  await ctrailFilter.click();
-  await expect(pathFilter).toHaveAttribute("aria-pressed", "true");
-  await expect(airTrainFilter).toHaveAttribute("aria-pressed", "true");
-  await expect(njTransitFilter).toHaveAttribute("aria-pressed", "true");
-  await expect(ctrailFilter).toHaveAttribute("aria-pressed", "true");
+  for (const group of ["PATH", "AirTrain Newark", "NJ Transit", "CTrail"]) {
+    const selectAll = filters.getByRole("button", {
+      name: `Select all ${group}`,
+      exact: true,
+    });
+    const selectNone = filters.getByRole("button", {
+      name: `Select none ${group}`,
+      exact: true,
+    });
+    await expect(selectAll).toBeEnabled();
+    await expect(selectNone).toBeDisabled();
+    await selectAll.click();
+    await expect(selectAll).toBeDisabled();
+    await expect(selectNone).toBeEnabled();
+    await selectNone.click();
+    await expect(selectAll).toBeEnabled();
+    await expect(selectNone).toBeDisabled();
+  }
 
   await expect(page.locator(".mapboxgl-canvas")).toBeVisible();
   await page.waitForTimeout(2_000);

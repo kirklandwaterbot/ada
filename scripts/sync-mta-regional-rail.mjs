@@ -126,15 +126,21 @@ const ACCESSIBILITY_BRANCH_IDS = {
 const generatedAt = new Date().toISOString();
 const existingRouteCollection = await readExistingRouteCollection();
 const sourcePayloads = await Promise.all([
-    fetchWithRetry(INFRASTRUCTURE_URL, {
-      headers: { "accept-version": "3.0" },
-    }).then((response) => response.json()),
-    fetchWithRetry(EQUIPMENT_STATUS_URL).then((response) => response.json()),
-    fetchWithRetry(ACCESSIBLE_STATIONS_URL).then((response) => response.text()),
+    fetchWithRetry(
+      INFRASTRUCTURE_URL,
+      { headers: { "accept-version": "3.0" } },
+      { consume: (response) => response.json() },
+    ),
+    fetchWithRetry(EQUIPMENT_STATUS_URL, {}, {
+      consume: (response) => response.json(),
+    }),
+    fetchWithRetry(ACCESSIBLE_STATIONS_URL, {}, {
+      consume: (response) => response.text(),
+    }),
     ...FEEDS.map((feed) =>
-      fetchWithRetry(feed.url).then(async (response) =>
-        Buffer.from(await response.arrayBuffer()),
-      ),
+      fetchWithRetry(feed.url, {}, {
+        consume: async (response) => Buffer.from(await response.arrayBuffer()),
+      }),
     ),
     ...MNR_OSM_ROUTES.map((route) =>
       fetchWithRetry(
@@ -149,9 +155,12 @@ const sourcePayloads = await Promise.all([
           },
           method: "POST",
         },
-        { maxAttempts: 2, timeoutMs: 20_000 },
+        {
+          consume: (response) => response.json(),
+          maxAttempts: 2,
+          timeoutMs: 20_000,
+        },
       )
-        .then((response) => response.json())
         .catch((error) => {
           const fallbackFeatures = (existingRouteCollection?.features || []).filter(
             (feature) =>

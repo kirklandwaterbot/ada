@@ -55,12 +55,18 @@ const PATH_ROUTE_OFFSETS = {
 };
 
 const [archive, config, alertsText, stationStatusModel] = await Promise.all([
-  fetchWithRetry(GTFS_URL).then(async (response) =>
-    Buffer.from(await response.arrayBuffer()),
-  ),
-  fetchWithRetry(CONFIG_URL).then((response) => response.json()),
-  fetchWithRetry(ALERTS_URL).then((response) => response.text()),
-  fetchWithRetry(STATION_STATUS_MODEL_URL).then((response) => response.json()),
+  fetchWithRetry(GTFS_URL, {}, {
+    consume: async (response) => Buffer.from(await response.arrayBuffer()),
+  }),
+  fetchWithRetry(CONFIG_URL, {}, {
+    consume: (response) => response.json(),
+  }),
+  fetchWithRetry(ALERTS_URL, {}, {
+    consume: (response) => response.text(),
+  }),
+  fetchWithRetry(STATION_STATUS_MODEL_URL, {}, {
+    consume: (response) => response.json(),
+  }),
 ]);
 const alerts = alertsText.trim() ? JSON.parse(alertsText) : [];
 

@@ -534,7 +534,7 @@ export function MapFirstHome({
             {filtersOpen ? (
               <section
                 aria-label="Map filters"
-                className="fixed bottom-3 left-[4.4rem] right-3 max-h-[calc(100svh-1.5rem)] overflow-y-auto rounded-2xl border border-white/10 bg-[#111820]/[0.97] shadow-[0_22px_70px_rgb(0_0_0_/_0.42)] backdrop-blur-xl sm:right-auto sm:w-[min(19rem,calc(100vw-5.5rem))]"
+                className={`fixed bottom-3 left-[4.4rem] right-3 overflow-y-auto rounded-2xl border border-white/10 bg-[#111820]/[0.97] shadow-[0_22px_70px_rgb(0_0_0_/_0.42)] backdrop-blur-xl sm:bottom-4 sm:right-auto sm:w-[min(19rem,calc(100vw-5.5rem))] ${mastheadOpen ? "top-[5.5rem] sm:top-[5.75rem]" : "top-3 sm:top-4"}`}
                 id="atlas-map-filters"
               >
                 <div className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-white/10 bg-[#111820] p-4">
