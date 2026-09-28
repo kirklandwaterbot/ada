@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-09-24T22:40:49.692Z",
+    "generatedAt": "2026-09-28T17:22:38.022Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,7 +11,7 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 5,
+    "elevatorOutageCount": 6,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
     "lightRailElevatorOutageCount": 2,
@@ -4451,7 +4451,7 @@
           "unitId": "NJT-RAIL-SOMERVILLE-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
