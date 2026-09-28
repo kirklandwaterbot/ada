@@ -172,11 +172,7 @@ test("opens with a clean map canvas and compact atlas tools", async ({
       { exact: true },
     ),
   ).toHaveCount(0);
-  await expect(
-    page.getByLabel(
-      "Interactive subway, PATH, AirTrain, and regional rail accessibility map with present-day transit routes",
-    ),
-  ).toBeVisible({ timeout: 15_000 });
+  await expectMapSurface(page);
   await expect(page.getByText("Map layers", { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Browse .* enabled map markers/)).toHaveCount(0);
   await expect(
@@ -552,7 +548,7 @@ test("serves corrected regional transit data and filters to the map", async ({
     await expect(selectNone).toBeDisabled();
   }
 
-  await expect(page.locator(".mapboxgl-canvas")).toBeVisible();
+  await expectMapSurface(page);
   await page.waitForTimeout(2_000);
   await page.screenshot({
     path: testInfo.outputPath("corrected-transit-map.png"),
@@ -597,3 +593,23 @@ test("shows modern project milestones even when percent complete is unpublished"
   await expect(page.getByText("Financial Closeout", { exact: true })).toBeVisible();
   await expect(page.getByText("Latest budget by ACEP", { exact: true })).toBeVisible();
 });
+
+async function expectMapSurface(page: import("@playwright/test").Page) {
+  const mapSurface = page.getByRole("region", {
+    name: "Interactive subway, PATH, AirTrain, and regional rail accessibility map with present-day transit routes",
+  });
+  await expect(mapSurface).toBeVisible({ timeout: 15_000 });
+
+  const state = await mapSurface.getAttribute("data-map-state");
+  if (state === "interactive") {
+    await expect(mapSurface.locator(".mapboxgl-canvas")).toBeVisible();
+    return;
+  }
+
+  expect(state).toBe("configuration-required");
+  await expect(
+    mapSurface.getByText(
+      "Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the interactive system map.",
+    ),
+  ).toBeVisible();
+}

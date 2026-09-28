@@ -1667,48 +1667,40 @@ export function AssetMap({
         </div>
       )}
 
-      {token ? (
+      <div
+        className={[
+          "overflow-hidden bg-[var(--panel)]",
+          canvas
+            ? "absolute inset-0"
+            : embedded
+              ? ""
+              : "rounded-2xl border border-[var(--border)] shadow-[0_16px_40px_rgb(15_35_64_/_0.06)]",
+        ].join(" ")}
+      >
         <div
+          aria-describedby={minimal ? undefined : "map-results-description"}
+          aria-label="Interactive subway, PATH, AirTrain, and regional rail accessibility map with present-day transit routes"
           className={[
-            "overflow-hidden bg-[var(--panel)]",
             canvas
-              ? "absolute inset-0"
+              ? "h-full min-h-[34rem] w-full"
               : embedded
-                ? ""
-                : "rounded-2xl border border-[var(--border)] shadow-[0_16px_40px_rgb(15_35_64_/_0.06)]",
-          ].join(" ")}
-        >
-          <div
-            aria-describedby={minimal ? undefined : "map-results-description"}
-            aria-label="Interactive subway, PATH, AirTrain, and regional rail accessibility map with present-day transit routes"
-            className={
-              canvas
-                ? "h-full min-h-[34rem] w-full"
-                : embedded
                 ? layout === "full"
                   ? "h-[620px] w-full xl:h-[calc(100vh-19rem)] xl:min-h-[580px] xl:max-h-[900px]"
                   : "h-[580px] w-full xl:h-[calc(100vh-22rem)] xl:min-h-[520px] xl:max-h-[760px]"
-                : "h-[560px] w-full"
-            }
-            ref={containerRef}
-            role="region"
-          />
-        </div>
-      ) : (
-        <div
-          className={
-            canvas
-              ? "absolute inset-0 grid place-items-center p-5"
-              : embedded
-                ? "p-5"
-                : ""
-          }
+                : "h-[560px] w-full",
+            token ? "" : "grid place-items-center p-5",
+          ].join(" ")}
+          data-map-state={token ? "interactive" : "configuration-required"}
+          ref={token ? containerRef : undefined}
+          role="region"
         >
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
-            Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the interactive system map.
-          </div>
+          {!token ? (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+              Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the interactive system map.
+            </div>
+          ) : null}
         </div>
-      )}
+      </div>
 
       {!minimal && (
         <div
