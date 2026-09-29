@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-09-28T17:22:38.022Z",
+    "generatedAt": "2026-09-29T15:24:12.156Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 6,
+    "elevatorOutageCount": 10,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 2,
+    "lightRailElevatorOutageCount": 3,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -302,7 +302,7 @@
           "unitId": "NJT-RAIL-ABSECON-1",
           "system": "rail",
           "location": "Center-Platform Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -1479,7 +1479,7 @@
           "unitId": "NJT-RAIL-ELIZABETH-4",
           "system": "rail",
           "location": "Westbound #4 Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -3953,7 +3953,7 @@
           "unitId": "NJT-RAIL-RAHWAY-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -4929,7 +4929,7 @@
           "unitId": "NJT-LR-WASHINGTON-STREET-1",
           "system": "light_rail",
           "location": "Inbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
