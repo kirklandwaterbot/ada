@@ -5,14 +5,14 @@
   "json_api_url": "https://data.ny.gov/resource/94fv-bak7.json?$limit=5000&$order=equipment_code",
   "count_api_url": "https://data.ny.gov/resource/94fv-bak7.json?$select=count(*)",
   "upstream_source": "live_api",
-  "synced_at": "2026-09-29T15:20:21.283Z",
-  "local_snapshot_written_at": "2026-09-29T15:20:21.283Z",
-  "csv_bytes": 468763,
+  "synced_at": "2026-09-30T15:35:51.263Z",
+  "local_snapshot_written_at": "2026-09-30T15:35:51.263Z",
+  "csv_bytes": 469141,
   "row_count_loaded": 759,
   "row_count_expected": 759,
   "row_count_matches": true,
   "equipment_status_source_url": "https://www.mta.info/elevator-escalator-status",
-  "equipment_status_checked_at": "2026-09-29T15:20:22.047Z",
-  "current_outage_count": 47,
-  "future_outage_count": 27
+  "equipment_status_checked_at": "2026-09-30T15:35:52.546Z",
+  "current_outage_count": 44,
+  "future_outage_count": 23
 }
