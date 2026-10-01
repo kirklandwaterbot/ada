@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-09-30T15:36:44.029Z",
+    "generatedAt": "2026-10-01T15:59:07.676Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
