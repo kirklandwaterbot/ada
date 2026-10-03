@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-02T15:24:08.356Z",
+    "generatedAt": "2026-10-03T14:11:44.683Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -14,7 +14,7 @@
     "elevatorOutageCount": 6,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 2,
+    "lightRailElevatorOutageCount": 3,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -131,7 +131,7 @@
           "unitId": "NJT-LR-34-STREET-BAYONNE-2",
           "system": "light_rail",
           "location": "Platform Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -3308,7 +3308,7 @@
           "unitId": "NJT-RAIL-NEWARK-PENN-1",
           "system": "rail",
           "location": "Track 1-PATH Passenger Elevator 37",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -4104,7 +4104,7 @@
           "unitId": "NJT-RAIL-RIDGEWOOD-2",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -4804,7 +4804,7 @@
           "unitId": "NJT-RAIL-UNION-1",
           "system": "rail",
           "location": "Center-Platform Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],

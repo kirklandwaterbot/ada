@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T15:20:53.540Z",
+  "checkedAt": "2026-10-03T14:08:31.663Z",
   "generatedFrom": [
     "data/planned-ada-station-coordinates.json",
     "data/accessibility-stations.json",
@@ -1002,9 +1002,9 @@
       "borough": "The Bronx",
       "coordinateSource": "MTA elevator and escalator equipment inventory",
       "id": "accessible-upgrade-161-st-yankee-stadium-B-D-4",
-      "latitude": 40.82781657142857,
+      "latitude": 40.827783857142855,
       "line": "Concourse/Jerome Av Lines",
-      "longitude": -73.92574271428573,
+      "longitude": -73.92572414285713,
       "neighborhood": "Highbridge",
       "note": "Active project replaces or modernizes elevators at a station that already has an accessible route.",
       "projectPhase": "Construction",
