@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-03T14:11:44.683Z",
+    "generatedAt": "2026-10-04T14:40:03.218Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 6,
+    "elevatorOutageCount": 5,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 3,
+    "lightRailElevatorOutageCount": 2,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -645,7 +645,7 @@
           "unitId": "NJT-LR-BERGENLINE-AVENUE-3",
           "system": "light_rail",
           "location": "Elevator No. 3",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],

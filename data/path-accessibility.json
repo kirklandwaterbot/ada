@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-03T14:08:34.704Z",
+    "generatedAt": "2026-10-04T14:36:53.164Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -94,9 +94,9 @@
       "elevators": [
         {
           "unitId": "JSQ-elevator-service",
-          "location": "07:05 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
+          "location": "05:00 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
           "status": "outage",
-          "lastUpdated": "10/03/2026 11:05:08"
+          "lastUpdated": "10/04/2026 09:00:21"
         }
       ],
       "escalators": [
@@ -107,7 +107,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "07:05 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
+      "serviceAlert": "05:00 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
     },
     {
       "agency": "PATH",
@@ -156,20 +156,20 @@
       "elevators": [
         {
           "unitId": "EXP-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "05:00 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
+          "status": "outage",
+          "lastUpdated": "10/04/2026 09:00:04"
         }
       ],
       "escalators": [
         {
           "unitId": "EXP-escalator-service",
-          "location": "Station escalator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "05:00 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
+          "status": "outage",
+          "lastUpdated": "10/04/2026 09:00:04"
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "05:00 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience."
     },
     {
       "agency": "PATH",
@@ -341,13 +341,13 @@
       "elevators": [
         {
           "unitId": "33S-elevator-service",
-          "location": "09:37 AM: PATH 33 St elevator is temporarily out of service. To NJ: NYC Subway downtown R (and N overnight) to Cortlandt. To 33 St: PATH to WTC, Subway to 34. Subway fare payment req'd. Subway elevator status: https://new.mta.info/elevator-escalator-status",
-          "status": "outage",
-          "lastUpdated": "10/03/2026 13:37:23"
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
         }
       ],
       "escalators": [],
-      "serviceAlert": "09:37 AM: PATH 33 St elevator is temporarily out of service. To NJ: NYC Subway downtown R (and N overnight) to Cortlandt. To 33 St: PATH to WTC, Subway to 34. Subway fare payment req'd. Subway elevator status: https://new.mta.info/elevator-escalator-status"
+      "serviceAlert": ""
     }
   ]
 }
