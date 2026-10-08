@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-07T16:11:43.886Z",
+    "generatedAt": "2026-10-08T16:07:44.556Z",
     "source": "CTrail and Amtrak GTFS with CTrail elevator status",
     "ctrailUrl": "https://portal.ct.gov/CTrail",
     "hartfordGtfsUrl": "https://ctrides.com/hlgtfs.zip",
@@ -12,7 +12,7 @@
     "accessibleStationCount": 21,
     "equipmentStationCount": 12,
     "stationWithoutListedElevatorCount": 9,
-    "activeElevatorOutageCount": 1,
+    "activeElevatorOutageCount": 0,
     "feeds": [
       {
         "name": "Hartford Line",
@@ -22,9 +22,9 @@
       },
       {
         "name": "Shore Line East",
-        "feedVersion": "20261007",
-        "validFrom": "20261008",
-        "validTo": "20261014"
+        "feedVersion": "20261008",
+        "validFrom": "20261009",
+        "validTo": "20261015"
       }
     ]
   },
@@ -170,9 +170,9 @@
         {
           "unitId": "CTRAIL-GUILFORD-7",
           "location": "Track 1",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null,
-          "note": "The elevator on Track 1 at Guilford is currently out of service. A technician has been notified. PER BOSCHIEF parts are ordered and eta on repair is at least first week of October."
+          "note": null
         },
         {
           "unitId": "CTRAIL-GUILFORD-8",

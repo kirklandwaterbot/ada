@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-07T16:04:24.116Z",
+    "generatedAt": "2026-10-08T16:07:20.090Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -10,7 +10,7 @@
     "gtfsUrl": "https://rapid.nationalrtap.org/GTFSFileManagement/UserUploadFiles/14843/PATHGTFS.zip",
     "stationCount": 13,
     "accessibleStationCount": 9,
-    "activeVerticalTransitAlertCount": 1,
+    "activeVerticalTransitAlertCount": 0,
     "feedVersion": null,
     "validFrom": "20260720",
     "validTo": "20261114"
@@ -94,9 +94,9 @@
       "elevators": [
         {
           "unitId": "JSQ-elevator-service",
-          "location": "05:46 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
-          "status": "outage",
-          "lastUpdated": "10/07/2026 09:46:57"
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
         }
       ],
       "escalators": [
@@ -107,7 +107,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "05:46 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
+      "serviceAlert": ""
     },
     {
       "agency": "PATH",
