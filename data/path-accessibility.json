@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-09T15:48:46.968Z",
+    "generatedAt": "2026-10-10T15:02:00.225Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -94,9 +94,9 @@
       "elevators": [
         {
           "unitId": "JSQ-elevator-service",
-          "location": "05:23 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
+          "location": "06:05 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
           "status": "outage",
-          "lastUpdated": "10/09/2026 09:23:44"
+          "lastUpdated": "10/10/2026 10:05:08"
         }
       ],
       "escalators": [
@@ -107,7 +107,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "05:23 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
+      "serviceAlert": "06:05 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
     },
     {
       "agency": "PATH",
@@ -156,20 +156,20 @@
       "elevators": [
         {
           "unitId": "EXP-elevator-service",
-          "location": "07:40 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
+          "location": "05:27 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
           "status": "outage",
-          "lastUpdated": "10/09/2026 11:40:54"
+          "lastUpdated": "10/10/2026 09:27:17"
         }
       ],
       "escalators": [
         {
           "unitId": "EXP-escalator-service",
-          "location": "07:40 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
+          "location": "05:27 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
           "status": "outage",
-          "lastUpdated": "10/09/2026 11:40:54"
+          "lastUpdated": "10/10/2026 09:27:17"
         }
       ],
-      "serviceAlert": "07:40 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience."
+      "serviceAlert": "05:27 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience."
     },
     {
       "agency": "PATH",
