@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-10T15:01:40.565Z",
+    "generatedAt": "2026-10-11T15:19:29.435Z",
     "source": "MTA Elevator & Escalator Status",
     "sourceUrl": "https://www.mta.info/elevator-escalator-status",
     "componentUrl": "https://consist.mta.info/elevators-escalators/index.js",
     "equipmentCount": 707,
-    "currentOutageCount": 45,
+    "currentOutageCount": 39,
     "futureOutageCount": 6
   },
   "equipmentCodes": [
@@ -984,7 +984,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "08/19/2026 12:14:00 PM",
-      "estimatedReturnToService": "10/12/2026 01:00:00 PM",
+      "estimatedReturnToService": "10/13/2026 01:00:00 PM",
       "maintenance": false
     },
     {
@@ -1025,7 +1025,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "09/13/2026 01:20:00 AM",
-      "estimatedReturnToService": "10/12/2026 02:00:00 AM",
+      "estimatedReturnToService": "10/13/2026 02:00:00 AM",
       "maintenance": false
     },
     {
@@ -1051,7 +1051,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "09/27/2026 12:36:00 PM",
-      "estimatedReturnToService": "10/12/2026 01:00:00 PM",
+      "estimatedReturnToService": "10/13/2026 01:00:00 PM",
       "maintenance": false
     },
     {
@@ -1100,7 +1100,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/05/2026 05:53:00 AM",
-      "estimatedReturnToService": "10/12/2026 06:00:00 AM",
+      "estimatedReturnToService": "10/13/2026 06:00:00 AM",
       "maintenance": false
     },
     {
@@ -1122,7 +1122,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/05/2026 10:47:00 AM",
-      "estimatedReturnToService": "10/12/2026 11:00:00 AM",
+      "estimatedReturnToService": "10/13/2026 11:00:00 AM",
       "maintenance": false
     },
     {
@@ -1140,7 +1140,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/06/2026 08:05:00 AM",
-      "estimatedReturnToService": "10/12/2026 09:00:00 AM",
+      "estimatedReturnToService": "10/13/2026 09:00:00 AM",
       "maintenance": false
     },
     {
@@ -1156,7 +1156,7 @@
       "ada": true,
       "reason": "Planned Work",
       "outageStart": "10/07/2026 04:30:00 AM",
-      "estimatedReturnToService": "10/11/2026 10:00:00 PM",
+      "estimatedReturnToService": "10/12/2026 10:00:00 PM",
       "maintenance": false
     },
     {
@@ -1178,7 +1178,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/07/2026 05:32:00 PM",
-      "estimatedReturnToService": "10/12/2026 06:00:00 PM",
+      "estimatedReturnToService": "10/13/2026 06:00:00 PM",
       "maintenance": false
     },
     {
@@ -1195,7 +1195,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/07/2026 08:40:00 AM",
-      "estimatedReturnToService": "10/10/2026 11:00:00 PM",
+      "estimatedReturnToService": "10/12/2026 11:00:00 PM",
       "maintenance": false
     },
     {
@@ -1217,7 +1217,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/07/2026 09:44:00 PM",
-      "estimatedReturnToService": "10/12/2026 10:00:00 PM",
+      "estimatedReturnToService": "10/13/2026 10:00:00 PM",
       "maintenance": false
     },
     {
@@ -1234,49 +1234,6 @@
       "reason": "Repair",
       "outageStart": "10/09/2026 01:38:00 PM",
       "estimatedReturnToService": "10/13/2026 03:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "ES440",
-      "equipmentType": "Escalator",
-      "station": "Jamaica Center-Parsons/Archer",
-      "routes": [
-        "E",
-        "J",
-        "Z"
-      ],
-      "serving": "mezzanine to Parsons Blvd & Archer Ave (SW corner)",
-      "ada": false,
-      "reason": "Repair",
-      "outageStart": "10/09/2026 06:08:00 PM",
-      "estimatedReturnToService": "10/11/2026 06:00:00 AM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "ES261X",
-      "equipmentType": "Escalator",
-      "station": "Times Sq-42 St",
-      "routes": [
-        "A",
-        "C",
-        "E",
-        "N",
-        "Q",
-        "R",
-        "W",
-        "1",
-        "2",
-        "3",
-        "7",
-        "S"
-      ],
-      "serving": "42 St & 7th Ave (SW corner) to mezzanine for 1/2/3 service and access to rest of complex",
-      "ada": false,
-      "reason": "Repair",
-      "outageStart": "10/09/2026 07:22:00 PM",
-      "estimatedReturnToService": "10/12/2026 08:00:00 PM",
       "maintenance": false
     },
     {
@@ -1298,12 +1255,67 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/09/2026 12:45:00 PM",
-      "estimatedReturnToService": "10/12/2026 01:00:00 PM",
+      "estimatedReturnToService": "10/13/2026 01:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES230",
+      "equipmentCode": "EL344",
+      "equipmentType": "Elevator",
+      "station": "Utica Av",
+      "routes": [
+        "A",
+        "C"
+      ],
+      "serving": "Utica Ave & Fulton St (NW corner) to mezzanine for service in both directions",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "10/10/2026 04:05:00 PM",
+      "estimatedReturnToService": "10/12/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES257X",
+      "equipmentType": "Escalator",
+      "station": "14 St-Union Sq",
+      "routes": [
+        "L",
+        "N",
+        "Q",
+        "R",
+        "W",
+        "4",
+        "5",
+        "6"
+      ],
+      "serving": "4/5/6 mezzanine to 14 St & 4th Ave (NE corner)",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "10/10/2026 04:08:00 PM",
+      "estimatedReturnToService": "10/13/2026 05:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES254X",
+      "equipmentType": "Escalator",
+      "station": "Lexington Av/53 St",
+      "routes": [
+        "E",
+        "F",
+        "6"
+      ],
+      "serving": "E/F platform to mezzanine for 6 service and 53 St & Lexington Av exit.",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "10/11/2026 03:15:00 AM",
+      "estimatedReturnToService": "10/13/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES222",
       "equipmentType": "Escalator",
       "station": "34 St-Herald Sq",
       "routes": [
@@ -1316,169 +1328,44 @@
         "R",
         "W"
       ],
-      "serving": "uptown B/D/F/M platform to mezzanine for N/Q/R/W service",
+      "serving": "intermediate mezzanine to 32 St & 6th Ave (NW corner)",
       "ada": false,
-      "reason": "Planned Work",
-      "outageStart": "10/10/2026 07:30:00 AM",
-      "estimatedReturnToService": "10/10/2026 03:00:00 PM",
+      "reason": "Repair",
+      "outageStart": "10/11/2026 05:40:00 AM",
+      "estimatedReturnToService": "10/11/2026 02:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL234",
+      "equipmentCode": "EL199",
       "equipmentType": "Elevator",
-      "station": "47-50 Sts-Rockefeller Ctr",
+      "station": "Gun Hill Rd",
       "routes": [
-        "B",
-        "D",
-        "F",
-        "M"
+        "5"
       ],
-      "serving": "49 St & 6th Ave (NW corner) to mezzanine for service in both directions.",
+      "serving": "Gun Hill Road (between Sexton Pl and Dewitt Pl) to Eastchester Dyre Av-bound platform",
       "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "10/10/2026 07:31:00 AM",
-      "estimatedReturnToService": "10/10/2026 04:00:00 PM",
+      "outageStart": "10/11/2026 09:37:00 AM",
+      "estimatedReturnToService": "10/11/2026 06:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL516",
+      "equipmentCode": "EL706",
       "equipmentType": "Elevator",
-      "station": "E 149 St",
-      "routes": [
-        "6"
-      ],
-      "serving": "NE corner of Southern Blvd and E 149 St for Manhattan-bound service.",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 09:24:00 AM",
-      "estimatedReturnToService": "10/10/2026 05:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL121",
-      "equipmentType": "Elevator",
-      "station": "Pelham Bay Park",
-      "routes": [
-        "6"
-      ],
-      "serving": "Amendola Plaza entrance (adjacent to Bruckner Expwy) to mezzanine for Manhattan-bound service",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 09:56:00 AM",
-      "estimatedReturnToService": "10/10/2026 06:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "ES212",
-      "equipmentType": "Escalator",
-      "station": "59 St",
-      "routes": [
-        "N",
-        "R",
-        "W",
-        "4",
-        "5",
-        "6"
-      ],
-      "serving": "downtown 4/5 platform to downtown 6 platform",
-      "ada": false,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 09:59:00 AM",
-      "estimatedReturnToService": "10/10/2026 06:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL601",
-      "equipmentType": "Elevator",
-      "station": "34 St-Hudson Yards",
-      "routes": [
-        "7"
-      ],
-      "serving": "upper mezzanine to lower mezzanine for Flushing Main St-bound service",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 10:03:00 AM",
-      "estimatedReturnToService": "10/10/2026 07:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL217",
-      "equipmentType": "Elevator",
-      "station": "14 St-Union Sq",
-      "routes": [
-        "L",
-        "N",
-        "Q",
-        "R",
-        "W",
-        "4",
-        "5",
-        "6"
-      ],
-      "serving": "14 St and 4th Av (NE corner) to mezzanine for L/N/Q/R/W service in both directions.",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 10:23:00 AM",
-      "estimatedReturnToService": "10/10/2026 06:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "ES367",
-      "equipmentType": "Escalator",
-      "station": "Fulton St",
+      "station": "Jay St-Metro Tech",
       "routes": [
         "A",
         "C",
-        "J",
-        "2",
-        "3",
-        "4",
-        "5",
-        "Z"
+        "F",
+        "R"
       ],
-      "serving": "2/3 mezzanine (William St & Fulton St) to transfer mezzanine for A/C & Broad St-bound J/Z service and access to rest of complex",
-      "ada": false,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 10:28:00 AM",
-      "estimatedReturnToService": "10/10/2026 07:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL710",
-      "equipmentType": "Elevator",
-      "station": "Bowling Green",
-      "routes": [
-        "4",
-        "5"
-      ],
-      "serving": "plaza south of Bowling Green Park to uptown platform and lower mezzanine for Brooklyn-bound service",
+      "serving": "Jay St & Willoughby St (NW corner) to mezzanine for A/C/F/R service in both directions",
       "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "10/10/2026 10:31:00 AM",
-      "estimatedReturnToService": "10/10/2026 06:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL427",
-      "equipmentType": "Elevator",
-      "station": "Junction Blvd",
-      "routes": [
-        "7"
-      ],
-      "serving": "overpass to Flushing Main St-bound platform",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "10/10/2026 10:45:00 AM",
-      "estimatedReturnToService": "10/10/2026 06:00:00 PM",
+      "outageStart": "10/11/2026 10:39:00 AM",
+      "estimatedReturnToService": "10/11/2026 07:00:00 PM",
       "maintenance": false
     },
     {
