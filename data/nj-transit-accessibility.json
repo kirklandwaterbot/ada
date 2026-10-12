@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-11T15:20:15.272Z",
+    "generatedAt": "2026-10-12T18:37:03.058Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -1855,14 +1855,14 @@
           "unitId": "NJT-RAIL-HAMILTON-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
           "unitId": "NJT-RAIL-HAMILTON-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -2824,7 +2824,7 @@
           "unitId": "NJT-RAIL-MORRISTOWN-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -4486,7 +4486,7 @@
           "unitId": "NJT-RAIL-SOUTH-AMBOY-2",
           "system": "rail",
           "location": "Eastbound Elevator No. 2 (Overhead Walkway/Mason Street)",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {

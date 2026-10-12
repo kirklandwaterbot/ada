@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-11T15:20:02.534Z",
+    "generatedAt": "2026-10-12T18:33:52.347Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -94,9 +94,9 @@
       "elevators": [
         {
           "unitId": "JSQ-elevator-service",
-          "location": "05:25 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
+          "location": "06:36 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
           "status": "outage",
-          "lastUpdated": "10/11/2026 09:25:10"
+          "lastUpdated": "10/12/2026 10:36:19"
         }
       ],
       "escalators": [
@@ -107,7 +107,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "05:25 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
+      "serviceAlert": "06:36 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
     },
     {
       "agency": "PATH",
@@ -125,9 +125,9 @@
       "elevators": [
         {
           "unitId": "GRV-elevator-service",
-          "location": "05:25 AM: PATH Grove Street vertical lift between mezzanine and platform is temporarily out of service. We regret this inconvenience.",
-          "status": "outage",
-          "lastUpdated": "10/11/2026 09:25:27"
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
         }
       ],
       "escalators": [
@@ -138,7 +138,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "05:25 AM: PATH Grove Street vertical lift between mezzanine and platform is temporarily out of service. We regret this inconvenience."
+      "serviceAlert": ""
     },
     {
       "agency": "PATH",
@@ -156,20 +156,20 @@
       "elevators": [
         {
           "unitId": "EXP-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "06:35 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
+          "status": "outage",
+          "lastUpdated": "10/12/2026 10:35:33"
         }
       ],
       "escalators": [
         {
           "unitId": "EXP-escalator-service",
-          "location": "Station escalator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "06:35 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience.",
+          "status": "outage",
+          "lastUpdated": "10/12/2026 10:35:33"
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "06:35 AM: At Exchange Place, 1 of 2 elevators from street to mezzanine is temporarily out of service. Expect longer waits. Use escalators or stairs. We're sorry for the inconvenience."
     },
     {
       "agency": "PATH",
