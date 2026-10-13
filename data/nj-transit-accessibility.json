@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-12T18:37:03.058Z",
+    "generatedAt": "2026-10-13T16:46:05.834Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,7 +11,7 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 7,
+    "elevatorOutageCount": 5,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
     "lightRailElevatorOutageCount": 1,
@@ -2824,7 +2824,7 @@
           "unitId": "NJT-RAIL-MORRISTOWN-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -2853,7 +2853,7 @@
           "unitId": "NJT-RAIL-MOUNT-ARLINGTON-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -3638,7 +3638,7 @@
           "unitId": "NJT-RAIL-PATERSON-1",
           "system": "rail",
           "location": "Center-Platform Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -4486,7 +4486,7 @@
           "unitId": "NJT-RAIL-SOUTH-AMBOY-2",
           "system": "rail",
           "location": "Eastbound Elevator No. 2 (Overhead Walkway/Mason Street)",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-12T18:33:49.781Z",
+  "checkedAt": "2026-10-13T16:42:52.778Z",
   "generatedFrom": [
     "data/planned-ada-station-coordinates.json",
     "data/accessibility-stations.json",
@@ -902,9 +902,9 @@
       "borough": "Manhattan",
       "coordinateSource": "MTA elevator and escalator equipment inventory",
       "id": "active-ada-package-137-st-city-college-1",
-      "latitude": 40.82138,
+      "latitude": 40.821394999999995,
       "line": "Broadway-7 Av Line",
-      "longitude": -73.95394,
+      "longitude": -73.95423,
       "neighborhood": "Hamilton Heights",
       "note": "Uptown access is open via EL519; downtown accessibility remains under construction.",
       "projectPhase": "Construction",
