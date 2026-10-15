@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-14T14:22:41.892Z",
+    "generatedAt": "2026-10-15T13:55:46.144Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 5,
+    "elevatorOutageCount": 4,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 2,
+    "lightRailElevatorOutageCount": 1,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -1198,7 +1198,7 @@
           "unitId": "NJT-LR-DANFORTH-AVENUE-JERSEY-CITY-1",
           "system": "light_rail",
           "location": "Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -1458,7 +1458,7 @@
           "unitId": "NJT-RAIL-ELIZABETH-1",
           "system": "rail",
           "location": "Eastbound #1 Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -3165,7 +3165,7 @@
           "unitId": "NJT-RAIL-NEW-YORK-PENN-2",
           "system": "rail",
           "location": "Tracks 1 & 2 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
