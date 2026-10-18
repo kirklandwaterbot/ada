@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-17T12:40:43.116Z",
+    "generatedAt": "2026-10-18T12:57:49.168Z",
     "source": "MTA Elevator & Escalator Status",
     "sourceUrl": "https://www.mta.info/elevator-escalator-status",
     "componentUrl": "https://consist.mta.info/elevators-escalators/index.js",
@@ -1025,7 +1025,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "09/13/2026 01:20:00 AM",
-      "estimatedReturnToService": "10/19/2026 02:00:00 AM",
+      "estimatedReturnToService": "10/20/2026 02:00:00 AM",
       "maintenance": false
     },
     {
@@ -1057,7 +1057,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/05/2026 05:53:00 AM",
-      "estimatedReturnToService": "10/19/2026 06:00:00 AM",
+      "estimatedReturnToService": "10/20/2026 06:00:00 AM",
       "maintenance": false
     },
     {
@@ -1079,7 +1079,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/07/2026 05:32:00 PM",
-      "estimatedReturnToService": "10/19/2026 06:00:00 PM",
+      "estimatedReturnToService": "10/20/2026 06:00:00 PM",
       "maintenance": false
     },
     {
@@ -1101,7 +1101,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/13/2026 03:00:00 PM",
-      "estimatedReturnToService": "10/19/2026 04:00:00 PM",
+      "estimatedReturnToService": "10/20/2026 04:00:00 PM",
       "maintenance": false
     },
     {
@@ -1123,7 +1123,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/15/2026 06:54:00 PM",
-      "estimatedReturnToService": "10/19/2026 07:00:00 PM",
+      "estimatedReturnToService": "10/20/2026 07:00:00 PM",
       "maintenance": false
     },
     {
@@ -1149,23 +1149,6 @@
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL444",
-      "equipmentType": "Elevator",
-      "station": "Lexington Av/63 St",
-      "routes": [
-        "F",
-        "M",
-        "Q"
-      ],
-      "serving": "3rd Ave & 63 St (NW corner) to mezzanine for service in both directions",
-      "ada": true,
-      "reason": "Repair",
-      "outageStart": "10/16/2026 07:40:00 PM",
-      "estimatedReturnToService": "10/18/2026 10:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
       "equipmentCode": "EL287X",
       "equipmentType": "Elevator",
       "station": "42 St-Bryant Pk",
@@ -1180,7 +1163,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/16/2026 11:14:00 AM",
-      "estimatedReturnToService": "10/19/2026 12:00:00 PM",
+      "estimatedReturnToService": "10/20/2026 12:00:00 PM",
       "maintenance": false
     },
     {
@@ -1202,24 +1185,6 @@
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES461X",
-      "equipmentType": "Escalator",
-      "station": "Court Sq",
-      "routes": [
-        "E",
-        "F",
-        "G",
-        "7"
-      ],
-      "serving": "G lower mezzanine to upper mezzanine for 7 service and Jackson Ave & 23rd St exit",
-      "ada": false,
-      "reason": "Repair",
-      "outageStart": "10/17/2026 05:08:00 AM",
-      "estimatedReturnToService": "10/19/2026 06:00:00 AM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
       "equipmentCode": "ES205",
       "equipmentType": "Escalator",
       "station": "Grand Central-42 St",
@@ -1234,7 +1199,7 @@
       "ada": false,
       "reason": "Planned Work",
       "outageStart": "10/17/2026 06:10:00 AM",
-      "estimatedReturnToService": "10/17/2026 02:00:00 PM",
+      "estimatedReturnToService": "10/18/2026 10:00:00 PM",
       "maintenance": false
     },
     {
@@ -1253,58 +1218,93 @@
       "ada": false,
       "reason": "Planned Work",
       "outageStart": "10/17/2026 06:10:00 AM",
-      "estimatedReturnToService": "10/17/2026 02:00:00 PM",
+      "estimatedReturnToService": "10/18/2026 10:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL498",
+      "equipmentCode": "EL396",
       "equipmentType": "Elevator",
-      "station": "Far Rockaway-Mott Av",
+      "station": "Myrtle-Wyckoff Avs",
       "routes": [
-        "A"
+        "M",
+        "L"
       ],
-      "serving": "Beach 22nd & Mott Ave to platform for Manhattan-bound service",
+      "serving": "Gates Ave & Wyckoff Ave (SE corner) to mezzanines for L and M service in both directions",
       "ada": true,
-      "reason": "Inspection",
-      "outageStart": "10/17/2026 07:00:00 AM",
-      "estimatedReturnToService": "10/17/2026 03:00:00 PM",
+      "reason": "Repair",
+      "outageStart": "10/17/2026 07:34:00 PM",
+      "estimatedReturnToService": "10/19/2026 10:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL148",
+      "equipmentCode": "EL771",
       "equipmentType": "Elevator",
-      "station": "Inwood-207 St",
+      "station": "Livonia Av",
       "routes": [
-        "A"
+        "L"
       ],
-      "serving": "207 St & Broadway (NW corner) to mezzanine for Downtown and Brooklyn-bound service.",
+      "serving": "Street inside station house to passageway to Canarsie-bound platform",
       "ada": true,
+      "reason": "Under Investigation",
+      "outageStart": "10/18/2026 07:34:00 AM",
+      "estimatedReturnToService": "10/18/2026 04:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES237",
+      "equipmentType": "Escalator",
+      "station": "7 Av",
+      "routes": [
+        "E",
+        "B",
+        "D"
+      ],
+      "serving": "downtown platform to mezzanine for 53 St & 7th Ave exit",
+      "ada": false,
+      "reason": "Under Investigation",
+      "outageStart": "10/18/2026 08:39:00 AM",
+      "estimatedReturnToService": "10/18/2026 05:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES341",
+      "equipmentType": "Escalator",
+      "station": "Bowling Green",
+      "routes": [
+        "4",
+        "5"
+      ],
+      "serving": "lower mezzanine to uptown 4/5 platform",
+      "ada": false,
       "reason": "Planned Work",
-      "outageStart": "10/17/2026 07:40:00 AM",
-      "estimatedReturnToService": "10/17/2026 03:00:00 PM",
+      "outageStart": "10/18/2026 08:45:00 AM",
+      "estimatedReturnToService": "10/18/2026 05:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL727X",
+      "equipmentCode": "EL729X",
       "equipmentType": "Elevator",
-      "station": "Cortlandt St",
+      "station": "Fulton St",
       "routes": [
         "A",
         "C",
-        "E",
-        "R",
-        "W",
+        "J",
         "2",
-        "3"
+        "3",
+        "4",
+        "5",
+        "Z"
       ],
-      "serving": "Fulton center level to uptown R/W platform and access to rest of complex",
+      "serving": "Transit Center concourse to downntown 4/5 platform and access to rest of complex",
       "ada": true,
       "reason": "Repair",
-      "outageStart": "10/17/2026 08:25:00 AM",
-      "estimatedReturnToService": "10/19/2026 09:00:00 AM",
+      "outageStart": "10/18/2026 12:56:00 AM",
+      "estimatedReturnToService": "10/20/2026 01:00:00 AM",
       "maintenance": false
     },
     {
