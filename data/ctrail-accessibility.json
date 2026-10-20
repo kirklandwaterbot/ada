@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-19T16:18:00.342Z",
+    "generatedAt": "2026-10-20T14:12:30.128Z",
     "source": "CTrail and Amtrak GTFS with CTrail elevator status",
     "ctrailUrl": "https://portal.ct.gov/CTrail",
     "hartfordGtfsUrl": "https://ctrides.com/hlgtfs.zip",
@@ -12,7 +12,7 @@
     "accessibleStationCount": 21,
     "equipmentStationCount": 12,
     "stationWithoutListedElevatorCount": 9,
-    "activeElevatorOutageCount": 1,
+    "activeElevatorOutageCount": 0,
     "feeds": [
       {
         "name": "Hartford Line",
@@ -418,7 +418,7 @@
         {
           "unitId": "CTRAIL-OLD-SAYBROOK-20",
           "location": "Track 1 & 3",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null,
           "note": null
         },
