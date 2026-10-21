@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-20T14:08:19.922Z",
+    "generatedAt": "2026-10-21T14:23:19.312Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -14,7 +14,7 @@
     "elevatorOutageCount": 9,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 3,
+    "lightRailElevatorOutageCount": 4,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -758,7 +758,7 @@
           "unitId": "NJT-LR-BLOOMFIELD-AVENUE-NEWARK-2",
           "system": "light_rail",
           "location": "Outbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -2853,7 +2853,7 @@
           "unitId": "NJT-RAIL-MOUNT-ARLINGTON-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -3200,7 +3200,7 @@
           "unitId": "NJT-RAIL-NEW-YORK-PENN-7",
           "system": "rail",
           "location": "Tracks 9 & 10 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -3756,7 +3756,7 @@
           "unitId": "NJT-RAIL-PLAINFIELD-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -4097,7 +4097,7 @@
           "unitId": "NJT-RAIL-RIDGEWOOD-1",
           "system": "rail",
           "location": "Center-Platform Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -4444,7 +4444,7 @@
           "unitId": "NJT-RAIL-SOMERVILLE-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
