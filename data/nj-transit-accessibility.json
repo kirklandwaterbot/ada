@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-21T14:23:19.312Z",
+    "generatedAt": "2026-10-22T14:24:59.046Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 9,
+    "elevatorOutageCount": 5,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 4,
+    "lightRailElevatorOutageCount": 3,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -758,7 +758,7 @@
           "unitId": "NJT-LR-BLOOMFIELD-AVENUE-NEWARK-2",
           "system": "light_rail",
           "location": "Outbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -3756,7 +3756,7 @@
           "unitId": "NJT-RAIL-PLAINFIELD-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -4444,7 +4444,7 @@
           "unitId": "NJT-RAIL-SOMERVILLE-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -4528,7 +4528,7 @@
           "unitId": "NJT-RAIL-SOUTH-ORANGE-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
