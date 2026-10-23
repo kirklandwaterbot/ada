@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-22T14:24:59.046Z",
+    "generatedAt": "2026-10-23T14:06:15.917Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 5,
+    "elevatorOutageCount": 6,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 3,
+    "lightRailElevatorOutageCount": 4,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -631,7 +631,7 @@
           "unitId": "NJT-LR-BERGENLINE-AVENUE-1",
           "system": "light_rail",
           "location": "Elevator No. 1",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -3235,7 +3235,7 @@
           "unitId": "NJT-RAIL-NEWARK-BROAD-STREET-2",
           "system": "rail",
           "location": "Westbound Elevator (Tracks 1 & 3)",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -3953,7 +3953,7 @@
           "unitId": "NJT-RAIL-RAHWAY-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
