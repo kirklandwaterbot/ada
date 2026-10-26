@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-25T13:36:35.240Z",
+    "generatedAt": "2026-10-26T15:53:08.808Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 7,
+    "elevatorOutageCount": 9,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 3,
+    "lightRailElevatorOutageCount": 4,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -1671,7 +1671,7 @@
           "unitId": "NJT-LR-GARFIELD-AVENUE-HBLR-1",
           "system": "light_rail",
           "location": "Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -3172,7 +3172,7 @@
           "unitId": "NJT-RAIL-NEW-YORK-PENN-3",
           "system": "rail",
           "location": "Tracks 11 & 12 Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -3315,7 +3315,7 @@
           "unitId": "NJT-RAIL-NEWARK-PENN-2",
           "system": "rail",
           "location": "Track 2-PATH Passenger Elevator 39 Track 2-PATH Passenger Elevator 39",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -3638,7 +3638,7 @@
           "unitId": "NJT-RAIL-PATERSON-1",
           "system": "rail",
           "location": "Center-Platform Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -4521,7 +4521,7 @@
           "unitId": "NJT-RAIL-SOUTH-ORANGE-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -5178,7 +5178,7 @@
           "unitId": "NJT-RAIL-WOODBRIDGE-1",
           "system": "rail",
           "location": "Center-Platform Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
