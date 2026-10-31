@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-30T15:34:03.056Z",
+    "generatedAt": "2026-10-31T15:03:28.948Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,7 +11,7 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 7,
+    "elevatorOutageCount": 5,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
     "lightRailElevatorOutageCount": 4,
@@ -1458,7 +1458,7 @@
           "unitId": "NJT-RAIL-ELIZABETH-1",
           "system": "rail",
           "location": "Eastbound #1 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -4521,7 +4521,7 @@
           "unitId": "NJT-RAIL-SOUTH-ORANGE-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
