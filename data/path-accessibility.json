@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-31T15:00:18.024Z",
+    "generatedAt": "2026-11-01T15:44:42.727Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -10,7 +10,7 @@
     "gtfsUrl": "https://rapid.nationalrtap.org/GTFSFileManagement/UserUploadFiles/14843/PATHGTFS.zip",
     "stationCount": 13,
     "accessibleStationCount": 9,
-    "activeVerticalTransitAlertCount": 1,
+    "activeVerticalTransitAlertCount": 2,
     "feedVersion": null,
     "validFrom": "20260720",
     "validTo": "20261114"
@@ -94,9 +94,9 @@
       "elevators": [
         {
           "unitId": "JSQ-elevator-service",
-          "location": "05:48 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
+          "location": "05:00 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026",
           "status": "outage",
-          "lastUpdated": "10/31/2026 09:48:56"
+          "lastUpdated": "11/01/2026 10:00:35"
         }
       ],
       "escalators": [
@@ -107,7 +107,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "05:48 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
+      "serviceAlert": "05:00 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access. Estimated return to service date: 11-30-2026"
     },
     {
       "agency": "PATH",
@@ -341,13 +341,13 @@
       "elevators": [
         {
           "unitId": "33S-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "05:00 AM: PATH 33 St elevator is temporarily out of service. To NJ: NYC Subway downtown R (and N overnight) to Cortlandt. To 33 St: PATH to WTC, Subway to 34. Subway fare payment req'd. Subway elevator status: https://new.mta.info/elevator-escalator-status",
+          "status": "outage",
+          "lastUpdated": "11/01/2026 10:00:18"
         }
       ],
       "escalators": [],
-      "serviceAlert": ""
+      "serviceAlert": "05:00 AM: PATH 33 St elevator is temporarily out of service. To NJ: NYC Subway downtown R (and N overnight) to Cortlandt. To 33 St: PATH to WTC, Subway to 34. Subway fare payment req'd. Subway elevator status: https://new.mta.info/elevator-escalator-status"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-10-31T15:03:28.948Z",
+    "generatedAt": "2026-11-01T15:47:53.666Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,7 +11,7 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 5,
+    "elevatorOutageCount": 8,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
     "lightRailElevatorOutageCount": 4,
@@ -1479,7 +1479,7 @@
           "unitId": "NJT-RAIL-ELIZABETH-4",
           "system": "rail",
           "location": "Westbound #4 Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -3756,7 +3756,7 @@
           "unitId": "NJT-RAIL-PLAINFIELD-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -3953,7 +3953,7 @@
           "unitId": "NJT-RAIL-RAHWAY-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
