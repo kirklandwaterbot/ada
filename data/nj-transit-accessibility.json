@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-05T17:08:38.371Z",
+    "generatedAt": "2026-11-06T16:39:00.968Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 6,
+    "elevatorOutageCount": 7,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 3,
+    "lightRailElevatorOutageCount": 5,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -758,7 +758,7 @@
           "unitId": "NJT-LR-BLOOMFIELD-AVENUE-NEWARK-2",
           "system": "light_rail",
           "location": "Outbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -1354,7 +1354,7 @@
           "unitId": "NJT-RAIL-EAST-ORANGE-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         }
       ],
@@ -2817,7 +2817,7 @@
           "unitId": "NJT-RAIL-MORRISTOWN-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -3953,7 +3953,7 @@
           "unitId": "NJT-RAIL-RAHWAY-2",
           "system": "rail",
           "location": "Westbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         }
       ],
@@ -4929,7 +4929,7 @@
           "unitId": "NJT-LR-WASHINGTON-STREET-1",
           "system": "light_rail",
           "location": "Inbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {

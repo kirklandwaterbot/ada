@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-05T17:12:49.714Z",
+    "generatedAt": "2026-11-06T16:43:12.303Z",
     "source": "CTrail and Amtrak GTFS with CTrail elevator status",
     "ctrailUrl": "https://portal.ct.gov/CTrail",
     "hartfordGtfsUrl": "https://ctrides.com/hlgtfs.zip",
@@ -22,8 +22,8 @@
       },
       {
         "name": "Shore Line East",
-        "feedVersion": "20261105",
-        "validFrom": "20261106",
+        "feedVersion": "20261106",
+        "validFrom": "20261107",
         "validTo": "20271101"
       }
     ]
