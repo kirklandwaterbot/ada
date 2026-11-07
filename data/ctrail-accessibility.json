@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-06T16:43:12.303Z",
+    "generatedAt": "2026-11-07T15:31:50.978Z",
     "source": "CTrail and Amtrak GTFS with CTrail elevator status",
     "ctrailUrl": "https://portal.ct.gov/CTrail",
     "hartfordGtfsUrl": "https://ctrides.com/hlgtfs.zip",
@@ -12,7 +12,7 @@
     "accessibleStationCount": 21,
     "equipmentStationCount": 12,
     "stationWithoutListedElevatorCount": 9,
-    "activeElevatorOutageCount": 0,
+    "activeElevatorOutageCount": 1,
     "feeds": [
       {
         "name": "Hartford Line",
@@ -425,9 +425,9 @@
         {
           "unitId": "CTRAIL-OLD-SAYBROOK-21",
           "location": "Track 2",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null,
-          "note": null
+          "note": "The elevator on Track 2 at Old Saybrook is currently out of service. A technician has been notified."
         }
       ],
       "escalators": []
