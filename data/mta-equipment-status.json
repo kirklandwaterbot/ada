@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-08T15:46:19.917Z",
+    "generatedAt": "2026-11-09T19:28:56.857Z",
     "source": "MTA Elevator & Escalator Status",
     "sourceUrl": "https://www.mta.info/elevator-escalator-status",
     "componentUrl": "https://consist.mta.info/elevators-escalators/index.js",
     "equipmentCount": 707,
     "currentOutageCount": 40,
-    "futureOutageCount": 150
+    "futureOutageCount": 154
   },
   "equipmentCodes": [
     "EL11X",
@@ -984,7 +984,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "08/19/2026 12:14:00 PM",
-      "estimatedReturnToService": "11/10/2026 01:00:00 PM",
+      "estimatedReturnToService": "11/11/2026 01:00:00 PM",
       "maintenance": false
     },
     {
@@ -1031,7 +1031,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/05/2026 05:53:00 AM",
-      "estimatedReturnToService": "11/10/2026 06:00:00 AM",
+      "estimatedReturnToService": "11/11/2026 06:00:00 AM",
       "maintenance": false
     },
     {
@@ -1053,7 +1053,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/07/2026 05:32:00 PM",
-      "estimatedReturnToService": "11/10/2026 06:00:00 PM",
+      "estimatedReturnToService": "11/11/2026 06:00:00 PM",
       "maintenance": false
     },
     {
@@ -1075,7 +1075,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/18/2026 12:56:00 AM",
-      "estimatedReturnToService": "11/10/2026 01:00:00 AM",
+      "estimatedReturnToService": "11/11/2026 01:00:00 AM",
       "maintenance": false
     },
     {
@@ -1096,7 +1096,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/24/2026 10:07:00 AM",
-      "estimatedReturnToService": "11/10/2026 11:00:00 AM",
+      "estimatedReturnToService": "11/11/2026 11:00:00 AM",
       "maintenance": false
     },
     {
@@ -1178,7 +1178,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "11/03/2026 03:10:00 AM",
-      "estimatedReturnToService": "11/10/2026 04:00:00 AM",
+      "estimatedReturnToService": "11/11/2026 04:00:00 AM",
       "maintenance": false
     },
     {
@@ -1194,7 +1194,7 @@
       "ada": true,
       "reason": "Under Investigation",
       "outageStart": "11/07/2026 03:43:00 PM",
-      "estimatedReturnToService": "11/08/2026 03:00:00 PM",
+      "estimatedReturnToService": "11/09/2026 11:00:00 PM",
       "maintenance": false
     },
     {
@@ -1214,46 +1214,6 @@
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL449X",
-      "equipmentType": "Elevator",
-      "station": "Sutphin Blvd-Archer Av-JFK Airport",
-      "routes": [
-        "E",
-        "J",
-        "Z",
-        "LIRR"
-      ],
-      "serving": "Sutphin Blvd & Archer Ave (SW intersection) to mezzanine for service in both directions",
-      "ada": true,
-      "reason": "Repair",
-      "outageStart": "11/07/2026 07:21:00 AM",
-      "estimatedReturnToService": "11/10/2026 08:00:00 AM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL716",
-      "equipmentType": "Elevator",
-      "station": "Fulton St",
-      "routes": [
-        "A",
-        "C",
-        "J",
-        "2",
-        "3",
-        "4",
-        "5",
-        "Z"
-      ],
-      "serving": "Transit Center concourse to uptown 4/5 platform and access to Brooklyn-bound J/Z platform and rest of complex",
-      "ada": true,
-      "reason": "Repair",
-      "outageStart": "11/07/2026 09:00:00 AM",
-      "estimatedReturnToService": "11/09/2026 03:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
       "equipmentCode": "ES112",
       "equipmentType": "Escalator",
       "station": "Norwood-205 St",
@@ -1269,75 +1229,134 @@
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES317",
-      "equipmentType": "Escalator",
-      "station": "Jay St-Metro Tech",
+      "equipmentCode": "EL728X",
+      "equipmentType": "Elevator",
+      "station": "Fulton St",
       "routes": [
         "A",
         "C",
-        "F",
-        "R"
+        "E",
+        "J",
+        "R",
+        "W",
+        "2",
+        "3",
+        "4",
+        "5",
+        "Z"
       ],
-      "serving": "A/C/F/R mezzanine to Jay St & Willoughby St (NW corner)",
+      "serving": "Dey St & Broadway (SW corner) to downtown 4/5 platform, access to rest of Fulton St complex, and connection to Oculus complex",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "11/08/2026 05:17:00 PM",
+      "estimatedReturnToService": "11/11/2026 06:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES623",
+      "equipmentType": "Escalator",
+      "station": "34 St-Hudson Yards",
+      "routes": [
+        "7"
+      ],
+      "serving": "lower mezzanine to upper mezzanine for Hudson Blvd E exit (between 33 St & 34 St)",
       "ada": false,
-      "reason": "Planned Work",
-      "outageStart": "11/08/2026 04:46:00 AM",
+      "reason": "Repair",
+      "outageStart": "11/08/2026 08:30:00 PM",
       "estimatedReturnToService": "11/10/2026 10:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES440",
+      "equipmentCode": "EL12X",
+      "equipmentType": "Elevator",
+      "station": "Cortlandt St",
+      "routes": [
+        "1"
+      ],
+      "serving": "West Concourse balcony to PATH level with access to 1 train service in both directions",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "11/08/2026 10:29:00 PM",
+      "estimatedReturnToService": "11/11/2026 10:36:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES432X",
       "equipmentType": "Escalator",
-      "station": "Jamaica Center-Parsons/Archer",
+      "station": "Sutphin Blvd-Archer Av-JFK Airport",
       "routes": [
         "E",
         "J",
-        "Z"
+        "Z",
+        "LIRR"
       ],
-      "serving": "mezzanine to Parsons Blvd & Archer Ave (SW corner)",
+      "serving": "LIRR and AirTrain Terminal (SW corner of Sutphin Blvd & Archer Ave) to mezzanine for E/J/Z service",
       "ada": false,
-      "reason": "Maintenance",
-      "outageStart": "11/08/2026 07:05:00 AM",
-      "estimatedReturnToService": "11/08/2026 03:00:00 PM",
+      "reason": "Repair",
+      "outageStart": "11/08/2026 12:33:00 PM",
+      "estimatedReturnToService": "11/11/2026 01:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL523",
+      "equipmentCode": "EL773",
       "equipmentType": "Elevator",
-      "station": "Mosholu Pkwy",
+      "station": "Borough Hall",
       "routes": [
-        "4"
+        "R",
+        "2",
+        "3",
+        "4",
+        "5"
       ],
-      "serving": "Street (SE corner of Jerome Av and E Mosholu Pkwy North) to Transfer Mezzanine & Woodlawn-bound Platform",
+      "serving": "Joralemon Street in front of Borough Hall to 4/5 mezzanine level.",
       "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "11/08/2026 07:42:00 AM",
-      "estimatedReturnToService": "11/08/2026 04:00:00 PM",
+      "outageStart": "11/09/2026 01:41:00 PM",
+      "estimatedReturnToService": "11/09/2026 10:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES238",
+      "equipmentCode": "ES403",
       "equipmentType": "Escalator",
-      "station": "7 Av",
+      "station": "Lexington Av/63 St",
       "routes": [
-        "E",
-        "B",
-        "D"
+        "F",
+        "M",
+        "Q"
       ],
-      "serving": "downtown platform to mezzanine for 53 St & 7th Ave exit",
+      "serving": "upper mezzanine (Lexington Ave & 63 St) to intermediate mezzanine",
       "ada": false,
-      "reason": "Maintenance",
-      "outageStart": "11/08/2026 08:10:00 AM",
-      "estimatedReturnToService": "11/08/2026 05:00:00 PM",
+      "reason": "Under Investigation",
+      "outageStart": "11/09/2026 02:05:00 PM",
+      "estimatedReturnToService": "11/09/2026 10:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL304",
+      "equipmentCode": "EL131",
       "equipmentType": "Elevator",
+      "station": "161 St-Yankee Stadium",
+      "routes": [
+        "B",
+        "D",
+        "4"
+      ],
+      "serving": "161 St & River Ave (NE corner) to mezzanine to reach 4/B/D service in both directions",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "11/09/2026 04:21:00 AM",
+      "estimatedReturnToService": "11/10/2026 07:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES358X",
+      "equipmentType": "Escalator",
       "station": "Atlantic Av-Barclays Ctr",
       "routes": [
         "B",
@@ -1351,79 +1370,61 @@
         "5",
         "LIRR"
       ],
-      "serving": "Brooklyn-bound 2/3 platform to mezzanine for access to rest of complex",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "11/08/2026 08:27:00 AM",
-      "estimatedReturnToService": "11/08/2026 04:00:00 PM",
+      "serving": "Barclays Center plaza (SE corner of Atlantic Ave & Flatbush Ave) to mezzanine for B/Q service and access to Manhattan-bound 2/3, 4/5, and rest of complex",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "11/09/2026 06:54:00 AM",
+      "estimatedReturnToService": "11/11/2026 07:00:00 AM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES621",
+      "equipmentCode": "EL330",
+      "equipmentType": "Elevator",
+      "station": "Bleecker St",
+      "routes": [
+        "B",
+        "D",
+        "F",
+        "M",
+        "6"
+      ],
+      "serving": "downtown 6 mezzanine to downtown B/D/F/M platform",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "11/09/2026 09:08:00 AM",
+      "estimatedReturnToService": "11/11/2026 06:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES624",
       "equipmentType": "Escalator",
       "station": "34 St-Hudson Yards",
       "routes": [
         "7"
       ],
-      "serving": "upper mezzanine (between 33 St & 34 St) to lower mezzanine",
+      "serving": "lower mezzanine to upper mezzanine for Hudson Blvd E exit (between 33 St & 34 St)",
       "ada": false,
-      "reason": "Under Investigation",
-      "outageStart": "11/08/2026 09:22:00 AM",
-      "estimatedReturnToService": "11/08/2026 06:00:00 PM",
+      "reason": "Planned Work",
+      "outageStart": "11/09/2026 09:20:00 AM",
+      "estimatedReturnToService": "11/09/2026 05:00:00 PM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL339",
+      "equipmentCode": "EL393",
       "equipmentType": "Elevator",
-      "station": "Franklin Av",
+      "station": "Flushing Av",
       "routes": [
-        "C",
-        "S"
+        "M",
+        "J"
       ],
-      "serving": "Fulton St & Franklin Ave (SW corner) to Euclid-bound C platform, S platform, and footbridge for access to Manhattan-bound C service",
+      "serving": "Flushing Ave & Broadway (SE corner) to mezzanine for service in both directions",
       "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "11/08/2026 09:38:00 AM",
-      "estimatedReturnToService": "11/08/2026 06:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "ES340",
-      "equipmentType": "Escalator",
-      "station": "Bowling Green",
-      "routes": [
-        "4",
-        "5"
-      ],
-      "serving": "lower mezzanine to uptown 4/5 platform",
-      "ada": false,
-      "reason": "Under Investigation",
-      "outageStart": "11/08/2026 10:06:00 AM",
-      "estimatedReturnToService": "11/08/2026 07:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL333",
-      "equipmentType": "Elevator",
-      "station": "W 4 St-Wash Sq",
-      "routes": [
-        "A",
-        "C",
-        "E",
-        "B",
-        "D",
-        "F",
-        "M"
-      ],
-      "serving": "W 3rd St & 6th Ave (NE corner) to mezzanine for A/C/E service and access to B/D/F/M service",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "11/08/2026 10:18:00 AM",
-      "estimatedReturnToService": "11/08/2026 06:00:00 PM",
+      "outageStart": "11/09/2026 11:59:00 AM",
+      "estimatedReturnToService": "11/09/2026 08:00:00 PM",
       "maintenance": false
     },
     {
@@ -1445,36 +1446,6 @@
     }
   ],
   "futureOutages": [
-    {
-      "timeframe": "future",
-      "equipmentCode": "EL521",
-      "equipmentType": "Elevator",
-      "station": "Parkchester",
-      "routes": [
-        "6"
-      ],
-      "serving": "Center of Hugh J. Grant Circle to mezzanine and Pelham Bay Park-bound platform.",
-      "ada": true,
-      "reason": "Maintenance",
-      "outageStart": "11/08/2026 10:00:00 PM",
-      "estimatedReturnToService": "11/09/2026 06:00:00 AM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "future",
-      "equipmentCode": "EL522",
-      "equipmentType": "Elevator",
-      "station": "Parkchester",
-      "routes": [
-        "6"
-      ],
-      "serving": "Center of Hugh J. Grant Circle to mezzanine and Manhattan-bound platform.",
-      "ada": true,
-      "reason": "Maintenance",
-      "outageStart": "11/08/2026 10:00:00 PM",
-      "estimatedReturnToService": "11/09/2026 06:00:00 AM",
-      "maintenance": false
-    },
     {
       "timeframe": "future",
       "equipmentCode": "EL186",
@@ -1803,6 +1774,36 @@
     },
     {
       "timeframe": "future",
+      "equipmentCode": "EL517",
+      "equipmentType": "Elevator",
+      "station": "181 St",
+      "routes": [
+        "A"
+      ],
+      "serving": "Mezzanine to platform for Inwood-207 St-bound service.",
+      "ada": true,
+      "reason": "Maintenance",
+      "outageStart": "11/11/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/12/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "future",
+      "equipmentCode": "EL518",
+      "equipmentType": "Elevator",
+      "station": "181 St",
+      "routes": [
+        "A"
+      ],
+      "serving": "Mezzanine to platform for Downtown and Brooklyn-bound service.",
+      "ada": true,
+      "reason": "Maintenance",
+      "outageStart": "11/11/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/12/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "future",
       "equipmentCode": "EL304",
       "equipmentType": "Elevator",
       "station": "Atlantic Av-Barclays Ctr",
@@ -2090,6 +2091,36 @@
     },
     {
       "timeframe": "future",
+      "equipmentCode": "EL785",
+      "equipmentType": "Elevator",
+      "station": "Grand St",
+      "routes": [
+        "L"
+      ],
+      "serving": "Street (NE corner of Bushwick Avenue and Grand Street) to 8 Ave-bound platform",
+      "ada": true,
+      "reason": "Maintenance",
+      "outageStart": "11/13/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/14/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "future",
+      "equipmentCode": "EL786",
+      "equipmentType": "Elevator",
+      "station": "Grand St",
+      "routes": [
+        "L"
+      ],
+      "serving": "Street (NW corner of Bushwick Ave and Grand St) to Canarsie-Rockaway Pkwy-bound platform",
+      "ada": true,
+      "reason": "Maintenance",
+      "outageStart": "11/13/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/14/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "future",
       "equipmentCode": "EL615",
       "equipmentType": "Elevator",
       "station": "14 St",
@@ -2144,6 +2175,32 @@
       "serving": "Mezzanine to downtown and Brooklyn 1/2/3 platform.",
       "ada": true,
       "reason": "Planned Work",
+      "outageStart": "11/14/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/15/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "future",
+      "equipmentCode": "EL787",
+      "equipmentType": "Elevator",
+      "station": "New Dorp",
+      "routes": [],
+      "serving": "Near SE corner of New Dorp Ln and New Dorp Plaza for access to Tottenville-bound platform.",
+      "ada": true,
+      "reason": "Maintenance",
+      "outageStart": "11/14/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/15/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "future",
+      "equipmentCode": "EL788",
+      "equipmentType": "Elevator",
+      "station": "New Dorp",
+      "routes": [],
+      "serving": "Near SW corner of New Dorp Ln and New Dorp Plaza for access to St. George-bound platform.",
+      "ada": true,
+      "reason": "Maintenance",
       "outageStart": "11/14/2026 10:00:00 PM",
       "estimatedReturnToService": "11/15/2026 06:00:00 AM",
       "maintenance": false
