@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-11T16:55:57.667Z",
+    "generatedAt": "2026-11-12T17:24:21.709Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,10 +11,10 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 10,
+    "elevatorOutageCount": 7,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
-    "lightRailElevatorOutageCount": 4,
+    "lightRailElevatorOutageCount": 3,
     "feedVersion": null,
     "validFrom": null,
     "validTo": null
@@ -1163,7 +1163,7 @@
           "unitId": "NJT-RAIL-CRANFORD-1",
           "system": "rail",
           "location": "Eastbound Elevator",
-          "status": "operational",
+          "status": "outage",
           "lastUpdated": null
         },
         {
@@ -1465,14 +1465,14 @@
           "unitId": "NJT-RAIL-ELIZABETH-2",
           "system": "rail",
           "location": "Eastbound #3 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
           "unitId": "NJT-RAIL-ELIZABETH-3",
           "system": "rail",
           "location": "Westbound #2 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -3329,7 +3329,7 @@
           "unitId": "NJT-RAIL-NEWARK-PENN-4",
           "system": "rail",
           "location": "Track A Elevator #36",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -3343,7 +3343,7 @@
           "unitId": "NJT-LR-NEWARK-PENN-6",
           "system": "light_rail",
           "location": "Light Rail Track 2 Outbound Elevator No. 31",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
