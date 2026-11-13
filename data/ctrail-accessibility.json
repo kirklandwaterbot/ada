@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-12T17:28:31.598Z",
+    "generatedAt": "2026-11-13T17:03:52.748Z",
     "source": "CTrail and Amtrak GTFS with CTrail elevator status",
     "ctrailUrl": "https://portal.ct.gov/CTrail",
     "hartfordGtfsUrl": "https://ctrides.com/hlgtfs.zip",
@@ -12,7 +12,7 @@
     "accessibleStationCount": 21,
     "equipmentStationCount": 12,
     "stationWithoutListedElevatorCount": 9,
-    "activeElevatorOutageCount": 1,
+    "activeElevatorOutageCount": 0,
     "feeds": [
       {
         "name": "Hartford Line",
@@ -22,8 +22,8 @@
       },
       {
         "name": "Shore Line East",
-        "feedVersion": "20261112",
-        "validFrom": "20261113",
+        "feedVersion": "20261113",
+        "validFrom": "20261114",
         "validTo": "20271108"
       }
     ]
@@ -425,9 +425,9 @@
         {
           "unitId": "CTRAIL-OLD-SAYBROOK-21",
           "location": "Track 2",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null,
-          "note": "The elevator on Track 2 at Old Saybrook is currently out of service. A technician has been notified."
+          "note": null
         }
       ],
       "escalators": []
