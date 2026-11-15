@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-14T15:31:49.507Z",
+    "generatedAt": "2026-11-15T16:03:48.330Z",
     "source": "MTA Elevator & Escalator Status",
     "sourceUrl": "https://www.mta.info/elevator-escalator-status",
     "componentUrl": "https://consist.mta.info/elevators-escalators/index.js",
     "equipmentCount": 707,
-    "currentOutageCount": 34,
-    "futureOutageCount": 134
+    "currentOutageCount": 37,
+    "futureOutageCount": 132
   },
   "equipmentCodes": [
     "EL11X",
@@ -831,23 +831,6 @@
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES408",
-      "equipmentType": "Escalator",
-      "station": "Lexington Av/63 St",
-      "routes": [
-        "F",
-        "M",
-        "Q"
-      ],
-      "serving": "downtown platform to lower mezzanine for Lexington Ave & 63 St exit",
-      "ada": false,
-      "reason": "Capital Replacement",
-      "outageStart": "03/12/2026 06:36:00 AM",
-      "estimatedReturnToService": "11/30/2026 10:59:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
       "equipmentCode": "EL307",
       "equipmentType": "Elevator",
       "station": "Atlantic Av-Barclays Ctr",
@@ -885,30 +868,6 @@
       "reason": "Capital Replacement",
       "outageStart": "04/04/2026 08:02:00 AM",
       "estimatedReturnToService": "12/31/2026 11:59:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL306",
-      "equipmentType": "Elevator",
-      "station": "Atlantic Av-Barclays Ctr",
-      "routes": [
-        "B",
-        "D",
-        "N",
-        "Q",
-        "R",
-        "2",
-        "3",
-        "4",
-        "5",
-        "LIRR"
-      ],
-      "serving": "Manhattan-bound 2/3 platform to mezzanine for access to rest of complex",
-      "ada": true,
-      "reason": "Capital Replacement",
-      "outageStart": "04/04/2026 08:30:00 AM",
-      "estimatedReturnToService": "11/30/2026 11:59:00 PM",
       "maintenance": false
     },
     {
@@ -967,7 +926,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "08/19/2026 12:14:00 PM",
-      "estimatedReturnToService": "11/15/2026 01:00:00 PM",
+      "estimatedReturnToService": "11/17/2026 01:00:00 PM",
       "maintenance": false
     },
     {
@@ -1014,7 +973,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/05/2026 05:53:00 AM",
-      "estimatedReturnToService": "11/15/2026 06:00:00 AM",
+      "estimatedReturnToService": "11/17/2026 06:00:00 AM",
       "maintenance": false
     },
     {
@@ -1036,7 +995,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "10/07/2026 05:32:00 PM",
-      "estimatedReturnToService": "11/15/2026 06:00:00 PM",
+      "estimatedReturnToService": "11/17/2026 06:00:00 PM",
       "maintenance": false
     },
     {
@@ -1058,7 +1017,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/18/2026 12:56:00 AM",
-      "estimatedReturnToService": "11/15/2026 01:00:00 AM",
+      "estimatedReturnToService": "11/17/2026 01:00:00 AM",
       "maintenance": false
     },
     {
@@ -1079,7 +1038,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "10/24/2026 10:07:00 AM",
-      "estimatedReturnToService": "11/15/2026 11:00:00 AM",
+      "estimatedReturnToService": "11/17/2026 11:00:00 AM",
       "maintenance": false
     },
     {
@@ -1159,7 +1118,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "11/08/2026 10:29:00 PM",
-      "estimatedReturnToService": "11/15/2026 10:36:00 PM",
+      "estimatedReturnToService": "11/17/2026 10:36:00 PM",
       "maintenance": false
     },
     {
@@ -1183,7 +1142,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "11/11/2026 06:28:00 AM",
-      "estimatedReturnToService": "11/15/2026 07:00:00 AM",
+      "estimatedReturnToService": "11/17/2026 07:00:00 AM",
       "maintenance": false
     },
     {
@@ -1205,7 +1164,7 @@
       "ada": false,
       "reason": "Repair",
       "outageStart": "11/11/2026 09:21:00 PM",
-      "estimatedReturnToService": "11/15/2026 10:00:00 PM",
+      "estimatedReturnToService": "11/17/2026 10:00:00 PM",
       "maintenance": false
     },
     {
@@ -1222,7 +1181,7 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "11/11/2026 09:53:00 AM",
-      "estimatedReturnToService": "11/15/2026 10:00:00 AM",
+      "estimatedReturnToService": "11/17/2026 10:00:00 AM",
       "maintenance": false
     },
     {
@@ -1274,6 +1233,50 @@
     },
     {
       "timeframe": "current",
+      "equipmentCode": "ES257X",
+      "equipmentType": "Escalator",
+      "station": "14 St-Union Sq",
+      "routes": [
+        "L",
+        "N",
+        "Q",
+        "R",
+        "W",
+        "4",
+        "5",
+        "6"
+      ],
+      "serving": "4/5/6 mezzanine to 14 St & 4th Ave (NE corner)",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "11/14/2026 03:51:00 PM",
+      "estimatedReturnToService": "11/17/2026 04:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES258X",
+      "equipmentType": "Escalator",
+      "station": "14 St-Union Sq",
+      "routes": [
+        "L",
+        "N",
+        "Q",
+        "R",
+        "W",
+        "4",
+        "5",
+        "6"
+      ],
+      "serving": "14 St & 4th Ave (NE corner) to mezzanine for 4/5/6/L service and access to N/Q/R/W",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "11/14/2026 03:51:00 PM",
+      "estimatedReturnToService": "11/17/2026 04:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
       "equipmentCode": "EL207X",
       "equipmentType": "Elevator",
       "station": "50 St",
@@ -1285,49 +1288,90 @@
       "ada": true,
       "reason": "Repair",
       "outageStart": "11/14/2026 09:07:00 AM",
-      "estimatedReturnToService": "11/16/2026 09:00:00 AM",
+      "estimatedReturnToService": "11/17/2026 09:00:00 AM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES331",
+      "equipmentCode": "ES305",
       "equipmentType": "Escalator",
-      "station": "Broadway Junction",
+      "station": "Court St",
       "routes": [
-        "A",
-        "C",
-        "L",
-        "J",
-        "Z",
-        "LIRR"
-      ],
-      "serving": "J/Z/L upper mezzanine to Van Sinderen Ave mezzanine for access to street and A/C service",
-      "ada": false,
-      "reason": "Under Investigation",
-      "outageStart": "11/14/2026 09:07:00 AM",
-      "estimatedReturnToService": "11/14/2026 05:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "ES231",
-      "equipmentType": "Escalator",
-      "station": "34 St-Herald Sq",
-      "routes": [
-        "B",
-        "D",
-        "F",
-        "M",
-        "N",
-        "Q",
         "R",
-        "W"
+        "2",
+        "3",
+        "4",
+        "5"
       ],
-      "serving": "N/Q/R/W mezzanine to downtown B/D/F/M platform",
+      "serving": "R lower mezzanine to mezzanine for Court St & Montague St exit and 2/3/4/5 service",
       "ada": false,
+      "reason": "Planned Work",
+      "outageStart": "11/15/2026 05:20:00 AM",
+      "estimatedReturnToService": "11/17/2026 06:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL445X",
+      "equipmentType": "Elevator",
+      "station": "Court Sq",
+      "routes": [
+        "E",
+        "F",
+        "G",
+        "7"
+      ],
+      "serving": "Flushing-bound 7 platform to mezzanine to EFG transfer.",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "11/15/2026 06:46:00 AM",
+      "estimatedReturnToService": "11/17/2026 07:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL518",
+      "equipmentType": "Elevator",
+      "station": "181 St",
+      "routes": [
+        "A"
+      ],
+      "serving": "Mezzanine to platform for Downtown and Brooklyn-bound service.",
+      "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "11/14/2026 09:46:00 AM",
-      "estimatedReturnToService": "11/14/2026 06:00:00 PM",
+      "outageStart": "11/15/2026 07:35:00 AM",
+      "estimatedReturnToService": "11/15/2026 04:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL183",
+      "equipmentType": "Elevator",
+      "station": "Gun Hill Rd",
+      "routes": [
+        "2",
+        "5"
+      ],
+      "serving": "Gun Hill Rd to Manhattan-bound platform",
+      "ada": true,
+      "reason": "Planned Work",
+      "outageStart": "11/15/2026 08:30:00 AM",
+      "estimatedReturnToService": "11/15/2026 04:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL523",
+      "equipmentType": "Elevator",
+      "station": "Mosholu Pkwy",
+      "routes": [
+        "4"
+      ],
+      "serving": "Street (SE corner of Jerome Av and E Mosholu Pkwy North) to Transfer Mezzanine & Woodlawn-bound Platform",
+      "ada": true,
+      "reason": "Under Investigation",
+      "outageStart": "11/15/2026 08:32:00 AM",
+      "estimatedReturnToService": "11/15/2026 05:00:00 PM",
       "maintenance": false
     },
     {
@@ -1349,32 +1393,6 @@
     }
   ],
   "futureOutages": [
-    {
-      "timeframe": "future",
-      "equipmentCode": "EL787",
-      "equipmentType": "Elevator",
-      "station": "New Dorp",
-      "routes": [],
-      "serving": "Near SE corner of New Dorp Ln and New Dorp Plaza for access to Tottenville-bound platform.",
-      "ada": true,
-      "reason": "Maintenance",
-      "outageStart": "11/14/2026 10:00:00 PM",
-      "estimatedReturnToService": "11/15/2026 06:00:00 AM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "future",
-      "equipmentCode": "EL788",
-      "equipmentType": "Elevator",
-      "station": "New Dorp",
-      "routes": [],
-      "serving": "Near SW corner of New Dorp Ln and New Dorp Plaza for access to St. George-bound platform.",
-      "ada": true,
-      "reason": "Maintenance",
-      "outageStart": "11/14/2026 10:00:00 PM",
-      "estimatedReturnToService": "11/15/2026 06:00:00 AM",
-      "maintenance": false
-    },
     {
       "timeframe": "future",
       "equipmentCode": "EL217",
