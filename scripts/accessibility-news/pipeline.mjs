@@ -127,12 +127,9 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
   const listedRows = (raw.stationKeys ?? [])
     .map((key) => keyToIndex.get(key))
     .filter((value) => value !== undefined);
-  const shownRows =
-    matchedRows.length > 0
-      ? matchedRows
-      : (resolution.alreadyAccessibleRows ?? []).length > 0
-        ? resolution.alreadyAccessibleRows
-        : listedRows;
+  // Every station the story names: ones it changes and ones already accessible.
+  const namedRows = [...new Set([...matchedRows, ...(resolution.alreadyAccessibleRows ?? [])])];
+  const shownRows = namedRows.length > 0 ? namedRows : listedRows;
 
   let status;
   if (detection.tentative && !rejected) status = rows.length > 0 ? "needs-review" : resolution.reason === "already-accessible" ? "already-accessible" : "news";

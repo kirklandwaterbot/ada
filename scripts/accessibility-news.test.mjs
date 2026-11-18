@@ -135,6 +135,10 @@ test("resolves stations using route bullets and refuses to guess", () => {
     pick(resolveStations({ text: "MTA Adds Kings Highway N to Growing List of Accessible Subway Stations" }, index)),
     ["Kings Hwy N"],
   );
+  // English words made of route letters aren't bullets.
+  const andCase = resolveStations({ text: "Kings Hwy and Steinway St get elevators" }, index);
+  assert.equal(pick(andCase).some((name) => name.startsWith("Kings Hwy")), false);
+  assert.deepEqual(pick(andCase), ["Steinway St M/R"]);
   // "a" after a name is an article, not the A train, unless a row has the A.
   assert.equal(resolveStations({ text: "Kings Highway a station now fully accessible" }, index).reason, "ambiguous");
   const ambiguous = resolveStations({ text: "Kings Highway station is now fully accessible" }, index);
@@ -1025,6 +1029,26 @@ test("a newsletter section about a station that just opened is added as a source
   const kings = second.file.openings.find((opening) => opening.station === "Kings Hwy");
   assert.deepEqual(kings.evidence.map((evidence) => evidence.kind).sort(), ["mta", "newsletter"]);
   assert.equal(second.changes.length, 0);
+  // A section naming both a just-opened station and one under construction
+  // still counts for the opened one.
+  const mixed = buildNewsFile({
+    accessibilityData: data,
+    now,
+    previous: second.file,
+    rawItems: [
+      {
+        ...section,
+        lead: "Riders at Kings Hwy have three new elevators, and next up is Steinway St, where crews are framing elevator shafts.",
+        title: "Kings Hwy and Steinway St ADA",
+        url: "https://view.info.mta.org/?qs=dark#section-4",
+      },
+    ],
+    review: {},
+    sources: [],
+  });
+  assert.equal(mixed.file.openings.find((opening) => opening.station === "Kings Hwy").evidence.length, 3);
+  assert.equal(mixed.changes.length, 0);
+
   // A progress update names its station but changes nothing.
   const steinway = second.file.feed.find((item) => item.title === "Steinway St ADA");
   assert.equal(steinway.status, "news");

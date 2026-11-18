@@ -426,18 +426,23 @@ export function resolveStations({ text, routeText = text, partial = false, publi
   const routeTokens = extractRouteTokens(routeText);
   const groups = new Map();
   const trailingRoutes = new Map();
-  const haystack = ` ${normalizeStationText(text)} `;
+  // MTA headlines put the bullets straight after the name: "Kings Highway F",
+  // "72 St 123", "Prospect Park BQS", "Woodhaven Blvd JZ". Read them from the
+  // original text, where route letters are capitals; "Kings Hwy and" is not
+  // the A, N and D.
+  const bulletsAfterWord = new Map();
+  for (const match of String(text ?? "").matchAll(/([A-Za-z0-9'’-]+)[ \t]+(SIR|[1-7A-GJLMNQRWZ]{1,4})(?![A-Za-z0-9])/g)) {
+    const word = normalizeStationText(match[1]).split(" ").at(-1);
+    if (!word) continue;
+    const tokens = bulletsAfterWord.get(word) ?? new Set();
+    if (match[2] === "SIR") tokens.add("SIR");
+    else for (const char of match[2]) tokens.add(char);
+    bulletsAfterWord.set(word, tokens);
+  }
   for (const mention of mentions) {
     groups.set(mention.variant, mention.indexes);
-    // MTA headlines put the bullets straight after the name:
-    // "Kings Highway F", "72 St 123", "Prospect Park BQS", "Woodhaven Blvd JZ".
-    const next = haystack.slice(mention.end + 1).match(/^([1-7a-gjlmnqrwz]{1,4}|sir)(?= )/)?.[1];
-    if (next) {
-      const tokens = trailingRoutes.get(mention.variant) ?? new Set();
-      if (next === "sir") tokens.add("SIR");
-      else for (const char of next.toUpperCase()) tokens.add(char);
-      trailingRoutes.set(mention.variant, tokens);
-    }
+    const tokens = bulletsAfterWord.get(mention.variant.split(" ").at(-1));
+    if (tokens) trailingRoutes.set(mention.variant, tokens);
   }
 
   const resolved = new Set();
@@ -525,7 +530,7 @@ export function resolveStations({ text, routeText = text, partial = false, publi
   }
 
   return {
-    alreadyAccessibleRows: resolved.size > 0 ? [] : [...alreadyAccessible],
+    alreadyAccessibleRows: [...alreadyAccessible].filter((rowIndex) => !resolved.has(rowIndex)),
     mentions: [...groups.keys()],
     reason: resolved.size > 0 ? "matched" : (reasons[0]?.split(":")[0] ?? "no-station"),
     rows: [...resolved],
