@@ -251,6 +251,15 @@ function printReport(file, changes) {
     console.log(`  [${item.status}] [${item.tier}] ${item.title} — ${where || item.reason} <${item.url}>`);
   }
 
+  const newsletterOpenings = file.feed.filter((item) => item.kind === "newsletter" && item.opening);
+  if (newsletterOpenings.length > 0) {
+    console.log(`\nNewsletter sections reporting an opening (${newsletterOpenings.length}):`);
+    for (const item of newsletterOpenings) {
+      const where = item.stations.map((station) => `${station.station} (${station.services.join("/")})`).join(", ");
+      console.log(`  [${item.status}] ${item.publishedAt.slice(0, 10)} ${item.title} — ${where || item.reason}`);
+    }
+  }
+
   console.log(`\nStation openings tracked: ${file.openings.length}`);
   for (const opening of file.openings.slice(0, 15)) {
     console.log(

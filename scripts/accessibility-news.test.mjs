@@ -966,3 +966,26 @@ test("a capital milestone worded like an opening never changes a station by itse
   assert.equal(file.feed[0].status, "news");
   assert.deepEqual(file.feed[0].stations.map((station) => station.station), ["Junius St"]);
 });
+
+test("newsletter paragraphs wrapped in the HTML source stay whole", () => {
+  // Like the real issues: source lines wrap mid-sentence, sections use
+  // short bold "Station ADA" headings, and there's a recurring bonus section.
+  const html = `<table><tr><td><strong>Kings Hwy ADA</strong></td></tr>
+<tr><td><p>The upgrades here are big. Kings Hwy is now home to three new
+elevators, and the F station is now fully
+accessible for riders heading to Manhattan and Coney Island alike, with new
+signage and tactile edges too.</p></td></tr>
+<tr><td><strong>Bonus round</strong></td></tr>
+<tr><td><p>Bonus: we also replaced an elevator machine room at a station in the Bronx this week, adding
+a new controller and cab interior for riders.</p></td></tr></table>`;
+  const sections = parseNewsletterSections(html);
+  assert.deepEqual(sections.map((section) => section.heading), ["Kings Hwy ADA", "Bonus round"]);
+  assert.match(sections[0].text, /three new elevators, and the F station is now fully accessible/);
+
+  const items = newsletterItems({ date: "2026-08-25", title: "This Week in MTA Construction: Dark, Damp, and Essential", url: "https://view.info.mta.org/?qs=dark" }, sections);
+  assert.deepEqual(items.map((item) => item.title), ["Kings Hwy ADA"]);
+
+  const data = baseData();
+  const { changes } = buildNewsFile({ accessibilityData: data, now: new Date("2026-11-18T12:00:00Z"), previous: null, rawItems: items, review: {}, sources: [] });
+  assert.deepEqual(changes.map((change) => change.key), ["Kings Hwy|Culver Line|F"]);
+});

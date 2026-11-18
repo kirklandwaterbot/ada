@@ -47,6 +47,8 @@ const BOILERPLATE =
  */
 export function parseNewsletterSections(html) {
   const marked = String(html)
+    // Email HTML wraps long lines in the source; only tags mark structure.
+    .replace(/\s+/g, " ")
     .replace(/<(script|style|head|noscript)[\s\S]*?<\/\1>/gi, " ")
     .replace(/<h[1-4]\b[^>]*>/gi, "\n§H§")
     .replace(/<\/h[1-4]>/gi, "\n")
@@ -61,11 +63,16 @@ export function parseNewsletterSections(html) {
     })
     .filter((line) => line.text && !BOILERPLATE.test(line.text));
 
+  // A short standalone line that reads like a title ("Kings Hwy ADA",
+  // "125 St platform rehabilitation"), not a sentence fragment.
   const isImplicitHeading = (line, next) =>
     !line.heading &&
     line.text.length >= 4 &&
-    line.text.length <= 110 &&
+    line.text.length <= 80 &&
+    /^[A-Z0-9]/.test(line.text) &&
     !/[.,;:]$/.test(line.text) &&
+    !/[.!?]\s/.test(line.text) &&
+    !/\b(?:and|or|the|of|to|by|for|with|a|an|at|in|on|that|several)$/i.test(line.text) &&
     next &&
     !next.heading &&
     next.text.length >= 120;
@@ -89,10 +96,14 @@ export function parseNewsletterSections(html) {
     .filter((section) => section.heading || section.text.length > 80);
 }
 
+// Recurring sections that summarise or entertain rather than report.
+const SKIPPED_SECTIONS = /^(?:welcome back|bonus round|your fun fact|fun fact|this week in mta construction)/i;
+
 /** Turn an issue's sections into raw items (accessibility-related sections only). */
 export function newsletterItems(issue, sections) {
   return sections
     .map((section, position) => ({ position, section }))
+    .filter(({ section }) => !SKIPPED_SECTIONS.test(section.heading))
     .filter(({ section }) => isAccessibilitySubject(`${section.heading} ${section.text}`))
     .map(({ position, section }) => {
       const firstSentence = section.text.split(/(?<=[.!?])\s+/)[0] ?? "";
