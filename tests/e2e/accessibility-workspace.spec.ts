@@ -257,13 +257,30 @@ test("opens with a clean map canvas and compact atlas tools", async ({
 
   const spotlight = page.getByTestId("project-spotlight");
   await expect(spotlight).toBeVisible({ timeout: 15_000 });
-  await expect(spotlight).toHaveAttribute(
-    "href",
-    /^https:\/\/www\.mta\.info\/press-release\//,
-  );
-  await expect(spotlight).toHaveAttribute(
-    "aria-label",
-    /^Latest MTA accessibility release:/,
+  await expect(spotlight).toHaveAttribute("href", "/updates");
+  await expect(spotlight).toHaveAttribute("aria-label", /^Updates:/);
+});
+
+test("lists newly accessible stations with their sources", async ({ page }) => {
+  await page.goto("/updates");
+
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Newly accessible stations" }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Opened" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "How a station gets updated" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /^Updates/ }).first(),
+  ).toHaveAttribute("aria-current", "page");
+
+  const filters = page.getByRole("group", { name: "Filter coverage" });
+  await expect(filters).toBeVisible();
+  await filters.getByRole("button", { name: /^Reddit/ }).click();
+  await expect(filters.getByRole("button", { name: /^Reddit/ })).toHaveAttribute(
+    "aria-pressed",
+    "true",
   );
 });
 

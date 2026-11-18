@@ -26,6 +26,15 @@ export const DATA_SYNC_STAGES = [
     outputs: ["public/data/nyc-subway-routes.geojson"],
   },
   {
+    name: "Accessibility news and station openings",
+    script: "scripts/sync-accessibility-news.mjs",
+    outputs: [
+      "data/accessibility-news.json",
+      "data/accessibility-stations.json",
+      "data/accessible-station-coordinates.json",
+    ],
+  },
+  {
     name: "ADA project statuses",
     script: "scripts/generate-ada-project-statuses.mjs",
     outputs: ["data/ada-project-statuses.json"],

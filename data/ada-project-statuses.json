@@ -5,7 +5,8 @@
     "data/accessibility-stations.json",
     "data/mta-capital-elevator-escalator-projects.json",
     "data/mta-subway-elevator-escalator-assets.json",
-    "data/mta-regional-rail-accessibility.json"
+    "data/mta-regional-rail-accessibility.json",
+    "data/accessibility-news.json"
   ],
   "methodology": "Each marker receives one primary status. New-station and already-accessible upgrade scopes take precedence over project phase; remaining projects are grouped by construction, design/study, or funded/planned phase.",
   "sourceUrls": [

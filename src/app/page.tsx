@@ -1,31 +1,38 @@
 import { MapFirstHome } from "@/components/map-first-home";
-import { getMtaAssetDataset } from "@/lib/mta-assets";
 import {
-  formatMtaPressReleaseDate,
-  getLatestMtaAccessibilityPressRelease,
-} from "@/lib/mta-press-releases";
+  formatNewsDate,
+  getLatestVerifiedOpening,
+  getRecentOpeningCount,
+} from "@/lib/accessibility-news";
+import { getMtaAssetDataset } from "@/lib/mta-assets";
 import { createStationExplorerData } from "@/lib/station-explorer-data";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [dataset, pressRelease] = await Promise.all([
-    getMtaAssetDataset().catch(() => null),
-    getLatestMtaAccessibilityPressRelease(),
-  ]);
-
+  const dataset = await getMtaAssetDataset().catch(() => null);
   const { mapAssets, stationRecords } = createStationExplorerData(
     dataset?.assets ?? [],
   );
+  const opening = getLatestVerifiedOpening();
+  // Only surface an opening on the map while it is still news.
+  const recentOpeningCount = getRecentOpeningCount();
 
   return (
     <MapFirstHome
+      latestOpening={
+        opening && recentOpeningCount > 0
+          ? {
+              formattedDate: formatNewsDate(opening.openedAt),
+              href: `/updates#${encodeURIComponent(opening.key)}`,
+              services: opening.services,
+              source: opening.primarySource?.source ?? "",
+              station: opening.station,
+            }
+          : null
+      }
       mapAssets={mapAssets}
-      pressRelease={{
-        formattedDate: formatMtaPressReleaseDate(pressRelease.publishedAt),
-        title: pressRelease.title,
-        url: pressRelease.url,
-      }}
+      recentOpeningCount={recentOpeningCount}
       stationRecords={stationRecords}
     />
   );

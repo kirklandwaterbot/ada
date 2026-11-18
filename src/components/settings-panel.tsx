@@ -12,9 +12,11 @@ import {
 export function SettingsButton({
   compact = false,
   iconOnly = false,
+  tone = "surface",
 }: {
   compact?: boolean;
   iconOnly?: boolean;
+  tone?: "surface" | "sign";
 }) {
   const [open, setOpen] = useState(false);
 
@@ -23,7 +25,10 @@ export function SettingsButton({
       <button
         aria-label="Open settings"
         className={[
-          "inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--panel)] text-sm font-semibold text-[var(--muted-strong)] shadow-sm transition hover:bg-[var(--soft)] hover:text-[var(--ink)]",
+          "inline-flex h-10 items-center justify-center gap-2 text-sm font-semibold transition",
+          tone === "sign"
+            ? "rounded-md text-white/75 hover:bg-white/10 hover:text-white"
+            : "rounded-xl border border-[var(--border)] bg-[var(--panel)] text-[var(--muted-strong)] shadow-sm hover:bg-[var(--soft)] hover:text-[var(--ink)]",
           iconOnly ? "w-10 px-0" : compact ? "px-3" : "px-4",
         ].join(" ")}
         onClick={() => setOpen(true)}

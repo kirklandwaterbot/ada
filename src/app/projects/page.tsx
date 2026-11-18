@@ -85,10 +85,10 @@ export default async function CapitalProjectsPage() {
 
       <section className="space-y-4">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             Connected operators
           </p>
-          <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]">
+          <h2 className="mt-1 text-xl font-bold tracking-[-0.02em] text-[var(--ink)]">
             Regional accessibility coverage
           </h2>
           <p className="mt-2 max-w-4xl text-sm leading-6 text-[var(--muted-strong)]">
@@ -103,7 +103,7 @@ export default async function CapitalProjectsPage() {
             <article className="surface-card p-4" key={system.agency}>
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-black text-[var(--ink)]">{system.label}</h3>
+                  <h3 className="font-bold text-[var(--ink)]">{system.label}</h3>
                   <p className="mt-1 text-xs font-semibold text-[var(--muted)]">
                     {system.accessibleStations.toLocaleString()} accessible of{" "}
                     {system.stations.toLocaleString()} stations
@@ -160,10 +160,10 @@ export default async function CapitalProjectsPage() {
 
       <section className="space-y-4">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             MTA capital program
           </p>
-          <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]">
+          <h2 className="mt-1 text-xl font-bold tracking-[-0.02em] text-[var(--ink)]">
             Detailed elevator and escalator projects
           </h2>
         </div>
@@ -188,10 +188,10 @@ function ProjectMetric({
         <SiteIcon className="text-[21px]" name={icon} />
       </span>
       <div>
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">
+        <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
           {label}
         </p>
-        <p className="mt-0.5 text-2xl font-black tracking-[-0.04em] text-[var(--ink)]">
+        <p className="mt-0.5 text-2xl font-bold tracking-[-0.02em] text-[var(--ink)]">
           {value.toLocaleString()}
         </p>
       </div>

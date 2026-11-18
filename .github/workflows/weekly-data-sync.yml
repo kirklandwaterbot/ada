@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-mta-data-snapshot-sync
+  group: data-snapshot-commits
   cancel-in-progress: false
 
 jobs:
@@ -24,8 +24,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run sync:data
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
       - name: Commit updated data files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update daily MTA data snapshots"
-          file_pattern: data/mta-subway-elevator-escalator-assets.* data/mta-equipment-status.json data/mta-capital-elevator-escalator-projects.json data/ada-project-statuses.json data/mta-regional-rail-accessibility.json data/path-accessibility.json data/ewr-airtrain-accessibility.json data/nj-transit-accessibility.json data/ctrail-accessibility.json data/sync-metadata.json public/data/nyc-subway-routes.geojson public/data/mta-regional-rail-routes.geojson public/data/path-routes.geojson public/data/ewr-airtrain-routes.geojson public/data/nj-transit-routes.geojson public/data/ctrail-routes.geojson
+          file_pattern: data/accessibility-news.json data/accessibility-stations.json data/accessible-station-coordinates.json data/mta-subway-elevator-escalator-assets.* data/mta-equipment-status.json data/mta-capital-elevator-escalator-projects.json data/ada-project-statuses.json data/mta-regional-rail-accessibility.json data/path-accessibility.json data/ewr-airtrain-accessibility.json data/nj-transit-accessibility.json data/ctrail-accessibility.json data/sync-metadata.json public/data/nyc-subway-routes.geojson public/data/mta-regional-rail-routes.geojson public/data/path-routes.geojson public/data/ewr-airtrain-routes.geojson public/data/nj-transit-routes.geojson public/data/ctrail-routes.geojson

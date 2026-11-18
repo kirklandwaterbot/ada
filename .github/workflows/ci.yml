@@ -26,3 +26,18 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+
+  # Dry-runs the accessibility news updater against the live sources so a
+  # change to the parsers can be checked before it merges. Network hiccups at
+  # MTA, Google News, or Reddit should not block a merge, hence non-blocking.
+  news-sources:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sync-accessibility-news.mjs --dry-run

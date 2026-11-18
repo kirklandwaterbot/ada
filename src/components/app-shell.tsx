@@ -3,225 +3,205 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { SettingsButton } from "@/components/settings-panel";
+import { useSettings } from "@/components/settings-provider";
 import { SiteIcon } from "@/components/site-icon";
 
 const navigation = [
   { href: "/", icon: "map", label: "Map" },
-  { href: "/stations", icon: "search", label: "Stations" },
+  { href: "/stations", icon: "subway", label: "Stations" },
   { href: "/equipment", icon: "elevator", label: "Equipment" },
   { href: "/projects", icon: "construction", label: "Projects" },
+  { href: "/updates", icon: "news", label: "Updates" },
 ] as const;
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  children,
+  recentOpeningCount = 0,
+}: {
+  children: React.ReactNode;
+  recentOpeningCount?: number;
+}) {
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const mapHome = pathname === "/";
 
   return (
     <div className="min-h-screen bg-[var(--app-bg)] text-[var(--ink)]">
       <a
-        className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-xl bg-[var(--nav-active)] px-4 py-3 text-sm font-bold text-white shadow-xl transition focus:translate-y-0"
+        className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-md bg-[var(--route-yellow)] px-4 py-3 text-sm font-bold text-black shadow-xl transition focus:translate-y-0"
         href="#main-content"
       >
         Skip to main content
       </a>
-      {mapHome ? null : (
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col border-r border-white/10 bg-[#111820] lg:flex">
-          <Sidebar compact pathname={pathname} />
-        </aside>
-      )}
 
       {mapHome ? null : (
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--border)] bg-[rgb(var(--panel-rgb)_/_0.92)] px-4 backdrop-blur-xl lg:hidden">
-          <Brand compact />
-          <button
-            aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--border)] bg-[var(--panel)] text-[var(--muted)] shadow-sm transition hover:text-[var(--ink)]"
-            onClick={() => setMobileOpen((open) => !open)}
-            type="button"
-          >
-            <SiteIcon className="text-[22px]" name={mobileOpen ? "close" : "menu"} />
-          </button>
+        <header className="sticky top-0 z-30 bg-black text-white">
+          {/* The white rule that runs along the top of every subway sign. */}
+          <div aria-hidden="true" className="absolute inset-x-0 top-[6px] h-[2px] bg-white/90" />
+          <div className="mx-auto flex h-[4.25rem] max-w-[1600px] items-center gap-6 px-4 pt-1.5 sm:px-6 xl:px-10">
+            <Brand />
+            <nav aria-label="Primary navigation" className="hidden h-full flex-1 items-stretch gap-1 md:flex">
+              {navigation.map((item) => (
+                <NavLink
+                  badge={item.href === "/updates" ? recentOpeningCount : 0}
+                  item={item}
+                  key={item.href}
+                  pathname={pathname}
+                />
+              ))}
+            </nav>
+            <div className="ml-auto flex items-center gap-2">
+              <ThemeToggle />
+              <SettingsButton iconOnly tone="sign" />
+            </div>
+          </div>
         </header>
       )}
 
-      {mobileOpen && !mapHome ? (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            aria-label="Close navigation"
-            className="absolute inset-0 bg-slate-950/35 backdrop-blur-sm"
-            onClick={() => setMobileOpen(false)}
-            type="button"
-          />
-          <aside className="absolute inset-y-0 left-0 flex w-[min(88vw,19rem)] flex-col border-r border-[var(--border)] bg-[var(--panel)] shadow-2xl">
-            <Sidebar onNavigate={() => setMobileOpen(false)} pathname={pathname} />
-          </aside>
-        </div>
-      ) : null}
+      <main
+        className={
+          mapHome
+            ? "h-[100svh] min-h-[34rem] w-full p-0"
+            : "mx-auto min-h-screen w-full max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 sm:pt-8 md:pb-12 xl:px-10"
+        }
+        id="main-content"
+        tabIndex={-1}
+      >
+        {children}
+      </main>
 
-      <div className={mapHome ? "" : "lg:pl-20"}>
-        <main
-          className={
-            mapHome
-              ? "h-[100svh] min-h-[34rem] w-full p-0"
-              : "mx-auto min-h-screen w-full max-w-[1600px] px-4 py-6 sm:px-6 sm:py-8 xl:px-10"
-          }
-          id="main-content"
-          tabIndex={-1}
+      {mapHome ? null : (
+        <nav
+          aria-label="Primary navigation"
+          className="fixed inset-x-0 bottom-0 z-30 border-t border-white/15 bg-black pb-[env(safe-area-inset-bottom)] text-white md:hidden"
         >
-          {children}
-        </main>
-      </div>
+          <ul className="grid grid-cols-5">
+            {navigation.map((item) => {
+              const active = isActive(item.href, pathname);
+              return (
+                <li key={item.href}>
+                  <Link
+                    aria-current={active ? "page" : undefined}
+                    className={[
+                      "relative flex h-16 flex-col items-center justify-center gap-1 text-[12px] font-semibold",
+                      active ? "text-white" : "text-white/65 hover:text-white",
+                    ].join(" ")}
+                    href={item.href}
+                  >
+                    {active ? (
+                      <span aria-hidden="true" className="absolute inset-x-4 top-0 h-[3px] rounded-b bg-white" />
+                    ) : null}
+                    <span className="relative">
+                      <SiteIcon className="text-[22px]" name={item.icon} />
+                      {item.href === "/updates" && recentOpeningCount > 0 ? (
+                        <UpdateDot count={recentOpeningCount} />
+                      ) : null}
+                    </span>
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      )}
     </div>
   );
 }
 
-function Sidebar({
-  compact = false,
-  onNavigate,
+function isActive(href: string, pathname: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
+function NavLink({
+  badge,
+  item,
   pathname,
 }: {
-  compact?: boolean;
-  onNavigate?: () => void;
+  badge: number;
+  item: (typeof navigation)[number];
   pathname: string;
 }) {
+  const active = isActive(item.href, pathname);
+
   return (
-    <>
-      <div
-        className={
-          compact
-            ? "border-b border-white/10 px-3 py-4"
-            : "border-b border-[var(--border)] px-6 py-6"
-        }
-      >
-        <Brand iconOnly={compact} onNavigate={onNavigate} />
-      </div>
-
-      <nav
-        aria-label="Primary navigation"
-        className={compact ? "flex-1 px-3 py-4" : "flex-1 px-4 py-5"}
-      >
-        {compact ? null : (
-          <p className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
-            Explore
-          </p>
-        )}
-        <div className={compact ? "space-y-2" : "mt-3 space-y-1.5"}>
-          {navigation.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
-
-            return (
-              <Link
-                aria-current={active ? "page" : undefined}
-                className={[
-                  "group flex items-center rounded-xl text-sm font-semibold transition",
-                  compact ? "h-12 justify-center px-0" : "gap-3 px-3 py-3",
-                  compact
-                    ? active
-                      ? "bg-[#2f8fd8] text-white shadow-[0_12px_30px_rgb(0_0_0_/_0.28)]"
-                      : "text-slate-400 hover:bg-white/10 hover:text-white"
-                    : active
-                      ? "bg-[var(--nav-active)] text-white shadow-[0_10px_24px_rgb(10_61_126_/_0.22)]"
-                      : "text-[var(--muted-strong)] hover:bg-[var(--soft)] hover:text-[var(--ink)]",
-                ].join(" ")}
-                href={item.href}
-                key={item.href}
-                onClick={onNavigate}
-                title={compact ? item.label : undefined}
-              >
-                <SiteIcon
-                  className={[
-                    compact ? "text-[22px]" : "text-[20px]",
-                    compact
-                      ? active
-                        ? "text-white"
-                        : "text-slate-400 group-hover:text-white"
-                      : active
-                        ? "text-cyan-200"
-                        : "text-[var(--muted)] group-hover:text-[var(--accent-600)]",
-                  ].join(" ")}
-                  name={item.icon}
-                />
-                {compact ? <span className="sr-only">{item.label}</span> : item.label}
-                {active && !compact ? (
-                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-cyan-300" />
-                ) : null}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-
-      <div
-        className={
-          compact
-            ? "grid place-items-center border-t border-white/10 p-4"
-            : "border-t border-[var(--border)] p-4"
-        }
-      >
-        {compact ? (
-          <SettingsButton iconOnly />
-        ) : (
-          <div className="flex items-center justify-between gap-3">
-            <SettingsButton compact />
-            <span className="text-[11px] font-medium text-[var(--muted)]">
-              Official data, checked daily
-            </span>
-          </div>
-        )}
-      </div>
-    </>
+    <Link
+      aria-current={active ? "page" : undefined}
+      className={[
+        "relative flex items-center gap-2 px-3 text-[15px] font-semibold transition-colors",
+        active ? "text-white" : "text-white/65 hover:text-white",
+      ].join(" ")}
+      href={item.href}
+    >
+      <SiteIcon className="text-[18px]" name={item.icon} />
+      {item.label}
+      {badge > 0 ? (
+        <span
+          aria-label={`${badge} newly accessible station${badge === 1 ? "" : "s"}`}
+          className="route-bullet h-5 min-w-5 bg-[var(--route-green)] px-1.5 text-[11px]"
+        >
+          {badge}
+        </span>
+      ) : null}
+      {active ? (
+        <span aria-hidden="true" className="absolute inset-x-3 bottom-0 h-[3px] rounded-t bg-white" />
+      ) : null}
+    </Link>
   );
 }
 
-function Brand({
-  compact = false,
-  iconOnly = false,
-  onNavigate,
-}: {
-  compact?: boolean;
-  iconOnly?: boolean;
-  onNavigate?: () => void;
-}) {
+function UpdateDot({ count }: { count: number }) {
   return (
-    <Link
-      aria-label={iconOnly ? "Access NYC home" : undefined}
-      className={[
-        "flex min-w-0 items-center",
-        iconOnly ? "justify-center" : "gap-3",
-      ].join(" ")}
-      href="/"
-      onClick={onNavigate}
+    <span
+      aria-label={`${count} newly accessible`}
+      className="absolute -right-2.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-[var(--route-green)] px-1 text-[10px] font-bold leading-none text-white ring-2 ring-black"
     >
-      <span
-        className={[
-          compact ? "h-9 w-9" : "h-11 w-11",
-          "grid shrink-0 place-items-center overflow-hidden",
-        ].join(" ")}
-      >
-        <Image
-          alt="MTA"
-          className="h-full w-full translate-x-px object-contain p-1"
-          height={44}
-          loading="eager"
-          src="/MTA.png"
-          width={44}
-        />
+      {count}
+    </span>
+  );
+}
+
+function Brand() {
+  return (
+    <Link aria-label="Access NYC home" className="flex shrink-0 items-center gap-3" href="/">
+      <Image
+        alt=""
+        className="h-9 w-9 object-contain"
+        height={36}
+        loading="eager"
+        src="/MTA.png"
+        width={36}
+      />
+      <span className="hidden text-[19px] font-bold tracking-[-0.01em] sm:block">
+        Access NYC
       </span>
-      {iconOnly ? null : <span className="min-w-0">
-        <span className="block truncate text-sm font-extrabold tracking-[-0.01em] text-[var(--ink)]">
-          Access NYC
-        </span>
-        <span className="block truncate text-xs font-medium text-[var(--muted)]">
-          Regional transit accessibility
-        </span>
-      </span>}
     </Link>
+  );
+}
+
+const subscribeToTheme = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributeFilter: ["class"], attributes: true });
+  return () => observer.disconnect();
+};
+
+function ThemeToggle() {
+  const { updateSettings } = useSettings();
+  const dark = useSyncExternalStore(
+    subscribeToTheme,
+    () => document.documentElement.classList.contains("dark"),
+    () => false,
+  );
+
+  return (
+    <button
+      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+      className="grid h-10 w-10 place-items-center rounded-md text-white/75 transition hover:bg-white/10 hover:text-white"
+      onClick={() => updateSettings({ theme: dark ? "light" : "dark" })}
+      type="button"
+    >
+      <SiteIcon className="text-[19px]" name={dark ? "light_mode" : "dark_mode"} />
+    </button>
   );
 }

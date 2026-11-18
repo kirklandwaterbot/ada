@@ -53,10 +53,10 @@ export function RegionalStationDetail({ station }: { station: RegionalStation })
         <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border-[56px] border-white/5" />
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-200">
+            <p className="text-xs font-extrabold tracking-normal text-cyan-200">
               Regional station profile
             </p>
-            <h1 className="mt-3 text-3xl font-black tracking-[-0.05em] sm:text-5xl">
+            <h1 className="mt-3 text-3xl font-bold tracking-[-0.02em] sm:text-5xl">
               {station.name}
             </h1>
             <TransitRouteIcons
@@ -133,7 +133,7 @@ export function RegionalStationDetail({ station }: { station: RegionalStation })
 
         <aside className="space-y-6">
           <div className="surface-card p-5 sm:p-6">
-            <h2 className="font-black text-[var(--ink)]">Station access</h2>
+            <h2 className="font-bold text-[var(--ink)]">Station access</h2>
             <p className="mt-2 text-sm leading-6 text-[var(--muted-strong)]">
               {station.accessMethods?.length
                 ? station.accessMethods.join(" · ")
@@ -148,7 +148,7 @@ export function RegionalStationDetail({ station }: { station: RegionalStation })
           </div>
 
           <div className="surface-card p-5 sm:p-6">
-            <h2 className="font-black text-[var(--ink)]">Official sources</h2>
+            <h2 className="font-bold text-[var(--ink)]">Official sources</h2>
             <p className="mt-2 text-xs leading-5 text-[var(--muted-strong)]">
               Always verify elevator availability and boarding conditions with the operator
               before traveling.
@@ -185,7 +185,7 @@ function RegionalEquipmentCard({ unit }: { unit: RegionalEquipmentUnit }) {
             <SiteIcon className="text-[21px]" name={unit.type === "Elevator" ? "elevator" : "escalator"} />
           </span>
           <div>
-            <h3 className="font-black text-[var(--ink)]">{unit.unitId}</h3>
+            <h3 className="font-bold text-[var(--ink)]">{unit.unitId}</h3>
             <p className="mt-1 text-xs font-semibold text-[var(--muted)]">
               {getRegionalAgencyLabel(unit.agency)} · {unit.type}
             </p>
@@ -213,8 +213,8 @@ function Fact({ icon, label, value }: { icon: string; label: string; value: stri
         <SiteIcon className="text-[23px]" name={icon} />
       </span>
       <div className="min-w-0">
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">{label}</p>
-        <p className="mt-0.5 truncate text-lg font-black text-[var(--ink)]">{value}</p>
+        <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">{label}</p>
+        <p className="mt-0.5 truncate text-lg font-bold text-[var(--ink)]">{value}</p>
       </div>
     </div>
   );
@@ -227,7 +227,7 @@ function SectionHeader({ description, icon, title }: { description: string; icon
         <SiteIcon className="text-[23px]" name={icon} />
       </span>
       <div>
-        <h2 className="text-lg font-black text-[var(--ink)]">{title}</h2>
+        <h2 className="text-lg font-bold text-[var(--ink)]">{title}</h2>
         <p className="mt-1 text-sm leading-5 text-[var(--muted-strong)]">{description}</p>
       </div>
     </div>

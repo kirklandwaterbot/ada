@@ -9,15 +9,16 @@ type StationStatusBadgeProps = {
   station: StationAccessibilityView;
 };
 
+// Status colours come from the subway's own route palette (see globals.css).
 const toneClasses = {
   accessible:
-    "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-700/60 dark:bg-emerald-500/10 dark:text-emerald-300",
+    "text-[var(--status-accessible)] border-[color-mix(in_srgb,var(--status-accessible)_35%,transparent)] bg-[color-mix(in_srgb,var(--status-accessible)_9%,transparent)]",
   "not-accessible":
-    "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-500/10 dark:text-slate-300",
+    "text-[var(--status-none)] border-[color-mix(in_srgb,var(--status-none)_35%,transparent)] bg-[color-mix(in_srgb,var(--status-none)_8%,transparent)]",
   partial:
-    "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-700/60 dark:bg-amber-500/10 dark:text-amber-300",
+    "text-[var(--status-partial)] border-[color-mix(in_srgb,var(--status-partial)_35%,transparent)] bg-[color-mix(in_srgb,var(--status-partial)_9%,transparent)]",
   planned:
-    "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-700/60 dark:bg-blue-500/10 dark:text-blue-300",
+    "text-[var(--status-planned)] border-[color-mix(in_srgb,var(--status-planned)_35%,transparent)] bg-[color-mix(in_srgb,var(--status-planned)_9%,transparent)]",
 };
 
 export function StationStatusBadge({
@@ -35,7 +36,7 @@ export function StationStatusBadge({
   return (
     <span
       className={[
-        "inline-flex w-fit items-center gap-1.5 rounded-full border font-bold",
+        "inline-flex w-fit items-center gap-1.5 rounded-md border font-bold",
         compact ? "px-2 py-1 text-[11px]" : "px-2.5 py-1.5 text-xs",
         toneClasses[tone],
       ].join(" ")}

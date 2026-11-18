@@ -10,7 +10,7 @@ import {
 } from "react";
 
 type ThemeMode = "system" | "light" | "dark";
-type AccentColor = "teal" | "sky" | "violet" | "rose";
+type AccentColor = "subway" | "teal" | "sky" | "violet" | "rose";
 type TableDensity = "comfortable" | "compact";
 
 type Settings = {
@@ -28,7 +28,7 @@ type SettingsContextValue = {
 const STORAGE_KEY = "mta-access-assets-settings";
 
 const DEFAULT_SETTINGS: Settings = {
-  accentColor: "teal",
+  accentColor: "subway",
   tableDensity: "comfortable",
   theme: "system",
 };
@@ -43,6 +43,15 @@ const ACCENT_OPTIONS: Record<
     rgb: string;
   }
 > = {
+  // A/C/E line blue. Its light/dark variants live in globals.css so the
+  // accent stays readable in both themes.
+  subway: {
+    color: "#0039a6",
+    dark: "#002d84",
+    light: "#eaf0fb",
+    ring: "rgba(0, 57, 166, 0.32)",
+    rgb: "0, 57, 166",
+  },
   teal: {
     color: "#0d9488",
     dark: "#0f766e",
@@ -88,12 +97,18 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     root.classList.toggle("dark", isDark);
     root.dataset.accent = settings.accentColor;
     root.dataset.density = settings.tableDensity;
-    root.style.setProperty("--accent-50", accent.light);
-    root.style.setProperty("--accent-500", accent.color);
-    root.style.setProperty("--accent-600", accent.color);
-    root.style.setProperty("--accent-700", accent.dark);
-    root.style.setProperty("--accent-600-rgb", accent.rgb);
-    root.style.setProperty("--accent-ring", accent.ring);
+    const accentVariables: Array<[string, string]> = [
+      ["--accent-50", accent.light],
+      ["--accent-500", accent.color],
+      ["--accent-600", accent.color],
+      ["--accent-700", accent.dark],
+      ["--accent-600-rgb", accent.rgb],
+      ["--accent-ring", accent.ring],
+    ];
+    for (const [name, value] of accentVariables) {
+      if (settings.accentColor === "subway") root.style.removeProperty(name);
+      else root.style.setProperty(name, value);
+    }
   }, [settings]);
 
   const updateSettings = useCallback((nextSettings: Partial<Settings>) => {
@@ -126,6 +141,7 @@ export function useSettings() {
 }
 
 export const accentOptions = [
+  { value: "subway", label: "Subway blue", swatch: ACCENT_OPTIONS.subway.color },
   { value: "teal", label: "Teal", swatch: ACCENT_OPTIONS.teal.color },
   { value: "sky", label: "Sky", swatch: ACCENT_OPTIONS.sky.color },
   { value: "violet", label: "Violet", swatch: ACCENT_OPTIONS.violet.color },
@@ -139,7 +155,7 @@ export const themeOptions = [
 ] satisfies Array<{ value: ThemeMode; label: string }>;
 
 function isAccentColor(value: unknown): value is AccentColor {
-  return value === "teal" || value === "sky" || value === "violet" || value === "rose";
+  return value === "subway" || value === "teal" || value === "sky" || value === "violet" || value === "rose";
 }
 
 function isThemeMode(value: unknown): value is ThemeMode {

@@ -89,10 +89,10 @@ export function RegionalEquipmentExplorer({
   return (
     <section className="surface-card overflow-hidden">
       <div className="border-b border-[var(--border)] p-5 sm:p-6">
-        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
+        <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
           Regional operators
         </p>
-        <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]">
+        <h2 className="mt-1 text-xl font-bold tracking-[-0.02em] text-[var(--ink)]">
           Regional elevator and escalator records
         </h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-[var(--muted-strong)]">
@@ -150,7 +150,7 @@ export function RegionalEquipmentExplorer({
             <article className="grid gap-4 p-5 transition hover:bg-[var(--soft-blue)] md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_auto] md:items-center sm:p-6" key={record.id}>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <Link className="font-black text-[var(--ink)] hover:text-[var(--accent-700)]" href={`/stations/${record.stationSlug}`}>
+                  <Link className="font-bold text-[var(--ink)] hover:text-[var(--accent-700)]" href={`/stations/${record.stationSlug}`}>
                     {record.stationName}
                   </Link>
                   <StatusBadge status={record.status} />
@@ -160,7 +160,7 @@ export function RegionalEquipmentExplorer({
                 </p>
               </div>
               <div>
-                <p className="font-mono text-xs font-black text-[var(--ink)]">{record.unitId}</p>
+                <p className="font-mono text-xs font-bold text-[var(--ink)]">{record.unitId}</p>
                 <p className="mt-1 text-xs leading-5 text-[var(--muted-strong)]">{record.location}</p>
               </div>
               <span className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-[var(--soft)] px-2.5 py-2 text-xs font-bold text-[var(--muted-strong)]">

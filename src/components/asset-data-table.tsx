@@ -616,7 +616,7 @@ function MobileAssetCard({ asset }: { asset: MtaAsset }) {
 function MobileFact({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-[var(--soft)] p-2.5">
-      <dt className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">
+      <dt className="text-[9px] font-extrabold tracking-normal text-[var(--muted)]">
         {label}
       </dt>
       <dd className="mt-1 font-semibold leading-5 text-[var(--muted-strong)]">
