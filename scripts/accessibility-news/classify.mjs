@@ -412,8 +412,19 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
 
   const routeTokens = extractRouteTokens(routeText);
   const groups = new Map();
+  const trailingRoutes = new Map();
+  const haystack = ` ${normalizeStationText(text)} `;
   for (const mention of mentions) {
     groups.set(mention.variant, mention.indexes);
+    // MTA headlines put the bullets straight after the name:
+    // "Kings Highway F", "72 St 123", "Prospect Park BQS", "Woodhaven Blvd JZ".
+    const next = haystack.slice(mention.end + 1).match(/^([1-7a-gjlmnqrwz]{1,4}|sir)(?= )/)?.[1];
+    if (next) {
+      const tokens = trailingRoutes.get(mention.variant) ?? new Set();
+      if (next === "sir") tokens.add("SIR");
+      else for (const char of next.toUpperCase()) tokens.add(char);
+      trailingRoutes.set(mention.variant, tokens);
+    }
   }
 
   const resolved = new Set();
@@ -421,9 +432,16 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
 
   for (const [variant, indexes] of groups) {
     const rows = indexes.map((rowIndex) => ({ row: index.stations[rowIndex], rowIndex }));
-    const routeMatched = routeTokens.length
-      ? rows.filter(({ row }) => row.services.some((service) => routeTokens.includes(String(service))))
-      : [];
+    const matchesTokens = (tokens) =>
+      rows.filter(({ row }) => row.services.some((service) => tokens.includes(String(service))));
+    // Bullets written right after this name win; otherwise use any bullets in the text.
+    const trailing = [...(trailingRoutes.get(variant) ?? [])];
+    const trailingMatched = trailing.length ? matchesTokens(trailing) : [];
+    const routeMatched = trailingMatched.length
+      ? trailingMatched
+      : routeTokens.length
+        ? matchesTokens(routeTokens)
+        : [];
 
     let candidates;
     if (routeMatched.length > 0) {

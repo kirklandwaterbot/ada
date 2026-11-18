@@ -107,6 +107,17 @@ test("resolves stations using route bullets and refuses to guess", () => {
   const pick = (result) => result.rows.map((i) => `${data.stations[i].station} ${data.stations[i].services.join("/")}`);
 
   assert.deepEqual(pick(resolveStations({ text: "Kings Highway F station is now fully accessible" }, index)), ["Kings Hwy F"]);
+  // Live MTA headline style: bullets right after the name, no "station".
+  assert.deepEqual(
+    pick(resolveStations({ text: "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations" }, index)),
+    ["Kings Hwy F"],
+  );
+  assert.deepEqual(
+    pick(resolveStations({ text: "MTA Adds Kings Highway N to Growing List of Accessible Subway Stations" }, index)),
+    ["Kings Hwy N"],
+  );
+  // "a" after a name is an article, not the A train, unless a row has the A.
+  assert.equal(resolveStations({ text: "Kings Highway a station now fully accessible" }, index).reason, "ambiguous");
   const ambiguous = resolveStations({ text: "Kings Highway station is now fully accessible" }, index);
   assert.deepEqual(ambiguous.rows, []);
   assert.equal(ambiguous.reason, "ambiguous");
