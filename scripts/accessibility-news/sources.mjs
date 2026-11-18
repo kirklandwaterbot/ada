@@ -4,6 +4,7 @@
 
 import { fetchWithRetry } from "../fetch-with-retry.mjs";
 import { classifyUrl, hasNycSignal, isAccessibilitySubject } from "./classify.mjs";
+import { INVENTORY_API_URL } from "./equipment.mjs";
 
 const MTA_ORIGIN = "https://www.mta.info";
 const USER_AGENT =
@@ -170,6 +171,10 @@ export function extractUrls(text) {
 
 // --------------------------------------------------------------- fetching --
 
+export async function fetchText(url, options = {}, fetchImpl) {
+  return getText(url, options, fetchImpl);
+}
+
 async function getText(url, options = {}, fetchImpl) {
   const response = await fetchWithRetry(
     url,
@@ -315,4 +320,135 @@ async function fetchSubreddit(subreddit, query, token, fetchImpl) {
     const xml = await getText(`https://www.reddit.com${path}.rss?${query}`, {}, fetchImpl);
     return { items: parseRedditAtom(xml), mode: "rss" };
   }
+}
+
+// ---------------------------------------------------------- article glimpse --
+//
+// Headlines like "118-Year-Old Brooklyn Subway Station Gets an ADA Makeover"
+// don't name the station. To find it, read the article's opening through the
+// channels publishers offer for automated readers: the public WordPress REST
+// API most NYC outlets run on, then the site's RSS feed. Sites that offer
+// neither are left alone and the item stays in review.
+
+export function normalizeHeadline(value) {
+  return stripTags(value)
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’‘]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+export function headlineSimilarity(left, right) {
+  const a = normalizeHeadline(left);
+  const b = normalizeHeadline(right);
+  if (!a || !b) return 0;
+  if (a === b || a.includes(b) || b.includes(a)) return 1;
+  const leftWords = new Set(a.split(" "));
+  const rightWords = new Set(b.split(" "));
+  const shared = [...leftWords].filter((word) => rightWords.has(word)).length;
+  return shared / Math.max(leftWords.size, rightWords.size);
+}
+
+function bestMatch(candidates, title) {
+  return candidates
+    .map((candidate) => ({ ...candidate, score: headlineSimilarity(candidate.title, title) }))
+    .filter((candidate) => candidate.score >= 0.75)
+    .sort((left, right) => right.score - left.score)[0] ?? null;
+}
+
+export function parseWordPressPosts(json) {
+  if (!Array.isArray(json)) return [];
+  return json
+    .map((post) => ({
+      text: stripTags(post?.content?.rendered || post?.excerpt?.rendered || ""),
+      title: stripTags(post?.title?.rendered ?? ""),
+      url: post?.link ?? "",
+    }))
+    .filter((post) => post.title && post.url);
+}
+
+export function parseRssItems(xml) {
+  const items = [];
+  for (const match of String(xml).matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)) {
+    const block = match[1];
+    const read = (tag) =>
+      decodeHtml(block.match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`, "i"))?.[1] ?? "");
+    const title = stripTags(read("title"));
+    const url = stripTags(read("link"));
+    const text = stripTags(read("content:encoded") || read("description"));
+    if (title && url) items.push({ text, title, url });
+  }
+  return items;
+}
+
+/**
+ * Returns { articleUrl, text, via } for the article behind a headline, or
+ * null when the publisher offers no machine-readable copy.
+ */
+export async function fetchArticleGlimpse({ sourceUrl, title }, { fetchImpl } = {}) {
+  let origin;
+  try {
+    origin = new URL(sourceUrl).origin;
+  } catch {
+    return null;
+  }
+
+  // WordPress search ANDs every word with LIKE, so use plain distinctive words:
+  // drop possessives ("Brooklyn’s" → "Brooklyn"), short words, and site
+  // boilerplate that isn't part of the headline itself.
+  const terms = searchTerms(title);
+  const attempts = [
+    {
+      parse: (body) => parseWordPressPosts(JSON.parse(body)),
+      url: `${origin}/wp-json/wp/v2/posts?${new URLSearchParams({ _fields: "link,title,excerpt,content", per_page: "5", search: terms })}`,
+      via: "wordpress",
+    },
+    { parse: parseRssItems, url: `${origin}/feed/`, via: "rss" },
+    { parse: parseRssItems, url: `${origin}/rss`, via: "rss" },
+  ];
+
+  const failures = [];
+  for (const attempt of attempts) {
+    try {
+      const body = await getText(attempt.url, {}, fetchImpl);
+      const candidates = attempt.parse(body);
+      const match = bestMatch(candidates, title);
+      if (match?.text) {
+        return { articleUrl: match.url, text: match.text.slice(0, 2_000), via: attempt.via };
+      }
+      failures.push(`${attempt.via}: ${candidates.length} item(s), none matched`);
+    } catch (error) {
+      // Not offered by this publisher (404/403/not JSON); try the next channel.
+      const status = String(error?.message ?? error).match(/HTTP \d{3}[^.]*/)?.[0];
+      failures.push(`${attempt.via}: ${status ?? "unreadable"}`);
+    }
+  }
+  return { failures };
+}
+
+const HEADLINE_BOILERPLATE = /^(?:rail news|exclusive|photos|icymi|video|watch|update)\s*[-:|]\s*|\.?\s*for railroad career professionals$/gi;
+
+export function searchTerms(title) {
+  const cleaned = stripTags(title)
+    .replace(HEADLINE_BOILERPLATE, "")
+    .replace(/['’‘]s\b/gi, "")
+    .replace(/['’‘]/g, "");
+  const stop = new Set(["the", "and", "for", "with", "its", "now", "gets", "after", "into", "from", "this", "that"]);
+  return normalizeHeadline(cleaned)
+    .split(" ")
+    .filter((word) => word.length > 2 && !stop.has(word))
+    .slice(0, 6)
+    .join(" ");
+}
+
+/** Current MTA elevator & escalator inventory from the state's open-data API. */
+export async function fetchEquipmentInventory({ fetchImpl } = {}) {
+  const body = await getText(INVENTORY_API_URL, { headers: { Accept: "application/json" } }, fetchImpl);
+  const assets = JSON.parse(body);
+  if (!Array.isArray(assets) || assets.length < 100) {
+    throw new Error(`Unexpected inventory response (${Array.isArray(assets) ? assets.length : typeof assets} rows)`);
+  }
+  return assets;
 }

@@ -26,8 +26,26 @@ runs it every three hours and commits any changes, which redeploys the site.
 
 **Sources**
 
+- **MTA elevator & escalator records** from the state's open-data API
+  ([data.ny.gov 94fv-bak7](https://data.ny.gov/d/94fv-bak7)). New elevators
+  often show up here as in service days before the press release. Kings Hwy
+  (F) was listed Aug 14, 2026, and the release came Aug 19. A station is
+  marked accessible when new ADA elevators reach the platforms in both
+  directions, and partially accessible for one direction. New escalators and
+  replacement elevators appear in the Updates feed.
 - **MTA press releases** from mta.info. The tracker reads the opening
   paragraphs, not just the headline.
+- **This Week in MTA Construction**, MTA Construction & Development's weekly
+  newsletter, read from its
+  [public archive](https://cloud.info.mta.org/construction-development-updates-archive).
+  Each new issue is read once and split into sections. A section saying a
+  station is now accessible counts like a press release, and elevator and
+  escalator work appears in the feed.
+- **MTA Capital Program Dashboard**: milestones the MTA posts on elevator,
+  escalator, and ADA projects ("Schedule Adjustment", "Construction
+  complete"), plus phase and estimated-completion changes between runs. Each
+  item links to the project on capitaldashboard.mta.info. These track
+  progress and never change a station's status by themselves.
 - **NYC news outlets** through Google News (amNY, Gothamist, NY1, News 12,
   Patch, THE CITY, and others).
 - **Reddit**: r/nyc, r/newyorkcity, r/AskNYC, and r/nycrail, plus NYC posts
@@ -35,12 +53,20 @@ runs it every three hours and commits any changes, which redeploys the site.
 
 **When a station changes**
 
-1. An MTA, New York State, or NYC government page says the station is now
-   accessible → applied right away.
+1. MTA equipment records show new ADA elevators in service to every
+   platform, or an MTA, New York State, or NYC government page says the
+   station is now accessible → applied right away. The earliest date wins, so
+   a station gets its real in-service date even when the release comes later.
 2. A recognized NYC news outlet reports it → applied.
 3. A Reddit post links to one of the above → treated as that source.
 4. A photo-only Reddit post → held for review until a second independent post
    or an official/news source confirms it.
+
+When a headline doesn't name the station ("118-Year-Old Brooklyn Subway Station
+Gets an ADA Makeover"), the tracker reads the start of the article through the
+publisher's public WordPress API or RSS feed and finds the station there.
+Publishers that offer neither are left alone and the item stays in review.
+Only the article link is saved, never its text.
 
 The tracker skips announcements of future work ("upcoming", "contract",
 "breaks ground"). It also won't guess between stations that share a name:

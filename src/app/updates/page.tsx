@@ -23,17 +23,35 @@ export const metadata: Metadata = {
     "Stations that recently became accessible, each with the MTA release, news story, or Reddit post that confirms it.",
 };
 
-const REVIEW_REASON: Record<string, string> = {
-  ambiguous: "The station name matches more than one line and the post doesn't say which.",
-  "no-station": "Reports an opening but doesn't name the station.",
-};
+function reviewReason(item: NewsFeedItem) {
+  if (item.tentative) {
+    return "MTA headline only. The release couldn't be read to confirm the station is open.";
+  }
+  if (item.tier === "unverified") {
+    return "From a source the tracker doesn't recognize yet.";
+  }
+  const unreadable =
+    item.glimpse === "unavailable"
+      ? " The publisher doesn't offer a copy of the article the tracker can read, so it will try again next week."
+      : "";
+  if (item.reason === "ambiguous") {
+    return `The station name matches more than one line and the story doesn't say which.${unreadable}`;
+  }
+  if (item.reason === "no-station") {
+    return `Reports an opening but doesn't name the station.${unreadable}`;
+  }
+  return "Needs a second source.";
+}
 
 export default function UpdatesPage() {
   const news = getAccessibilityNews();
   const verified = getVerifiedOpenings();
   const pending = getOpeningsAwaitingReview();
   const unresolved = news.feed.filter(
-    (item) => item.opening && item.status === "needs-review" && item.stations.length === 0,
+    (item) =>
+      item.opening &&
+      item.status === "needs-review" &&
+      (item.stations.length === 0 || item.tentative || item.tier === "unverified"),
   );
   const thisYear = new Date().getFullYear();
   const openedThisYear = verified.filter(
@@ -43,7 +61,7 @@ export default function UpdatesPage() {
   return (
     <div className="page-enter space-y-12">
       <PageHeader
-        description="When a station gets working elevators or ramps, it appears here with the MTA release, news story, or Reddit post that confirms it, and the station's status updates across the site. Sources are checked every three hours."
+        description="When a station gets working elevators or ramps, it appears here with the MTA record, press release, construction newsletter, news story, or Reddit post that confirms it, and the station's status updates across the site. Capital dashboard milestones and elevator and escalator work are tracked too. Sources are checked every three hours."
         title="Newly accessible stations"
       >
         <SourceStatus checkedAt={news.checkedAt} sources={news.sources} />
@@ -113,7 +131,7 @@ export default function UpdatesPage() {
             ))}
             {unresolved.map((item: NewsFeedItem) => (
               <PendingRow
-                detail={REVIEW_REASON[item.reason] ?? "From a source the tracker doesn't recognize yet."}
+                detail={reviewReason(item)}
                 href={item.discussionUrl ?? item.url}
                 key={item.id}
                 meta={`${item.source}, ${formatNewsDate(item.publishedAt)}`}
@@ -139,11 +157,26 @@ export default function UpdatesPage() {
 
       <section
         aria-labelledby="method-heading"
-        className="grid gap-6 border-t border-[var(--border)] pt-8 lg:grid-cols-3"
+        className="grid gap-6 border-t border-[var(--border)] pt-8 sm:grid-cols-2"
       >
-        <h2 className="text-xl font-bold tracking-[-0.01em] lg:col-span-3" id="method-heading">
+        <h2 className="text-xl font-bold tracking-[-0.01em] sm:col-span-2" id="method-heading">
           How a station gets updated
         </h2>
+        <Rule
+          icon="elevator"
+          text="The MTA's elevator and escalator records list new elevators as in service, often days before the announcement. When new ADA elevators reach the platforms in both directions, the station is marked accessible; one direction marks it partially accessible."
+          title="MTA elevator records"
+        />
+        <Rule
+          icon="engineering"
+          text="Each weekly issue of This Week in MTA Construction is read from its public archive. A section saying a station is now accessible counts like a press release; elevator and escalator work shows up in the feed."
+          title="MTA construction newsletter"
+        />
+        <Rule
+          icon="construction"
+          text="Milestones the MTA posts on its Capital Program Dashboard, plus projects that change phase or move their estimated completion date. These track progress; they don't change a station's status by themselves."
+          title="Capital Program Dashboard"
+        />
         <Rule
           icon="check_circle"
           text="An MTA, New York State, or NYC government page says the station is now accessible. These update the station right away."
@@ -159,8 +192,11 @@ export default function UpdatesPage() {
           text="Reddit posts count through the MTA or news link they share. Photo-only posts need a second independent post before the station changes."
           title="Reddit with proof"
         />
-        <p className="text-sm text-[var(--muted)] lg:col-span-3">
-          Station names that match more than one line are never guessed. Spotted a mistake?
+        <p className="text-sm text-[var(--muted)] sm:col-span-2">
+          When a headline doesn&apos;t name the station, the tracker reads the start of the
+          article through the publisher&apos;s public API or RSS feed. When a station name covers
+          several lines and the story doesn&apos;t say which, it&apos;s only matched to a line that
+          opened around the date it ran; otherwise it isn&apos;t guessed. Spotted a mistake?
           Add the link to <code className="font-mono">data/accessibility-news-review.json</code> in
           the project repository and the next check will ignore it.
         </p>

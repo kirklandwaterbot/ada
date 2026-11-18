@@ -103,7 +103,7 @@ function matchesDomain(hostname, domains) {
 }
 
 const SUBJECT_PATTERN =
-  /\b(accessib(?:le|ility)|ada\b|elevators?|wheelchair|ramps?|step[- ]free)/i;
+  /\b(accessib(?:le|ility)|ada\b|elevators?|escalators?|wheelchair|ramps?|step[- ]free)/i;
 
 const STRONG_OPENING_PATTERNS = [
   /\bnow (?:fully |completely )?(?:ada[- ])?(?:accessible|compliant)\b/,
@@ -229,11 +229,11 @@ export function extractRouteTokens(text) {
   const tokens = new Set();
   const source = String(text ?? "");
   const suffixPattern = new RegExp(
-    `(?<![A-Za-z0-9])((?:SIR|${ROUTE_CHAR}{1,4})(?:\\s*(?:/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\s+(?:trains?|lines?|stations?|subway|stops?|platforms?)\\b`,
+    `(?<![A-Za-z0-9])((?:SIR|${ROUTE_CHAR}{1,4})(?:\\s*(?:,\\s*and|,\\s*&|/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\s+(?:trains?|lines?|stations?|subway|stops?|platforms?)\\b`,
     "gi",
   );
   const parenthesizedPattern = new RegExp(
-    `\\(((?:SIR|${ROUTE_CHAR})(?:\\s*(?:/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\)`,
+    `\\(((?:SIR|${ROUTE_CHAR})(?:\\s*(?:,\\s*and|,\\s*&|/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\)`,
     "g",
   );
 
@@ -242,7 +242,7 @@ export function extractRouteTokens(text) {
       const group = match[1];
       // Case-sensitive guard: route letters are always written in capitals.
       if (/[a-z]/.test(group.replace(/\band\b/g, ""))) continue;
-      for (const part of group.split(/\s*(?:\/|,|&|and)\s*/)) {
+      for (const part of group.split(/\s*(?:,\s*and|,\s*&|\/|,|&|and)\s*/)) {
         if (part === "SIR") {
           tokens.add("SIR");
           continue;
@@ -406,28 +406,47 @@ export function findStationMentions(text, index) {
  * When the text cannot be pinned to one station, rows is empty and reason
  * explains why so the item can be surfaced for review instead.
  */
-export function resolveStations({ text, routeText = text, partial = false }, index) {
+// A story is "about" a line's opening if it ran from a week before to six
+// weeks after the date that line became accessible.
+const OPENING_COVERAGE_DAYS = { after: 45, before: 7 };
+
+function coveredOpening(row, publishedAt) {
+  if (!publishedAt || !row.dateMadeAccessible) return false;
+  const opened = Date.parse(`${row.dateMadeAccessible} 12:00 UTC`);
+  const published = Date.parse(publishedAt);
+  if (!Number.isFinite(opened) || !Number.isFinite(published)) return false;
+  const days = (published - opened) / 864e5;
+  return days >= -OPENING_COVERAGE_DAYS.before && days <= OPENING_COVERAGE_DAYS.after;
+}
+
+export function resolveStations({ text, routeText = text, partial = false, publishedAt }, index) {
   const mentions = findStationMentions(text, index);
   if (mentions.length === 0) return { reason: "no-station", rows: [], mentions: [] };
 
   const routeTokens = extractRouteTokens(routeText);
   const groups = new Map();
   const trailingRoutes = new Map();
-  const haystack = ` ${normalizeStationText(text)} `;
+  // MTA headlines put the bullets straight after the name: "Kings Highway F",
+  // "72 St 123", "Prospect Park BQS", "Woodhaven Blvd JZ". Read them from the
+  // original text, where route letters are capitals; "Kings Hwy and" is not
+  // the A, N and D.
+  const bulletsAfterWord = new Map();
+  for (const match of String(text ?? "").matchAll(/([A-Za-z0-9'’-]+)[ \t]+(SIR|[1-7A-GJLMNQRWZ]{1,4})(?![A-Za-z0-9])/g)) {
+    const word = normalizeStationText(match[1]).split(" ").at(-1);
+    if (!word) continue;
+    const tokens = bulletsAfterWord.get(word) ?? new Set();
+    if (match[2] === "SIR") tokens.add("SIR");
+    else for (const char of match[2]) tokens.add(char);
+    bulletsAfterWord.set(word, tokens);
+  }
   for (const mention of mentions) {
     groups.set(mention.variant, mention.indexes);
-    // MTA headlines put the bullets straight after the name:
-    // "Kings Highway F", "72 St 123", "Prospect Park BQS", "Woodhaven Blvd JZ".
-    const next = haystack.slice(mention.end + 1).match(/^([1-7a-gjlmnqrwz]{1,4}|sir)(?= )/)?.[1];
-    if (next) {
-      const tokens = trailingRoutes.get(mention.variant) ?? new Set();
-      if (next === "sir") tokens.add("SIR");
-      else for (const char of next.toUpperCase()) tokens.add(char);
-      trailingRoutes.set(mention.variant, tokens);
-    }
+    const tokens = bulletsAfterWord.get(mention.variant.split(" ").at(-1));
+    if (tokens) trailingRoutes.set(mention.variant, tokens);
   }
 
   const resolved = new Set();
+  const alreadyAccessible = new Set();
   const reasons = [];
 
   for (const [variant, indexes] of groups) {
@@ -445,16 +464,38 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
 
     let candidates;
     if (routeMatched.length > 0) {
+      // Line names picked up anywhere in an article can include a passing
+      // mention ("…a short walk from the R"). If they point at both
+      // accessible and inaccessible platforms of the same station, don't guess.
+      const mixed =
+        trailingMatched.length === 0 &&
+        new Set(routeMatched.map(({ row }) => row.accessibilityStatus === "Accessible")).size > 1;
+      if (mixed) {
+        reasons.push(`ambiguous:${variant}`);
+        continue;
+      }
       candidates = routeMatched;
     } else {
       // No usable route bullets: only proceed when the name is unambiguous.
       const notAccessible = rows.filter(({ row }) => row.accessibilityStatus !== "Accessible");
       if (notAccessible.length === 0) {
         reasons.push(`already-accessible:${variant}`);
+        for (const { rowIndex } of rows) alreadyAccessible.add(rowIndex);
         continue;
       }
       if (notAccessible.length < rows.length) {
         // e.g. "Borough Hall" where 2/3/4/5 are accessible but the R is not.
+        // If the story ran right when one of the accessible lines opened, it
+        // is coverage of that opening ("Borough Hall … now fully accessible",
+        // July 22, 2026 = the 4/5). Otherwise don't guess.
+        const justOpened = rows.filter(
+          ({ row }) => row.accessibilityStatus === "Accessible" && coveredOpening(row, publishedAt),
+        );
+        if (justOpened.length > 0) {
+          reasons.push(`already-accessible:${variant}`);
+          for (const { rowIndex } of justOpened) alreadyAccessible.add(rowIndex);
+          continue;
+        }
         reasons.push(`ambiguous:${variant}`);
         continue;
       }
@@ -482,12 +523,14 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
     );
     if (eligible.length === 0) {
       reasons.push(`already-accessible:${variant}`);
+      for (const { rowIndex } of candidates) alreadyAccessible.add(rowIndex);
       continue;
     }
     for (const { rowIndex } of eligible) resolved.add(rowIndex);
   }
 
   return {
+    alreadyAccessibleRows: [...alreadyAccessible].filter((rowIndex) => !resolved.has(rowIndex)),
     mentions: [...groups.keys()],
     reason: resolved.size > 0 ? "matched" : (reasons[0]?.split(":")[0] ?? "no-station"),
     rows: [...resolved],

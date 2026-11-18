@@ -10,7 +10,19 @@ const FILTERS: Array<{ label: string; value: "all" | "openings" | NewsKind }> = 
   { label: "MTA", value: "mta" },
   { label: "News", value: "news" },
   { label: "Reddit", value: "reddit" },
+  { label: "Elevators & escalators", value: "equipment" },
+  { label: "Capital dashboard", value: "capital" },
+  { label: "Construction newsletter", value: "newsletter" },
 ];
+
+const KIND_ICON: Record<NewsKind, string> = {
+  capital: "construction",
+  equipment: "elevator",
+  newsletter: "engineering",
+  mta: "check_circle",
+  news: "news",
+  reddit: "groups",
+};
 
 const STATUS_TEXT: Record<NewsFeedItem["status"], string | null> = {
   "already-accessible": "Station already accessible",
@@ -18,6 +30,10 @@ const STATUS_TEXT: Record<NewsFeedItem["status"], string | null> = {
   news: null,
   rejected: "Rejected",
   verified: "Station updated",
+};
+// Equipment at a station that was already accessible is a replacement, not news about access.
+const EQUIPMENT_STATUS_TEXT: Partial<Record<NewsFeedItem["status"], string>> = {
+  "already-accessible": "Replacement at an accessible station",
 };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -39,7 +55,11 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
   return (
     <div>
       <div aria-label="Filter coverage" className="flex flex-wrap gap-2" role="group">
-        {FILTERS.map((option) => {
+        {FILTERS.filter(
+          (option) =>
+            ["all", "openings", "mta", "news", "reddit"].includes(option.value) ||
+            items.some((item) => item.kind === option.value),
+        ).map((option) => {
           const count =
             option.value === "all"
               ? items.length
@@ -73,7 +93,9 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
       ) : (
         <ol className="mt-5 divide-y divide-[var(--border)] border-y border-[var(--border)]">
           {visible.map((item) => {
-            const statusText = STATUS_TEXT[item.status];
+            const statusText =
+              (item.kind === "equipment" ? EQUIPMENT_STATUS_TEXT[item.status] : undefined) ??
+              STATUS_TEXT[item.status];
             return (
               <li className="grid gap-x-5 gap-y-1 py-4 sm:grid-cols-[5.5rem_1fr]" key={item.id}>
                 <time
@@ -93,14 +115,14 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
                   </a>
                   <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--muted)]">
                     <span className="inline-flex items-center gap-1.5">
-                      <SiteIcon
-                        className="text-[15px]"
-                        name={item.kind === "reddit" ? "groups" : item.kind === "mta" ? "check_circle" : "news"}
-                      />
+                      <SiteIcon className="text-[15px]" name={KIND_ICON[item.kind]} />
                       {item.source}
                     </span>
                     {item.stations.length > 0 ? (
-                      <span>{item.stations.map((station) => station.station).join(", ")}</span>
+                      <span>
+                        {[...new Set(item.stations.map((station) => station.station))].join(", ")}
+                        {item.stationsFromArticle ? " (named in the article)" : ""}
+                      </span>
                     ) : null}
                     {statusText ? (
                       <span
@@ -126,6 +148,19 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
                       </a>
                     ) : null}
                   </p>
+                  {item.detail ? (
+                    <p className="mt-2 max-w-[70ch] text-sm text-[var(--muted-strong)]">{item.detail}</p>
+                  ) : null}
+                  {item.equipment?.length ? (
+                    <ul className="mt-2 space-y-0.5 text-sm text-[var(--muted-strong)]">
+                      {item.equipment.map((unit) => (
+                        <li key={unit.code}>
+                          <span className="font-semibold text-[var(--ink)]">{unit.code}</span>
+                          {unit.notes ? `: ${unit.notes}` : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
               </li>
             );

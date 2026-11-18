@@ -15,14 +15,31 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { applyMarkerUpdates, buildNewsFile, hasMeaningfulChange } from "./accessibility-news/pipeline.mjs";
-import { fetchGoogleNews, fetchMtaReleases, fetchReddit } from "./accessibility-news/sources.mjs";
+import {
+  applyMarkerUpdates,
+  buildNewsFile,
+  enrichWithGlimpses,
+  hasMeaningfulChange,
+} from "./accessibility-news/pipeline.mjs";
+import { capitalItems } from "./accessibility-news/capital.mjs";
+import { equipmentItems } from "./accessibility-news/equipment.mjs";
+import { fetchConstructionNewsletter } from "./accessibility-news/newsletter.mjs";
+import {
+  fetchArticleGlimpse,
+  fetchEquipmentInventory,
+  fetchGoogleNews,
+  fetchMtaReleases,
+  fetchReddit,
+} from "./accessibility-news/sources.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATIONS_FILE = path.join(root, "data/accessibility-stations.json");
 const NEWS_FILE = path.join(root, "data/accessibility-news.json");
 const REVIEW_FILE = path.join(root, "data/accessibility-news-review.json");
 const MARKERS_FILE = path.join(root, "data/accessible-station-coordinates.json");
+const INVENTORY_SNAPSHOT_FILE = path.join(root, "data/mta-subway-elevator-escalator-assets.json");
+const CAPITAL_FILE = path.join(root, "data/mta-capital-elevator-escalator-projects.json");
+const ADA_STATUSES_FILE = path.join(root, "data/ada-project-statuses.json");
 const PLANNED_FILE = path.join(root, "data/planned-ada-station-coordinates.json");
 const LOOKBACK_DAYS = Number(process.env.ACCESSIBILITY_NEWS_LOOKBACK_DAYS ?? 150);
 const HEARTBEAT_MS = 24 * 60 * 60 * 1_000;
@@ -37,17 +54,44 @@ const accessibilityData = JSON.parse(await readFile(STATIONS_FILE, "utf8"));
 const previous = await readJsonIfExists(NEWS_FILE);
 const review = (await readJsonIfExists(REVIEW_FILE)) ?? {};
 
+// Filled in by sources that keep state between runs.
+const extras = {};
+
 const { rawItems, sources } = fixturesPath
   ? await loadFixtures(fixturesPath)
   : await collect();
 
 const lookbackMs = LOOKBACK_DAYS * 24 * 60 * 60 * 1_000;
 const recentItems = rawItems.filter(
-  (item) => now.getTime() - Date.parse(item.publishedAt) <= lookbackMs,
+  (item) =>
+    now.getTime() - Date.parse(item.publishedAt) <=
+    (item.kind === "capital" ? Math.max(lookbackMs, 365 * 864e5) : lookbackMs),
 );
+
+// Read the article behind headlines that don't name the station.
+const glimpses = await enrichWithGlimpses({
+  accessibilityData,
+  fetchGlimpse: fixturesPath
+    ? async (item) => item.fixtureGlimpse ?? null
+    : (item) => fetchArticleGlimpse(item),
+  now,
+  previous,
+  rawItems: recentItems,
+});
+if (glimpses.length > 0) {
+  console.log("\nRead articles for headlines without a station:");
+  for (const glimpse of glimpses) {
+    console.log(
+      `  ${glimpse.found ? `✓ via ${glimpse.via}` : "✗ not available"}  ${glimpse.title}${
+        glimpse.failures?.length ? `\n      ${glimpse.failures.join("; ")}` : ""
+      }`,
+    );
+  }
+}
 
 const { changes, file } = buildNewsFile({
   accessibilityData,
+  extras,
   now,
   previous,
   rawItems: recentItems,
@@ -98,6 +142,9 @@ async function collect() {
     ["MTA press releases", "mta", () => fetchMtaReleases({ lookbackMs: LOOKBACK_DAYS * 864e5 })],
     ["News outlets (Google News)", "news", () => fetchGoogleNews({ windowDays: LOOKBACK_DAYS })],
     ["Reddit", "reddit", () => fetchReddit({})],
+    ["MTA elevator & escalator data", "equipment", collectEquipment],
+    ["MTA Capital Program Dashboard", "capital", collectCapital],
+    ["This Week in MTA Construction", "newsletter", collectNewsletter],
   ];
 
   for (const [name, kind, run] of runs) {
@@ -132,6 +179,57 @@ async function collect() {
   return { rawItems, sources };
 }
 
+// New elevators and escalators often show up in the MTA's inventory as "in
+// service" days before the press release. Use the live open-data API, and
+// fall back to the daily snapshot if it is unavailable.
+async function collectEquipment() {
+  let assets;
+  let mode = "live";
+  try {
+    assets = await fetchEquipmentInventory();
+  } catch (error) {
+    console.warn(`  Live inventory unavailable (${error.message}); using the daily snapshot.`);
+    assets = JSON.parse(await readFile(INVENTORY_SNAPSHOT_FILE, "utf8"));
+    mode = "daily snapshot";
+  }
+  const items = equipmentItems(assets, accessibilityData, { lookbackDays: LOOKBACK_DAYS, now: now.getTime() });
+  return { items, mode };
+}
+
+// Capital Program Dashboard: milestones from the daily snapshot, plus
+// phase and completion-date changes since the last run.
+async function collectCapital() {
+  const capitalData = JSON.parse(await readFile(CAPITAL_FILE, "utf8"));
+  const adaStatuses = JSON.parse(await readFile(ADA_STATUSES_FILE, "utf8"));
+  const { items, snapshot } = capitalItems(capitalData, {
+    accessibilityData,
+    adaStatuses,
+    lookbackDays: Math.max(LOOKBACK_DAYS, 365),
+    now: now.getTime(),
+    previousSnapshot: previous?.capitalSnapshot ?? null,
+  });
+  extras.capitalSnapshot = snapshot;
+  return { items, mode: `snapshot ${capitalData.metadata?.checkedAt?.slice(0, 10) ?? ""}`.trim() };
+}
+
+// "This Week in MTA Construction": read issues not seen before.
+async function collectNewsletter() {
+  const result = await fetchConstructionNewsletter({
+    known: previous?.newsletterIssues ?? [],
+    lookbackDays: LOOKBACK_DAYS,
+    now: now.getTime(),
+  });
+  extras.newsletterIssues = result.issues;
+  for (const entry of result.log) {
+    console.log(
+      entry.error
+        ? `  ✗ ${entry.issue.date} ${entry.issue.title}: ${entry.error}`
+        : `  ✓ ${entry.issue.date} ${entry.issue.title}: ${entry.sections} sections${entry.headings.length ? `; accessibility: ${entry.headings.join(" | ")}` : ""}`,
+    );
+  }
+  return { items: result.items, mode: `${result.log.length} new issue(s) of ${result.archiveCount}` };
+}
+
 async function loadFixtures(file) {
   const fixture = JSON.parse(await readFile(path.resolve(file), "utf8"));
   return {
@@ -151,6 +249,15 @@ function printReport(file, changes) {
   for (const item of openingItems.slice(0, 25)) {
     const where = item.stations.map((station) => `${station.station} (${station.services.join("/")})`).join(", ");
     console.log(`  [${item.status}] [${item.tier}] ${item.title} — ${where || item.reason} <${item.url}>`);
+  }
+
+  const newsletterOpenings = file.feed.filter((item) => item.kind === "newsletter" && item.opening);
+  if (newsletterOpenings.length > 0) {
+    console.log(`\nNewsletter sections reporting an opening (${newsletterOpenings.length}):`);
+    for (const item of newsletterOpenings) {
+      const where = item.stations.map((station) => `${station.station} (${station.services.join("/")})`).join(", ");
+      console.log(`  [${item.status}] ${item.publishedAt.slice(0, 10)} ${item.title} — ${where || item.reason}`);
+    }
   }
 
   console.log(`\nStation openings tracked: ${file.openings.length}`);

@@ -5,15 +5,17 @@ import { createHash } from "node:crypto";
 import {
   buildStationIndex,
   classifyUrl,
+  detectOpening,
   hasNycSignal,
   NATIONAL_NEWS_DOMAINS,
-  detectOpening,
   isAccessibilitySubject,
   resolveStations,
 } from "./classify.mjs";
 
 export const NEWS_FILE_VERSION = 2;
-const FEED_LIMIT = 80;
+const FEED_LIMIT = 160;
+// MTA-published sources that aren't press releases.
+const MTA_KINDS = new Set(["mta", "capital", "newsletter"]);
 const TIER_RANK = { official: 3, news: 2, community: 1, unverified: 0 };
 
 export function itemId(url) {
@@ -47,23 +49,27 @@ function describeRow(row) {
  * a recognised news outlet) or, at a lower tier, a photo/video of the opening.
  */
 export function evaluateItem(raw, index, { review = {} } = {}) {
+  if (raw.kind === "equipment") return evaluateEquipmentItem(raw, index, review);
   const title = raw.title.trim();
-  const lead = raw.kind === "mta" ? raw.lead ?? "" : raw.kind === "reddit" ? raw.body ?? "" : "";
+  const lead =
+    raw.kind === "reddit" ? raw.body ?? "" : raw.lead ?? "";
   const subjectText = `${title} ${lead}`;
 
   let tier;
   let proofUrls = [];
-  if (raw.kind === "mta") {
+  if (MTA_KINDS.has(raw.kind)) {
     tier = "official";
     proofUrls = [raw.url];
   } else if (raw.kind === "news") {
     const fromSource = classifyUrl(raw.sourceUrl || raw.url);
     tier = fromSource.tier === "community" ? "unverified" : fromSource.tier;
+    const nationalCheckText = `${title} ${raw.lead ?? ""}`;
     const national = NATIONAL_NEWS_DOMAINS.some(
       (domain) => fromSource.domain === domain || fromSource.domain.endsWith(`.${domain}`),
     );
-    if (tier === "news" && national && !hasNycSignal(title)) tier = "unverified";
-    proofUrls = [raw.url];
+    if (tier === "news" && national && !hasNycSignal(nationalCheckText)) tier = "unverified";
+    // Prefer the publisher's own link over the Google News redirect.
+    proofUrls = [raw.articleUrl || raw.url];
   } else {
     const linked = (raw.linkedUrls ?? []).map((url) => ({ url, ...classifyUrl(url) }));
     const best = linked
@@ -85,27 +91,50 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     (review.rejectUrls ?? []).includes(raw.url) ||
     proofUrls.some((url) => (review.rejectUrls ?? []).includes(url));
 
-  const considered = detection.isOpening || detection.tentative;
+  // Newsletter sections are about one project each ("Kings Hwy ADA"), so
+  // always work out the station; a section that ran just after that station
+  // opened is coverage of the opening even when it doesn't say "accessible".
+  const coverageKind = raw.kind === "newsletter";
+  const considered = detection.isOpening || detection.tentative || coverageKind;
   const resolution =
     considered && !rejected
       ? resolveStations(
           {
             partial: detection.partial,
-            routeText: `${title}. ${lead.slice(0, 600)}`,
-            text: `${title}. ${lead.slice(0, raw.kind === "mta" ? 900 : 400)}`,
+            publishedAt: raw.publishedAt,
+            // An article read for a vague headline may name the lines further
+            // down, so scan all of it for route bullets.
+            routeText: `${title}. ${raw.glimpse === "found" ? lead : lead.slice(0, 600)}`,
+            text: `${title}. ${lead.slice(0, raw.kind === "reddit" ? 400 : 900)}`,
           },
           index,
         )
       : { mentions: [], reason: rejected ? "rejected" : "not-opening", rows: [] };
 
   const rejectStations = new Set(review.rejectStations ?? []);
-  const rows = resolution.rows.filter(
+  const matchedRows = resolution.rows.filter(
     (rowIndex) => !rejectStations.has(stationKey(index.stations[rowIndex])),
   );
+  // Capital dashboard milestones track progress; they can back up an opening
+  // found elsewhere but never change a station on their own.
+  const supportOnly = raw.kind === "capital";
+  const rows = supportOnly ? [] : matchedRows;
+
+  // Show which station a report was about even when nothing needed changing.
+  const keyToIndex = raw.stationKeys?.length
+    ? new Map(index.stations.map((row, rowIndex) => [stationKey(row), rowIndex]))
+    : null;
+  const listedRows = (raw.stationKeys ?? [])
+    .map((key) => keyToIndex.get(key))
+    .filter((value) => value !== undefined);
+  // Every station the story names: ones it changes and ones already accessible.
+  const namedRows = [...new Set([...matchedRows, ...(resolution.alreadyAccessibleRows ?? [])])];
+  const shownRows = namedRows.length > 0 ? namedRows : listedRows;
 
   let status;
   if (detection.tentative && !rejected) status = rows.length > 0 ? "needs-review" : resolution.reason === "already-accessible" ? "already-accessible" : "news";
   else if (!detection.isOpening) status = rejected ? "rejected" : "news";
+  else if (supportOnly) status = "news";
   else if (rows.length > 0) status = tier === "official" || tier === "news" ? "verified" : "needs-review";
   else if (resolution.reason === "already-accessible") status = "already-accessible";
   else status = "needs-review";
@@ -114,6 +143,8 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     id: itemId(raw.url),
     item: {
       discussionUrl: raw.kind === "reddit" ? raw.url : null,
+      glimpse: raw.glimpse,
+      glimpsedAt: raw.glimpsedAt,
       id: itemId(raw.url),
       kind: raw.kind,
       opening: detection.isOpening || (detection.tentative && rows.length > 0),
@@ -122,16 +153,151 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       proofUrls,
       publishedAt: raw.publishedAt,
       reason: resolution.reason,
+      stationsFromArticle: Boolean(
+        raw.glimpse === "found" &&
+          shownRows.length > 0 &&
+          ["ambiguous", "no-station"].includes(
+            resolveStations({ publishedAt: raw.publishedAt, text: title }, index).reason,
+          ),
+      ),
       source: raw.kind === "reddit" ? `r/${raw.subreddit || "reddit"}` : raw.sourceName || classifyUrl(raw.url).domain,
-      stations: rows.map((rowIndex) => describeRow(index.stations[rowIndex])),
+      stations: shownRows.map((rowIndex) => describeRow(index.stations[rowIndex])),
       status,
-      subject: isAccessibilitySubject(subjectText),
+      subject: raw.kind === "capital" || isAccessibilitySubject(subjectText),
+      ...(raw.projectTitle ? { projectTitle: raw.projectTitle } : {}),
+      // The MTA's own milestone note from the dashboard's open data.
+      ...(raw.kind === "capital" && raw.lead ? { detail: raw.lead.slice(0, 280) } : {}),
       tier,
       title,
       url: proofUrls[0] ?? raw.url,
     },
+    // Stations this report is about that are already accessible; used to add
+    // corroborating sources to openings the tracker found earlier.
+    corroborates:
+      (detection.isOpening || coverageKind) && !rejected
+        ? shownRows.filter((rowIndex) => !rows.includes(rowIndex))
+        : [],
+    // (capital items reach openings only through corroborates)
     rows,
   };
+}
+
+/**
+ * Equipment items come with their station rows resolved from the MTA
+ * inventory. New ADA elevators reaching both directions' platforms make a
+ * station accessible; one direction makes it partially accessible.
+ */
+function evaluateEquipmentItem(raw, index, review) {
+  const keyToIndex = new Map(index.stations.map((row, rowIndex) => [stationKey(row), rowIndex]));
+  const rows = (raw.rowKeys ?? []).map((key) => keyToIndex.get(key)).filter((value) => value !== undefined);
+  const rejected = (review.rejectUrls ?? []).includes(raw.url);
+  const hasAdaElevator = (raw.equipment ?? []).some((unit) => unit.kind === "Elevator" && unit.ada);
+  const opening = !rejected && hasAdaElevator && raw.coverage !== "none";
+  const partial = raw.coverage === "one";
+  const rejectStations = new Set(review.rejectStations ?? []);
+
+  const eligible = opening
+    ? rows.filter((rowIndex) => {
+        const row = index.stations[rowIndex];
+        if (rejectStations.has(stationKey(row))) return false;
+        return partial
+          ? row.accessibilityStatus === "Not accessible"
+          : row.accessibilityStatus !== "Accessible";
+      })
+    : [];
+
+  const status = rejected
+    ? "rejected"
+    : eligible.length > 0
+      ? "verified"
+      : opening && rows.length > 0
+        ? "already-accessible"
+        : "news";
+
+  return {
+    corroborates: opening ? rows.filter((rowIndex) => !eligible.includes(rowIndex)) : [],
+    id: itemId(raw.url),
+    item: {
+      discussionUrl: null,
+      equipment: raw.equipment,
+      id: itemId(raw.url),
+      kind: "equipment",
+      opening,
+      partial,
+      proofUrls: [raw.url],
+      publishedAt: raw.publishedAt,
+      reason: eligible.length > 0 ? "matched" : rows.length > 0 ? "already-accessible" : "no-station",
+      source: raw.sourceName,
+      stations: rows.map((rowIndex) => describeRow(index.stations[rowIndex])),
+      status,
+      subject: true,
+      tier: "official",
+      title: raw.title,
+      url: raw.url,
+    },
+    rows: eligible,
+  };
+}
+
+const GLIMPSE_RETRY_MS = 7 * 24 * 60 * 60 * 1_000;
+const GLIMPSE_LIMIT_PER_RUN = 15;
+
+/**
+ * For opening headlines that don't name the station (or don't say which
+ * line), read the article's opening paragraphs so the station can be found.
+ * Results are cached in the news file: a found article is never re-read,
+ * and an unavailable one is retried weekly.
+ */
+export async function enrichWithGlimpses({ accessibilityData, fetchGlimpse, now = new Date(), previous, rawItems }) {
+  const index = buildStationIndex(accessibilityData.stations);
+  const previousById = new Map((previous?.feed ?? []).map((item) => [item.id, item]));
+  const log = [];
+  const byUrl = new Map();
+  let fetched = 0;
+
+  for (const raw of rawItems) {
+    if (raw.kind !== "news" || raw.lead) continue;
+    // The same story often comes back from several searches; read it once.
+    const earlier = byUrl.get(raw.url);
+    if (earlier) {
+      for (const key of ["articleUrl", "glimpse", "glimpsedAt", "lead"]) {
+        if (earlier[key] !== undefined) raw[key] = earlier[key];
+      }
+      continue;
+    }
+    byUrl.set(raw.url, raw);
+    const detection = detectOpening({ title: raw.title });
+    if (!detection.isOpening) continue;
+    const resolution = resolveStations({ publishedAt: raw.publishedAt, text: raw.title }, index);
+    if (resolution.reason !== "no-station" && resolution.reason !== "ambiguous") continue;
+
+    const cached = previousById.get(itemId(raw.url));
+    if (cached?.glimpse === "found") {
+      Object.assign(raw, { articleUrl: cached.url, glimpse: "found", glimpsedAt: cached.glimpsedAt });
+      continue;
+    }
+    if (cached?.glimpse === "unavailable" && now - Date.parse(cached.glimpsedAt ?? 0) < GLIMPSE_RETRY_MS) {
+      Object.assign(raw, { glimpse: "unavailable", glimpsedAt: cached.glimpsedAt });
+      continue;
+    }
+    if (fetched >= GLIMPSE_LIMIT_PER_RUN) continue;
+    fetched += 1;
+
+    const glimpse = await fetchGlimpse(raw);
+    if (glimpse?.text) {
+      Object.assign(raw, {
+        articleUrl: glimpse.articleUrl,
+        glimpse: "found",
+        glimpsedAt: now.toISOString(),
+        lead: glimpse.text,
+      });
+      log.push({ found: true, title: raw.title, via: glimpse.via });
+    } else {
+      Object.assign(raw, { glimpse: "unavailable", glimpsedAt: now.toISOString() });
+      log.push({ failures: glimpse?.failures ?? [], found: false, title: raw.title });
+    }
+  }
+  return log;
 }
 
 /** Group evidence by station and decide which openings are safe to apply. */
@@ -141,9 +307,21 @@ export function buildOpenings(evaluated, index, previousOpenings = []) {
     byStation.set(opening.key, { ...opening, evidence: [...opening.evidence] });
   }
 
-  for (const { item, rows } of evaluated) {
-    if (!item.opening || item.tentative) continue;
-    for (const rowIndex of rows) {
+  for (const { corroborates = [], item, rows } of evaluated) {
+    if (item.tentative) continue;
+    // Only extend openings already on record; never create one from a report
+    // about a station that was accessible before the tracker saw it.
+    const targets = [
+      ...(item.opening ? rows : []),
+      ...corroborates.filter((rowIndex) => {
+        const existing = byStation.get(stationKey(index.stations[rowIndex]));
+        if (!existing?.openedAt) return false;
+        // Coverage around the opening, not a later elevator replacement.
+        const offsetDays = (Date.parse(item.publishedAt) - Date.parse(existing.openedAt)) / 864e5;
+        return offsetDays >= -14 && offsetDays <= 90;
+      }),
+    ];
+    for (const rowIndex of targets) {
       const row = index.stations[rowIndex];
       const key = stationKey(row);
       const entry =
@@ -173,9 +351,13 @@ export function buildOpenings(evaluated, index, previousOpenings = []) {
 
   return [...byStation.values()]
     .map((entry) => {
+      // Lead with the most readable trusted source (a press release before
+      // an inventory record); the opening date still uses the earliest one.
+      const KIND_RANK = { mta: 3, news: 2, equipment: 1, reddit: 0 };
       const evidence = entry.evidence.sort(
         (left, right) =>
           TIER_RANK[right.tier] - TIER_RANK[left.tier] ||
+          (KIND_RANK[right.kind] ?? 0) - (KIND_RANK[left.kind] ?? 0) ||
           Date.parse(left.publishedAt) - Date.parse(right.publishedAt),
       );
       const trusted = evidence.filter((item) => item.tier === "official" || item.tier === "news");
@@ -197,7 +379,7 @@ export function buildOpenings(evaluated, index, previousOpenings = []) {
         ...entry,
         evidence,
         openedAt: new Date(Math.min(...dated)).toISOString(),
-        primarySource: best ? { source: best.source, title: best.title, url: best.url } : null,
+        primarySource: best ? { kind: best.kind, source: best.source, title: best.title, url: best.url } : null,
         readyToApply: trusted.length > 0 || communityAuthors.size >= 2,
         resultingStatus: partial ? "Partially accessible" : "Accessible",
         verification,
@@ -217,6 +399,7 @@ export function formatEffectiveDate(iso) {
 
 const SOURCE_LABEL = {
   community: "Community reports with photo proof (Reddit)",
+  equipment: "MTA elevator & escalator data",
   news: "News coverage",
   official: "MTA press release",
 };
@@ -238,7 +421,22 @@ export function applyOpenings(accessibilityData, openings) {
       (target === "Partially accessible" && row.accessibilityStatus === "Partially accessible");
 
     if (alreadyThere) {
-      opening.applied = opening.applied || false;
+      // An earlier source (e.g. MTA equipment data showing the elevators in
+      // service before the press release) moves the date of an opening this
+      // tracker applied. Hand-curated dates are left alone.
+      const trackerOverride = accessibilityData.sourceOverrides.find(
+        (entry) =>
+          entry.verifiedBy === "accessibility-news-sync" &&
+          entry.station === row.station &&
+          (!entry.services || entry.services.join("/") === row.services.join("/")),
+      );
+      const effectiveDate = formatEffectiveDate(opening.openedAt);
+      if (opening.applied && trackerOverride && row.dateMadeAccessible !== effectiveDate) {
+        const before = row.dateMadeAccessible;
+        row.dateMadeAccessible = effectiveDate;
+        trackerOverride.effectiveDate = effectiveDate;
+        changes.push({ after: row.accessibilityStatus, before: `${row.accessibilityStatus} (${before})`, date: effectiveDate, key: opening.key });
+      }
       continue;
     }
 
@@ -261,7 +459,10 @@ export function applyOpenings(accessibilityData, openings) {
         .join("; ")}.`,
       line: row.line,
       services: row.services,
-      source: SOURCE_LABEL[opening.verification],
+      source:
+        opening.primarySource?.kind === "equipment"
+          ? SOURCE_LABEL.equipment
+          : SOURCE_LABEL[opening.verification],
       sourceUrl: opening.primarySource?.url ?? "",
       station: row.station,
       verifiedBy: "accessibility-news-sync",
@@ -344,12 +545,21 @@ export function recomputeSummary(accessibilityData) {
 }
 
 /** Merge a fresh run into the persisted news file. */
-export function buildNewsFile({ accessibilityData, now, previous, rawItems, review, sources }) {
+export function buildNewsFile({ accessibilityData, extras = {}, now, previous, rawItems, review, sources }) {
   const index = buildStationIndex(accessibilityData.stations);
   const evaluated = [];
   const seen = new Set();
 
+  const previousById = new Map((previous?.feed ?? []).map((item) => [item.id, item]));
   for (const raw of rawItems) {
+    const cached = previousById.get(itemId(raw.url));
+    if (cached?.glimpse === "found" && !raw.lead && raw.glimpse === "found") {
+      // Read on an earlier run; article text isn't stored, so keep that result.
+      if (seen.has(cached.url)) continue;
+      seen.add(cached.url);
+      evaluated.push({ id: cached.id, item: cached, rows: [] });
+      continue;
+    }
     const evaluation = evaluateItem(raw, index, { review });
     const dedupeKey = evaluation.item.url;
     if (seen.has(dedupeKey)) continue;
@@ -382,6 +592,9 @@ export function buildNewsFile({ accessibilityData, now, previous, rawItems, revi
       sources,
       openings,
       feed,
+      // Caches for the capital dashboard diff and the newsletter reader.
+      capitalSnapshot: extras.capitalSnapshot ?? previous?.capitalSnapshot ?? null,
+      newsletterIssues: extras.newsletterIssues ?? previous?.newsletterIssues ?? [],
     },
   };
 }
@@ -395,6 +608,11 @@ export function hasMeaningfulChange(previous, next) {
     return copy;
   };
   const strip = (file) =>
-    JSON.stringify({ feed: file.feed, openings: file.openings?.map(withoutTimestamps) });
+    JSON.stringify({
+      capitalSnapshot: file.capitalSnapshot ?? null,
+      feed: file.feed,
+      newsletterIssues: (file.newsletterIssues ?? []).map((issue) => issue.url),
+      openings: file.openings?.map(withoutTimestamps),
+    });
   return strip(previous) !== strip(next);
 }
