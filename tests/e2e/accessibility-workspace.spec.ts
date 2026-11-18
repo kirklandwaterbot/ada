@@ -193,12 +193,13 @@ test("opens with a clean map canvas and compact atlas tools", async ({
   await filterButton.click();
   const mapFilters = page.getByRole("region", { name: "Map filters" });
   await expect(mapFilters).toBeVisible();
+  // Counts grow as the news auto-updater adds newly accessible stations.
   const rampFilter = mapFilters.getByRole("button", {
-    name: /Accessible via ramp \/ level entrance.*10/,
+    name: /Accessible via ramp \/ level entrance\D*\d+/,
   });
   await expect(rampFilter).toHaveAttribute("aria-pressed", "true");
   const elevatorStationFilter = mapFilters.getByRole("button", {
-    name: /Accessible via elevator.*5/,
+    name: /Accessible via elevator\D*\d+/,
   });
   await expect(elevatorStationFilter).toHaveAttribute("aria-pressed", "true");
   for (const statusLabel of [
@@ -233,7 +234,7 @@ test("opens with a clean map canvas and compact atlas tools", async ({
   await repairFilter.click();
   await expect(repairFilter).toHaveAttribute("aria-pressed", "false");
   const partialFilter = mapFilters.getByRole("button", {
-    name: /Partially accessible.*3/,
+    name: /Partially accessible\D*\d+/,
   });
   await expect(partialFilter).toHaveAttribute("aria-pressed", "true");
   await partialFilter.click();
