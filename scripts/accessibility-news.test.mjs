@@ -989,3 +989,46 @@ a new controller and cab interior for riders.</p></td></tr></table>`;
   const { changes } = buildNewsFile({ accessibilityData: data, now: new Date("2026-11-18T12:00:00Z"), previous: null, rawItems: items, review: {}, sources: [] });
   assert.deepEqual(changes.map((change) => change.key), ["Kings Hwy|Culver Line|F"]);
 });
+
+test("a newsletter section about a station that just opened is added as a source", () => {
+  const data = baseData();
+  const now = new Date("2026-11-18T12:00:00Z");
+  const release = {
+    kind: "mta",
+    lead: "",
+    publishedAt: "2026-08-19T18:00:00Z",
+    sourceName: "MTA",
+    title: "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
+    url: "https://www.mta.info/press-release/mta-adds-kings-highway-f",
+  };
+  const first = buildNewsFile({ accessibilityData: data, now, previous: null, rawItems: [release], review: {}, sources: [] });
+
+  // Written the newsletter's way: no "now accessible" wording, no line given.
+  const section = {
+    kind: "newsletter",
+    lead: "The upgrades here are big. Kings Hwy is now home to three new elevators that riders have been using since August, plus rebuilt stairs and platform edges.",
+    publishedAt: "2026-08-25T15:00:00.000Z",
+    sourceName: "This Week in MTA Construction, Dark, Damp, and Essential",
+    sourceUrl: "https://view.info.mta.org/?qs=dark",
+    title: "Kings Hwy ADA",
+    url: "https://view.info.mta.org/?qs=dark#section-2",
+  };
+  const progress = {
+    ...section,
+    lead: "Crews are framing the new elevator shafts at Steinway St, where work continues on the Queens-bound side.",
+    publishedAt: "2026-11-10T15:00:00.000Z",
+    title: "Steinway St ADA",
+    url: "https://view.info.mta.org/?qs=dig#section-3",
+  };
+  const second = buildNewsFile({ accessibilityData: data, now, previous: first.file, rawItems: [release, section, progress], review: {}, sources: [] });
+
+  const kings = second.file.openings.find((opening) => opening.station === "Kings Hwy");
+  assert.deepEqual(kings.evidence.map((evidence) => evidence.kind).sort(), ["mta", "newsletter"]);
+  assert.equal(second.changes.length, 0);
+  // A progress update names its station but changes nothing.
+  const steinway = second.file.feed.find((item) => item.title === "Steinway St ADA");
+  assert.equal(steinway.status, "news");
+  assert.deepEqual(steinway.stations.map((station) => station.station), ["Steinway St"]);
+  assert.equal(row(data, "Steinway St", "M/R").accessibilityStatus, "Not accessible");
+  assert.equal(second.file.openings.some((opening) => opening.station === "Steinway St"), false);
+});

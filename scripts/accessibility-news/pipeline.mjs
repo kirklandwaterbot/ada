@@ -91,7 +91,11 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     (review.rejectUrls ?? []).includes(raw.url) ||
     proofUrls.some((url) => (review.rejectUrls ?? []).includes(url));
 
-  const considered = detection.isOpening || detection.tentative;
+  // Newsletter sections are about one project each ("Kings Hwy ADA"), so
+  // always work out the station; a section that ran just after that station
+  // opened is coverage of the opening even when it doesn't say "accessible".
+  const coverageKind = raw.kind === "newsletter";
+  const considered = detection.isOpening || detection.tentative || coverageKind;
   const resolution =
     considered && !rejected
       ? resolveStations(
@@ -172,7 +176,10 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     },
     // Stations this report is about that are already accessible; used to add
     // corroborating sources to openings the tracker found earlier.
-    corroborates: detection.isOpening && !rejected ? shownRows.filter((rowIndex) => !rows.includes(rowIndex)) : [],
+    corroborates:
+      (detection.isOpening || coverageKind) && !rejected
+        ? shownRows.filter((rowIndex) => !rows.includes(rowIndex))
+        : [],
     // (capital items reach openings only through corroborates)
     rows,
   };
