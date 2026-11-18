@@ -94,6 +94,7 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       ? resolveStations(
           {
             partial: detection.partial,
+            publishedAt: raw.publishedAt,
             // An article read for a vague headline may name the lines further
             // down, so scan all of it for route bullets.
             routeText: `${title}. ${raw.glimpse === "found" ? lead : lead.slice(0, 600)}`,
@@ -135,7 +136,9 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       stationsFromArticle: Boolean(
         raw.glimpse === "found" &&
           shownRows.length > 0 &&
-          resolveStations({ text: title }, index).reason !== "matched",
+          ["ambiguous", "no-station"].includes(
+            resolveStations({ publishedAt: raw.publishedAt, text: title }, index).reason,
+          ),
       ),
       source: raw.kind === "reddit" ? `r/${raw.subreddit || "reddit"}` : raw.sourceName || classifyUrl(raw.url).domain,
       stations: shownRows.map((rowIndex) => describeRow(index.stations[rowIndex])),
@@ -181,7 +184,7 @@ export async function enrichWithGlimpses({ accessibilityData, fetchGlimpse, now 
     byUrl.set(raw.url, raw);
     const detection = detectOpening({ title: raw.title });
     if (!detection.isOpening) continue;
-    const resolution = resolveStations({ text: raw.title }, index);
+    const resolution = resolveStations({ publishedAt: raw.publishedAt, text: raw.title }, index);
     if (resolution.reason !== "no-station" && resolution.reason !== "ambiguous") continue;
 
     const cached = previousById.get(itemId(raw.url));

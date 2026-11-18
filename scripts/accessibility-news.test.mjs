@@ -13,6 +13,7 @@ import {
   applyOpenings,
   buildNewsFile,
   enrichWithGlimpses,
+  itemId,
   recomputeSummary,
 } from "./accessibility-news/pipeline.mjs";
 import {
@@ -613,6 +614,69 @@ test("adds later coverage of an opening as another source", () => {
   });
   const kings = later.file.openings.find((opening) => opening.station === "Kings Hwy");
   assert.equal(kings.evidence.length, 2);
+
+  // Same story, no line in the headline and no article available: matched to
+  // the F because it ran days after the F opened.
+  const titleOnly = buildNewsFile({
+    accessibilityData: data,
+    now: new Date(),
+    previous: later.file,
+    rawItems: [
+      {
+        kind: "news",
+        publishedAt: recent(55),
+        sourceName: "Railway Age",
+        sourceUrl: "https://www.railwayage.com",
+        title: "New York MTA completes Kings Highway station accessibility upgrades",
+        url: "https://news.google.com/rss/articles/kings-title-only",
+      },
+    ],
+    review: {},
+    sources: [],
+  });
+  assert.equal(titleOnly.file.feed.find((item) => item.id === itemId("https://news.google.com/rss/articles/kings-title-only")).status, "already-accessible");
+  assert.equal(titleOnly.file.openings.find((opening) => opening.station === "Kings Hwy").evidence.length, 3);
+  assert.equal(row(data, "Kings Hwy", "N").accessibilityStatus, "Not accessible");
   assert.equal(kings.verification, "official");
   assert.equal(later.changes.length, 0);
+});
+
+test("a headline naming a station is matched to the line that just opened there", () => {
+  const data = baseData();
+  const index = buildStationIndex(data.stations);
+  const headline = "Exclusive: Brooklyn’s Borough Hall subway station is now fully ADA accessible";
+
+  // Ran the day the 4/5 side opened (July 22, 2026): it's about the 4/5.
+  const onTime = resolveStations({ publishedAt: "2026-07-22T16:00:00Z", text: headline }, index);
+  assert.equal(onTime.reason, "already-accessible");
+  assert.deepEqual(onTime.alreadyAccessibleRows.map((i) => data.stations[i].services.join("/")), ["4/5"]);
+  assert.deepEqual(onTime.rows, []);
+
+  // No line opened around that date: still not guessed, and never the R.
+  const offDate = resolveStations({ publishedAt: "2026-03-01T16:00:00Z", text: headline }, index);
+  assert.equal(offDate.reason, "ambiguous");
+  assert.deepEqual(offDate.rows, []);
+
+  const { file } = buildNewsFile({
+    accessibilityData: data,
+    now: new Date("2026-11-18T00:00:00Z"),
+    previous: null,
+    rawItems: [
+      {
+        kind: "news",
+        publishedAt: "2026-07-22T16:00:00Z",
+        sourceName: "Brooklyn Eagle",
+        sourceUrl: "https://brooklyneagle.com",
+        title: headline,
+        url: "https://news.google.com/rss/articles/eagle",
+      },
+    ],
+    review: {},
+    sources: [],
+  });
+  const item = file.feed[0];
+  assert.equal(item.status, "already-accessible");
+  assert.deepEqual(item.stations.map((station) => station.services.join("/")), ["4/5"]);
+  assert.equal(item.stationsFromArticle, false);
+  assert.equal(row(data, "Borough Hall/Court St", "R").accessibilityStatus, "Not accessible");
 });

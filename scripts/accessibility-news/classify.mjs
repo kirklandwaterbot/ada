@@ -406,7 +406,20 @@ export function findStationMentions(text, index) {
  * When the text cannot be pinned to one station, rows is empty and reason
  * explains why so the item can be surfaced for review instead.
  */
-export function resolveStations({ text, routeText = text, partial = false }, index) {
+// A story is "about" a line's opening if it ran from a week before to six
+// weeks after the date that line became accessible.
+const OPENING_COVERAGE_DAYS = { after: 45, before: 7 };
+
+function coveredOpening(row, publishedAt) {
+  if (!publishedAt || !row.dateMadeAccessible) return false;
+  const opened = Date.parse(`${row.dateMadeAccessible} 12:00 UTC`);
+  const published = Date.parse(publishedAt);
+  if (!Number.isFinite(opened) || !Number.isFinite(published)) return false;
+  const days = (published - opened) / 864e5;
+  return days >= -OPENING_COVERAGE_DAYS.before && days <= OPENING_COVERAGE_DAYS.after;
+}
+
+export function resolveStations({ text, routeText = text, partial = false, publishedAt }, index) {
   const mentions = findStationMentions(text, index);
   if (mentions.length === 0) return { reason: "no-station", rows: [], mentions: [] };
 
@@ -467,6 +480,17 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
       }
       if (notAccessible.length < rows.length) {
         // e.g. "Borough Hall" where 2/3/4/5 are accessible but the R is not.
+        // If the story ran right when one of the accessible lines opened, it
+        // is coverage of that opening ("Borough Hall … now fully accessible",
+        // July 22, 2026 = the 4/5). Otherwise don't guess.
+        const justOpened = rows.filter(
+          ({ row }) => row.accessibilityStatus === "Accessible" && coveredOpening(row, publishedAt),
+        );
+        if (justOpened.length > 0) {
+          reasons.push(`already-accessible:${variant}`);
+          for (const { rowIndex } of justOpened) alreadyAccessible.add(rowIndex);
+          continue;
+        }
         reasons.push(`ambiguous:${variant}`);
         continue;
       }
