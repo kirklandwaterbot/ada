@@ -42,6 +42,12 @@ runs it every three hours and commits any changes, which redeploys the site.
 4. A photo-only Reddit post → held for review until a second independent post
    or an official/news source confirms it.
 
+When a headline doesn't name the station ("118-Year-Old Brooklyn Subway Station
+Gets an ADA Makeover"), the tracker reads the start of the article through the
+publisher's public WordPress API or RSS feed and finds the station there.
+Publishers that offer neither are left alone and the item stays in review.
+Only the article link is saved, never its text.
+
 The tracker skips announcements of future work ("upcoming", "contract",
 "breaks ground"). It also won't guess between stations that share a name:
 "Kings Highway" alone matches both the F and the N, so the post must name the

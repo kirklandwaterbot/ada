@@ -15,8 +15,18 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { applyMarkerUpdates, buildNewsFile, hasMeaningfulChange } from "./accessibility-news/pipeline.mjs";
-import { fetchGoogleNews, fetchMtaReleases, fetchReddit } from "./accessibility-news/sources.mjs";
+import {
+  applyMarkerUpdates,
+  buildNewsFile,
+  enrichWithGlimpses,
+  hasMeaningfulChange,
+} from "./accessibility-news/pipeline.mjs";
+import {
+  fetchArticleGlimpse,
+  fetchGoogleNews,
+  fetchMtaReleases,
+  fetchReddit,
+} from "./accessibility-news/sources.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATIONS_FILE = path.join(root, "data/accessibility-stations.json");
@@ -45,6 +55,23 @@ const lookbackMs = LOOKBACK_DAYS * 24 * 60 * 60 * 1_000;
 const recentItems = rawItems.filter(
   (item) => now.getTime() - Date.parse(item.publishedAt) <= lookbackMs,
 );
+
+// Read the article behind headlines that don't name the station.
+const glimpses = await enrichWithGlimpses({
+  accessibilityData,
+  fetchGlimpse: fixturesPath
+    ? async (item) => item.fixtureGlimpse ?? null
+    : (item) => fetchArticleGlimpse(item),
+  now,
+  previous,
+  rawItems: recentItems,
+});
+if (glimpses.length > 0) {
+  console.log("\nRead articles for headlines without a station:");
+  for (const glimpse of glimpses) {
+    console.log(`  ${glimpse.found ? `✓ via ${glimpse.via}` : "✗ not available"}  ${glimpse.title}`);
+  }
+}
 
 const { changes, file } = buildNewsFile({
   accessibilityData,

@@ -9,10 +9,19 @@ import {
   normalizeStationText,
   resolveStations,
 } from "./accessibility-news/classify.mjs";
-import { applyOpenings, buildNewsFile, recomputeSummary } from "./accessibility-news/pipeline.mjs";
+import {
+  applyOpenings,
+  buildNewsFile,
+  enrichWithGlimpses,
+  recomputeSummary,
+} from "./accessibility-news/pipeline.mjs";
 import {
   extractArticleLead,
+  fetchArticleGlimpse,
   fetchReddit,
+  headlineSimilarity,
+  parseRssItems,
+  parseWordPressPosts,
   parseGoogleNewsRss,
   parseMtaPressReleaseListing,
   parseRedditAtom,
@@ -405,4 +414,186 @@ test("handles MTA headlines when the article page can't be read", () => {
   assert.equal(steinway.status, "needs-review");
   assert.equal(file.openings.some((opening) => opening.station === "Steinway St"), false);
   assert.equal(file.feed.find((item) => item.title.includes("Bryant Park")).opening, false);
+});
+
+// Paraphrased stand-ins for the opening paragraphs of real July–August 2026
+// coverage whose headlines don't name the station (or the line).
+const withoutGlimpse = (entry) => {
+  const item = { ...entry };
+  delete item.glimpse;
+  return item;
+};
+
+const GLIMPSE_CASES = [
+  {
+    glimpse: "MTA leaders said the Borough Hall station on the 2/3/4/5 lines has been made fully accessible with three new elevators on Joralemon St.",
+    sourceName: "BKReader",
+    sourceUrl: "https://www.bkreader.com",
+    title: "118-Year-Old Brooklyn Subway Station Gets an ADA Makeover",
+  },
+  {
+    glimpse: "The MTA finished a renovation of Downtown Brooklyn's Borough Hall station, adding elevators to every platform. The station serves the 2, 3, 4, and 5 trains.",
+    sourceName: "6sqft",
+    sourceUrl: "https://www.6sqft.com",
+    title: "Brooklyn’s oldest underground subway station is now accessible",
+  },
+  {
+    glimpse: "New York's MTA has finished a $72 million project making the Kings Highway F Line subway station in southern Brooklyn fully accessible.",
+    sourceName: "Progressive Railroading",
+    sourceUrl: "https://www.progressiverailroading.com",
+    title: "Rail News - New York MTA completes Kings Highway station accessibility upgrades",
+  },
+  {
+    glimpse: null,
+    sourceName: "Example Weekly",
+    sourceUrl: "https://example.org",
+    title: "Historic Queens subway station is now fully accessible",
+  },
+].map((entry, position) => ({
+  ...entry,
+  kind: "news",
+  publishedAt: recent(30 + position),
+  url: `https://news.google.com/rss/articles/glimpse-${position}`,
+}));
+
+test("reads the article to name the station when the headline doesn't", async () => {
+  const data = baseData();
+  const rawItems = GLIMPSE_CASES.map(withoutGlimpse);
+  const fetched = [];
+  const fetchGlimpse = async (item) => {
+    fetched.push(item.title);
+    const entry = GLIMPSE_CASES.find((candidate) => candidate.title === item.title);
+    return entry.glimpse
+      ? { articleUrl: `${entry.sourceUrl}/article`, text: entry.glimpse, via: "wordpress" }
+      : null;
+  };
+
+  await enrichWithGlimpses({ accessibilityData: data, fetchGlimpse, previous: null, rawItems });
+  assert.equal(fetched.length, 4);
+
+  const { changes, file } = buildNewsFile({
+    accessibilityData: data,
+    now: new Date(),
+    previous: null,
+    rawItems,
+    review: {},
+    sources: [],
+  });
+  const byTitle = (prefix) => file.feed.find((item) => item.title.startsWith(prefix));
+
+  // Both Borough Hall stories resolve to the already-accessible 2/3/4/5,
+  // never the R, and leave the review queue.
+  for (const prefix of ["118-Year-Old", "Brooklyn’s oldest"]) {
+    const item = byTitle(prefix);
+    assert.equal(item.status, "already-accessible");
+    assert.equal(item.stationsFromArticle, true);
+    assert.deepEqual(
+      item.stations.map((station) => station.services.join("/")).sort(),
+      ["2/3", "4/5"],
+    );
+    assert.match(item.url, /\/article$/);
+  }
+  assert.equal(row(data, "Borough Hall/Court St", "R").accessibilityStatus, "Not accessible");
+
+  // The line comes from the article: Kings Hwy F, not the N.
+  assert.deepEqual(changes.map((change) => change.key), ["Kings Hwy|Culver Line|F"]);
+  assert.equal(byTitle("Rail News").stationsFromArticle, true);
+
+  // No machine-readable copy: stays in review, marked as tried.
+  const unknown = byTitle("Historic Queens");
+  assert.equal(unknown.status, "needs-review");
+  assert.equal(unknown.glimpse, "unavailable");
+
+  // Next run: found articles aren't re-read and keep their result; the
+  // unavailable one waits a week before trying again.
+  const nextRaw = GLIMPSE_CASES.map(withoutGlimpse);
+  fetched.length = 0;
+  await enrichWithGlimpses({ accessibilityData: data, fetchGlimpse, previous: file, rawItems: nextRaw });
+  assert.deepEqual(fetched, []);
+  const second = buildNewsFile({ accessibilityData: data, now: new Date(), previous: file, rawItems: nextRaw, review: {}, sources: [] });
+  // Borough Hall was accessible before the tracker saw it: no opening is invented.
+  assert.equal(second.file.openings.some((opening) => opening.station === "Borough Hall/Court St"), false);
+  assert.equal(second.file.feed.find((item) => item.title.startsWith("118-Year-Old")).status, "already-accessible");
+  assert.equal(second.changes.length, 0);
+});
+
+test("finds an article through the publisher's WordPress API or RSS feed only", async () => {
+  assert.equal(headlineSimilarity("Brooklyn’s oldest underground subway station is now accessible", "Brooklyns oldest underground subway station is now accessible"), 1);
+  assert.ok(headlineSimilarity("Kings Highway reopens", "Bronx bus route changes") < 0.5);
+
+  assert.deepEqual(
+    parseWordPressPosts([{ content: { rendered: "<p>Borough Hall now has elevators.</p>" }, link: "https://site/a", title: { rendered: "Old station gets elevators" } }]),
+    [{ text: "Borough Hall now has elevators.", title: "Old station gets elevators", url: "https://site/a" }],
+  );
+  assert.equal(
+    parseRssItems("<rss><item><title>Old station gets elevators</title><link>https://site/b</link><description><![CDATA[<p>Borough Hall</p>]]></description></item></rss>")[0].text,
+    "Borough Hall",
+  );
+
+  const requested = [];
+  const wordpress = async (url) => {
+    requested.push(String(url));
+    return Response.json([{ content: { rendered: "<p>Borough Hall on the 2/3/4/5 is accessible.</p>" }, link: "https://www.6sqft.com/oldest", title: { rendered: "Brooklyn&#8217;s oldest underground subway station is now accessible" } }]);
+  };
+  const viaWp = await fetchArticleGlimpse({ sourceUrl: "https://www.6sqft.com", title: "Brooklyn’s oldest underground subway station is now accessible" }, { fetchImpl: wordpress });
+  assert.equal(viaWp.via, "wordpress");
+  assert.equal(viaWp.articleUrl, "https://www.6sqft.com/oldest");
+  assert.match(requested[0], /^https:\/\/www\.6sqft\.com\/wp-json\/wp\/v2\/posts\?/);
+
+  const rssOnly = async (url) =>
+    String(url).includes("/wp-json/")
+      ? new Response("not found", { status: 404 })
+      : new Response("<rss><item><title>118-Year-Old Brooklyn Subway Station Gets an ADA Makeover</title><link>https://www.bkreader.com/a</link><description>Borough Hall</description></item></rss>");
+  const viaRss = await fetchArticleGlimpse({ sourceUrl: "https://www.bkreader.com", title: "118-Year-Old Brooklyn Subway Station Gets an ADA Makeover" }, { fetchImpl: rssOnly });
+  assert.equal(viaRss.via, "rss");
+
+  const nothing = async () => new Response("forbidden", { status: 403 });
+  assert.equal(await fetchArticleGlimpse({ sourceUrl: "https://example.org", title: "Anything" }, { fetchImpl: nothing }), null);
+});
+
+test("adds later coverage of an opening as another source", () => {
+  const data = baseData();
+  const first = buildNewsFile({
+    accessibilityData: data,
+    now: new Date(),
+    previous: null,
+    rawItems: [
+      {
+        kind: "mta",
+        lead: "",
+        publishedAt: recent(60),
+        sourceName: "MTA",
+        title: "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
+        url: "https://www.mta.info/press-release/mta-adds-kings-highway-f",
+      },
+    ],
+    review: {},
+    sources: [],
+  });
+  assert.equal(first.changes.length, 1);
+
+  const later = buildNewsFile({
+    accessibilityData: data,
+    now: new Date(),
+    previous: first.file,
+    rawItems: [
+      {
+        articleUrl: "https://www.progressiverailroading.com/kings",
+        glimpse: "found",
+        kind: "news",
+        lead: "The MTA finished making the Kings Highway F Line subway station fully accessible.",
+        publishedAt: recent(55),
+        sourceName: "Progressive Railroading",
+        sourceUrl: "https://www.progressiverailroading.com",
+        title: "Rail News - New York MTA completes Kings Highway station accessibility upgrades",
+        url: "https://news.google.com/rss/articles/kings",
+      },
+    ],
+    review: {},
+    sources: [],
+  });
+  const kings = later.file.openings.find((opening) => opening.station === "Kings Hwy");
+  assert.equal(kings.evidence.length, 2);
+  assert.equal(kings.verification, "official");
+  assert.equal(later.changes.length, 0);
 });

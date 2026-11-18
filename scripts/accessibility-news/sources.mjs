@@ -316,3 +316,101 @@ async function fetchSubreddit(subreddit, query, token, fetchImpl) {
     return { items: parseRedditAtom(xml), mode: "rss" };
   }
 }
+
+// ---------------------------------------------------------- article glimpse --
+//
+// Headlines like "118-Year-Old Brooklyn Subway Station Gets an ADA Makeover"
+// don't name the station. To find it, read the article's opening through the
+// channels publishers offer for automated readers: the public WordPress REST
+// API most NYC outlets run on, then the site's RSS feed. Sites that offer
+// neither are left alone and the item stays in review.
+
+export function normalizeHeadline(value) {
+  return stripTags(value)
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’‘]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+export function headlineSimilarity(left, right) {
+  const a = normalizeHeadline(left);
+  const b = normalizeHeadline(right);
+  if (!a || !b) return 0;
+  if (a === b || a.includes(b) || b.includes(a)) return 1;
+  const leftWords = new Set(a.split(" "));
+  const rightWords = new Set(b.split(" "));
+  const shared = [...leftWords].filter((word) => rightWords.has(word)).length;
+  return shared / Math.max(leftWords.size, rightWords.size);
+}
+
+function bestMatch(candidates, title) {
+  return candidates
+    .map((candidate) => ({ ...candidate, score: headlineSimilarity(candidate.title, title) }))
+    .filter((candidate) => candidate.score >= 0.75)
+    .sort((left, right) => right.score - left.score)[0] ?? null;
+}
+
+export function parseWordPressPosts(json) {
+  if (!Array.isArray(json)) return [];
+  return json
+    .map((post) => ({
+      text: stripTags(post?.content?.rendered || post?.excerpt?.rendered || ""),
+      title: stripTags(post?.title?.rendered ?? ""),
+      url: post?.link ?? "",
+    }))
+    .filter((post) => post.title && post.url);
+}
+
+export function parseRssItems(xml) {
+  const items = [];
+  for (const match of String(xml).matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)) {
+    const block = match[1];
+    const read = (tag) =>
+      decodeHtml(block.match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`, "i"))?.[1] ?? "");
+    const title = stripTags(read("title"));
+    const url = stripTags(read("link"));
+    const text = stripTags(read("content:encoded") || read("description"));
+    if (title && url) items.push({ text, title, url });
+  }
+  return items;
+}
+
+/**
+ * Returns { articleUrl, text, via } for the article behind a headline, or
+ * null when the publisher offers no machine-readable copy.
+ */
+export async function fetchArticleGlimpse({ sourceUrl, title }, { fetchImpl } = {}) {
+  let origin;
+  try {
+    origin = new URL(sourceUrl).origin;
+  } catch {
+    return null;
+  }
+
+  const terms = normalizeHeadline(title).split(" ").filter((word) => word.length > 2).slice(0, 8).join(" ");
+  const attempts = [
+    {
+      parse: (body) => parseWordPressPosts(JSON.parse(body)),
+      url: `${origin}/wp-json/wp/v2/posts?${new URLSearchParams({ _fields: "link,title,excerpt,content", per_page: "5", search: terms })}`,
+      via: "wordpress",
+    },
+    { parse: parseRssItems, url: `${origin}/feed/`, via: "rss" },
+    { parse: parseRssItems, url: `${origin}/rss`, via: "rss" },
+  ];
+
+  for (const attempt of attempts) {
+    try {
+      const body = await getText(attempt.url, {}, fetchImpl);
+      const match = bestMatch(attempt.parse(body), title);
+      if (match?.text) {
+        return { articleUrl: match.url, text: match.text.slice(0, 2_000), via: attempt.via };
+      }
+    } catch {
+      // Not offered by this publisher (404/403/not JSON); try the next channel.
+    }
+  }
+  return null;
+}

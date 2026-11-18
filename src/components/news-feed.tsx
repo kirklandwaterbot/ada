@@ -100,7 +100,10 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
                       {item.source}
                     </span>
                     {item.stations.length > 0 ? (
-                      <span>{item.stations.map((station) => station.station).join(", ")}</span>
+                      <span>
+                        {[...new Set(item.stations.map((station) => station.station))].join(", ")}
+                        {item.stationsFromArticle ? " (named in the article)" : ""}
+                      </span>
                     ) : null}
                     {statusText ? (
                       <span

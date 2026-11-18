@@ -18,6 +18,9 @@ export type NewsStationRef = {
 
 export type NewsFeedItem = {
   discussionUrl: string | null;
+  /** Whether the article behind a vague headline could be read. */
+  glimpse?: "found" | "unavailable";
+  glimpsedAt?: string;
   id: string;
   kind: NewsKind;
   opening: boolean;
@@ -27,8 +30,12 @@ export type NewsFeedItem = {
   reason: string;
   source: string;
   stations: NewsStationRef[];
+  /** The station came from the article text, not the headline. */
+  stationsFromArticle?: boolean;
   status: NewsItemStatus;
   subject: boolean;
+  /** MTA headline that reads like an opening but couldn't be confirmed. */
+  tentative?: boolean;
   tier: NewsTier;
   title: string;
   url: string;

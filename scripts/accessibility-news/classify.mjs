@@ -229,11 +229,11 @@ export function extractRouteTokens(text) {
   const tokens = new Set();
   const source = String(text ?? "");
   const suffixPattern = new RegExp(
-    `(?<![A-Za-z0-9])((?:SIR|${ROUTE_CHAR}{1,4})(?:\\s*(?:/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\s+(?:trains?|lines?|stations?|subway|stops?|platforms?)\\b`,
+    `(?<![A-Za-z0-9])((?:SIR|${ROUTE_CHAR}{1,4})(?:\\s*(?:,\\s*and|,\\s*&|/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\s+(?:trains?|lines?|stations?|subway|stops?|platforms?)\\b`,
     "gi",
   );
   const parenthesizedPattern = new RegExp(
-    `\\(((?:SIR|${ROUTE_CHAR})(?:\\s*(?:/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\)`,
+    `\\(((?:SIR|${ROUTE_CHAR})(?:\\s*(?:,\\s*and|,\\s*&|/|,|&|and)\\s*(?:SIR|${ROUTE_CHAR}))*)\\)`,
     "g",
   );
 
@@ -242,7 +242,7 @@ export function extractRouteTokens(text) {
       const group = match[1];
       // Case-sensitive guard: route letters are always written in capitals.
       if (/[a-z]/.test(group.replace(/\band\b/g, ""))) continue;
-      for (const part of group.split(/\s*(?:\/|,|&|and)\s*/)) {
+      for (const part of group.split(/\s*(?:,\s*and|,\s*&|\/|,|&|and)\s*/)) {
         if (part === "SIR") {
           tokens.add("SIR");
           continue;
@@ -428,6 +428,7 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
   }
 
   const resolved = new Set();
+  const alreadyAccessible = new Set();
   const reasons = [];
 
   for (const [variant, indexes] of groups) {
@@ -451,6 +452,7 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
       const notAccessible = rows.filter(({ row }) => row.accessibilityStatus !== "Accessible");
       if (notAccessible.length === 0) {
         reasons.push(`already-accessible:${variant}`);
+        for (const { rowIndex } of rows) alreadyAccessible.add(rowIndex);
         continue;
       }
       if (notAccessible.length < rows.length) {
@@ -482,12 +484,14 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
     );
     if (eligible.length === 0) {
       reasons.push(`already-accessible:${variant}`);
+      for (const { rowIndex } of candidates) alreadyAccessible.add(rowIndex);
       continue;
     }
     for (const { rowIndex } of eligible) resolved.add(rowIndex);
   }
 
   return {
+    alreadyAccessibleRows: resolved.size > 0 ? [] : [...alreadyAccessible],
     mentions: [...groups.keys()],
     reason: resolved.size > 0 ? "matched" : (reasons[0]?.split(":")[0] ?? "no-station"),
     rows: [...resolved],
