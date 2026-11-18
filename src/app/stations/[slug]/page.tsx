@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RegionalStationDetail } from "@/components/regional-station-detail";
 import { SiteIcon } from "@/components/site-icon";
-import { StationStatusBadge } from "@/components/station-status-badge";
 import { SubwayRouteIcons } from "@/components/subway-route-icons";
 import {
   formatAssetCellValue,
@@ -20,11 +19,18 @@ import {
   getAvailabilityHistory,
   type AvailabilityPoint,
 } from "@/lib/mta-availability";
+import {
+  formatNewsDate,
+  getOpeningForStation,
+  type StationOpening,
+  VERIFICATION_LABELS,
+} from "@/lib/accessibility-news";
 import { getRegionalStationServices } from "@/lib/regional-station-merge";
 import { getRegionalStationBySlug } from "@/lib/regional-transit-data";
 import {
   formatRidership,
   getEquipmentCounts,
+  getAccessibilityTone,
   getEquipmentState,
   getStationAssets,
   getStationBySlug,
@@ -85,6 +91,7 @@ export default async function StationDetailPage({ params }: StationPageProps) {
     stationAssets.map((asset) => asset.equipment_code),
   );
   const latestHistory = history.at(-1);
+  const opening = getOpeningForStation(station.station, station.services.map(String));
 
   return (
     <div className="page-enter space-y-7">
@@ -98,30 +105,28 @@ export default async function StationDetailPage({ params }: StationPageProps) {
         </Link>
       </nav>
 
-      <header className="relative overflow-hidden rounded-[1.5rem] bg-[var(--nav-active)] px-5 py-7 text-white shadow-[0_24px_60px_rgb(10_61_126_/_0.24)] sm:px-8 sm:py-9">
-        <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border-[56px] border-white/5" />
-        <div className="absolute -bottom-28 right-44 h-56 w-56 rounded-full border-[42px] border-cyan-300/5" />
+      <header className="sign-plate px-5 pb-7 pt-10 sm:px-8 sm:pb-8 sm:pt-12">
         <div className="relative">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-200">
-                Station profile
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-black tracking-[-0.05em] sm:text-5xl">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-[2.2rem] font-bold leading-tight tracking-[-0.02em] sm:text-[3.4rem]">
                   {station.station}
                 </h1>
-                <SubwayRouteIcons className="mt-0" routes={station.services} />
+                <SubwayRouteIcons
+                  className="mt-0 [&_img]:h-8 [&_img]:w-8 sm:[&_img]:h-10 sm:[&_img]:w-10"
+                  routes={station.services}
+                />
               </div>
-              <p className="mt-3 text-sm font-semibold text-blue-100 sm:text-base">
-                {station.neighborhood} - {station.borough} - {station.line}
+              <p className="mt-3 text-[15px] font-semibold text-white/75 sm:text-base">
+                {station.line}, {station.neighborhood}, {station.borough}
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <StationStatusBadge station={station} />
+              <SignStatus station={station} />
               {coordinate ? (
                 <a
-                  className="inline-flex h-10 items-center gap-2 rounded-xl bg-white/10 px-3 text-xs font-bold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/15"
+                  className="inline-flex h-10 items-center gap-2 rounded-md px-3 text-sm font-semibold text-white ring-1 ring-white/30 transition hover:bg-white/10"
                   href={
                     "https://www.openstreetmap.org/?mlat=" +
                     coordinate.latitude +
@@ -143,6 +148,8 @@ export default async function StationDetailPage({ params }: StationPageProps) {
           </div>
         </div>
       </header>
+
+      {opening ? <OpeningProof opening={opening} /> : null}
 
       <section aria-label="Station facts" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <FactCard
@@ -223,10 +230,10 @@ export default async function StationDetailPage({ params }: StationPageProps) {
                 <SiteIcon className="text-[23px]" name="location_on" />
               </span>
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--muted)]">
+                <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
                   Location
                 </p>
-                <h2 className="mt-0.5 font-black text-[var(--ink)]">Station coordinates</h2>
+                <h2 className="mt-0.5 font-bold text-[var(--ink)]">Station coordinates</h2>
               </div>
             </div>
             {coordinate ? (
@@ -267,10 +274,10 @@ export default async function StationDetailPage({ params }: StationPageProps) {
                 <SiteIcon className="text-[23px]" name="construction" />
               </span>
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--muted)]">
+                <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
                   Project timeline
                 </p>
-                <h2 className="mt-0.5 font-black text-[var(--ink)]">Accessibility milestones</h2>
+                <h2 className="mt-0.5 font-bold text-[var(--ink)]">Accessibility milestones</h2>
               </div>
             </div>
             <Timeline station={station} />
@@ -282,10 +289,10 @@ export default async function StationDetailPage({ params }: StationPageProps) {
                 <SiteIcon className="text-[23px]" name="health_and_safety" />
               </span>
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--muted)]">
+                <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
                   Snapshot health
                 </p>
-                <h2 className="mt-0.5 font-black text-[var(--ink)]">Equipment status</h2>
+                <h2 className="mt-0.5 font-bold text-[var(--ink)]">Equipment status</h2>
               </div>
             </div>
             <dl className="mt-5 space-y-3">
@@ -332,10 +339,10 @@ function FactCard({
         <SiteIcon className="text-[23px]" name={icon} />
       </span>
       <div className="min-w-0">
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">
+        <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
           {label}
         </p>
-        <p className="mt-0.5 truncate text-lg font-black tracking-[-0.025em] text-[var(--ink)]">
+        <p className="mt-0.5 truncate text-lg font-bold tracking-[-0.025em] text-[var(--ink)]">
           {value}
         </p>
       </div>
@@ -358,7 +365,7 @@ function SectionHeader({
         <SiteIcon className="text-[23px]" name={icon} />
       </span>
       <div>
-        <h2 className="text-lg font-black tracking-[-0.025em] text-[var(--ink)]">{title}</h2>
+        <h2 className="text-lg font-bold tracking-[-0.025em] text-[var(--ink)]">{title}</h2>
         <p className="mt-1 text-sm leading-5 text-[var(--muted-strong)]">{description}</p>
       </div>
     </div>
@@ -382,8 +389,8 @@ function EquipmentCard({ asset }: { asset: MtaAsset }) {
           </span>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-black text-[var(--ink)]">{asset.equipment_code}</h3>
-              <span className="rounded-full border border-[var(--border)] bg-[var(--panel)] px-2 py-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--muted-strong)]">
+              <h3 className="font-bold text-[var(--ink)]">{asset.equipment_code}</h3>
+              <span className="rounded-full border border-[var(--border)] bg-[var(--panel)] px-2 py-1 text-[10px] font-extrabold tracking-normal text-[var(--muted-strong)]">
                 {asset.elevator_or_escalator}
               </span>
             </div>
@@ -460,7 +467,7 @@ function EquipmentOutageNotice({
 
   return (
     <div className="mt-4 rounded-xl border border-amber-400/35 bg-amber-50 p-3 text-xs leading-5 text-amber-950 dark:bg-amber-500/10 dark:text-amber-100">
-      <p className="font-black">
+      <p className="font-bold">
         {current ? "Current outage" : "Future outage scheduled"}
         {reason ? ` · ${reason}` : ""}
       </p>
@@ -491,7 +498,7 @@ function DetailBlock({
 }) {
   return (
     <div className="rounded-xl bg-[var(--soft)] p-3">
-      <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">
+      <p className="flex items-center gap-1.5 text-[10px] font-extrabold tracking-normal text-[var(--muted)]">
         <SiteIcon className="text-[15px]" name={icon} />
         {label}
       </p>
@@ -515,10 +522,10 @@ function AvailabilityChart({ points }: { points: AvailabilityPoint[] }) {
     <div className="p-5 sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--muted)]">
+          <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
             12-month average
           </p>
-          <p className="mt-1 text-3xl font-black tracking-[-0.05em] text-[var(--ink)]">
+          <p className="mt-1 text-3xl font-bold tracking-[-0.02em] text-[var(--ink)]">
             {average === null ? "Unavailable" : average.toFixed(1) + "%"}
           </p>
         </div>
@@ -644,7 +651,7 @@ function Timeline({ station }: { station: Station }) {
 function Coordinate({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl bg-[var(--soft)] p-3">
-      <dt className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">{label}</dt>
+      <dt className="text-[10px] font-extrabold tracking-normal text-[var(--muted)]">{label}</dt>
       <dd className="mt-1 font-mono text-xs font-bold text-[var(--ink)]">{value.toFixed(6)}</dd>
     </div>
   );
@@ -716,4 +723,62 @@ function getStatePresentation(state: EquipmentState) {
   };
 
   return presentations[state];
+}
+
+const SIGN_STATUS = {
+  accessible: { color: "var(--route-green)", label: "Accessible" },
+  "not-accessible": { color: "var(--route-grey)", label: "Not accessible" },
+  partial: { color: "var(--route-orange)", label: "Partially accessible" },
+  planned: { color: "var(--route-purple)", label: "Accessibility planned" },
+} as const;
+
+function SignStatus({ station }: { station: Station }) {
+  const status = SIGN_STATUS[getAccessibilityTone(station)];
+  return (
+    <span className="inline-flex h-10 items-center gap-2 rounded-md bg-white px-3 text-[15px] font-bold text-black">
+      <span
+        aria-hidden="true"
+        className="h-3 w-3 rounded-full"
+        style={{ background: status.color }}
+      />
+      {status.label}
+    </span>
+  );
+}
+
+function OpeningProof({ opening }: { opening: StationOpening }) {
+  return (
+    <section
+      aria-labelledby="opening-proof-heading"
+      className="rounded-[var(--radius-card)] border border-[color-mix(in_srgb,var(--status-accessible)_40%,transparent)] bg-[color-mix(in_srgb,var(--status-accessible)_7%,var(--panel))] p-5 sm:p-6"
+    >
+      <h2 className="inline-flex items-center gap-2 text-lg font-bold" id="opening-proof-heading">
+        <SiteIcon className="text-[20px] text-[var(--status-accessible)]" name="accessible" />
+        {opening.resultingStatus === "Accessible" ? "Became fully accessible" : "Gained partial access"}{" "}
+        {formatNewsDate(opening.openedAt)}
+      </h2>
+      <p className="mt-1 text-[15px] text-[var(--muted-strong)]">
+        {VERIFICATION_LABELS[opening.verification]}. Found automatically by the Access NYC
+        news tracker.
+      </p>
+      <ul className="mt-3 space-y-1.5">
+        {opening.evidence.slice(0, 3).map((evidence) => (
+          <li key={evidence.id}>
+            <a
+              className="inline-flex items-start gap-2 font-semibold text-[var(--accent-600)] underline-offset-4 hover:underline"
+              href={evidence.url}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <SiteIcon className="mt-1 text-[14px]" name="open_in_new" />
+              <span>
+                {evidence.title}{" "}
+                <span className="font-normal text-[var(--muted)]">({evidence.source})</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }

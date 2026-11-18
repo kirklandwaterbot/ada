@@ -1,0 +1,5 @@
+{
+  "_readme": "Manual corrections for scripts/sync-accessibility-news.mjs. Add a URL to rejectUrls to ignore an article or Reddit post. Add a station key (\"Station|Line|Services\", e.g. \"Kings Hwy|Sea Beach Line|N\") to rejectStations to stop the updater from changing that station. Reverting a wrongly applied station still needs a manual edit to data/accessibility-stations.json.",
+  "rejectUrls": [],
+  "rejectStations": []
+}

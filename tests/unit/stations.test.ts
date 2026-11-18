@@ -8,6 +8,7 @@ import {
   stations,
 } from "@/lib/stations";
 import type { MtaAsset } from "@/lib/mta-assets";
+import { newsVerifiedOpening } from "./news-verified";
 
 describe("149 St-Hostos accessibility update", () => {
   it("marks both connected line groups accessible from September 11, 2026", () => {
@@ -32,11 +33,16 @@ describe("149 St-Hostos accessibility update", () => {
         }),
       ]),
     );
+    // Counts grow as the news auto-updater verifies openings, so check that the
+    // summary always matches the station rows and never drops below the
+    // curated September 2026 baseline.
     expect(stationSummary).toMatchObject({
-      accessible: 161,
-      notAccessible: 322,
-      plannedAda: 103,
+      accessible: stations.filter((s) => s.accessibilityStatus === "Accessible").length,
+      notAccessible: stations.filter((s) => s.accessibilityStatus === "Not accessible").length,
+      plannedAda: stations.filter((s) => s.plannedAda).length,
     });
+    expect(stationSummary.accessible).toBeGreaterThanOrEqual(161);
+    expect(stationSummary.notAccessible).toBeLessThanOrEqual(322);
   });
 
   it("focuses both station components on one consolidated complex marker", () => {
@@ -94,12 +100,16 @@ describe("Package 4 station accessibility corrections", () => {
       (station) => station.station === "Parkchester",
     );
 
-    expect(cityCollege).toMatchObject({
-      accessibilityRaw: "♿ (uptown)",
-      accessibilityStatus: "Partially accessible",
-      plannedAda: true,
-      plannedAdaNote: "Downtown elevator access remains under construction.",
-    });
+    expect(cityCollege).toMatchObject(
+      newsVerifiedOpening("137 St-City College", ["1"])
+        ? { accessibilityStatus: "Accessible", plannedAda: false }
+        : {
+            accessibilityRaw: "♿ (uptown)",
+            accessibilityStatus: "Partially accessible",
+            plannedAda: true,
+            plannedAdaNote: "Downtown elevator access remains under construction.",
+          },
+    );
     expect(northernBlvd).toMatchObject({
       accessibilityStatus: "Accessible",
       plannedAda: false,
@@ -108,7 +118,9 @@ describe("Package 4 station accessibility corrections", () => {
       accessibilityStatus: "Accessible",
       plannedAda: false,
     });
-    expect(stationSummary.plannedAda).toBe(103);
+    expect(stationSummary.plannedAda).toBe(
+      stations.filter((station) => station.plannedAda).length,
+    );
   });
 
   it("focuses all three corrected stations on their station markers", () => {

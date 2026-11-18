@@ -153,11 +153,11 @@ export function CapitalProjectExplorer({
 
       <div className="mt-5 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             Matched projects
           </p>
           <h2
-            className="mt-1 text-2xl font-black tracking-[-0.035em] text-[var(--ink)]"
+            className="mt-1 text-2xl font-bold tracking-[-0.035em] text-[var(--ink)]"
             id="capital-project-results"
           >
             {filteredProjects.length.toLocaleString()} results
@@ -215,7 +215,7 @@ function ProjectCard({ project }: { project: CapitalProjectSummary }) {
       data-testid="capital-project-result"
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-[var(--soft-blue)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-[var(--accent-700)] dark:text-blue-200">
+        <span className="rounded-full bg-[var(--soft-blue)] px-2.5 py-1 text-[11px] font-bold tracking-normal text-[var(--accent-700)] dark:text-blue-200">
           {project.source === "modern" ? "Dashboard" : "Legacy plan"}
         </span>
         <span className="text-xs font-bold text-[var(--muted)]">
@@ -226,7 +226,7 @@ function ProjectCard({ project }: { project: CapitalProjectSummary }) {
         </span>
       </div>
 
-      <h3 className="mt-4 text-lg font-black leading-6 tracking-[-0.025em] text-[var(--ink)]">
+      <h3 className="mt-4 text-lg font-bold leading-6 tracking-[-0.025em] text-[var(--ink)]">
         <Link className="hover:text-[var(--accent-600)]" href={`/projects/${project.slug}`}>
           {project.title}
         </Link>
@@ -295,7 +295,7 @@ function CardMetric({
 }) {
   return (
     <div className={className}>
-      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--muted)]">
+      <p className="text-[11px] font-bold tracking-normal text-[var(--muted)]">
         {label}
       </p>
       <p className="mt-1 text-sm font-extrabold text-[var(--ink)]">{value}</p>

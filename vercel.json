@@ -3,10 +3,6 @@
     {
       "path": "/api/cron/sync-mta-assets",
       "schedule": "0 5 * * *"
-    },
-    {
-      "path": "/api/cron/refresh-mta-press-release",
-      "schedule": "15 5 * * *"
     }
   ]
 }

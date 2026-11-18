@@ -2,56 +2,94 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Access NYC design tokens
+ * The palette is borrowed from the subway's own wayfinding: sign black for
+ * navigation, tile white for surfaces, and real route colours for status
+ * (4/5/6 green = accessible, B/D/F/M orange = partial, 7 purple = planned,
+ * shuttle grey = not accessible, A/C/E blue = interactive accent).
+ */
 :root {
-  --app-bg: #f3f6fa;
-  --background: #f3f6fa;
-  --foreground: #10233f;
+  --sign-black: #000000;
+  --sign-white: #ffffff;
+  --route-blue: #0039a6;
+  --route-green: #00933c;
+  --route-orange: #ff6319;
+  --route-purple: #b933ad;
+  --route-grey: #808183;
+  --route-yellow: #fccc0a;
+
+  --status-accessible: #00843a;
+  --status-partial: #c2410c;
+  --status-planned: #9d2a93;
+  --status-none: #6b6c6e;
+
+  --app-bg: #f5f6f7;
+  --background: #f5f6f7;
+  --foreground: #121417;
   --panel: #ffffff;
   --panel-rgb: 255 255 255;
   --panel-raised: #ffffff;
-  --soft: #f1f5f9;
-  --soft-blue: #edf6ff;
-  --border: #dce4ee;
-  --border-strong: #c7d2df;
-  --ink: #10233f;
-  --muted-strong: #52647d;
-  --muted: #7b8aa0;
-  --nav-active: #0a3d7e;
-  --accent-50: #eff8ff;
-  --accent-100: #dbeeff;
-  --accent-200: #b9deff;
-  --accent-400: #3aa9ff;
-  --accent-500: #1185e8;
-  --accent-600: #0b73cf;
-  --accent-700: #095ca6;
-  --accent-600-rgb: 11, 115, 207;
-  --accent-ring: rgb(17 133 232 / 0.28);
+  --soft: #eef0f2;
+  --soft-blue: #eaf0fb;
+  --border: #dfe2e6;
+  --border-strong: #c4c9cf;
+  --ink: #121417;
+  --muted-strong: #474c53;
+  --muted: #6e747c;
+  --nav-active: #0039a6;
+  --accent-50: #eaf0fb;
+  --accent-100: #d5e1f7;
+  --accent-200: #adc3ee;
+  --accent-400: #3d6fd1;
+  --accent-500: #0039a6;
+  --accent-600: #0039a6;
+  --accent-700: #002d84;
+  --accent-600-rgb: 0, 57, 166;
+  --accent-ring: rgb(0 57 166 / 0.32);
+  --radius-plate: 6px;
+  --radius-card: 14px;
   color-scheme: light;
 }
 
 .dark {
-  --app-bg: #08111f;
-  --background: #08111f;
-  --foreground: #e8f0fa;
-  --panel: #0e1a2b;
-  --panel-rgb: 14 26 43;
-  --panel-raised: #132238;
-  --soft: #17263a;
-  --soft-blue: #102844;
-  --border: #22334a;
-  --border-strong: #31445f;
-  --ink: #eef5fc;
-  --muted-strong: #b0bfd1;
-  --muted: #7f91a9;
-  --nav-active: #0c4d99;
+  --status-accessible: #2fbf6b;
+  --status-partial: #ff8a4c;
+  --status-planned: #e070d6;
+  --status-none: #9b9da1;
+
+  --app-bg: #0c0d0f;
+  --background: #0c0d0f;
+  --foreground: #eceef1;
+  --panel: #15171a;
+  --panel-rgb: 21 23 26;
+  --panel-raised: #1b1e22;
+  --soft: #1f2226;
+  --soft-blue: #14213b;
+  --border: #2a2e33;
+  --border-strong: #3a3f46;
+  --ink: #eef0f3;
+  --muted-strong: #b8bdc4;
+  --muted: #8b9199;
+  --nav-active: #2d63d4;
+  /* Lighter accent so links stay readable on dark surfaces. */
+  --accent-50: #14213b;
+  --accent-100: #1a2c52;
+  --accent-200: #2a4580;
+  --accent-400: #5b8af0;
+  --accent-500: #7aa2ff;
+  --accent-600: #7aa2ff;
+  --accent-700: #a9c2ff;
+  --accent-600-rgb: 122, 162, 255;
+  --accent-ring: rgb(122 162 255 / 0.35);
   color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  --font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
 * {
@@ -67,9 +105,21 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
   min-height: 100%;
   text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 button,
@@ -82,14 +132,16 @@ select {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
-select:focus-visible {
-  outline: 3px solid var(--accent-ring);
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--route-yellow);
   outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--sign-black);
 }
 
 ::selection {
-  background: var(--accent-200);
-  color: #082544;
+  background: var(--route-yellow);
+  color: #000;
 }
 
 ::-webkit-scrollbar {
@@ -114,29 +166,78 @@ select:focus-visible {
   --asset-table-font-size: 0.875rem;
 }
 
-.surface-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 1.25rem;
-  box-shadow: 0 16px 40px rgb(15 35 64 / 0.055);
-}
+/* Component classes live in a layer so Tailwind utilities can override them. */
+@layer components {
+  .surface-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
 
-.dark .surface-card {
-  box-shadow: 0 18px 46px rgb(0 0 0 / 0.24);
+  /* Station-sign plate: black panel with the white rule that runs along the
+     top of every subway sign. Used for station names that just changed. */
+  .sign-plate {
+    background: var(--sign-black);
+    border-radius: var(--radius-plate);
+    color: var(--sign-white);
+    position: relative;
+  }
+
+  .sign-plate::before {
+    background: var(--sign-white);
+    content: "";
+    height: 2px;
+    left: 0;
+    opacity: 0.92;
+    position: absolute;
+    right: 0;
+    top: 7px;
+  }
+
+  .dark .sign-plate {
+    box-shadow: inset 0 0 0 1px #2c2f33;
+  }
+
+  .route-bullet {
+    align-items: center;
+    border-radius: 999px;
+    color: #fff;
+    display: inline-flex;
+    font-weight: 700;
+    height: 1.6rem;
+    justify-content: center;
+    line-height: 1;
+    min-width: 1.6rem;
+    padding: 0 0.3rem;
+  }
 }
 
 .page-enter {
-  animation: page-enter 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: page-enter 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+  }
+}
+
+.sign-flip {
+  animation: sign-flip 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: top center;
+}
+
+@keyframes sign-flip {
+  from {
+    opacity: 0;
+    transform: perspective(600px) rotateX(-70deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0deg);
   }
 }
 

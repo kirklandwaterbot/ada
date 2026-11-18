@@ -55,7 +55,7 @@ const AssetMap = dynamic(
     loading: () => (
       <div
         aria-live="polite"
-        className="grid h-full min-h-[34rem] place-items-center bg-[#111820] text-sm font-bold text-slate-300"
+        className="grid h-full min-h-[34rem] place-items-center bg-[#000] text-sm font-bold text-slate-300"
         role="status"
       >
         Loading the accessibility map…
@@ -180,21 +180,30 @@ const MAP_FILTER_OPTIONS: Array<{
   },
 ];
 const TOOL_CLASS =
-  "group relative grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-[#111820]/95 text-slate-200 shadow-[0_12px_30px_rgb(0_0_0_/_0.28)] backdrop-blur-xl transition hover:border-sky-400/60 hover:bg-[#172331] hover:text-sky-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-400/35";
+  "group relative grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-[#000]/90 text-slate-200 shadow-[0_12px_30px_rgb(0_0_0_/_0.28)] backdrop-blur-xl transition hover:border-white/50 hover:bg-[#1c1c1c] hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#fccc0a]/70";
 
 export function MapFirstHome({
+  latestOpening,
   mapAssets,
-  pressRelease,
+  recentOpeningCount = 0,
   stationRecords,
 }: {
-  mapAssets: AssetMapMarker[];
-  pressRelease: {
+  latestOpening: {
     formattedDate: string;
-    title: string;
-    url: string;
-  };
+    href: string;
+    services: string[];
+    source: string;
+    station: string;
+  } | null;
+  mapAssets: AssetMapMarker[];
+  recentOpeningCount?: number;
   stationRecords: StationExplorerRecord[];
 }) {
+  const [dismissedOpening, setDismissedOpening] = usePersistentState(
+    "access-nyc-dismissed-opening",
+    "",
+    normalizeStoredString,
+  );
   const [query, setQuery] = usePersistentState(
     HOME_STORAGE_KEYS.query,
     "",
@@ -375,7 +384,7 @@ export function MapFirstHome({
   }
 
   return (
-    <div className="relative h-[100svh] min-h-[34rem] w-full overflow-hidden bg-[#111820] text-white">
+    <div className="relative h-[100svh] min-h-[34rem] w-full overflow-hidden bg-[#000] text-white">
       <AssetMap
         assets={mapAssets}
         focusRequest={mapFocusRequest}
@@ -387,7 +396,7 @@ export function MapFirstHome({
 
       <div className="pointer-events-none absolute inset-0 z-20">
         <header
-          className={`pointer-events-auto absolute left-3 top-3 w-[min(22rem,calc(100%-5.25rem))] overflow-hidden rounded-2xl border border-white/10 bg-[#111820]/95 shadow-[0_16px_45px_rgb(0_0_0_/_0.32)] backdrop-blur-xl sm:left-4 sm:top-4 ${mastheadOpen ? "" : "hidden"}`}
+          className={`pointer-events-auto absolute left-3 top-3 w-[min(22rem,calc(100%-5.25rem))] overflow-hidden rounded-2xl border border-white/10 bg-[#000]/90 shadow-[0_16px_45px_rgb(0_0_0_/_0.32)] backdrop-blur-xl sm:left-4 sm:top-4 ${mastheadOpen ? "" : "hidden"}`}
           id="access-nyc-masthead"
         >
           <Link
@@ -404,7 +413,7 @@ export function MapFirstHome({
               width={40}
             />
             <span className="min-w-0">
-              <span className="block text-sm font-black tracking-[-0.02em]">
+              <span className="block text-sm font-bold tracking-[-0.02em]">
                 Access NYC
               </span>
               <span className="block truncate text-xs font-semibold text-slate-400">
@@ -416,7 +425,7 @@ export function MapFirstHome({
             aria-controls="access-nyc-masthead"
             aria-expanded={mastheadOpen}
             aria-label="Collapse Access NYC header"
-            className="absolute right-2 top-2 grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-black/20 text-slate-300 transition hover:border-sky-400/60 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-400/35"
+            className="absolute right-2 top-2 grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-black/20 text-slate-300 transition hover:border-white/50 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#fccc0a]/70"
             onClick={() => setMastheadOpen(false)}
             title="Collapse Access NYC header"
             type="button"
@@ -453,7 +462,7 @@ export function MapFirstHome({
           <button
             aria-expanded={searchOpen}
             aria-label={searchOpen ? "Close station search" : "Search stations"}
-            className={`${TOOL_CLASS} ${searchOpen ? "border-sky-400 bg-sky-400 text-slate-950 hover:bg-sky-300 hover:text-slate-950" : ""}`}
+            className={`${TOOL_CLASS} ${searchOpen ? "border-white bg-white text-black hover:bg-white/90 hover:text-black" : ""}`}
             onClick={() => {
               setFiltersOpen(false);
               setSearchOpen((open) => !open);
@@ -498,28 +507,35 @@ export function MapFirstHome({
             <ToolTip label="Projects" />
           </Link>
 
-          <a
-            aria-label={`Latest MTA accessibility release: ${pressRelease.title}`}
+          <Link
+            aria-label={
+              recentOpeningCount > 0
+                ? `Updates: ${recentOpeningCount} newly accessible station${recentOpeningCount === 1 ? "" : "s"}`
+                : "Updates: newly accessible stations"
+            }
             className={TOOL_CLASS}
             data-testid="project-spotlight"
-            href={pressRelease.url}
-            rel="noreferrer"
-            target="_blank"
-            title={`${pressRelease.title} — ${pressRelease.formattedDate}`}
+            href="/updates"
+            title="Newly accessible stations"
           >
             <SiteIcon className="text-[23px]" name="news" />
-            <span className="sr-only">
-              Latest MTA accessibility release, {pressRelease.formattedDate}
-            </span>
-            <ToolTip label="MTA release" />
-          </a>
+            {recentOpeningCount > 0 ? (
+              <span
+                aria-hidden="true"
+                className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#00933c] px-1 text-[11px] font-bold text-white ring-2 ring-black"
+              >
+                {recentOpeningCount}
+              </span>
+            ) : null}
+            <ToolTip label="Updates" />
+          </Link>
 
           <div className="relative">
             <button
               aria-controls="atlas-map-filters"
               aria-expanded={filtersOpen}
               aria-label={filtersOpen ? "Close map filters" : "Filter map"}
-              className={`${TOOL_CLASS} ${filtersOpen ? "border-sky-400 bg-sky-400 text-slate-950 hover:bg-sky-300 hover:text-slate-950" : ""}`}
+              className={`${TOOL_CLASS} ${filtersOpen ? "border-white bg-white text-black hover:bg-white/90 hover:text-black" : ""}`}
               onClick={() => {
                 setSearchOpen(false);
                 setFiltersOpen((open) => !open);
@@ -534,12 +550,12 @@ export function MapFirstHome({
             {filtersOpen ? (
               <section
                 aria-label="Map filters"
-                className={`fixed bottom-3 left-[4.4rem] right-3 overflow-y-auto rounded-2xl border border-white/10 bg-[#111820]/[0.97] shadow-[0_22px_70px_rgb(0_0_0_/_0.42)] backdrop-blur-xl sm:bottom-4 sm:right-auto sm:w-[min(19rem,calc(100vw-5.5rem))] ${mastheadOpen ? "top-[5.5rem] sm:top-[5.75rem]" : "top-3 sm:top-4"}`}
+                className={`fixed bottom-3 left-[4.4rem] right-3 overflow-y-auto rounded-2xl border border-white/10 bg-[#000]/[0.96] shadow-[0_22px_70px_rgb(0_0_0_/_0.42)] backdrop-blur-xl sm:bottom-4 sm:right-auto sm:w-[min(19rem,calc(100vw-5.5rem))] ${mastheadOpen ? "top-[5.5rem] sm:top-[5.75rem]" : "top-3 sm:top-4"}`}
                 id="atlas-map-filters"
               >
-                <div className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-white/10 bg-[#111820] p-4">
+                <div className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-white/10 bg-[#000] p-4">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300">
+                    <p className="text-[11px] font-bold tracking-normal text-white/70">
                       Filter map
                     </p>
                     <p className="mt-1 text-xs font-semibold text-slate-400">
@@ -559,7 +575,7 @@ export function MapFirstHome({
 
                 <div className="space-y-3 p-2">
                   <div aria-label="Transit systems" className="space-y-2" role="group">
-                    <p className="px-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
+                    <p className="px-2 pt-1 text-[11px] font-bold tracking-normal text-slate-400">
                       Transit systems
                     </p>
                     <TransitGroupControls
@@ -583,7 +599,7 @@ export function MapFirstHome({
                     className="space-y-1 border-t border-white/10 pt-3"
                     role="group"
                   >
-                    <p className="px-2 pb-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
+                    <p className="px-2 pb-1 text-[11px] font-bold tracking-normal text-slate-400">
                       Accessibility & equipment
                     </p>
                     {MAP_FILTER_OPTIONS.map((filter) => (
@@ -660,13 +676,13 @@ export function MapFirstHome({
         {searchOpen ? (
           <section
             aria-label="Station search"
-            className={`pointer-events-auto absolute bottom-3 left-[4.4rem] right-3 overflow-y-auto rounded-2xl border border-white/10 bg-[#111820]/[0.97] shadow-[0_22px_70px_rgb(0_0_0_/_0.42)] backdrop-blur-xl sm:bottom-4 sm:left-[4.75rem] sm:right-auto sm:w-[min(24rem,calc(100%-5.75rem))] ${mastheadOpen ? "top-[5.5rem] sm:top-[5.75rem]" : "top-3 sm:top-4"}`}
+            className={`pointer-events-auto absolute bottom-3 left-[4.4rem] right-3 overflow-y-auto rounded-2xl border border-white/10 bg-[#000]/[0.96] shadow-[0_22px_70px_rgb(0_0_0_/_0.42)] backdrop-blur-xl sm:bottom-4 sm:left-[4.75rem] sm:right-auto sm:w-[min(24rem,calc(100%-5.75rem))] ${mastheadOpen ? "top-[5.5rem] sm:top-[5.75rem]" : "top-3 sm:top-4"}`}
             data-testid="station-directory"
           >
-            <div className="sticky top-0 z-10 border-b border-white/10 bg-[#111820]/95 p-4 backdrop-blur-xl">
+            <div className="sticky top-0 z-10 border-b border-white/10 bg-[#000]/90 p-4 backdrop-blur-xl">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300">
+                  <p className="text-[11px] font-bold tracking-normal text-white/70">
                     Find a station
                   </p>
                   <p className="mt-1 text-sm font-bold text-slate-300">
@@ -691,7 +707,7 @@ export function MapFirstHome({
                 <input
                   autoComplete="off"
                   autoFocus
-                  className="h-12 w-full rounded-xl border border-white/15 bg-black/25 pl-11 pr-10 text-sm font-semibold text-white outline-none transition placeholder:text-slate-500 focus:border-sky-400 focus:ring-4 focus:ring-sky-400/15"
+                  className="h-12 w-full rounded-xl border border-white/15 bg-black/25 pl-11 pr-10 text-sm font-semibold text-white outline-none transition placeholder:text-slate-500 focus:border-white focus:ring-4 focus:ring-[#fccc0a]/40"
                   id="atlas-station-search"
                   list="atlas-station-suggestions"
                   onChange={(event) => setQuery(event.target.value)}
@@ -723,7 +739,7 @@ export function MapFirstHome({
                     className={[
                       "shrink-0 rounded-full border px-3 py-2 text-xs font-bold transition",
                       status === filter.value
-                        ? "border-sky-400 bg-sky-400 text-slate-950"
+                        ? "border-white bg-white text-slate-950"
                         : "border-white/15 bg-white/5 text-slate-300 hover:border-white/30 hover:text-white",
                     ].join(" ")}
                     key={filter.value}
@@ -743,7 +759,7 @@ export function MapFirstHome({
                     {filteredStations.length.toLocaleString()} stations found
                   </p>
                   <Link
-                    className="font-bold text-sky-300 hover:text-sky-200"
+                    className="font-bold text-white/70 hover:text-white"
                     href="/stations?view=explorer"
                   >
                     Full explorer
@@ -759,7 +775,7 @@ export function MapFirstHome({
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
                             <Link
-                              className="truncate text-sm font-extrabold text-white hover:text-sky-300"
+                              className="truncate text-sm font-extrabold text-white hover:text-white"
                               href={`/stations/${record.slug}`}
                             >
                               {record.station.station}
@@ -780,7 +796,7 @@ export function MapFirstHome({
                         </div>
                         <button
                           aria-label={`Show ${record.station.station} on map`}
-                          className="grid h-10 w-10 place-items-center self-center rounded-xl border border-white/15 bg-white/5 text-sky-300 transition hover:border-sky-400 hover:bg-sky-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-40"
+                          className="grid h-10 w-10 place-items-center self-center rounded-xl border border-white/15 bg-white/5 text-white/70 transition hover:border-white hover:bg-white hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-40"
                           disabled={!record.focusDetail}
                           onClick={() => focusStation(record)}
                           type="button"
@@ -807,7 +823,7 @@ export function MapFirstHome({
               </div>
             ) : (
               <div className="p-4">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                <p className="text-[11px] font-bold tracking-normal text-slate-400">
                   System at a glance
                 </p>
                 <div className="mt-3 grid grid-cols-2 gap-2">
@@ -833,7 +849,7 @@ export function MapFirstHome({
                   />
                 </div>
                 <Link
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-sky-300 hover:text-sky-200"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-white/70 hover:text-white"
                   href="/stations?view=explorer"
                 >
                   Browse every station
@@ -844,6 +860,38 @@ export function MapFirstHome({
           </section>
         ) : null}
 
+        {latestOpening &&
+        !searchOpen &&
+        !filtersOpen &&
+        dismissedOpening !== latestOpening.href ? (
+          <aside
+            aria-label="Newly accessible station"
+            className="sign-plate sign-flip pointer-events-auto absolute bottom-9 left-3 right-3 flex items-center gap-3 py-3 pl-4 pr-2 pt-5 shadow-[0_18px_50px_rgb(0_0_0_/_0.45)] sm:left-1/2 sm:right-auto sm:w-[min(30rem,calc(100%-10rem))] sm:-translate-x-1/2"
+          >
+            <Link className="flex min-w-0 flex-1 items-center gap-3" href={latestOpening.href}>
+              <span className="min-w-0">
+                <span className="block text-[13px] font-semibold text-white/70">
+                  Now accessible, {latestOpening.formattedDate}
+                </span>
+                <span className="mt-0.5 flex items-center gap-2">
+                  <span className="truncate text-lg font-bold">{latestOpening.station}</span>
+                  <TransitRouteIcons agency="NYCTA" className="shrink-0" routes={latestOpening.services} />
+                </span>
+              </span>
+              <span className="ml-auto shrink-0 text-sm font-semibold text-white/80 underline-offset-4 hover:underline">
+                See sources
+              </span>
+            </Link>
+            <button
+              aria-label="Dismiss newly accessible station"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-white/60 transition hover:bg-white/10 hover:text-white"
+              onClick={() => setDismissedOpening(latestOpening.href)}
+              type="button"
+            >
+              <SiteIcon className="text-[18px]" name="close" />
+            </button>
+          </aside>
+        ) : null}
       </div>
     </div>
   );
@@ -851,7 +899,7 @@ export function MapFirstHome({
 
 function ToolTip({ label }: { label: string }) {
   return (
-    <span className="pointer-events-none absolute left-full ml-2 hidden whitespace-nowrap rounded-lg border border-white/10 bg-[#111820]/95 px-2.5 py-1.5 text-xs font-bold text-white opacity-0 shadow-xl transition group-hover:opacity-100 group-focus-visible:opacity-100 sm:block">
+    <span className="pointer-events-none absolute left-full ml-2 hidden whitespace-nowrap rounded-lg border border-white/10 bg-[#000]/90 px-2.5 py-1.5 text-xs font-bold text-white opacity-0 shadow-xl transition group-hover:opacity-100 group-focus-visible:opacity-100 sm:block">
       {label}
     </span>
   );
@@ -870,7 +918,7 @@ function TransitSystemFilter({
 
   return (
     <details className="rounded-xl border border-white/10 bg-white/[0.025]" open>
-      <summary className="cursor-pointer select-none px-3 py-2.5 text-xs font-black text-white marker:text-sky-400">
+      <summary className="cursor-pointer select-none px-3 py-2.5 text-xs font-bold text-white marker:text-white/60">
         {system.label}
         <span className="ml-2 font-mono text-[10px] text-slate-400">
           {countEnabled(routeKeys, enabledRoutes)}/{routeKeys.length}
@@ -912,7 +960,7 @@ function TransitAgencyFilter({
       <summary className="cursor-pointer select-none px-3 py-2.5 marker:text-slate-500">
         <span className="inline-flex w-[calc(100%_-_0.75rem)] items-center justify-between gap-2 align-middle">
           <span className="inline-flex min-w-0 items-center">
-            <span className="truncate text-xs font-black text-white">
+            <span className="truncate text-xs font-bold text-white">
               {agency.label}
             </span>
           </span>
@@ -1109,10 +1157,10 @@ function MapFilterToggle({
         />
       )}
       <span className="min-w-0 flex-1">
-        <span className="block text-xs font-black leading-4">{label}</span>
+        <span className="block text-xs font-bold leading-4">{label}</span>
         {detail ? (
           <span
-            className="mt-0.5 block text-[9px] font-black uppercase tracking-[0.11em]"
+            className="mt-0.5 block text-[9px] font-bold tracking-normal"
             style={{ color }}
           >
             {detail}
@@ -1206,7 +1254,7 @@ function AtlasMetric({
         <span className={`h-2 w-2 rounded-full ${color}`} />
         {label}
       </div>
-      <p className="mt-2 font-mono text-xl font-black text-white">
+      <p className="mt-2 font-mono text-xl font-bold text-white">
         {value.toLocaleString()}
       </p>
     </div>

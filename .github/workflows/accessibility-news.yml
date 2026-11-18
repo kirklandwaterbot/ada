@@ -1,0 +1,51 @@
+name: Accessibility news auto-updater
+
+# Checks MTA press releases, NYC news outlets, and Reddit for stations that
+# just became accessible, applies the ones with trustworthy proof to the
+# station data, and commits the result (which redeploys the site).
+
+on:
+  schedule:
+    # Every three hours, offset from the top of the hour.
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - scripts/accessibility-news/**
+      - scripts/sync-accessibility-news.mjs
+      - data/accessibility-news-review.json
+      - .github/workflows/accessibility-news.yml
+
+permissions:
+  contents: write
+
+# Shares a group with the daily data sync so the two never race to push.
+concurrency:
+  group: data-snapshot-commits
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check sources and apply verified openings
+        env:
+          # Optional: a Reddit "script" app's credentials make Reddit far more
+          # reliable from GitHub's runners. Without them the public feeds are used.
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+        run: node scripts/sync-accessibility-news.mjs
+      - name: Refresh ADA project map
+        run: node scripts/generate-ada-project-statuses.mjs
+      - name: Commit updated data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update accessibility news and station openings"
+          file_pattern: data/accessibility-news.json data/accessibility-stations.json data/accessible-station-coordinates.json data/ada-project-statuses.json

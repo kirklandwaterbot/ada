@@ -58,14 +58,14 @@ export default async function CapitalProjectDetailPage({
       <header className="relative overflow-hidden rounded-[1.5rem] bg-[var(--nav-active)] px-5 py-7 text-white shadow-[0_24px_60px_rgb(10_61_126_/_0.24)] sm:px-8 sm:py-9">
         <div className="pointer-events-none absolute -right-14 -top-20 h-64 w-64 rounded-full border-[38px] border-cyan-300/10" />
         <div className="relative max-w-5xl">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-cyan-200">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-extrabold tracking-normal text-cyan-200">
             <span>
               {project.source === "modern" ? "Dashboard" : "Legacy Capital Plan"}
             </span>
             <span aria-hidden="true">·</span>
             <span>{project.externalId}</span>
           </div>
-          <h1 className="mt-3 text-3xl font-black leading-tight tracking-[-0.045em] sm:text-4xl">
+          <h1 className="mt-3 text-3xl font-bold leading-tight tracking-[-0.045em] sm:text-4xl">
             {project.title}
           </h1>
           <p className="mt-4 max-w-4xl text-sm leading-7 text-blue-100 sm:text-base">
@@ -120,10 +120,10 @@ export default async function CapitalProjectDetailPage({
         <section className="surface-card p-5 sm:p-6" aria-labelledby="completion-heading">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.13em] text-[var(--accent-600)]">
+              <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
                 Delivery progress
               </p>
-              <h2 className="mt-1 text-xl font-black text-[var(--ink)]" id="completion-heading">
+              <h2 className="mt-1 text-xl font-bold text-[var(--ink)]" id="completion-heading">
                 {project.percentComplete.toFixed(0)}% complete
               </h2>
             </div>
@@ -166,10 +166,10 @@ function ProjectSchedule({ project }: { project: CapitalProject }) {
           <SiteIcon className="text-[21px]" name="account_tree" />
         </span>
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.13em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             Schedule
           </p>
-          <h2 className="text-xl font-black text-[var(--ink)]" id="schedule-heading">
+          <h2 className="text-xl font-bold text-[var(--ink)]" id="schedule-heading">
             Phases and milestones
           </h2>
         </div>
@@ -269,16 +269,16 @@ function ProjectFacts({ project }: { project: CapitalProject }) {
 
   return (
     <aside className="surface-card p-5 sm:p-6" aria-labelledby="facts-heading">
-      <p className="text-xs font-extrabold uppercase tracking-[0.13em] text-[var(--accent-600)]">
+      <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
         Project record
       </p>
-      <h2 className="mt-1 text-xl font-black text-[var(--ink)]" id="facts-heading">
+      <h2 className="mt-1 text-xl font-bold text-[var(--ink)]" id="facts-heading">
         Key details
       </h2>
       <dl className="mt-5 divide-y divide-[var(--border)]">
         {facts.map(([label, value]) => (
           <div className="py-3" key={label}>
-            <dt className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--muted)]">
+            <dt className="text-[11px] font-bold tracking-normal text-[var(--muted)]">
               {label}
             </dt>
             <dd className="mt-1 text-sm font-bold leading-6 text-[var(--ink)]">{value}</dd>
@@ -296,10 +296,10 @@ function ProjectBudget({ project }: { project: CapitalProject }) {
     <section className="surface-card p-5 sm:p-6" aria-labelledby="budget-heading">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.13em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             Funding
           </p>
-          <h2 className="mt-1 text-xl font-black text-[var(--ink)]" id="budget-heading">
+          <h2 className="mt-1 text-xl font-bold text-[var(--ink)]" id="budget-heading">
             Budget detail and history
           </h2>
         </div>
@@ -337,7 +337,7 @@ function ProjectBudget({ project }: { project: CapitalProject }) {
           </h3>
           <div className="mt-3 overflow-x-auto rounded-xl border border-[var(--border)]">
             <table className="min-w-[760px] w-full text-left text-sm">
-              <thead className="bg-[var(--soft)] text-[11px] uppercase tracking-[0.08em] text-[var(--muted)]">
+              <thead className="bg-[var(--soft)] text-[11px] tracking-normal text-[var(--muted)]">
                 <tr>
                   <th className="px-4 py-3">ACEP</th>
                   <th className="px-4 py-3">Baseline</th>
@@ -385,7 +385,7 @@ function ProjectBudget({ project }: { project: CapitalProject }) {
         {project.budgetHistory.length > 0 ? (
           <div className="mt-3 max-h-[34rem] overflow-auto rounded-xl border border-[var(--border)]">
             <table className="min-w-[680px] w-full text-left text-sm">
-              <thead className="sticky top-0 bg-[var(--soft)] text-[11px] uppercase tracking-[0.08em] text-[var(--muted)]">
+              <thead className="sticky top-0 bg-[var(--soft)] text-[11px] tracking-normal text-[var(--muted)]">
                 <tr>
                   <th className="px-4 py-3">Record date</th>
                   <th className="px-4 py-3">Baseline</th>
@@ -422,10 +422,10 @@ function BudgetRevisionCard({ revision }: { revision: CapitalBudgetRevision }) {
     <article className="rounded-2xl border border-[var(--border)] bg-[var(--panel-raised)] p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.1em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             {revision.submissionLabel}
           </p>
-          <p className="mt-1 text-lg font-black text-[var(--ink)]">
+          <p className="mt-1 text-lg font-bold text-[var(--ink)]">
             {formatCapitalMoney(revision.totalAllocation)}
           </p>
         </div>
@@ -478,10 +478,10 @@ function SummaryMetric({
         <SiteIcon className="text-[21px]" name={icon} />
       </span>
       <div className="min-w-0">
-        <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--muted)]">
+        <p className="text-[11px] font-bold tracking-normal text-[var(--muted)]">
           {label}
         </p>
-        <p className="mt-1 truncate text-base font-black text-[var(--ink)]">{value}</p>
+        <p className="mt-1 truncate text-base font-bold text-[var(--ink)]">{value}</p>
       </div>
     </div>
   );
@@ -498,10 +498,10 @@ function BudgetMetric({
 }) {
   return (
     <div className="rounded-2xl bg-[var(--soft)] px-4 py-4">
-      <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--muted)]">
+      <p className="text-[11px] font-bold tracking-normal text-[var(--muted)]">
         {label}
       </p>
-      <p className="mt-1 text-lg font-black text-[var(--ink)]">
+      <p className="mt-1 text-lg font-bold text-[var(--ink)]">
         {textValue ?? formatCapitalMoney(value ?? null, "compact")}
       </p>
     </div>

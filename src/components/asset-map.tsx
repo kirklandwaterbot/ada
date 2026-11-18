@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { createRoot, type Root } from "react-dom/client";
 import { X } from "lucide-react";
 import mapboxgl, { type GeoJSONSource } from "mapbox-gl";
@@ -268,6 +269,7 @@ export function AssetMap({
   const [mapResultLimit, setMapResultLimit] = useState(MAP_RESULT_PAGE_SIZE);
   const [mapResultAnnouncement, setMapResultAnnouncement] = useState("");
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  const [mapUnavailable, setMapUnavailable] = useState(false);
   const canvas = presentation === "canvas";
 
   const allFeatures = useMemo(() => {
@@ -647,15 +649,25 @@ export function AssetMap({
 
     mapboxgl.accessToken = token;
 
-    const map = new mapboxgl.Map({
-      center: [-73.95, 40.73],
-      container: containerRef.current,
-      style:
-        mapTheme === "dark"
-          ? "mapbox://styles/mapbox/dark-v11"
-          : "mapbox://styles/mapbox/light-v11",
-      zoom: 10,
-    });
+    let map: mapboxgl.Map;
+    try {
+      map = new mapboxgl.Map({
+        center: [-73.95, 40.73],
+        container: containerRef.current,
+        style:
+          mapTheme === "dark"
+            ? "mapbox://styles/mapbox/dark-v11"
+            : "mapbox://styles/mapbox/light-v11",
+        zoom: 10,
+      });
+    } catch (error) {
+      // Mapbox throws when WebGL is unavailable (locked-down browsers, some
+      // VMs, battery savers). Keep the rest of the page usable instead of
+      // letting the error take the whole route down.
+      console.warn("Interactive map unavailable", error);
+      queueMicrotask(() => setMapUnavailable(true));
+      return;
+    }
 
     mapRef.current = map;
     popupRef.current = new mapboxgl.Popup({
@@ -1552,14 +1564,14 @@ export function AssetMap({
         >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
+            <p className="text-[11px] font-extrabold tracking-normal text-[var(--accent-600)]">
               {canvas ? "Map layers" : "Interactive map"}
             </p>
             <h2
               className={
                 canvas
                   ? "sr-only"
-                  : "mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]"
+                  : "mt-1 text-xl font-bold tracking-[-0.02em] text-[var(--ink)]"
               }
             >
               {embedded ? "System accessibility map" : "Asset map"}
@@ -1681,6 +1693,7 @@ export function AssetMap({
           aria-describedby={minimal ? undefined : "map-results-description"}
           aria-label="Interactive subway, PATH, AirTrain, and regional rail accessibility map with present-day transit routes"
           className={[
+            "relative",
             canvas
               ? "h-full min-h-[34rem] w-full"
               : embedded
@@ -1697,6 +1710,22 @@ export function AssetMap({
           {!token ? (
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
               Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the interactive system map.
+            </div>
+          ) : mapUnavailable ? (
+            <div className="absolute inset-0 grid place-items-center p-5 pl-20 sm:pl-5">
+              <div className="max-w-md rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--panel)] px-5 py-4 text-[15px] text-[var(--ink)] shadow-lg">
+                <p className="font-bold">The map can&apos;t start in this browser.</p>
+                <p className="mt-1 text-[var(--muted-strong)]">
+                  It needs WebGL, which is turned off or unsupported here. Station
+                  lists, equipment status, and updates still work.
+                </p>
+                <Link
+                  className="mt-3 inline-block font-semibold text-[var(--accent-600)] underline-offset-4 hover:underline"
+                  href="/stations?view=explorer"
+                >
+                  Browse stations as a list
+                </Link>
+              </div>
             </div>
           ) : null}
         </div>

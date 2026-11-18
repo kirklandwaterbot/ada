@@ -8,10 +8,10 @@ export default function NotFound() {
         <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--soft-blue)] text-[var(--accent-600)]">
           <SiteIcon className="text-[30px]" name="wrong_location" />
         </span>
-        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--accent-600)]">
+        <p className="mt-5 text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
           Station not found
         </p>
-        <h1 className="mt-2 text-3xl font-black tracking-[-0.04em] text-[var(--ink)]">
+        <h1 className="mt-2 text-3xl font-bold tracking-[-0.02em] text-[var(--ink)]">
           This stop is not in the directory
         </h1>
         <p className="mt-3 text-sm leading-6 text-[var(--muted-strong)]">

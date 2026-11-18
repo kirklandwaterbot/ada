@@ -8,6 +8,9 @@ import {
 import { ASSET_MAP_STATUS_COLORS } from "@/lib/asset-display";
 import { getStationCoordinate, stations } from "@/lib/stations";
 import { TRANSIT_ROUTE_FILTERS } from "@/lib/transit-filter-catalog";
+import { newsVerifiedOpening } from "./news-verified";
+
+const cityCollegeOpened = Boolean(newsVerifiedOpening("137 St-City College", ["1"]));
 
 describe("ADA project status classifications", () => {
   it("keeps escalator equipment visually distinct from accessible-station upgrades", () => {
@@ -71,7 +74,14 @@ describe("ADA project status classifications", () => {
 
   it("publishes all current missing-package stations with agency-aware route keys", () => {
     const expectedPackages = new Map([
-      ["12411", new Set(["137 St-City College", "Bay Ridge-95 St"])],
+      [
+        "12411",
+        new Set(
+          cityCollegeOpened
+            ? ["Bay Ridge-95 St"]
+            : ["137 St-City College", "Bay Ridge-95 St"],
+        ),
+      ],
       ["12754", new Set(["2 Av", "7 Av", "Morrison Av-Soundview"])],
       ["13429", new Set(["110 St", "145 St", "Wakefield-241 St"])],
       ["12654", new Set(["Babylon", "Forest Hills", "Hollis"])],
@@ -105,11 +115,17 @@ describe("ADA project status classifications", () => {
       (station) => station.station === "137 St-City College",
     );
 
-    expect(cityCollege).toMatchObject({
-      latitude: 40.821575,
-      longitude: -73.95381,
-      projectStatus: "under_construction",
-    });
+    if (cityCollegeOpened) {
+      // The news auto-updater verified the downtown side opened.
+      expect(cityCollege).toBeUndefined();
+      return;
+    }
+
+    // Coordinates average the in-service elevators, which shift slightly as
+    // units enter service; keep them within the station footprint.
+    expect(cityCollege).toMatchObject({ projectStatus: "under_construction" });
+    expect(cityCollege!.latitude).toBeCloseTo(40.8215, 3);
+    expect(cityCollege!.longitude).toBeCloseTo(-73.954, 2);
     expect(cityCollege?.note).toMatch(
       /uptown access is open.*downtown.*under construction/i,
     );

@@ -16,6 +16,17 @@ const subwayAssets = await readJson(
 const regionalRailAccessibility = await readJson(
   "data/mta-regional-rail-accessibility.json",
 );
+const accessibilityNews = await readJsonIfExists("data/accessibility-news.json");
+// Stations the news auto-updater has verified as opened drop off the project
+// map so they are not shown as both accessible and under construction.
+const openedStations = (accessibilityNews?.openings ?? [])
+  .filter(
+    (opening) => opening.applied && opening.resultingStatus === "Accessible",
+  )
+  .map((opening) => ({
+    services: opening.services.map(normalizeRoute),
+    station: normalize(opening.station),
+  }));
 
 const FUNDED_PROJECT = {
   projectId: "9999902",
@@ -315,7 +326,19 @@ const stations = [
   ...activeAccessibleStationMarkers,
   ...accessibleUpgradeMarkers,
   ...regionalProjectMarkers,
-].sort(
+]
+  .filter(
+    (marker) =>
+      marker.projectStatus === "upgrade_to_accessible_station" ||
+      !openedStations.some(
+        (opened) =>
+          opened.station === normalize(marker.station) &&
+          marker.services.some((service) =>
+            opened.services.includes(normalizeRoute(service)),
+          ),
+      ),
+  )
+  .sort(
   (left, right) =>
     left.station.localeCompare(right.station, undefined, { numeric: true }) ||
     left.line.localeCompare(right.line),
@@ -342,6 +365,7 @@ const output = {
     "data/mta-capital-elevator-escalator-projects.json",
     "data/mta-subway-elevator-escalator-assets.json",
     "data/mta-regional-rail-accessibility.json",
+    "data/accessibility-news.json",
   ],
   methodology:
     "Each marker receives one primary status. New-station and already-accessible upgrade scopes take precedence over project phase; remaining projects are grouped by construction, design/study, or funded/planned phase.",
@@ -483,6 +507,15 @@ function toTransitRouteKeys(agency, services) {
 
 function slug(value) {
   return normalize(value).replace(/\s+/g, "-");
+}
+
+async function readJsonIfExists(relativePath) {
+  try {
+    return await readJson(relativePath);
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
+  }
 }
 
 async function readJson(relativePath) {

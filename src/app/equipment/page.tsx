@@ -104,10 +104,10 @@ export default async function EquipmentPage() {
 
       <section className="space-y-4">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--accent-600)]">
+          <p className="text-xs font-extrabold tracking-normal text-[var(--accent-600)]">
             NYCTA detailed inventory
           </p>
-          <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-[var(--ink)]">
+          <h2 className="mt-1 text-xl font-bold tracking-[-0.02em] text-[var(--ink)]">
             Subway asset records and scheduled outages
           </h2>
           <p className="mt-2 text-sm leading-6 text-[var(--muted-strong)]">
@@ -153,10 +153,10 @@ function EquipmentMetric({
         <SiteIcon className="text-[21px]" name={icon} />
       </span>
       <div>
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-[var(--muted)]">
+        <p className="text-[11px] font-extrabold tracking-normal text-[var(--muted)]">
           {label}
         </p>
-        <p className="mt-0.5 text-2xl font-black tracking-[-0.04em] text-[var(--ink)]">
+        <p className="mt-0.5 text-2xl font-bold tracking-[-0.02em] text-[var(--ink)]">
           {value.toLocaleString()}
         </p>
       </div>

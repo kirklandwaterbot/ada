@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vitest";
-import accessibleStations from "../../data/accessible-station-coordinates.json";
+import accessibleStationData from "../../data/accessible-station-coordinates.json";
+import { NEWS_SYNC_MARKER, newsVerifiedOpening } from "./news-verified";
+
+// Markers added by the news auto-updater are covered by its own tests; these
+// checks pin the hand-curated set.
+const accessibleStations = {
+  ...accessibleStationData,
+  stations: accessibleStationData.stations.filter(
+    (station) => (station as { verifiedBy?: string }).verifiedBy !== NEWS_SYNC_MARKER,
+  ),
+};
+const cityCollegeOpened = Boolean(newsVerifiedOpening("137 St-City College", ["1"]));
 
 const RAMP_OR_LEVEL_METHODS = new Set([
   "accessible_entrance",
@@ -31,7 +42,7 @@ describe("accessible station coordinate classifications", () => {
     ).toHaveLength(10);
     expect(
       fullAccess.filter((station) => station.accessMethod === "elevator"),
-    ).toHaveLength(5);
+    ).toHaveLength(cityCollegeOpened ? 6 : 5);
   });
 
   it("uses one elevator-served marker for the entire 149 St-Hostos complex", () => {
@@ -55,8 +66,9 @@ describe("accessible station coordinate classifications", () => {
       ),
     ).toMatchObject({
       equipmentCodes: ["EL519"],
-      statusLabel:
-        "Partially accessible station (uptown only; downtown elevator under construction)",
+      statusLabel: cityCollegeOpened
+        ? "Accessible station"
+        : "Partially accessible station (uptown only; downtown elevator under construction)",
     });
     expect(
       accessibleStations.stations.find(
