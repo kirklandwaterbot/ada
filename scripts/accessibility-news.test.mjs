@@ -22,6 +22,7 @@ import {
   headlineSimilarity,
   parseRssItems,
   parseWordPressPosts,
+  searchTerms,
   parseGoogleNewsRss,
   parseMtaPressReleaseListing,
   parseRedditAtom,
@@ -468,8 +469,11 @@ test("reads the article to name the station when the headline doesn't", async ()
       : null;
   };
 
+  // The same story from a second search query is read only once.
+  rawItems.push({ ...rawItems[0] });
   await enrichWithGlimpses({ accessibilityData: data, fetchGlimpse, previous: null, rawItems });
   assert.equal(fetched.length, 4);
+  assert.equal(rawItems.at(-1).glimpse, "found");
 
   const { changes, file } = buildNewsFile({
     accessibilityData: data,
@@ -548,7 +552,12 @@ test("finds an article through the publisher's WordPress API or RSS feed only", 
   assert.equal(viaRss.via, "rss");
 
   const nothing = async () => new Response("forbidden", { status: 403 });
-  assert.equal(await fetchArticleGlimpse({ sourceUrl: "https://example.org", title: "Anything" }, { fetchImpl: nothing }), null);
+  const blocked = await fetchArticleGlimpse({ sourceUrl: "https://example.org", title: "Anything" }, { fetchImpl: nothing });
+  assert.equal(blocked.text, undefined);
+  assert.equal(blocked.failures.length, 3);
+
+  assert.equal(searchTerms("Brooklyn’s oldest underground subway station is now accessible"), "brooklyn oldest underground subway station accessible");
+  assert.equal(searchTerms("Rail News - New York MTA completes Kings Highway station accessibility upgrades. For Railroad Career Professionals"), "new york mta completes kings highway");
 });
 
 test("adds later coverage of an opening as another source", () => {

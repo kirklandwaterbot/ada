@@ -390,7 +390,10 @@ export async function fetchArticleGlimpse({ sourceUrl, title }, { fetchImpl } = 
     return null;
   }
 
-  const terms = normalizeHeadline(title).split(" ").filter((word) => word.length > 2).slice(0, 8).join(" ");
+  // WordPress search ANDs every word with LIKE, so use plain distinctive words:
+  // drop possessives ("Brooklyn’s" → "Brooklyn"), short words, and site
+  // boilerplate that isn't part of the headline itself.
+  const terms = searchTerms(title);
   const attempts = [
     {
       parse: (body) => parseWordPressPosts(JSON.parse(body)),
@@ -401,16 +404,36 @@ export async function fetchArticleGlimpse({ sourceUrl, title }, { fetchImpl } = 
     { parse: parseRssItems, url: `${origin}/rss`, via: "rss" },
   ];
 
+  const failures = [];
   for (const attempt of attempts) {
     try {
       const body = await getText(attempt.url, {}, fetchImpl);
-      const match = bestMatch(attempt.parse(body), title);
+      const candidates = attempt.parse(body);
+      const match = bestMatch(candidates, title);
       if (match?.text) {
         return { articleUrl: match.url, text: match.text.slice(0, 2_000), via: attempt.via };
       }
-    } catch {
+      failures.push(`${attempt.via}: ${candidates.length} item(s), none matched`);
+    } catch (error) {
       // Not offered by this publisher (404/403/not JSON); try the next channel.
+      const status = String(error?.message ?? error).match(/HTTP \d{3}[^.]*/)?.[0];
+      failures.push(`${attempt.via}: ${status ?? "unreadable"}`);
     }
   }
-  return null;
+  return { failures };
+}
+
+const HEADLINE_BOILERPLATE = /^(?:rail news|exclusive|photos|icymi|video|watch|update)\s*[-:|]\s*|\.?\s*for railroad career professionals$/gi;
+
+export function searchTerms(title) {
+  const cleaned = stripTags(title)
+    .replace(HEADLINE_BOILERPLATE, "")
+    .replace(/['’‘]s\b/gi, "")
+    .replace(/['’‘]/g, "");
+  const stop = new Set(["the", "and", "for", "with", "its", "now", "gets", "after", "into", "from", "this", "that"]);
+  return normalizeHeadline(cleaned)
+    .split(" ")
+    .filter((word) => word.length > 2 && !stop.has(word))
+    .slice(0, 6)
+    .join(" ");
 }

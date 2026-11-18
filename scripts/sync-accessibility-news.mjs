@@ -69,7 +69,11 @@ const glimpses = await enrichWithGlimpses({
 if (glimpses.length > 0) {
   console.log("\nRead articles for headlines without a station:");
   for (const glimpse of glimpses) {
-    console.log(`  ${glimpse.found ? `✓ via ${glimpse.via}` : "✗ not available"}  ${glimpse.title}`);
+    console.log(
+      `  ${glimpse.found ? `✓ via ${glimpse.via}` : "✗ not available"}  ${glimpse.title}${
+        glimpse.failures?.length ? `\n      ${glimpse.failures.join("; ")}` : ""
+      }`,
+    );
   }
 }
 

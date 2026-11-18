@@ -163,10 +163,20 @@ export async function enrichWithGlimpses({ accessibilityData, fetchGlimpse, now 
   const index = buildStationIndex(accessibilityData.stations);
   const previousById = new Map((previous?.feed ?? []).map((item) => [item.id, item]));
   const log = [];
+  const byUrl = new Map();
   let fetched = 0;
 
   for (const raw of rawItems) {
     if (raw.kind !== "news" || raw.lead) continue;
+    // The same story often comes back from several searches; read it once.
+    const earlier = byUrl.get(raw.url);
+    if (earlier) {
+      for (const key of ["articleUrl", "glimpse", "glimpsedAt", "lead"]) {
+        if (earlier[key] !== undefined) raw[key] = earlier[key];
+      }
+      continue;
+    }
+    byUrl.set(raw.url, raw);
     const detection = detectOpening({ title: raw.title });
     if (!detection.isOpening) continue;
     const resolution = resolveStations({ text: raw.title }, index);
@@ -185,7 +195,7 @@ export async function enrichWithGlimpses({ accessibilityData, fetchGlimpse, now 
     fetched += 1;
 
     const glimpse = await fetchGlimpse(raw);
-    if (glimpse) {
+    if (glimpse?.text) {
       Object.assign(raw, {
         articleUrl: glimpse.articleUrl,
         glimpse: "found",
@@ -195,7 +205,7 @@ export async function enrichWithGlimpses({ accessibilityData, fetchGlimpse, now 
       log.push({ found: true, title: raw.title, via: glimpse.via });
     } else {
       Object.assign(raw, { glimpse: "unavailable", glimpsedAt: now.toISOString() });
-      log.push({ found: false, title: raw.title });
+      log.push({ failures: glimpse?.failures ?? [], found: false, title: raw.title });
     }
   }
   return log;
