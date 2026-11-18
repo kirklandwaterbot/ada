@@ -184,7 +184,7 @@ async function getText(url, options = {}, fetchImpl) {
 
 const quietLogger = { log() {}, warn(message) { console.warn(`  ${message}`); }, error: console.error };
 
-export async function fetchMtaReleases({ fetchImpl, lookbackMs, now = Date.now(), pages = 3 }) {
+export async function fetchMtaReleases({ fetchImpl, lookbackMs, now = Date.now(), pages = 12 }) {
   const listings = [];
   for (let page = 0; page < pages; page += 1) {
     const params = new URLSearchParams({
@@ -202,7 +202,12 @@ export async function fetchMtaReleases({ fetchImpl, lookbackMs, now = Date.now()
     const markup = commands.find(
       (command) => command?.command === "insert" && typeof command.data === "string" && command.data.includes("press-release"),
     )?.data;
-    listings.push(...(markup ? parseMtaPressReleaseListing(markup) : []));
+    const pageReleases = markup ? parseMtaPressReleaseListing(markup) : [];
+    listings.push(...pageReleases);
+    // Stop paging once a whole page is older than the lookback window.
+    if (pageReleases.length === 0 || pageReleases.every((release) => now - Date.parse(release.publishedAt) > lookbackMs)) {
+      break;
+    }
   }
 
   const relevant = listings.filter(
@@ -216,6 +221,8 @@ export async function fetchMtaReleases({ fetchImpl, lookbackMs, now = Date.now()
   for (const release of relevant) {
     let lead = "";
     try {
+      // Some article pages refuse automated requests. The tracker identifies
+      // itself honestly and falls back to the headline when that happens.
       lead = extractArticleLead(await getText(release.url, {}, fetchImpl));
     } catch (error) {
       console.warn(`  Could not read ${release.url}: ${error.message}`);
@@ -240,7 +247,7 @@ export async function fetchGoogleNews({ fetchImpl, queries = GOOGLE_NEWS_QUERIES
   return { items, scanned: items.length };
 }
 
-export async function fetchReddit({ env = process.env, fetchImpl, subreddits = REDDIT_SUBREDDITS }) {
+export async function fetchReddit({ env = process.env, fetchImpl, redditDelayMs = 2_500, subreddits = REDDIT_SUBREDDITS }) {
   const query = new URLSearchParams({
     limit: "50",
     q: REDDIT_QUERY,
@@ -270,7 +277,9 @@ export async function fetchReddit({ env = process.env, fetchImpl, subreddits = R
   const items = [];
   const modes = new Set();
   let failures = 0;
-  for (const subreddit of subreddits) {
+  for (const [position, subreddit] of subreddits.entries()) {
+    // Reddit rate-limits anonymous clients hard; space requests out.
+    if (position > 0 && !token) await new Promise((resolve) => setTimeout(resolve, redditDelayMs));
     try {
       const result = await fetchSubreddit(subreddit, query, token, fetchImpl);
       modes.add(result.mode);

@@ -122,7 +122,15 @@ const STRONG_OPENING_PATTERNS = [
   /\bfinish(?:es|ed)\b.{0,60}\b(?:ada|accessib\w*|elevators?)\b/,
   /\bunveil(?:s|ed)?\b.{0,50}\b(?:accessib\w*|elevators?)\b/,
   /\bada makeover\b/,
+  /\badds?\b.{0,80}\blist of (?:fully )?accessible\b/,
+  /\bjoins?\b.{0,60}\blist of (?:fully )?accessible\b/,
 ];
+
+// Neutral MTA headlines ("MTA Announces Accessibility Upgrades at X") are
+// usually openings, but sometimes partnerships for future work. Without the
+// article text they are flagged for review rather than applied.
+const TENTATIVE_TITLE_PATTERN =
+  /\b(?:unveils?|announces?|celebrates?|delivers?)\b.{0,60}\baccessib\w*\b.{0,40}\b(?:at|for)\b/;
 
 const FUTURE_PATTERNS = [
   /\bupcoming\b/,
@@ -202,9 +210,12 @@ export function detectOpening({ title, lead = "" }) {
   const combined = `${normalizedTitle} ${leadSentences.join(" ")}`;
   const partial = PARTIAL_PATTERN.test(combined) && !FULL_PATTERN.test(combined);
 
+  const isOpening = score >= 2 && !titleFuture;
   return {
     future: titleFuture,
-    isOpening: score >= 2 && !titleFuture,
+    isOpening,
+    tentative:
+      !isOpening && !titleFuture && !lead.trim() && TENTATIVE_TITLE_PATTERN.test(normalizedTitle),
     leadStrong,
     partial,
     score,

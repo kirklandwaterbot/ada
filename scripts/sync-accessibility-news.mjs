@@ -96,7 +96,7 @@ async function collect() {
   const rawItems = [];
   const runs = [
     ["MTA press releases", "mta", () => fetchMtaReleases({ lookbackMs: LOOKBACK_DAYS * 864e5 })],
-    ["News outlets (Google News)", "news", () => fetchGoogleNews({ windowDays: Math.min(LOOKBACK_DAYS, 60) })],
+    ["News outlets (Google News)", "news", () => fetchGoogleNews({ windowDays: LOOKBACK_DAYS })],
     ["Reddit", "reddit", () => fetchReddit({})],
   ];
 

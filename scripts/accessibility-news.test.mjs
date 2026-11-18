@@ -362,6 +362,36 @@ test("keeps Reddit working when one subreddit fails and filters out other cities
     if (target.includes("/r/Subways/")) return Response.json(listing("Toronto Main St station elevators open"));
     return Response.json(listing("Junius St elevators are open"));
   };
-  const result = await fetchReddit({ env: {}, fetchImpl, subreddits: ["nyc", "nycrail", "Subways"] });
+  const result = await fetchReddit({ env: {}, fetchImpl, redditDelayMs: 0, subreddits: ["nyc", "nycrail", "Subways"] });
   assert.deepEqual(result.items.map((item) => item.title), ["Junius St elevators are open"]);
+});
+
+test("handles MTA headlines when the article page can't be read", () => {
+  const data = baseData();
+  const mta = (title) => ({
+    kind: "mta",
+    lead: "",
+    publishedAt: recent(20),
+    sourceName: "MTA",
+    title,
+    url: `https://www.mta.info/press-release/${encodeURIComponent(title)}`,
+  });
+  const { changes, file } = buildNewsFile({
+    accessibilityData: data,
+    now: new Date(),
+    previous: null,
+    rawItems: [
+      mta("MTA Adds 137 St-City College 1 to Growing List of Accessible Subway Stations"),
+      mta("MTA Announces Accessibility Upgrades at Steinway St M/R Subway Station"),
+      mta("ICYMI: Governor Hochul Announces Groundbreaking of Bryant Park Accessibility Project"),
+    ],
+    review: {},
+    sources: [],
+  });
+  // Clear headline: applied. Neutral headline: held for review. Groundbreaking: ignored.
+  assert.deepEqual(changes.map((change) => change.key.split("|")[0]), ["137 St-City College"]);
+  const steinway = file.feed.find((item) => item.title.includes("Steinway"));
+  assert.equal(steinway.status, "needs-review");
+  assert.equal(file.openings.some((opening) => opening.station === "Steinway St"), false);
+  assert.equal(file.feed.find((item) => item.title.includes("Bryant Park")).opening, false);
 });

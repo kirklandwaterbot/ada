@@ -85,8 +85,9 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     (review.rejectUrls ?? []).includes(raw.url) ||
     proofUrls.some((url) => (review.rejectUrls ?? []).includes(url));
 
+  const considered = detection.isOpening || detection.tentative;
   const resolution =
-    detection.isOpening && !rejected
+    considered && !rejected
       ? resolveStations(
           {
             partial: detection.partial,
@@ -103,7 +104,8 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
   );
 
   let status;
-  if (!detection.isOpening) status = rejected ? "rejected" : "news";
+  if (detection.tentative && !rejected) status = rows.length > 0 ? "needs-review" : resolution.reason === "already-accessible" ? "already-accessible" : "news";
+  else if (!detection.isOpening) status = rejected ? "rejected" : "news";
   else if (rows.length > 0) status = tier === "official" || tier === "news" ? "verified" : "needs-review";
   else if (resolution.reason === "already-accessible") status = "already-accessible";
   else status = "needs-review";
@@ -114,7 +116,8 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       discussionUrl: raw.kind === "reddit" ? raw.url : null,
       id: itemId(raw.url),
       kind: raw.kind,
-      opening: detection.isOpening,
+      opening: detection.isOpening || (detection.tentative && rows.length > 0),
+      tentative: detection.tentative,
       partial: detection.partial,
       proofUrls,
       publishedAt: raw.publishedAt,
@@ -139,7 +142,7 @@ export function buildOpenings(evaluated, index, previousOpenings = []) {
   }
 
   for (const { item, rows } of evaluated) {
-    if (!item.opening) continue;
+    if (!item.opening || item.tentative) continue;
     for (const rowIndex of rows) {
       const row = index.stations[rowIndex];
       const key = stationKey(row);
