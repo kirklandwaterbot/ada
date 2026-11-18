@@ -446,6 +446,16 @@ export function resolveStations({ text, routeText = text, partial = false }, ind
 
     let candidates;
     if (routeMatched.length > 0) {
+      // Line names picked up anywhere in an article can include a passing
+      // mention ("…a short walk from the R"). If they point at both
+      // accessible and inaccessible platforms of the same station, don't guess.
+      const mixed =
+        trailingMatched.length === 0 &&
+        new Set(routeMatched.map(({ row }) => row.accessibilityStatus === "Accessible")).size > 1;
+      if (mixed) {
+        reasons.push(`ambiguous:${variant}`);
+        continue;
+      }
       candidates = routeMatched;
     } else {
       // No usable route bullets: only proceed when the name is unambiguous.

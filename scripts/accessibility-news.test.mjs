@@ -139,6 +139,15 @@ test("resolves stations using route bullets and refuses to guess", () => {
     "already-accessible",
   );
 
+  // A passing mention of the R elsewhere in an article must not flip it.
+  assert.deepEqual(
+    resolveStations({
+      routeText: "Borough Hall serves the 2, 3, 4, and 5 trains. The R train stops at Court St nearby.",
+      text: "Borough Hall station is now fully accessible",
+    }, index).rows,
+    [],
+  );
+
   // Partial → full upgrade.
   assert.deepEqual(pick(resolveStations({ text: "137 St-City College 1 train station is now ADA accessible" }, index)), ["137 St-City College 1"]);
 
@@ -433,7 +442,8 @@ const GLIMPSE_CASES = [
     title: "118-Year-Old Brooklyn Subway Station Gets an ADA Makeover",
   },
   {
-    glimpse: "The MTA finished a renovation of Downtown Brooklyn's Borough Hall station, adding elevators to every platform. The station serves the 2, 3, 4, and 5 trains.",
+    // The lines come late in the article, as in the live 6sqft story.
+    glimpse: `The MTA finished a renovation of Downtown Brooklyn's Borough Hall station, adding elevators to every platform. ${"Crews also rebuilt platform edges and installed new lighting throughout the station. ".repeat(12)}The station serves the 2, 3, 4, and 5 trains.`,
     sourceName: "6sqft",
     sourceUrl: "https://www.6sqft.com",
     title: "Brooklyn’s oldest underground subway station is now accessible",

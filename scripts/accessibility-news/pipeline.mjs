@@ -94,7 +94,9 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       ? resolveStations(
           {
             partial: detection.partial,
-            routeText: `${title}. ${lead.slice(0, 600)}`,
+            // An article read for a vague headline may name the lines further
+            // down, so scan all of it for route bullets.
+            routeText: `${title}. ${raw.glimpse === "found" ? lead : lead.slice(0, 600)}`,
             text: `${title}. ${lead.slice(0, raw.kind === "reddit" ? 400 : 900)}`,
           },
           index,
