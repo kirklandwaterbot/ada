@@ -1,8 +1,1078 @@
 {
   "version": 2,
-  "checkedAt": null,
+  "checkedAt": "2026-11-18T16:41:31.959Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
-  "sources": [],
-  "openings": [],
-  "feed": []
+  "sources": [
+    {
+      "checkedAt": "2026-11-18T16:41:39.004Z",
+      "itemCount": 11,
+      "kind": "mta",
+      "name": "MTA press releases",
+      "status": "ok"
+    },
+    {
+      "checkedAt": "2026-11-18T16:41:40.103Z",
+      "itemCount": 78,
+      "kind": "news",
+      "name": "News outlets (Google News)",
+      "status": "ok"
+    },
+    {
+      "checkedAt": "2026-11-18T16:41:54.155Z",
+      "error": "Every subreddit request failed.",
+      "itemCount": 0,
+      "kind": "reddit",
+      "lastSuccessAt": null,
+      "name": "Reddit",
+      "status": "failed"
+    }
+  ],
+  "openings": [
+    {
+      "line": "Broadway-7 Av Line",
+      "services": [
+        "1"
+      ],
+      "slug": "137-st-city-college-broadway-7-av-line-1",
+      "station": "137 St-City College",
+      "applied": true,
+      "evidence": [
+        {
+          "discussionUrl": null,
+          "id": "530531687167",
+          "kind": "mta",
+          "partial": false,
+          "publishedAt": "2026-10-14T20:15:00.000Z",
+          "source": "MTA",
+          "tier": "official",
+          "title": "MTA Adds 137 St-City College 1 to Growing List of Accessible Subway Stations",
+          "url": "https://www.mta.info/press-release/mta-adds-137-st-city-college-1-growing-list-of-accessible-subway-stations"
+        },
+        {
+          "discussionUrl": null,
+          "id": "889d9272c955",
+          "kind": "news",
+          "partial": false,
+          "publishedAt": "2026-10-14T07:00:00.000Z",
+          "source": "amNewYork",
+          "tier": "news",
+          "title": "West Harlem’s 137 St-City College 1 train station is now ADA accessible with installation of two new elevators",
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNc1RxR3dtX1psbW5oN1dqNVdBbmduT1dULXFBcVNzUkw3azRoMVVoZVNXZEl4UUtrWEtrenZVUmY3RE01ME45OTdUcXZqSjdSSlpWb2dHbS12eUx3eHJRVnpZVlBqbDQxR3J4Z2lNdHp2em84OGhYMWhscHdfYk92V2Jybm04Z3ctUzFteEExYXI?oc=5"
+        }
+      ],
+      "key": "137 St-City College|Broadway-7 Av Line|1",
+      "openedAt": "2026-10-14T07:00:00.000Z",
+      "primarySource": {
+        "source": "MTA",
+        "title": "MTA Adds 137 St-City College 1 to Growing List of Accessible Subway Stations",
+        "url": "https://www.mta.info/press-release/mta-adds-137-st-city-college-1-growing-list-of-accessible-subway-stations"
+      },
+      "readyToApply": true,
+      "resultingStatus": "Accessible",
+      "verification": "official",
+      "appliedAt": "2026-11-18T16:41:54.226Z"
+    },
+    {
+      "line": "Culver Line",
+      "services": [
+        "F"
+      ],
+      "slug": "kings-hwy-culver-line-f",
+      "station": "Kings Hwy",
+      "applied": true,
+      "evidence": [
+        {
+          "discussionUrl": null,
+          "id": "ed6a94de6274",
+          "kind": "mta",
+          "partial": false,
+          "publishedAt": "2026-08-19T18:30:00.000Z",
+          "source": "MTA",
+          "tier": "official",
+          "title": "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
+          "url": "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations"
+        },
+        {
+          "discussionUrl": null,
+          "id": "17d5e787e924",
+          "kind": "news",
+          "partial": false,
+          "publishedAt": "2026-08-19T07:00:00.000Z",
+          "source": "amNewYork",
+          "tier": "news",
+          "title": "MTA unveils new elevators at now ADA accessible Kings Highway Brooklyn F train station",
+          "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOQ09fZF9ianFJNldYUTllazF2eVlobmxWS05UTVozU2lybzh1STlLRHVJaENNcjlzd1NWbWtWQnhDZTZwRGR2STNOQ0haLWt0aDBsLXo3bWQ2TXdZN3dzUjVIRElCNm5zNWk4cjh2WnlBY0tfVEVldjdFZ1dOb0JSTVhzZE53WktINDBoOTU4ZEU4MDE5OGlZNVRsT3VUbUpz?oc=5"
+        }
+      ],
+      "key": "Kings Hwy|Culver Line|F",
+      "openedAt": "2026-08-19T07:00:00.000Z",
+      "primarySource": {
+        "source": "MTA",
+        "title": "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
+        "url": "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations"
+      },
+      "readyToApply": true,
+      "resultingStatus": "Accessible",
+      "verification": "official",
+      "appliedAt": "2026-11-18T16:41:54.226Z"
+    }
+  ],
+  "feed": [
+    {
+      "discussionUrl": null,
+      "id": "f80ed2a8da7a",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMivAFBVV95cUxOQUpaZF81TlNlTldncWVJV1hfX19zbXFjQnM2RTNUUjJBSWp2QXc1OUptNENOY1M2NUpkc0E2UGFTQ01ocFhSOHpHTFFTT1hQN0htZlBmMjZCM0pZdFpzbmVIMDhCNS1INGhwUFhDUS1TVE1pUnhMQzZEVFVHUExvZEN1aWxmNHBJOWQwRlJNSlRKVHE1UVJVR1B6R25MbDdUcDI5QXJpN2NSWExmTVZCV29nbWlpLTBkTGF1SQ?oc=5"
+      ],
+      "publishedAt": "2026-11-17T15:08:52.000Z",
+      "reason": "not-opening",
+      "source": "Bushwick Daily",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "Myrtle Av Subway Bottleneck: MTA Funds Elevators, Not a Junction Fix",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOQUpaZF81TlNlTldncWVJV1hfX19zbXFjQnM2RTNUUjJBSWp2QXc1OUptNENOY1M2NUpkc0E2UGFTQ01ocFhSOHpHTFFTT1hQN0htZlBmMjZCM0pZdFpzbmVIMDhCNS1INGhwUFhDUS1TVE1pUnhMQzZEVFVHUExvZEN1aWxmNHBJOWQwRlJNSlRKVHE1UVJVR1B6R25MbDdUcDI5QXJpN2NSWExmTVZCV29nbWlpLTBkTGF1SQ?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "b697e9119975",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMifkFVX3lxTFBGN1FSSV81V2lpaDJKR3dHY1pId3ZtaVR1WS1YWlBOVURSWnNmRm9fdndtMTl0TmRYdGZDLVhfUnJERTduZmROaGZXOVFENUh0cXg5bkJ2R0UzZ0hIZ3dvekt5bHFtcGRrX3NkSWxBWDZ5VEZCTDBuaWRuRzcxQQ?oc=5"
+      ],
+      "publishedAt": "2026-11-05T19:30:14.000Z",
+      "reason": "not-opening",
+      "source": "Brooklyn News Service",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "New Elevators, Same Problems",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBGN1FSSV81V2lpaDJKR3dHY1pId3ZtaVR1WS1YWlBOVURSWnNmRm9fdndtMTl0TmRYdGZDLVhfUnJERTduZmROaGZXOVFENUh0cXg5bkJ2R0UzZ0hIZ3dvekt5bHFtcGRrX3NkSWxBWDZ5VEZCTDBuaWRuRzcxQQ?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "e9b2dcee1517",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOVV9OQW9Qajg0OGxBYWE1UW1SdVlFZFItT2IwT0c0eXZJYWhVMWhvM2NfbGxoZTAtOWdMRzMwT2Q2c243YjhiaUdCYlE5V0xPbkJDSkdSanVsRUpObEpPVDNSaGJHelZ1cEFFRTMybll3NXgyeGlqclNFOFpkWG5KM0VvcXRUVWtkcHhCTE10MEdHSUxla3o3U3dKZE42Q0ZPNDhZYzRhR2E?oc=5"
+      ],
+      "publishedAt": "2026-10-29T16:56:00.000Z",
+      "reason": "already-accessible",
+      "source": "BKReader",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA Opens Modernized Elevator at Coney Island Station",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOVV9OQW9Qajg0OGxBYWE1UW1SdVlFZFItT2IwT0c0eXZJYWhVMWhvM2NfbGxoZTAtOWdMRzMwT2Q2c243YjhiaUdCYlE5V0xPbkJDSkdSanVsRUpObEpPVDNSaGJHelZ1cEFFRTMybll3NXgyeGlqclNFOFpkWG5KM0VvcXRUVWtkcHhCTE10MEdHSUxla3o3U3dKZE42Q0ZPNDhZYzRhR2E?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "56de8ac5c57f",
+      "kind": "mta",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/photos-mta-announces-modernized-elevator-opens-coney-island-stillwell-av-subway"
+      ],
+      "publishedAt": "2026-10-27T17:30:00.000Z",
+      "reason": "not-opening",
+      "source": "MTA",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "official",
+      "title": "PHOTOS: MTA Announces Modernized Elevator Opens at Coney Island-Stillwell Av Subway Station",
+      "url": "https://www.mta.info/press-release/photos-mta-announces-modernized-elevator-opens-coney-island-stillwell-av-subway"
+    },
+    {
+      "discussionUrl": null,
+      "id": "dd602d7d7d64",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMisAFBVV95cUxQTVdITDF2cDBrU1JiaXlScmE3cWZMcTFwVThEZDBIbmRHbkNIeXVERkNwN0VxNkNvem9SVWFMY2QtNkNSVm5DTm00aDVWTlhQZ09rSHl1ekQyZXJwQ0NCR0dOdi1kdkhiSi1zN0otVHJyczZmUnFtbUcwNDNWTE1JSTB0ei1KdzVfTFZna0hvRTlHTm1DeTZjcEVWRl9UVzQ5S3h6UlBhU2hxRkRGTjdCMw?oc=5"
+      ],
+      "publishedAt": "2026-10-26T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "New York Post",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA spent $26.7M on Yankee Stadium elevators but riders still face unreliable service — with two lifts not even working",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQTVdITDF2cDBrU1JiaXlScmE3cWZMcTFwVThEZDBIbmRHbkNIeXVERkNwN0VxNkNvem9SVWFMY2QtNkNSVm5DTm00aDVWTlhQZ09rSHl1ekQyZXJwQ0NCR0dOdi1kdkhiSi1zN0otVHJyczZmUnFtbUcwNDNWTE1JSTB0ei1KdzVfTFZna0hvRTlHTm1DeTZjcEVWRl9UVzQ5S3h6UlBhU2hxRkRGTjdCMw?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "891fde621059",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMilgFBVV95cUxQSDdFbWRYbnJPUzRtRVFUYXI0SlNMT1JjYUFHTlM3YlNLYjk2VmFZUDlMNUdsQkM0SlpXOTZGVFZyS2VxcjEwUll5d3pVR0RPcUdPVUpUUGh3SUNTdDlyZUlDTlN6Y2dxSHF6cjJiUmNaX1V5bnFibjJhb2hCYnozM2JlaGRvb3RSS0lualJ5VU5veWtYUXc?oc=5"
+      ],
+      "publishedAt": "2026-10-23T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "The City Reporter",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "New Subway Elevators at Yankee Stadium Slump With Outages For Months",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQSDdFbWRYbnJPUzRtRVFUYXI0SlNMT1JjYUFHTlM3YlNLYjk2VmFZUDlMNUdsQkM0SlpXOTZGVFZyS2VxcjEwUll5d3pVR0RPcUdPVUpUUGh3SUNTdDlyZUlDTlN6Y2dxSHF6cjJiUmNaX1V5bnFibjJhb2hCYnozM2JlaGRvb3RSS0lualJ5VU5veWtYUXc?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "a2fd73e2ade1",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMipwFBVV95cUxQemZxWU1lUmtKNUljWmJURnVSY3VrX0Mxa2xDWjYtYm9LMnBDQkVRcTJpb0FRaDhyQWtBZjc0NG8yclQzQW9ZZkRWN19PS0pjU2U2bDhIWmRUNHRTZGVKNkVqUm5qTlI5VWNqRnJMNGhYSFlrVVY0WU9ZN1drUVVEOTJ5M01Rb3c5VTIzMGF4NW1kYkI4RlJGaXVtS3FiS1Vqd2tMVkpRaw?oc=5"
+      ],
+      "publishedAt": "2026-10-23T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Construction Owners",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "STV to Manage Midtown Manhattan Subway ADA Upgrades",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQemZxWU1lUmtKNUljWmJURnVSY3VrX0Mxa2xDWjYtYm9LMnBDQkVRcTJpb0FRaDhyQWtBZjc0NG8yclQzQW9ZZkRWN19PS0pjU2U2bDhIWmRUNHRTZGVKNkVqUm5qTlI5VWNqRnJMNGhYSFlrVVY0WU9ZN1drUVVEOTJ5M01Rb3c5VTIzMGF4NW1kYkI4RlJGaXVtS3FiS1Vqd2tMVkpRaw?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "a6f8cf448089",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNZlgyYy1MV25vNG5MS0hLOWx1N0JWM3pJeHptUDhlbEh0NDQ1ZzdBaElDc0JPRmprQkdIR29IZjg4YWNkX29mUzExSm5MSXZteC1aTGJ5cmY1anhsWUMzZmg0XzVJb1ltQU1HelhWZlFDUlo4OGtFeFYwM1MxRG9FVy11VFhmOVh0VTQ0Sks3U2xPUTMtWEg4YmwxaG5fc1VmVFdoZHMxYzROQQ?oc=5"
+      ],
+      "publishedAt": "2026-10-16T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Railway Track and Structures",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "MTA Reaches 164 Accessible Stations, Breaks Ground on Bryant Park Project",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNZlgyYy1MV25vNG5MS0hLOWx1N0JWM3pJeHptUDhlbEh0NDQ1ZzdBaElDc0JPRmprQkdIR29IZjg4YWNkX29mUzExSm5MSXZteC1aTGJ5cmY1anhsWUMzZmg0XzVJb1ltQU1HelhWZlFDUlo4OGtFeFYwM1MxRG9FVy11VFhmOVh0VTQ0Sks3U2xPUTMtWEg4YmwxaG5fc1VmVFdoZHMxYzROQQ?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "400c17f2b762",
+      "kind": "mta",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/icymi-governor-hochul-announces-groundbreaking-of-bryant-park-accessibility-project"
+      ],
+      "publishedAt": "2026-10-15T19:45:00.000Z",
+      "reason": "not-opening",
+      "source": "MTA",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "official",
+      "title": "ICYMI: Governor Hochul Announces Groundbreaking of Bryant Park Accessibility Project, One of Six Stations Now Under Construction Funded by Congestion Pricing",
+      "url": "https://www.mta.info/press-release/icymi-governor-hochul-announces-groundbreaking-of-bryant-park-accessibility-project"
+    },
+    {
+      "discussionUrl": null,
+      "id": "4301a72484eb",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMilAFBVV95cUxQMG9MRXpwMnY2LW5TNW9CSzZaWHNNQzZRZ296VEhDN0U5UjNqLTdoTGhLUHZjM3FnTUtibkFQbVZCS3pwQTZQMUxGSXlkVC1UaDZIWmd2Sko5Nkh4c1YzQWRtamFPLTJ3dU5MVFFtZkoxRWR1QkNXUXhFcnNVclFjZ3hHTzNocmdvZ0J1U1RCc0kteV9o?oc=5"
+      ],
+      "publishedAt": "2026-10-15T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "6sqft",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "6 NYC subway stations begin ADA upgrades funded by congestion pricing",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQMG9MRXpwMnY2LW5TNW9CSzZaWHNNQzZRZ296VEhDN0U5UjNqLTdoTGhLUHZjM3FnTUtibkFQbVZCS3pwQTZQMUxGSXlkVC1UaDZIWmd2Sko5Nkh4c1YzQWRtamFPLTJ3dU5MVFFtZkoxRWR1QkNXUXhFcnNVclFjZ3hHTzNocmdvZ0J1U1RCc0kteV9o?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "9cbff01f5e3a",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPVjk2Q2hzYzhxYXNIdlVHaXBybzdhN2VlM1Z5NFlIMmFQMGJZUFBkNVktbGdFdFo3M1NKc3lScGVPeFkxQ3d1bkJOSkZweVlmdW9LZFU5YzNOaVc5Mk1pcUg3aG1XamtvdE1RQ3lxdnBxeEp2T2JWS1ZEeVV4dnJ6Zm1SSzNvWDV5ejNR?oc=5"
+      ],
+      "publishedAt": "2026-10-15T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "amNewYork",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "Congestion pricing dollars at work: MTA says new Bryant Park subway station elevators and other upgrades paid for with Manhattan tolls | amNewYork",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPVjk2Q2hzYzhxYXNIdlVHaXBybzdhN2VlM1Z5NFlIMmFQMGJZUFBkNVktbGdFdFo3M1NKc3lScGVPeFkxQ3d1bkJOSkZweVlmdW9LZFU5YzNOaVc5Mk1pcUg3aG1XamtvdE1RQ3lxdnBxeEp2T2JWS1ZEeVV4dnJ6Zm1SSzNvWDV5ejNR?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "530531687167",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/mta-adds-137-st-city-college-1-growing-list-of-accessible-subway-stations"
+      ],
+      "publishedAt": "2026-10-14T20:15:00.000Z",
+      "reason": "matched",
+      "source": "MTA",
+      "stations": [
+        {
+          "line": "Broadway-7 Av Line",
+          "services": [
+            "1"
+          ],
+          "slug": "137-st-city-college-broadway-7-av-line-1",
+          "station": "137 St-City College"
+        }
+      ],
+      "status": "verified",
+      "subject": true,
+      "tier": "official",
+      "title": "MTA Adds 137 St-City College 1 to Growing List of Accessible Subway Stations",
+      "url": "https://www.mta.info/press-release/mta-adds-137-st-city-college-1-growing-list-of-accessible-subway-stations"
+    },
+    {
+      "discussionUrl": null,
+      "id": "0434971c9b21",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNbkxsSHZJTkNSN1RlakJoa2hGQlVTblR6T1NkM05PZjI4UTllLTV2Z0tyY1lZb3hZY2JpWjdtemVSUFJ5ZXd3eVFtSXlHaHIwMVBmendyQUdMUExadXc4cWRxSjVxZGJUaEVvd19WMTBfaUstS1E3aXE2dGhlUk9Hc256aHdGaHI5a0pZU2RESjlQc3lzWTM5WERpX2F1N3RZWmlqVDNOR193MjdwQ2dxdm9tQkRYcGhqalNubGRTTVc3NUQzTWFpV3hndVltWjZSU0tjdGhvQ1FfUFVoTHR5RXFXeWRDN3J1UFdid1NpcXV0Yl9SNU9rVUQxSGs?oc=5"
+      ],
+      "publishedAt": "2026-10-14T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Kitsap Sun",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "IMPROVED ACCESSIBLE ENTRANCES OPEN AT 161ST STREET–YANKEE STADIUM SUBWAY STATION, EXPANDING ADA ACCESS IN THE BRONX",
+      "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNbkxsSHZJTkNSN1RlakJoa2hGQlVTblR6T1NkM05PZjI4UTllLTV2Z0tyY1lZb3hZY2JpWjdtemVSUFJ5ZXd3eVFtSXlHaHIwMVBmendyQUdMUExadXc4cWRxSjVxZGJUaEVvd19WMTBfaUstS1E3aXE2dGhlUk9Hc256aHdGaHI5a0pZU2RESjlQc3lzWTM5WERpX2F1N3RZWmlqVDNOR193MjdwQ2dxdm9tQkRYcGhqalNubGRTTVc3NUQzTWFpV3hndVltWjZSU0tjdGhvQ1FfUFVoTHR5RXFXeWRDN3J1UFdid1NpcXV0Yl9SNU9rVUQxSGs?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "889d9272c955",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMikAFBVV95cUxNc1RxR3dtX1psbW5oN1dqNVdBbmduT1dULXFBcVNzUkw3azRoMVVoZVNXZEl4UUtrWEtrenZVUmY3RE01ME45OTdUcXZqSjdSSlpWb2dHbS12eUx3eHJRVnpZVlBqbDQxR3J4Z2lNdHp2em84OGhYMWhscHdfYk92V2Jybm04Z3ctUzFteEExYXI?oc=5"
+      ],
+      "publishedAt": "2026-10-14T07:00:00.000Z",
+      "reason": "matched",
+      "source": "amNewYork",
+      "stations": [
+        {
+          "line": "Broadway-7 Av Line",
+          "services": [
+            "1"
+          ],
+          "slug": "137-st-city-college-broadway-7-av-line-1",
+          "station": "137 St-City College"
+        }
+      ],
+      "status": "verified",
+      "subject": true,
+      "tier": "news",
+      "title": "West Harlem’s 137 St-City College 1 train station is now ADA accessible with installation of two new elevators",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNc1RxR3dtX1psbW5oN1dqNVdBbmduT1dULXFBcVNzUkw3azRoMVVoZVNXZEl4UUtrWEtrenZVUmY3RE01ME45OTdUcXZqSjdSSlpWb2dHbS12eUx3eHJRVnpZVlBqbDQxR3J4Z2lNdHp2em84OGhYMWhscHdfYk92V2Jybm04Z3ctUzFteEExYXI?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "9bea15f4953f",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMisAFBVV95cUxNaVhRSVAyS2J3RUNVTXJmQUZqVVNVVlVhOVdaYnlwNFM3alpxQzh5M2FRUXV4WVhzdDNlMnYwVE9fMWJENmZRQTJaVklNMWFSN3oteVNpQmNSdVFIUHpzdnVHSDRHOERlSkFPVTlzNTR6ckxacU9oVmhzd2QzaFZqT1hzMkluYWgtM2t1eWZEUEtEeU5zUnNnb3psLXlBcWRqMVZjb3A0OTlSUFhXeGNpbw?oc=5"
+      ],
+      "publishedAt": "2026-10-09T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Patch",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "East 86th Street Subway Accessibility Project Faces Several Delays",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNaVhRSVAyS2J3RUNVTXJmQUZqVVNVVlVhOVdaYnlwNFM3alpxQzh5M2FRUXV4WVhzdDNlMnYwVE9fMWJENmZRQTJaVklNMWFSN3oteVNpQmNSdVFIUHpzdnVHSDRHOERlSkFPVTlzNTR6ckxacU9oVmhzd2QzaFZqT1hzMkluYWgtM2t1eWZEUEtEeU5zUnNnb3psLXlBcWRqMVZjb3A0OTlSUFhXeGNpbw?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "bda20227f183",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNTXZ2WlJiRFQ2UWZSQnhYb1MwM1FhSUhtSDNRd0RRV2pVTlA4Q2lYZTViRWtJZHNEamdkb296MjNRejU1eEVKWG1WN2VRNFQ1ZWRoMEJWR1hxRzBSN3ZWTkQwbGZIRDBfeXEteUo0OWdGQ0Mxby1ZU2RQcFBDUjFEc0YxeGVYT2hzam1JTEswcnRadTk1ZVFmcEd3OEVEMnRzbDRfbkxSMkxXQmFyQTdsUUctdnBLWDU5X0hUVmRsQ0Q?oc=5"
+      ],
+      "publishedAt": "2026-10-06T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "iLovetheUpperWestSide.com",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "Elevators Are Back in Service at One of the Upper West Side’s Busiest Subway Stations",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNTXZ2WlJiRFQ2UWZSQnhYb1MwM1FhSUhtSDNRd0RRV2pVTlA4Q2lYZTViRWtJZHNEamdkb296MjNRejU1eEVKWG1WN2VRNFQ1ZWRoMEJWR1hxRzBSN3ZWTkQwbGZIRDBfeXEteUo0OWdGQ0Mxby1ZU2RQcFBDUjFEc0YxeGVYT2hzam1JTEswcnRadTk1ZVFmcEd3OEVEMnRzbDRfbkxSMkxXQmFyQTdsUUctdnBLWDU5X0hUVmRsQ0Q?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "5ec47a4896bf",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/photos-mta-announces-two-modernized-elevators-open-72-st-123-subway-station"
+      ],
+      "publishedAt": "2026-10-01T17:00:00.000Z",
+      "reason": "already-accessible",
+      "source": "MTA",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "official",
+      "title": "PHOTOS: MTA Announces Two Modernized Elevators Open at 72 St 123 Subway Station",
+      "url": "https://www.mta.info/press-release/photos-mta-announces-two-modernized-elevators-open-72-st-123-subway-station"
+    },
+    {
+      "discussionUrl": null,
+      "id": "6b6d5a96e040",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNRUxXdXZuTjU1V2FOZS0wTmRHU1NhSzY1cjhGNWhOejdsU2VqUGF0Z3dGNHR5ajVlR0JtSkUxZXVwUzhVOU5lVG51UVh6R3NqdG4yYkM0Mk1hdnI2aklvOG1Tc21mUUtCdVFMV0V1ZzAyMC12dDJIbndnSi1ObkJWNWJIYmN4TTNJaGMxOElKd2IzV3JobWsybGZvMHFLejBpUkY2eUVsODh6VlBia2x4UnlyM2txdmlERVBpN29tM2RzbS0xWkluSA?oc=5"
+      ],
+      "publishedAt": "2026-09-23T07:00:00.000Z",
+      "reason": "no-station",
+      "source": "Progressive Railroading",
+      "stations": [],
+      "status": "needs-review",
+      "subject": true,
+      "tier": "news",
+      "title": "Rail News - MTA completes elevator installations at historic subway station. For Railroad Career Professionals",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNRUxXdXZuTjU1V2FOZS0wTmRHU1NhSzY1cjhGNWhOejdsU2VqUGF0Z3dGNHR5ajVlR0JtSkUxZXVwUzhVOU5lVG51UVh6R3NqdG4yYkM0Mk1hdnI2aklvOG1Tc21mUUtCdVFMV0V1ZzAyMC12dDJIbndnSi1ObkJWNWJIYmN4TTNJaGMxOElKd2IzV3JobWsybGZvMHFLejBpUkY2eUVsODh6VlBia2x4UnlyM2txdmlERVBpN29tM2RzbS0xWkluSA?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "afc1b346bfd3",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/mta-unveils-accessibility-upgrades-149-st-hostos-station"
+      ],
+      "publishedAt": "2026-09-18T17:30:00.000Z",
+      "reason": "already-accessible",
+      "source": "MTA",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "official",
+      "title": "MTA Unveils Accessibility Upgrades at 149 St–Hostos Station",
+      "url": "https://www.mta.info/press-release/mta-unveils-accessibility-upgrades-149-st-hostos-station"
+    },
+    {
+      "discussionUrl": null,
+      "id": "6f41fdb2fb5a",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/photos-mta-announces-two-modernized-elevators-open-prospect-park-bqs-subway-station"
+      ],
+      "publishedAt": "2026-09-16T19:15:00.000Z",
+      "reason": "already-accessible",
+      "source": "MTA",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "official",
+      "title": "PHOTOS: MTA Announces Two Modernized Elevators Open at Prospect Park BQS Subway Station",
+      "url": "https://www.mta.info/press-release/photos-mta-announces-two-modernized-elevators-open-prospect-park-bqs-subway-station"
+    },
+    {
+      "discussionUrl": null,
+      "id": "fa198f52f61c",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMicEFVX3lxTE0wTmZUUHRfWmVQa2M2TEVLek5HcXJrSE93MENXMXNMOWlfeXduOTB6ZHkyeklxMXB4bHdMT2RreVc4UkVCSXdrTTZ0c3I0Q1l4MXdBaHdKbVFnVVRRVFRBQk5vLVpjcGFYcC0zWU1Kc00?oc=5"
+      ],
+      "publishedAt": "2026-09-09T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Brooklyn Eagle",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "New renderings illustrate IBX rail line’s fully-accessible stations in Brooklyn, Queens",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0wTmZUUHRfWmVQa2M2TEVLek5HcXJrSE93MENXMXNMOWlfeXduOTB6ZHkyeklxMXB4bHdMT2RreVc4UkVCSXdrTTZ0c3I0Q1l4MXdBaHdKbVFnVVRRVFRBQk5vLVpjcGFYcC0zWU1Kc00?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "78968585ad80",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/photos-mta-announces-three-modernized-elevators-open-jamaica-179-st-f-subway-station"
+      ],
+      "publishedAt": "2026-08-28T16:00:00.000Z",
+      "reason": "already-accessible",
+      "source": "MTA",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "official",
+      "title": "PHOTOS: MTA Announces Three Modernized Elevators Open at Jamaica-179 St F Subway Station",
+      "url": "https://www.mta.info/press-release/photos-mta-announces-three-modernized-elevators-open-jamaica-179-st-f-subway-station"
+    },
+    {
+      "discussionUrl": null,
+      "id": "c6719274fd7a",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMilgFBVV95cUxNT1FwM2U0UnVpZFFzc2x0RzRUbDkzMzY2UVUwV1RwOGtmY2xxRG03dWxObnZUbDAxZ2htcGloaXZMc3Q2RFdiRXh4blFuWWFtdEN2ZTdnZ3o4WVVNYVpJb1RLdjlvdnAzSnd1MndvYl9mRWdJVXhLWU5hd1RIUTVzMXYzbnFwcHllNTNsQVdnRVRKUkFSWXc?oc=5"
+      ],
+      "publishedAt": "2026-08-28T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Patch",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA Replaces 3 Elevators At This Queens Subway Station: See Where",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNT1FwM2U0UnVpZFFzc2x0RzRUbDkzMzY2UVUwV1RwOGtmY2xxRG03dWxObnZUbDAxZ2htcGloaXZMc3Q2RFdiRXh4blFuWWFtdEN2ZTdnZ3o4WVVNYVpJb1RLdjlvdnAzSnd1MndvYl9mRWdJVXhLWU5hd1RIUTVzMXYzbnFwcHllNTNsQVdnRVRKUkFSWXc?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "29b9bb2b8a3c",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMizgFBVV95cUxNbmlYaVdmOTNQLXcxTzNlbEVMSVhuZlFJQ0w2bXo4N2ZyOWFMckhweXhkN1dDZU81eE91MkVNUjN4Qnd3MGJLVk9QUHVINnJpdThmcUhXT2F3OFFUcEZXdmRuMUxrTU5paXpwOHhuWF95dzUwbVU2ZUdHYzAySTlfNzU1REs0T1lOTVdDUkctelFYeVpLUnF0cnJaaGg0ZVlkVmFjMWZmOFVENENCcTBLYkV6MG0wcnBHTnA3XzJDSUthYnpsWEtYaTJ5S1dSZw?oc=5"
+      ],
+      "publishedAt": "2026-08-24T07:00:00.000Z",
+      "reason": "ambiguous",
+      "source": "Progressive Railroading",
+      "stations": [],
+      "status": "needs-review",
+      "subject": true,
+      "tier": "news",
+      "title": "Rail News - New York MTA completes Kings Highway station accessibility upgrades. For Railroad Career Professionals",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNbmlYaVdmOTNQLXcxTzNlbEVMSVhuZlFJQ0w2bXo4N2ZyOWFMckhweXhkN1dDZU81eE91MkVNUjN4Qnd3MGJLVk9QUHVINnJpdThmcUhXT2F3OFFUcEZXdmRuMUxrTU5paXpwOHhuWF95dzUwbVU2ZUdHYzAySTlfNzU1REs0T1lOTVdDUkctelFYeVpLUnF0cnJaaGg0ZVlkVmFjMWZmOFVENENCcTBLYkV6MG0wcnBHTnA3XzJDSUthYnpsWEtYaTJ5S1dSZw?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "fdff6ece8a92",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiggFBVV95cUxNeGU2WUNMRUFFT0NtcnBQT3JLT0pMMllSaEE4SjZYaGV5ZUhFN2xWTVItMlIxMWI0OFJrUXlHVnpBRVo3RUYxT0wydkxCRzJIU0JHYkVITUMxclhZdlYtTVFxWTRHei1VRGZHUWotUWNQUFlqel9SOHQyQXk2WXczYmhB?oc=5"
+      ],
+      "publishedAt": "2026-08-21T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Brooklyn Eagle",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "Kings Highway F station gets new elevators",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNeGU2WUNMRUFFT0NtcnBQT3JLT0pMMllSaEE4SjZYaGV5ZUhFN2xWTVItMlIxMWI0OFJrUXlHVnpBRVo3RUYxT0wydkxCRzJIU0JHYkVITUMxclhZdlYtTVFxWTRHei1VRGZHUWotUWNQUFlqel9SOHQyQXk2WXczYmhB?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "ed6a94de6274",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations"
+      ],
+      "publishedAt": "2026-08-19T18:30:00.000Z",
+      "reason": "matched",
+      "source": "MTA",
+      "stations": [
+        {
+          "line": "Culver Line",
+          "services": [
+            "F"
+          ],
+          "slug": "kings-hwy-culver-line-f",
+          "station": "Kings Hwy"
+        }
+      ],
+      "status": "verified",
+      "subject": true,
+      "tier": "official",
+      "title": "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
+      "url": "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations"
+    },
+    {
+      "discussionUrl": null,
+      "id": "17d5e787e924",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMioAFBVV95cUxOQ09fZF9ianFJNldYUTllazF2eVlobmxWS05UTVozU2lybzh1STlLRHVJaENNcjlzd1NWbWtWQnhDZTZwRGR2STNOQ0haLWt0aDBsLXo3bWQ2TXdZN3dzUjVIRElCNm5zNWk4cjh2WnlBY0tfVEVldjdFZ1dOb0JSTVhzZE53WktINDBoOTU4ZEU4MDE5OGlZNVRsT3VUbUpz?oc=5"
+      ],
+      "publishedAt": "2026-08-19T07:00:00.000Z",
+      "reason": "matched",
+      "source": "amNewYork",
+      "stations": [
+        {
+          "line": "Culver Line",
+          "services": [
+            "F"
+          ],
+          "slug": "kings-hwy-culver-line-f",
+          "station": "Kings Hwy"
+        }
+      ],
+      "status": "verified",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA unveils new elevators at now ADA accessible Kings Highway Brooklyn F train station",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOQ09fZF9ianFJNldYUTllazF2eVlobmxWS05UTVozU2lybzh1STlLRHVJaENNcjlzd1NWbWtWQnhDZTZwRGR2STNOQ0haLWt0aDBsLXo3bWQ2TXdZN3dzUjVIRElCNm5zNWk4cjh2WnlBY0tfVEVldjdFZ1dOb0JSTVhzZE53WktINDBoOTU4ZEU4MDE5OGlZNVRsT3VUbUpz?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "7dd1ebed3c9d",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMihgJBVV95cUxOVGdRUGhhWF9tUk1RWXFfRVMzWlpEbGtMNElTWk5RcjhBOWZzV2VqNDM3Sm1KX2VQUWt4ZFVOOHI3X2hDUjhoeEJscV9laDJGS1hQMmY4d3dIMkg5dG1JQjE4V2p5M1hfcEJuTk1tWE1vS0lnckJjUG1POEE0a0NNcjU3RUN6cnZwUmk0NHMwOEtlUUwtcXZBMFJ0Wi1oU0lHeU91V3hpZ3NOWDRuRDh1TWFuSXpyTVYtSXZ5QlVnUklieFR5YUI2VW00QmVEdC1GeE9wMUV3RzAzcVlpQW9fRTdFNnRfc0NPbjh0alRya2ZseElfT1pPT1hmUXJ3eG9UcWRHMkhB?oc=5"
+      ],
+      "publishedAt": "2026-08-10T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Mass Transit",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA, SEPTA to make accessible improvements to historical stations",
+      "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxOVGdRUGhhWF9tUk1RWXFfRVMzWlpEbGtMNElTWk5RcjhBOWZzV2VqNDM3Sm1KX2VQUWt4ZFVOOHI3X2hDUjhoeEJscV9laDJGS1hQMmY4d3dIMkg5dG1JQjE4V2p5M1hfcEJuTk1tWE1vS0lnckJjUG1POEE0a0NNcjU3RUN6cnZwUmk0NHMwOEtlUUwtcXZBMFJ0Wi1oU0lHeU91V3hpZ3NOWDRuRDh1TWFuSXpyTVYtSXZ5QlVnUklieFR5YUI2VW00QmVEdC1GeE9wMUV3RzAzcVlpQW9fRTdFNnRfc0NPbjh0alRya2ZseElfT1pPT1hmUXJ3eG9UcWRHMkhB?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "235f9755ab32",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMijgFBVV95cUxNdTJaREhHMmZaVFZhNTlPYU51RmhCZHBBUUR0TDZObzZYVTRvYWk4Sjd2bkpjcFEza0RrX1h4YmdHdWhKU05vcDExLThWaVBDblRUV1k4bkR6OW1udGtaZVNVT3ZyN09FeXFnVHFPOFZxT1FtTUdkUWJJNjBYa2ZsVHZSeG55MGgwOFk1Tmdn?oc=5"
+      ],
+      "publishedAt": "2026-08-03T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "New York Daily News",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "Will the MTA ever be able to master elevators?",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNdTJaREhHMmZaVFZhNTlPYU51RmhCZHBBUUR0TDZObzZYVTRvYWk4Sjd2bkpjcFEza0RrX1h4YmdHdWhKU05vcDExLThWaVBDblRUV1k4bkR6OW1udGtaZVNVT3ZyN09FeXFnVHFPOFZxT1FtTUdkUWJJNjBYa2ZsVHZSeG55MGgwOFk1Tmdn?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "d8bca70bc5a0",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMixwFBVV95cUxNbHI2ck5DQ25xcDdiNUplN3h4dy0zdzYtQWJ4RU9zaU5xQ2ZWbDlpdHJWellZNG1YRkgtVG51NEVaa1pSLTRZc2ZnN19lVDRoejY1R2VQWnNaRTZaQlhqbmltSkpVM2VJMG41cXl6MGNtVDc3Z1E2VXZGZjMydlZtUklkMWdfdjJVdXJfaW4zdkpVYWZDN3MxeHFZV1loQkttU0RROW1jQU50Zi1neXMtbGo5Sy1QZ2t5VkZ0ZzhHaldtUnpVNHM0?oc=5"
+      ],
+      "publishedAt": "2026-07-30T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "New York Daily News",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA settles lawsuit with disabled New Yorkers, commits to better access, working elevators",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNbHI2ck5DQ25xcDdiNUplN3h4dy0zdzYtQWJ4RU9zaU5xQ2ZWbDlpdHJWellZNG1YRkgtVG51NEVaa1pSLTRZc2ZnN19lVDRoejY1R2VQWnNaRTZaQlhqbmltSkpVM2VJMG41cXl6MGNtVDc3Z1E2VXZGZjMydlZtUklkMWdfdjJVdXJfaW4zdkpVYWZDN3MxeHFZV1loQkttU0RROW1jQU50Zi1neXMtbGo5Sy1QZ2t5VkZ0ZzhHaldtUnpVNHM0?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "119a36249ea6",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiigFBVV95cUxORDFiV3dNd1pVYkFZREJRMV9KVm1ZZVVINFdFTnlidEo1Tms4eUhsai1pZnozVGVRLUVycGtPYUpvWGhrWlNFYzA0VXBZcEhYaU50LV95V2JpYmtFaDBGbHlIeG9XY05fRVRkMEQyS1F0TkZ2VXZfdW5fN193UnAyVF9rNnVCTWhZQ2c?oc=5"
+      ],
+      "publishedAt": "2026-07-30T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "amNewYork",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA and disability advocates settle long-running elevator accessibility suit",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxORDFiV3dNd1pVYkFZREJRMV9KVm1ZZVVINFdFTnlidEo1Tms4eUhsai1pZnozVGVRLUVycGtPYUpvWGhrWlNFYzA0VXBZcEhYaU50LV95V2JpYmtFaDBGbHlIeG9XY05fRVRkMEQyS1F0TkZ2VXZfdW5fN193UnAyVF9rNnVCTWhZQ2c?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "378212d0833d",
+      "kind": "mta",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/mta-announces-award-accessibility-upgrades-and-station-renewal-two-subway-stations"
+      ],
+      "publishedAt": "2026-07-29T19:45:00.000Z",
+      "reason": "not-opening",
+      "source": "MTA",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "official",
+      "title": "MTA Announces Award for Accessibility Upgrades and Station Renewal at Two Subway Stations in the Bronx, Enabled by Funding from Congestion Relief",
+      "url": "https://www.mta.info/press-release/mta-announces-award-accessibility-upgrades-and-station-renewal-two-subway-stations"
+    },
+    {
+      "discussionUrl": null,
+      "id": "c36656dc2cc2",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMinwFBVV95cUxQNlREQjJxU3d2a0h2dUtCSmNQaDdmMGtpVEdFUm5DYUFJUk5UQlYwU0xDWU9tVlNnZV85T012QktuYzIwRGlOZllERklfZFlXZTdvOER6LTI1dS1BTEM2MTl1Zi04WFBUOFV3SllQZ3RaZWZ0LXBWR09vdnEyUHRlRnEtbzNyNDhMdjQ1T2YzWjJPUmtMSlZOb2pmeDUwZVU?oc=5"
+      ],
+      "publishedAt": "2026-07-29T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "The City Reporter",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "MTA Settles With Disability Advocates as Subway Elevators Improve",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQNlREQjJxU3d2a0h2dUtCSmNQaDdmMGtpVEdFUm5DYUFJUk5UQlYwU0xDWU9tVlNnZV85T012QktuYzIwRGlOZllERklfZFlXZTdvOER6LTI1dS1BTEM2MTl1Zi04WFBUOFV3SllQZ3RaZWZ0LXBWR09vdnEyUHRlRnEtbzNyNDhMdjQ1T2YzWjJPUmtMSlZOb2pmeDUwZVU?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "bc92126d5155",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/photos-mta-announces-two-modernized-elevators-open-crown-hts-utica-av-subway-station"
+      ],
+      "publishedAt": "2026-07-24T19:15:00.000Z",
+      "reason": "already-accessible",
+      "source": "MTA",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "official",
+      "title": "PHOTOS: MTA Announces Two Modernized Elevators Open at Crown Hts-Utica Av Subway Station",
+      "url": "https://www.mta.info/press-release/photos-mta-announces-two-modernized-elevators-open-crown-hts-utica-av-subway-station"
+    },
+    {
+      "discussionUrl": null,
+      "id": "ea3907da8d2b",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMijAFBVV95cUxNMlU3eXpsRjBWdEgzUk55S2E0TWNPVlBEV0FIaTUxOUhscmR5TXRYbFpyMVB5Vks3WlVvY2RiS21aRDZmSXlFUm1lZUF0M1NKOFZ0WUJyVmRUNFcxUWR3NG9nZlNNTllVNjd2ZHh5ZVgxSVE3SEl6cDRMaEUwN1Zjc1czY0sybHJrVmxzZQ?oc=5"
+      ],
+      "publishedAt": "2026-07-23T07:00:00.000Z",
+      "reason": "no-station",
+      "source": "6sqft",
+      "stations": [],
+      "status": "needs-review",
+      "subject": true,
+      "tier": "news",
+      "title": "Brooklyn’s oldest underground subway station is now accessible",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNMlU3eXpsRjBWdEgzUk55S2E0TWNPVlBEV0FIaTUxOUhscmR5TXRYbFpyMVB5Vks3WlVvY2RiS21aRDZmSXlFUm1lZUF0M1NKOFZ0WUJyVmRUNFcxUWR3NG9nZlNNTllVNjd2ZHh5ZVgxSVE3SEl6cDRMaEUwN1Zjc1czY0sybHJrVmxzZQ?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "469e772d5531",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMirgFBVV95cUxQdG1nM29YS3lnRXYzWC1KekRLZ3l1Y1M4Q2hUdFhYdk9PazE1bmFBNl9aaUdIcVRXeG94T2VzQzJGanY5cXB4RkFFNGxlSnBuNmtZcTJqNmVlblBXTzVtRzZsUlNFZHVtei0xQ0FldDlhT1NsMDFaTFpfVW13V0tDS2lORTBhSnFTQ1gwYmZZWDQ2TTJ5VmpYMjhpQkZxLVlDX1B3dUtNanltSlEza0E?oc=5"
+      ],
+      "publishedAt": "2026-07-23T07:00:00.000Z",
+      "reason": "no-station",
+      "source": "BKReader",
+      "stations": [],
+      "status": "needs-review",
+      "subject": true,
+      "tier": "news",
+      "title": "118-Year-Old Brooklyn Subway Station Gets an ADA Makeover",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQdG1nM29YS3lnRXYzWC1KekRLZ3l1Y1M4Q2hUdFhYdk9PazE1bmFBNl9aaUdIcVRXeG94T2VzQzJGanY5cXB4RkFFNGxlSnBuNmtZcTJqNmVlblBXTzVtRzZsUlNFZHVtei0xQ0FldDlhT1NsMDFaTFpfVW13V0tDS2lORTBhSnFTQ1gwYmZZWDQ2TTJ5VmpYMjhpQkZxLVlDX1B3dUtNanltSlEza0E?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "280dc012c4dc",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMihwFBVV95cUxPcWw2REhkOVczYS1XYVNRaVl0emQ1QVNLWkM0WW9RcEpIZVF5WUh2UkdrUEtrd0lhbUdEUkNxX3JxcnRQR3dEOXZFTVlETkkyZllYbnBWbGNtS0pva0RRcFVQZmdTSGVFMXJiR3FybXg3bGQ5c29heFBDaFhiU2h6Nnkxcjdfems?oc=5"
+      ],
+      "publishedAt": "2026-07-23T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "amNewYork",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "Brooklyn Borough Hall subway station now has elevators after years-long project drawn out by structural work: MTA",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPcWw2REhkOVczYS1XYVNRaVl0emQ1QVNLWkM0WW9RcEpIZVF5WUh2UkdrUEtrd0lhbUdEUkNxX3JxcnRQR3dEOXZFTVlETkkyZllYbnBWbGNtS0pva0RRcFVQZmdTSGVFMXJiR3FybXg3bGQ5c29heFBDaFhiU2h6Nnkxcjdfems?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "e79e7da45e8c",
+      "kind": "mta",
+      "opening": false,
+      "tentative": true,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/icymi-during-disability-pride-month-governor-hochul-announces-major-accessibility"
+      ],
+      "publishedAt": "2026-07-22T18:15:00.000Z",
+      "reason": "ambiguous",
+      "source": "MTA",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "official",
+      "title": "ICYMI: During Disability Pride Month, Governor Hochul Announces Major Accessibility Improvements Now Complete at Borough Hall Subway Station",
+      "url": "https://www.mta.info/press-release/icymi-during-disability-pride-month-governor-hochul-announces-major-accessibility"
+    },
+    {
+      "discussionUrl": null,
+      "id": "f63bd85b89cc",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMioAFBVV95cUxORU41MU1KdC1OQ2lzMnEwdG1adG1IcWlVbEQ5em1VdG16RmN3UzV4QkkzenM5Wl9KUmRsVzFlVlBzX0RaeXNMN1VGWnk3VjE4MENfamZFSFZIRU0yNkg0ZXNaR1lIdktQeDlaQmVpUTdxOTlnaDNqYzZMM0RRZ3lISDVLdjh3ZUNKQ3lPN2dhOG16eWk3OXNnVFVVeTdweXJm?oc=5"
+      ],
+      "publishedAt": "2026-07-22T07:00:00.000Z",
+      "reason": "ambiguous",
+      "source": "Brooklyn Eagle",
+      "stations": [],
+      "status": "needs-review",
+      "subject": true,
+      "tier": "news",
+      "title": "Exclusive: Brooklyn’s Borough Hall subway station is now fully ADA accessible",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxORU41MU1KdC1OQ2lzMnEwdG1adG1IcWlVbEQ5em1VdG16RmN3UzV4QkkzenM5Wl9KUmRsVzFlVlBzX0RaeXNMN1VGWnk3VjE4MENfamZFSFZIRU0yNkg0ZXNaR1lIdktQeDlaQmVpUTdxOTlnaDNqYzZMM0RRZ3lISDVLdjh3ZUNKQ3lPN2dhOG16eWk3OXNnVFVVeTdweXJm?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "e22a34605670",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMidEFVX3lxTFAxN0pKbzhYMFp4YlJqV01CVFdMM3FUMUYwUDdYMFZoTTczaExabi1vVXZwd0drR2N5U00zb2ttUVRrb0FTanJMUmEwejRuZmRybUlFeDVodlVNbTUzVEJuaDR1cTFOMzdPRXJtYzFIT1hwSXpj?oc=5"
+      ],
+      "publishedAt": "2026-07-13T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Brooklyn Eagle",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "18th Avenue N and Fort Hamilton Parkway D stations to receive new elevators funded by congestion pricing",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFAxN0pKbzhYMFp4YlJqV01CVFdMM3FUMUYwUDdYMFZoTTczaExabi1vVXZwd0drR2N5U00zb2ttUVRrb0FTanJMUmEwejRuZmRybUlFeDVodlVNbTUzVEJuaDR1cTFOMzdPRXJtYzFIT1hwSXpj?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "803aaa72bc6b",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMizwJBVV95cUxQZTFpN2I3Tkp1eGdXYjlHLVlMOGQ1RVcyVGJndGNoX3dja0hrQXhOcm5vMGpMOVZrN3VRS2NndWFHdTFKNmkyMWl1S0paSkFMc2xWcWV3VUk1Um1pdmlIZWtEU0xDdmlaR244UTJ6YjVrdkNXWUh2dk1OZlB5dGN4eG93ZTZRYS1fa2tXUjloY0hWYmVXbTFOMU5iQVpkOXJDZFRtYlVBcE5TcWxQeTNwRDRlWW51UWhhRFVBeWNocVphSThJamNSWVVPWGpWUHBCMXgtaW9IU1FIakhqcDBGTFZEVlRVTk1Gcngyd2lkVzZic1h6U3FoZ1F0TDVNbTlaMDdQWWZVSDVLUjBtUDJaZG04bVl0ME5telhOWkN6Q1Vhd2p3OXQyQWxNd2RhN2FJTDhPaG8yTW8ta2t5Y2ZobnVNYmNuc1g5UlpvTDI0RQ?oc=5"
+      ],
+      "publishedAt": "2026-07-10T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Mass Transit",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA issues RFP for accessibility upgrades at five Brooklyn subway stations",
+      "url": "https://news.google.com/rss/articles/CBMizwJBVV95cUxQZTFpN2I3Tkp1eGdXYjlHLVlMOGQ1RVcyVGJndGNoX3dja0hrQXhOcm5vMGpMOVZrN3VRS2NndWFHdTFKNmkyMWl1S0paSkFMc2xWcWV3VUk1Um1pdmlIZWtEU0xDdmlaR244UTJ6YjVrdkNXWUh2dk1OZlB5dGN4eG93ZTZRYS1fa2tXUjloY0hWYmVXbTFOMU5iQVpkOXJDZFRtYlVBcE5TcWxQeTNwRDRlWW51UWhhRFVBeWNocVphSThJamNSWVVPWGpWUHBCMXgtaW9IU1FIakhqcDBGTFZEVlRVTk1Gcngyd2lkVzZic1h6U3FoZ1F0TDVNbTlaMDdQWWZVSDVLUjBtUDJaZG04bVl0ME5telhOWkN6Q1Vhd2p3OXQyQWxNd2RhN2FJTDhPaG8yTW8ta2t5Y2ZobnVNYmNuc1g5UlpvTDI0RQ?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "d5aa940ea3e5",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMijAFBVV95cUxNU3gtXzYxWG02M1ltTzFRUmRDOXRNTGlrQzhEcXFJaWFSek16dlFXcHNLTjVaRktseEExdzh0OVdJQ3lwZXBoZXMxRUJrOHdHUTVSTDdMTFU1TW02bWI4MkdybXRaZHNYZXlYT3ZzQjVlNmRsZm9acEo1Ykl1NjNCYkltNkQ2UGVHNlJDLQ?oc=5"
+      ],
+      "publishedAt": "2026-07-07T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "amNewYork",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA to add elevators to five more Brooklyn subway stations with funding from congestion pricing | amNewYork",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNU3gtXzYxWG02M1ltTzFRUmRDOXRNTGlrQzhEcXFJaWFSek16dlFXcHNLTjVaRktseEExdzh0OVdJQ3lwZXBoZXMxRUJrOHdHUTVSTDdMTFU1TW02bWI4MkdybXRaZHNYZXlYT3ZzQjVlNmRsZm9acEo1Ykl1NjNCYkltNkQ2UGVHNlJDLQ?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "db8676bb2c66",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQQlBOR2gxVGlYaHNudV9NRlhFRVB6MnZPZXNmYXBLU0VmZVl2WDRvNG9LbmNkYXhGaEJzVmlrbUxuZmkwNUF1LW82ek9TeF9BZVlfNEh5TDNYZ2lnV2M4Smk1UnBSajJqOHpYeWhua2JrVFlZZHM0dnhVQ0pkS1BwZzkxVUZ0ZG1yaC1qMnVzZE1RVXBFbGw5UzBCU2pfa2ZXZmpuVnhYWUxISG8?oc=5"
+      ],
+      "publishedAt": "2026-07-07T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "BKReader",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "5 Brooklyn Subway Stations Set For Accessibility Upgrades",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQQlBOR2gxVGlYaHNudV9NRlhFRVB6MnZPZXNmYXBLU0VmZVl2WDRvNG9LbmNkYXhGaEJzVmlrbUxuZmkwNUF1LW82ek9TeF9BZVlfNEh5TDNYZ2lnV2M4Smk1UnBSajJqOHpYeWhua2JrVFlZZHM0dnhVQ0pkS1BwZzkxVUZ0ZG1yaC1qMnVzZE1RVXBFbGw5UzBCU2pfa2ZXZmpuVnhYWUxISG8?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "9a487be0bf9c",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMilAFBVV95cUxNUWFIa05qOVd1ZVRMbGZINjJPYkZOMk8wNU9TZE42dExDV19jMFZMUlVIa3hOZnRJMzg1U3VWWWhKdEJJUl90U0dqQzJTdTl0emtHTHh2c2pYcF9mMjJWUndvZ3hOS2dXQkRtU3Q3R2VtRElNSDM0dUxpQVpjRV9sZ0RQcDVuMGY5My1ycmRoa0xBZlJK0gGaAUFVX3lxTE9PNG44bjZhU2E1RWRSTF9RczdseldOSTNSM0NYc05fTGZOWDhfRWxqcnl3UEs2T05ET3FlNEVYRkFIVFpGYW5GeWdBQ2M3aVlVSkppU0xyalVYVTVIRXJQZG5tZzJzMXcwdEw4WkJiX1pucF9sZFlyTXE4WjZNbUI4NXFhZ2RnTU9zSE1CVTlqUzBUVktBLTF5Unc?oc=5"
+      ],
+      "publishedAt": "2026-07-06T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "PIX11",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "NYC subway stations to get elevators and be ADA accessible",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNUWFIa05qOVd1ZVRMbGZINjJPYkZOMk8wNU9TZE42dExDV19jMFZMUlVIa3hOZnRJMzg1U3VWWWhKdEJJUl90U0dqQzJTdTl0emtHTHh2c2pYcF9mMjJWUndvZ3hOS2dXQkRtU3Q3R2VtRElNSDM0dUxpQVpjRV9sZ0RQcDVuMGY5My1ycmRoa0xBZlJK0gGaAUFVX3lxTE9PNG44bjZhU2E1RWRSTF9RczdseldOSTNSM0NYc05fTGZOWDhfRWxqcnl3UEs2T05ET3FlNEVYRkFIVFpGYW5GeWdBQ2M3aVlVSkppU0xyalVYVTVIRXJQZG5tZzJzMXcwdEw4WkJiX1pucF9sZFlyTXE4WjZNbUI4NXFhZ2RnTU9zSE1CVTlqUzBUVktBLTF5Unc?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "a5937bb3cfcc",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiugFBVV95cUxPZHNfWFZRSF9CM2Y0dDJZZkFYMndDMElURlN5WHdrS3k0dlR3anR1c1hubjA0VlNBOTZpX18zRXlkSUl2dHh0a0RjS2hiYXZwUlZVSTFjTEdfTDY2SWd2TmpVeEFaR192TnUwbTFiNXRKOTJpTGMzOGp6ZXhsQ3pTbmZTSWVhV1ppMVhlMTRncHJtQlpxcEkwZXgxbzlmSTVjeFlwX1Jsc0VrbTA5bEpZdjM5RmhxbEhwSWc?oc=5"
+      ],
+      "publishedAt": "2026-07-02T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Spectrum News",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "MTA makes 57th Street M train station fully accessible",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPZHNfWFZRSF9CM2Y0dDJZZkFYMndDMElURlN5WHdrS3k0dlR3anR1c1hubjA0VlNBOTZpX18zRXlkSUl2dHh0a0RjS2hiYXZwUlZVSTFjTEdfTDY2SWd2TmpVeEFaR192TnUwbTFiNXRKOTJpTGMzOGp6ZXhsQ3pTbmZTSWVhV1ppMVhlMTRncHJtQlpxcEkwZXgxbzlmSTVjeFlwX1Jsc0VrbTA5bEpZdjM5RmhxbEhwSWc?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "b1d10b62a1a1",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMikAFBVV95cUxQWE5MYjRmekpVSjgwbXVMU2F2ZUhEUFBQbFpiazZCMUZJaTNudDMzOVNwTDM4U1I3MlhwTVFxWlFGdENab0N3Uzc4SlRkZ05ZRjFnRVdoZ0w2ejBsOE9yU19GSmxrRGFfZ1FCd0M1d1Z6OFhJeHR6Y1FpZWhnYUxqcUdxaEdNVzNZcWc2S2tnS1E?oc=5"
+      ],
+      "publishedAt": "2026-06-30T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "The City Reporter",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "First Subway Elevators Fully Funded by Developer to Open in Midtown",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQWE5MYjRmekpVSjgwbXVMU2F2ZUhEUFBQbFpiazZCMUZJaTNudDMzOVNwTDM4U1I3MlhwTVFxWlFGdENab0N3Uzc4SlRkZ05ZRjFnRVdoZ0w2ejBsOE9yU19GSmxrRGFfZ1FCd0M1d1Z6OFhJeHR6Y1FpZWhnYUxqcUdxaEdNVzNZcWc2S2tnS1E?oc=5"
+    }
+  ]
 }

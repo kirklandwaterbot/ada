@@ -15,7 +15,7 @@
     "https://www.mta.info/document/186856"
   ],
   "statusCounts": {
-    "under_construction": 31,
+    "under_construction": 29,
     "funded_planned": 63,
     "design_study": 13,
     "planned_new_station": 3,
@@ -896,28 +896,6 @@
       "sourceUrl": "https://www.mta.info/document/186856",
       "transitRouteKeys": [
         "NYCTA:Q"
-      ]
-    },
-    {
-      "agency": "NYCTA",
-      "borough": "Manhattan",
-      "coordinateSource": "MTA elevator and escalator equipment inventory",
-      "id": "active-ada-package-137-st-city-college-1",
-      "latitude": 40.821394999999995,
-      "line": "Broadway-7 Av Line",
-      "longitude": -73.95423,
-      "neighborhood": "Hamilton Heights",
-      "note": "Uptown access is open via EL519; downtown accessibility remains under construction.",
-      "projectPhase": "Construction",
-      "projectStatus": "under_construction",
-      "projectTitle": "NYCT ADA Station Improvements: Package 4",
-      "services": [
-        "1"
-      ],
-      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12411",
-      "station": "137 St-City College",
-      "transitRouteKeys": [
-        "NYCTA:1"
       ]
     },
     {
@@ -2606,30 +2584,6 @@
       "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12420",
       "transitRouteKeys": [
         "NYCTA:3"
-      ]
-    },
-    {
-      "id": "kings hwy-F-Culver Line",
-      "station": "Kings Hwy",
-      "line": "Culver Line",
-      "services": [
-        "F"
-      ],
-      "borough": "Brooklyn",
-      "neighborhood": "Gravesend",
-      "plannedAdaNote": "✅",
-      "latitude": 40.603218,
-      "longitude": -73.972374,
-      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
-      "matchedStationName": "Kings Hwy",
-      "agency": "NYCTA",
-      "note": "The MTA Capital Program Dashboard lists this accessibility project in construction.",
-      "projectPhase": "Construction",
-      "projectStatus": "under_construction",
-      "projectTitle": "NYCT ADA Station Improvements: Package 3",
-      "sourceUrl": "https://capitaldashboard.mta.info/?projectId=12420",
-      "transitRouteKeys": [
-        "NYCTA:F"
       ]
     },
     {

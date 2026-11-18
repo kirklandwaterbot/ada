@@ -6,7 +6,9 @@
       "id": "arthur kill-SIR-Staten Island Railway",
       "station": "Arthur Kill",
       "line": "Staten Island Railway",
-      "services": ["SIR"],
+      "services": [
+        "SIR"
+      ],
       "latitude": 40.516578,
       "longitude": -74.242096,
       "accessMethod": "ramp",
@@ -16,7 +18,9 @@
       "id": "dongan hills-SIR-Staten Island Railway",
       "station": "Dongan Hills",
       "line": "Staten Island Railway",
-      "services": ["SIR"],
+      "services": [
+        "SIR"
+      ],
       "latitude": 40.588849,
       "longitude": -74.09609,
       "accessMethod": "ramp",
@@ -26,7 +30,9 @@
       "id": "great kills-SIR-Staten Island Railway",
       "station": "Great Kills",
       "line": "Staten Island Railway",
-      "services": ["SIR"],
+      "services": [
+        "SIR"
+      ],
       "latitude": 40.551231,
       "longitude": -74.151399,
       "accessMethod": "ramp",
@@ -36,7 +42,9 @@
       "id": "new dorp-SIR-Staten Island Railway",
       "station": "New Dorp",
       "line": "Staten Island Railway",
-      "services": ["SIR"],
+      "services": [
+        "SIR"
+      ],
       "latitude": 40.57348,
       "longitude": -74.11721,
       "accessMethod": "elevator",
@@ -46,7 +54,9 @@
       "id": "harlem 148 st-3-Lenox Av Line",
       "station": "Harlem-148 St",
       "line": "Lenox Av Line",
-      "services": ["3"],
+      "services": [
+        "3"
+      ],
       "latitude": 40.824,
       "longitude": -73.937,
       "accessMethod": "ramp",
@@ -56,55 +66,82 @@
       "id": "149 st hostos-2-4-5-Jerome Av and White Plains Rd Lines",
       "station": "149 St-Hostos",
       "line": "Jerome Av and White Plains Rd Lines",
-      "services": ["2", "4", "5"],
+      "services": [
+        "2",
+        "4",
+        "5"
+      ],
       "latitude": 40.818375,
       "longitude": -73.92735,
       "accessMethod": "elevator",
       "statusLabel": "Accessible station",
       "coordinateSource": "Official MTA equipment inventory",
-      "sourceStopIds": ["222", "415"]
+      "sourceStopIds": [
+        "222",
+        "415"
+      ]
     },
     {
       "id": "137 st city college-1-Broadway-7 Av Line",
       "station": "137 St-City College",
       "line": "Broadway-7 Av Line",
-      "services": ["1"],
+      "services": [
+        "1"
+      ],
       "latitude": 40.821575,
       "longitude": -73.95381,
       "accessMethod": "elevator",
-      "statusLabel": "Partially accessible station (uptown only; downtown elevator under construction)",
+      "statusLabel": "Accessible station",
       "coordinateSource": "Official MTA equipment inventory",
-      "equipmentCodes": ["EL519"]
+      "equipmentCodes": [
+        "EL519"
+      ],
+      "upgradedBy": "accessibility-news-sync",
+      "sourceUrl": "https://www.mta.info/press-release/mta-adds-137-st-city-college-1-growing-list-of-accessible-subway-stations"
     },
     {
       "id": "northern blvd-M-R-Queens Blvd Line",
       "station": "Northern Blvd",
       "line": "Queens Blvd Line",
-      "services": ["M", "R"],
+      "services": [
+        "M",
+        "R"
+      ],
       "latitude": 40.752884,
       "longitude": -73.906006,
       "accessMethod": "elevator",
       "statusLabel": "Accessible station",
       "coordinateSource": "Official MTA equipment inventory",
-      "equipmentCodes": ["EL485", "EL486"]
+      "equipmentCodes": [
+        "EL485",
+        "EL486"
+      ]
     },
     {
       "id": "parkchester-6-Pelham Line",
       "station": "Parkchester",
       "line": "Pelham Line",
-      "services": ["6"],
+      "services": [
+        "6"
+      ],
       "latitude": 40.833333,
       "longitude": -73.860972,
       "accessMethod": "elevator",
       "statusLabel": "Accessible station",
       "coordinateSource": "Verified station coordinates",
-      "equipmentCodes": ["EL521", "EL522"]
+      "equipmentCodes": [
+        "EL521",
+        "EL522"
+      ]
     },
     {
       "id": "rockaway park beach 116 st-A-SR-Rockaway Line",
       "station": "Rockaway Park-Beach 116 St",
       "line": "Rockaway Line",
-      "services": ["A", "SR"],
+      "services": [
+        "A",
+        "SR"
+      ],
       "latitude": 40.580903,
       "longitude": -73.835592,
       "accessMethod": "street_level",
@@ -114,7 +151,9 @@
       "id": "avenue h-Q-Brighton Line",
       "station": "Avenue H",
       "line": "Brighton Line",
-      "services": ["Q"],
+      "services": [
+        "Q"
+      ],
       "latitude": 40.62927,
       "longitude": -73.961639,
       "accessMethod": "accessible_entrance",
@@ -124,7 +163,9 @@
       "id": "canarsie rockaway pkwy-L-Canarsie Line",
       "station": "Canarsie/Rockaway Pkwy",
       "line": "Canarsie Line",
-      "services": ["L"],
+      "services": [
+        "L"
+      ],
       "latitude": 40.646654,
       "longitude": -73.90185,
       "accessMethod": "ramp",
@@ -134,7 +175,10 @@
       "id": "hoyt st-2-3-Eastern Pkwy Line",
       "station": "Hoyt St",
       "line": "Eastern Pkwy Line",
-      "services": ["2", "3"],
+      "services": [
+        "2",
+        "3"
+      ],
       "latitude": 40.690545,
       "longitude": -73.985065,
       "accessMethod": "elevator",
@@ -144,7 +188,9 @@
       "id": "middle village metropolitan av-M-Myrtle Av Line",
       "station": "Middle Village/Metropolitan Av",
       "line": "Myrtle Av Line",
-      "services": ["M"],
+      "services": [
+        "M"
+      ],
       "latitude": 40.711396,
       "longitude": -73.889601,
       "accessMethod": "street_level",
@@ -154,7 +200,9 @@
       "id": "park place-SF-Franklin Av Line",
       "station": "Park Place",
       "line": "Franklin Av Line",
-      "services": ["SF"],
+      "services": [
+        "SF"
+      ],
       "latitude": 40.674772,
       "longitude": -73.957624,
       "accessMethod": "ramp",
@@ -164,7 +212,9 @@
       "id": "wilson av-L-Canarsie Line",
       "station": "Wilson Av",
       "line": "Canarsie Line",
-      "services": ["L"],
+      "services": [
+        "L"
+      ],
       "latitude": 40.688764,
       "longitude": -73.904046,
       "accessMethod": "ramp",
@@ -174,7 +224,9 @@
       "id": "st george-SIR-Staten Island Railway",
       "station": "St. George",
       "line": "Staten Island Railway",
-      "services": ["SIR"],
+      "services": [
+        "SIR"
+      ],
       "latitude": 40.643748,
       "longitude": -74.073643,
       "accessMethod": "elevator",
@@ -184,11 +236,28 @@
       "id": "tottenville-SIR-Staten Island Railway",
       "station": "Tottenville",
       "line": "Staten Island Railway",
-      "services": ["SIR"],
+      "services": [
+        "SIR"
+      ],
       "latitude": 40.512764,
       "longitude": -74.251961,
       "accessMethod": "ramp",
       "statusLabel": "Accessible station"
+    },
+    {
+      "accessMethod": "elevator",
+      "coordinateSource": "metro-memory/public/city-data/nyc-rapid-transit.json",
+      "id": "kings hwy-F-Culver Line",
+      "latitude": 40.603218,
+      "line": "Culver Line",
+      "longitude": -73.972374,
+      "services": [
+        "F"
+      ],
+      "sourceUrl": "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations",
+      "station": "Kings Hwy",
+      "statusLabel": "Accessible station",
+      "verifiedBy": "accessibility-news-sync"
     }
   ]
 }
