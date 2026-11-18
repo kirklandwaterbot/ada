@@ -4,6 +4,7 @@
 
 import { fetchWithRetry } from "../fetch-with-retry.mjs";
 import { classifyUrl, hasNycSignal, isAccessibilitySubject } from "./classify.mjs";
+import { INVENTORY_API_URL } from "./equipment.mjs";
 
 const MTA_ORIGIN = "https://www.mta.info";
 const USER_AGENT =
@@ -436,4 +437,14 @@ export function searchTerms(title) {
     .filter((word) => word.length > 2 && !stop.has(word))
     .slice(0, 6)
     .join(" ");
+}
+
+/** Current MTA elevator & escalator inventory from the state's open-data API. */
+export async function fetchEquipmentInventory({ fetchImpl } = {}) {
+  const body = await getText(INVENTORY_API_URL, { headers: { Accept: "application/json" } }, fetchImpl);
+  const assets = JSON.parse(body);
+  if (!Array.isArray(assets) || assets.length < 100) {
+    throw new Error(`Unexpected inventory response (${Array.isArray(assets) ? assets.length : typeof assets} rows)`);
+  }
+  return assets;
 }

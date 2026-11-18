@@ -9,6 +9,7 @@ import {
   normalizeStationText,
   resolveStations,
 } from "./accessibility-news/classify.mjs";
+import { equipmentItems, platformCoverage } from "./accessibility-news/equipment.mjs";
 import {
   applyOpenings,
   buildNewsFile,
@@ -679,4 +680,110 @@ test("a headline naming a station is matched to the line that just opened there"
   assert.deepEqual(item.stations.map((station) => station.services.join("/")), ["4/5"]);
   assert.equal(item.stationsFromArticle, false);
   assert.equal(row(data, "Borough Hall/Court St", "R").accessibilityStatus, "Not accessible");
+});
+
+const asset = (code, stationCode, description, overrides = {}) => ({
+  ada_compliant: "YES",
+  elevator_direction_serviced: "Both",
+  elevator_or_escalator: "Elevator",
+  elevator_platform_access: "+",
+  equipment_code: code,
+  latest_installation_date: "2026-08-14T00:00:00.000",
+  notes: "",
+  service_status_code: "IFIS",
+  station_description: `${description} - Station`,
+  station_name: stationCode,
+  ...overrides,
+});
+
+test("MTA equipment data opens stations before the press release", () => {
+  const data = baseData();
+  const now = Date.parse("2026-11-18T12:00:00Z");
+  const assets = [
+    // Kings Hwy F: street→mezzanine, then mezzanine→each platform (Aug 14).
+    asset("EL795", "KINGSHWY-6AV-F", "Kings Hwy", { elevator_platform_access: "-" }),
+    asset("EL796", "KINGSHWY-6AV-F", "Kings Hwy", { elevator_direction_serviced: "Northbound" }),
+    asset("EL797", "KINGSHWY-6AV-F", "Kings Hwy", { elevator_direction_serviced: "Southbound" }),
+    // 137 St: uptown elevator from May, downtown one completes it on Oct 8.
+    asset("EL519", "137ST-CITYCOLLEGE-BWY7-1", "137 St-City College", { elevator_direction_serviced: "Northbound", latest_installation_date: "2026-05-01T00:00:00.000" }),
+    asset("EL520", "137ST-CITYCOLLEGE-BWY7-1", "137 St-City College", { elevator_direction_serviced: "Southbound", latest_installation_date: "2026-10-08T00:00:00.000" }),
+    // Junius St: only one direction so far → partially accessible.
+    asset("EL900", "JUNIUSST-NLV-3", "Junius St", { elevator_direction_serviced: "Northbound", latest_installation_date: "2026-11-01T00:00:00.000" }),
+    // Replacement at an already-accessible station, and a new escalator.
+    asset("EL239", "72ST-BWY7-1/2/3", "72 St", { latest_installation_date: "2026-09-29T00:00:00.000" }),
+    asset("ES313", "SMITH-9STS-6AV-F/G", "Smith-9 Sts", { ada_compliant: null, elevator_or_escalator: "Escalator", latest_installation_date: "2026-11-16T00:00:00.000" }),
+    // Not in service yet, and placeholder dates, are ignored.
+    asset("EL901", "STEINWAYST-QBL-M/R", "Steinway St", { latest_installation_date: "2026-11-10T00:00:00.000", service_status_code: "INOS" }),
+    asset("EL902", "WOODHAVENBLVD-QBL-M/R", "Woodhaven Blvd", { latest_installation_date: "1900-01-02T00:00:00.000" }),
+  ];
+
+  const items = equipmentItems(assets, data, { now });
+  const { changes, file } = buildNewsFile({ accessibilityData: data, now: new Date(now), previous: null, rawItems: items, review: {}, sources: [] });
+
+  assert.deepEqual(
+    Object.fromEntries(changes.map((change) => [change.key.split("|")[0], `${change.after} ${change.date}`])),
+    {
+      "137 St-City College": "Accessible October 8, 2026",
+      "Junius St": "Partially accessible November 1, 2026",
+      "Kings Hwy": "Accessible August 14, 2026",
+    },
+  );
+  assert.equal(row(data, "Kings Hwy", "N").accessibilityStatus, "Not accessible");
+  assert.equal(row(data, "Steinway St", "M/R").accessibilityStatus, "Not accessible");
+  assert.equal(row(data, "Woodhaven Blvd", "M/R").accessibilityStatus, "Not accessible");
+  assert.equal(data.sourceOverrides.find((entry) => entry.station === "Kings Hwy").source, "MTA elevator & escalator data");
+
+  const title = (prefix) => file.feed.find((item) => item.title.startsWith(prefix));
+  assert.equal(title("3 elevators entered service at Kings Hwy (F)").status, "verified");
+  assert.equal(title("1 elevator entered service at 72 St").status, "already-accessible");
+  assert.equal(title("1 escalator entered service").status, "news");
+  assert.equal(file.feed.some((item) => item.title.includes("Steinway") || item.title.includes("Woodhaven")), false);
+  assert.equal(file.openings.find((opening) => opening.station === "Kings Hwy").verification, "official");
+});
+
+test("an earlier in-service date moves an opening the tracker already applied", () => {
+  const data = baseData();
+  const release = {
+    kind: "mta",
+    lead: "",
+    publishedAt: "2026-08-19T18:00:00Z",
+    sourceName: "MTA",
+    title: "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
+    url: "https://www.mta.info/press-release/mta-adds-kings-highway-f",
+  };
+  const now = new Date("2026-11-18T12:00:00Z");
+  const first = buildNewsFile({ accessibilityData: data, now, previous: null, rawItems: [release], review: {}, sources: [] });
+  assert.equal(row(data, "Kings Hwy", "F").dateMadeAccessible, "August 19, 2026");
+
+  const assets = ["EL795", "EL796", "EL797"].map((code, position) =>
+    asset(code, "KINGSHWY-6AV-F", "Kings Hwy", {
+      elevator_direction_serviced: ["Both", "Northbound", "Southbound"][position],
+      elevator_platform_access: position === 0 ? "-" : "+",
+    }),
+  );
+  const second = buildNewsFile({
+    accessibilityData: data,
+    now,
+    previous: first.file,
+    rawItems: [release, ...equipmentItems(assets, data, { now: now.getTime() })],
+    review: {},
+    sources: [],
+  });
+  assert.equal(row(data, "Kings Hwy", "F").dateMadeAccessible, "August 14, 2026");
+  const kings = second.file.openings.find((opening) => opening.station === "Kings Hwy");
+  assert.equal(kings.primarySource.kind, "mta");
+  assert.deepEqual(kings.evidence.map((evidence) => evidence.kind).sort(), ["equipment", "mta"]);
+});
+
+test("reads platform coverage from elevator directions", () => {
+  const e = (direction, platform = "+", status = "IFIS") => ({
+    ada_compliant: "YES",
+    elevator_direction_serviced: direction,
+    elevator_platform_access: platform,
+    service_status_code: status,
+  });
+  assert.equal(platformCoverage([e("Both")]), "both");
+  assert.equal(platformCoverage([e("Northbound"), e("Southbound")]), "both");
+  assert.equal(platformCoverage([e("Northbound"), e("Southbound", "+", "RNOS")]), "one");
+  assert.equal(platformCoverage([e("Both", "-")]), "none");
 });

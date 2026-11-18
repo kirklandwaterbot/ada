@@ -1,7 +1,7 @@
 import accessibilityNews from "../../data/accessibility-news.json";
 
 export type NewsTier = "official" | "news" | "community" | "unverified";
-export type NewsKind = "mta" | "news" | "reddit";
+export type NewsKind = "mta" | "news" | "reddit" | "equipment";
 export type NewsItemStatus =
   | "verified"
   | "needs-review"
@@ -16,8 +16,17 @@ export type NewsStationRef = {
   station: string;
 };
 
+export type EquipmentUnit = {
+  ada: boolean;
+  code: string;
+  kind: "Elevator" | "Escalator" | string;
+  notes: string;
+};
+
 export type NewsFeedItem = {
   discussionUrl: string | null;
+  /** Units behind an MTA elevator & escalator data item. */
+  equipment?: EquipmentUnit[];
   /** Whether the article behind a vague headline could be read. */
   glimpse?: "found" | "unavailable";
   glimpsedAt?: string;

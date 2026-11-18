@@ -9,6 +9,7 @@ import {
 } from "@/lib/accessibility-news";
 
 const KIND_ICON: Record<NewsEvidence["kind"], string> = {
+  equipment: "elevator",
   mta: "check_circle",
   news: "news",
   reddit: "groups",

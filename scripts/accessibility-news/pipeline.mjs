@@ -47,6 +47,7 @@ function describeRow(row) {
  * a recognised news outlet) or, at a lower tier, a photo/video of the opening.
  */
 export function evaluateItem(raw, index, { review = {} } = {}) {
+  if (raw.kind === "equipment") return evaluateEquipmentItem(raw, index, review);
   const title = raw.title.trim();
   const lead =
     raw.kind === "reddit" ? raw.body ?? "" : raw.lead ?? "";
@@ -152,6 +153,63 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     // corroborating sources to openings the tracker found earlier.
     corroborates: detection.isOpening && !rejected ? shownRows.filter((rowIndex) => !rows.includes(rowIndex)) : [],
     rows,
+  };
+}
+
+/**
+ * Equipment items come with their station rows resolved from the MTA
+ * inventory. New ADA elevators reaching both directions' platforms make a
+ * station accessible; one direction makes it partially accessible.
+ */
+function evaluateEquipmentItem(raw, index, review) {
+  const keyToIndex = new Map(index.stations.map((row, rowIndex) => [stationKey(row), rowIndex]));
+  const rows = (raw.rowKeys ?? []).map((key) => keyToIndex.get(key)).filter((value) => value !== undefined);
+  const rejected = (review.rejectUrls ?? []).includes(raw.url);
+  const hasAdaElevator = (raw.equipment ?? []).some((unit) => unit.kind === "Elevator" && unit.ada);
+  const opening = !rejected && hasAdaElevator && raw.coverage !== "none";
+  const partial = raw.coverage === "one";
+  const rejectStations = new Set(review.rejectStations ?? []);
+
+  const eligible = opening
+    ? rows.filter((rowIndex) => {
+        const row = index.stations[rowIndex];
+        if (rejectStations.has(stationKey(row))) return false;
+        return partial
+          ? row.accessibilityStatus === "Not accessible"
+          : row.accessibilityStatus !== "Accessible";
+      })
+    : [];
+
+  const status = rejected
+    ? "rejected"
+    : eligible.length > 0
+      ? "verified"
+      : opening && rows.length > 0
+        ? "already-accessible"
+        : "news";
+
+  return {
+    corroborates: opening ? rows.filter((rowIndex) => !eligible.includes(rowIndex)) : [],
+    id: itemId(raw.url),
+    item: {
+      discussionUrl: null,
+      equipment: raw.equipment,
+      id: itemId(raw.url),
+      kind: "equipment",
+      opening,
+      partial,
+      proofUrls: [raw.url],
+      publishedAt: raw.publishedAt,
+      reason: eligible.length > 0 ? "matched" : rows.length > 0 ? "already-accessible" : "no-station",
+      source: raw.sourceName,
+      stations: rows.map((rowIndex) => describeRow(index.stations[rowIndex])),
+      status,
+      subject: true,
+      tier: "official",
+      title: raw.title,
+      url: raw.url,
+    },
+    rows: eligible,
   };
 }
 
@@ -267,9 +325,13 @@ export function buildOpenings(evaluated, index, previousOpenings = []) {
 
   return [...byStation.values()]
     .map((entry) => {
+      // Lead with the most readable trusted source (a press release before
+      // an inventory record); the opening date still uses the earliest one.
+      const KIND_RANK = { mta: 3, news: 2, equipment: 1, reddit: 0 };
       const evidence = entry.evidence.sort(
         (left, right) =>
           TIER_RANK[right.tier] - TIER_RANK[left.tier] ||
+          (KIND_RANK[right.kind] ?? 0) - (KIND_RANK[left.kind] ?? 0) ||
           Date.parse(left.publishedAt) - Date.parse(right.publishedAt),
       );
       const trusted = evidence.filter((item) => item.tier === "official" || item.tier === "news");
@@ -291,7 +353,7 @@ export function buildOpenings(evaluated, index, previousOpenings = []) {
         ...entry,
         evidence,
         openedAt: new Date(Math.min(...dated)).toISOString(),
-        primarySource: best ? { source: best.source, title: best.title, url: best.url } : null,
+        primarySource: best ? { kind: best.kind, source: best.source, title: best.title, url: best.url } : null,
         readyToApply: trusted.length > 0 || communityAuthors.size >= 2,
         resultingStatus: partial ? "Partially accessible" : "Accessible",
         verification,
@@ -311,6 +373,7 @@ export function formatEffectiveDate(iso) {
 
 const SOURCE_LABEL = {
   community: "Community reports with photo proof (Reddit)",
+  equipment: "MTA elevator & escalator data",
   news: "News coverage",
   official: "MTA press release",
 };
@@ -332,7 +395,22 @@ export function applyOpenings(accessibilityData, openings) {
       (target === "Partially accessible" && row.accessibilityStatus === "Partially accessible");
 
     if (alreadyThere) {
-      opening.applied = opening.applied || false;
+      // An earlier source (e.g. MTA equipment data showing the elevators in
+      // service before the press release) moves the date of an opening this
+      // tracker applied. Hand-curated dates are left alone.
+      const trackerOverride = accessibilityData.sourceOverrides.find(
+        (entry) =>
+          entry.verifiedBy === "accessibility-news-sync" &&
+          entry.station === row.station &&
+          (!entry.services || entry.services.join("/") === row.services.join("/")),
+      );
+      const effectiveDate = formatEffectiveDate(opening.openedAt);
+      if (opening.applied && trackerOverride && row.dateMadeAccessible !== effectiveDate) {
+        const before = row.dateMadeAccessible;
+        row.dateMadeAccessible = effectiveDate;
+        trackerOverride.effectiveDate = effectiveDate;
+        changes.push({ after: row.accessibilityStatus, before: `${row.accessibilityStatus} (${before})`, date: effectiveDate, key: opening.key });
+      }
       continue;
     }
 
@@ -355,7 +433,10 @@ export function applyOpenings(accessibilityData, openings) {
         .join("; ")}.`,
       line: row.line,
       services: row.services,
-      source: SOURCE_LABEL[opening.verification],
+      source:
+        opening.primarySource?.kind === "equipment"
+          ? SOURCE_LABEL.equipment
+          : SOURCE_LABEL[opening.verification],
       sourceUrl: opening.primarySource?.url ?? "",
       station: row.station,
       verifiedBy: "accessibility-news-sync",

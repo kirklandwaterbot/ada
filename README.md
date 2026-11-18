@@ -26,6 +26,13 @@ runs it every three hours and commits any changes, which redeploys the site.
 
 **Sources**
 
+- **MTA elevator & escalator records** from the state's open-data API
+  ([data.ny.gov 94fv-bak7](https://data.ny.gov/d/94fv-bak7)). New elevators
+  often show up here as in service days before the press release. Kings Hwy
+  (F) was listed Aug 14, 2026, and the release came Aug 19. A station is
+  marked accessible when new ADA elevators reach the platforms in both
+  directions, and partially accessible for one direction. New escalators and
+  replacement elevators appear in the Updates feed.
 - **MTA press releases** from mta.info. The tracker reads the opening
   paragraphs, not just the headline.
 - **NYC news outlets** through Google News (amNY, Gothamist, NY1, News 12,
@@ -35,8 +42,10 @@ runs it every three hours and commits any changes, which redeploys the site.
 
 **When a station changes**
 
-1. An MTA, New York State, or NYC government page says the station is now
-   accessible → applied right away.
+1. MTA equipment records show new ADA elevators in service to every
+   platform, or an MTA, New York State, or NYC government page says the
+   station is now accessible → applied right away. The earliest date wins, so
+   a station gets its real in-service date even when the release comes later.
 2. A recognized NYC news outlet reports it → applied.
 3. A Reddit post links to one of the above → treated as that source.
 4. A photo-only Reddit post → held for review until a second independent post

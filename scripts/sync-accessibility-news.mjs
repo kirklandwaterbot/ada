@@ -21,8 +21,10 @@ import {
   enrichWithGlimpses,
   hasMeaningfulChange,
 } from "./accessibility-news/pipeline.mjs";
+import { equipmentItems } from "./accessibility-news/equipment.mjs";
 import {
   fetchArticleGlimpse,
+  fetchEquipmentInventory,
   fetchGoogleNews,
   fetchMtaReleases,
   fetchReddit,
@@ -33,6 +35,7 @@ const STATIONS_FILE = path.join(root, "data/accessibility-stations.json");
 const NEWS_FILE = path.join(root, "data/accessibility-news.json");
 const REVIEW_FILE = path.join(root, "data/accessibility-news-review.json");
 const MARKERS_FILE = path.join(root, "data/accessible-station-coordinates.json");
+const INVENTORY_SNAPSHOT_FILE = path.join(root, "data/mta-subway-elevator-escalator-assets.json");
 const PLANNED_FILE = path.join(root, "data/planned-ada-station-coordinates.json");
 const LOOKBACK_DAYS = Number(process.env.ACCESSIBILITY_NEWS_LOOKBACK_DAYS ?? 150);
 const HEARTBEAT_MS = 24 * 60 * 60 * 1_000;
@@ -129,6 +132,7 @@ async function collect() {
     ["MTA press releases", "mta", () => fetchMtaReleases({ lookbackMs: LOOKBACK_DAYS * 864e5 })],
     ["News outlets (Google News)", "news", () => fetchGoogleNews({ windowDays: LOOKBACK_DAYS })],
     ["Reddit", "reddit", () => fetchReddit({})],
+    ["MTA elevator & escalator data", "equipment", collectEquipment],
   ];
 
   for (const [name, kind, run] of runs) {
@@ -161,6 +165,23 @@ async function collect() {
   }
 
   return { rawItems, sources };
+}
+
+// New elevators and escalators often show up in the MTA's inventory as "in
+// service" days before the press release. Use the live open-data API, and
+// fall back to the daily snapshot if it is unavailable.
+async function collectEquipment() {
+  let assets;
+  let mode = "live";
+  try {
+    assets = await fetchEquipmentInventory();
+  } catch (error) {
+    console.warn(`  Live inventory unavailable (${error.message}); using the daily snapshot.`);
+    assets = JSON.parse(await readFile(INVENTORY_SNAPSHOT_FILE, "utf8"));
+    mode = "daily snapshot";
+  }
+  const items = equipmentItems(assets, accessibilityData, { lookbackDays: LOOKBACK_DAYS, now: now.getTime() });
+  return { items, mode };
 }
 
 async function loadFixtures(file) {
