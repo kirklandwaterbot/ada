@@ -1,7 +1,7 @@
 import accessibilityNews from "../../data/accessibility-news.json";
 
 export type NewsTier = "official" | "news" | "community" | "unverified";
-export type NewsKind = "mta" | "news" | "reddit" | "equipment";
+export type NewsKind = "mta" | "news" | "reddit" | "equipment" | "capital" | "newsletter";
 export type NewsItemStatus =
   | "verified"
   | "needs-review"
@@ -24,6 +24,8 @@ export type EquipmentUnit = {
 };
 
 export type NewsFeedItem = {
+  /** Short MTA-written note (capital dashboard milestones). */
+  detail?: string;
   discussionUrl: string | null;
   /** Units behind an MTA elevator & escalator data item. */
   equipment?: EquipmentUnit[];
@@ -38,6 +40,8 @@ export type NewsFeedItem = {
   publishedAt: string;
   reason: string;
   source: string;
+  /** Capital Program Dashboard project the item belongs to. */
+  projectTitle?: string;
   stations: NewsStationRef[];
   /** The station came from the article text, not the headline. */
   stationsFromArticle?: boolean;
@@ -85,8 +89,18 @@ export type NewsSource = {
   status: "ok" | "failed";
 };
 
+export type NewsletterIssue = {
+  accessibilitySections?: number;
+  date: string;
+  readAt?: string;
+  sections?: number;
+  title: string;
+  url: string;
+};
+
 export type AccessibilityNewsFile = {
   checkedAt: string | null;
+  newsletterIssues?: NewsletterIssue[];
   feed: NewsFeedItem[];
   methodology: string;
   openings: StationOpening[];

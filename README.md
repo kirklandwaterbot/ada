@@ -35,6 +35,17 @@ runs it every three hours and commits any changes, which redeploys the site.
   replacement elevators appear in the Updates feed.
 - **MTA press releases** from mta.info. The tracker reads the opening
   paragraphs, not just the headline.
+- **This Week in MTA Construction**, MTA Construction & Development's weekly
+  newsletter, read from its
+  [public archive](https://cloud.info.mta.org/construction-development-updates-archive).
+  Each new issue is read once and split into sections. A section saying a
+  station is now accessible counts like a press release, and elevator and
+  escalator work appears in the feed.
+- **MTA Capital Program Dashboard**: milestones the MTA posts on elevator,
+  escalator, and ADA projects ("Schedule Adjustment", "Construction
+  complete"), plus phase and estimated-completion changes between runs. Each
+  item links to the project on capitaldashboard.mta.info. These track
+  progress and never change a station's status by themselves.
 - **NYC news outlets** through Google News (amNY, Gothamist, NY1, News 12,
   Patch, THE CITY, and others).
 - **Reddit**: r/nyc, r/newyorkcity, r/AskNYC, and r/nycrail, plus NYC posts

@@ -21,7 +21,9 @@ import {
   enrichWithGlimpses,
   hasMeaningfulChange,
 } from "./accessibility-news/pipeline.mjs";
+import { capitalItems } from "./accessibility-news/capital.mjs";
 import { equipmentItems } from "./accessibility-news/equipment.mjs";
+import { fetchConstructionNewsletter } from "./accessibility-news/newsletter.mjs";
 import {
   fetchArticleGlimpse,
   fetchEquipmentInventory,
@@ -36,6 +38,8 @@ const NEWS_FILE = path.join(root, "data/accessibility-news.json");
 const REVIEW_FILE = path.join(root, "data/accessibility-news-review.json");
 const MARKERS_FILE = path.join(root, "data/accessible-station-coordinates.json");
 const INVENTORY_SNAPSHOT_FILE = path.join(root, "data/mta-subway-elevator-escalator-assets.json");
+const CAPITAL_FILE = path.join(root, "data/mta-capital-elevator-escalator-projects.json");
+const ADA_STATUSES_FILE = path.join(root, "data/ada-project-statuses.json");
 const PLANNED_FILE = path.join(root, "data/planned-ada-station-coordinates.json");
 const LOOKBACK_DAYS = Number(process.env.ACCESSIBILITY_NEWS_LOOKBACK_DAYS ?? 150);
 const HEARTBEAT_MS = 24 * 60 * 60 * 1_000;
@@ -50,13 +54,18 @@ const accessibilityData = JSON.parse(await readFile(STATIONS_FILE, "utf8"));
 const previous = await readJsonIfExists(NEWS_FILE);
 const review = (await readJsonIfExists(REVIEW_FILE)) ?? {};
 
+// Filled in by sources that keep state between runs.
+const extras = {};
+
 const { rawItems, sources } = fixturesPath
   ? await loadFixtures(fixturesPath)
   : await collect();
 
 const lookbackMs = LOOKBACK_DAYS * 24 * 60 * 60 * 1_000;
 const recentItems = rawItems.filter(
-  (item) => now.getTime() - Date.parse(item.publishedAt) <= lookbackMs,
+  (item) =>
+    now.getTime() - Date.parse(item.publishedAt) <=
+    (item.kind === "capital" ? Math.max(lookbackMs, 365 * 864e5) : lookbackMs),
 );
 
 // Read the article behind headlines that don't name the station.
@@ -82,6 +91,7 @@ if (glimpses.length > 0) {
 
 const { changes, file } = buildNewsFile({
   accessibilityData,
+  extras,
   now,
   previous,
   rawItems: recentItems,
@@ -133,6 +143,8 @@ async function collect() {
     ["News outlets (Google News)", "news", () => fetchGoogleNews({ windowDays: LOOKBACK_DAYS })],
     ["Reddit", "reddit", () => fetchReddit({})],
     ["MTA elevator & escalator data", "equipment", collectEquipment],
+    ["MTA Capital Program Dashboard", "capital", collectCapital],
+    ["This Week in MTA Construction", "newsletter", collectNewsletter],
   ];
 
   for (const [name, kind, run] of runs) {
@@ -182,6 +194,40 @@ async function collectEquipment() {
   }
   const items = equipmentItems(assets, accessibilityData, { lookbackDays: LOOKBACK_DAYS, now: now.getTime() });
   return { items, mode };
+}
+
+// Capital Program Dashboard: milestones from the daily snapshot, plus
+// phase and completion-date changes since the last run.
+async function collectCapital() {
+  const capitalData = JSON.parse(await readFile(CAPITAL_FILE, "utf8"));
+  const adaStatuses = JSON.parse(await readFile(ADA_STATUSES_FILE, "utf8"));
+  const { items, snapshot } = capitalItems(capitalData, {
+    accessibilityData,
+    adaStatuses,
+    lookbackDays: Math.max(LOOKBACK_DAYS, 365),
+    now: now.getTime(),
+    previousSnapshot: previous?.capitalSnapshot ?? null,
+  });
+  extras.capitalSnapshot = snapshot;
+  return { items, mode: `snapshot ${capitalData.metadata?.checkedAt?.slice(0, 10) ?? ""}`.trim() };
+}
+
+// "This Week in MTA Construction": read issues not seen before.
+async function collectNewsletter() {
+  const result = await fetchConstructionNewsletter({
+    known: previous?.newsletterIssues ?? [],
+    lookbackDays: LOOKBACK_DAYS,
+    now: now.getTime(),
+  });
+  extras.newsletterIssues = result.issues;
+  for (const entry of result.log) {
+    console.log(
+      entry.error
+        ? `  ✗ ${entry.issue.date} ${entry.issue.title}: ${entry.error}`
+        : `  ✓ ${entry.issue.date} ${entry.issue.title}: ${entry.sections} sections${entry.headings.length ? `; accessibility: ${entry.headings.join(" | ")}` : ""}`,
+    );
+  }
+  return { items: result.items, mode: `${result.log.length} new issue(s) of ${result.archiveCount}` };
 }
 
 async function loadFixtures(file) {

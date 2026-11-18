@@ -11,10 +11,14 @@ const FILTERS: Array<{ label: string; value: "all" | "openings" | NewsKind }> = 
   { label: "News", value: "news" },
   { label: "Reddit", value: "reddit" },
   { label: "Elevators & escalators", value: "equipment" },
+  { label: "Capital dashboard", value: "capital" },
+  { label: "Construction newsletter", value: "newsletter" },
 ];
 
 const KIND_ICON: Record<NewsKind, string> = {
+  capital: "construction",
   equipment: "elevator",
+  newsletter: "engineering",
   mta: "check_circle",
   news: "news",
   reddit: "groups",
@@ -51,7 +55,11 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
   return (
     <div>
       <div aria-label="Filter coverage" className="flex flex-wrap gap-2" role="group">
-        {FILTERS.map((option) => {
+        {FILTERS.filter(
+          (option) =>
+            ["all", "openings", "mta", "news", "reddit"].includes(option.value) ||
+            items.some((item) => item.kind === option.value),
+        ).map((option) => {
           const count =
             option.value === "all"
               ? items.length
@@ -140,6 +148,9 @@ export function NewsFeed({ items }: { items: NewsFeedItem[] }) {
                       </a>
                     ) : null}
                   </p>
+                  {item.detail ? (
+                    <p className="mt-2 max-w-[70ch] text-sm text-[var(--muted-strong)]">{item.detail}</p>
+                  ) : null}
                   {item.equipment?.length ? (
                     <ul className="mt-2 space-y-0.5 text-sm text-[var(--muted-strong)]">
                       {item.equipment.map((unit) => (

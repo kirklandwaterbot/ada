@@ -171,6 +171,10 @@ export function extractUrls(text) {
 
 // --------------------------------------------------------------- fetching --
 
+export async function fetchText(url, options = {}, fetchImpl) {
+  return getText(url, options, fetchImpl);
+}
+
 async function getText(url, options = {}, fetchImpl) {
   const response = await fetchWithRetry(
     url,

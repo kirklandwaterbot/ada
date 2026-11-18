@@ -103,7 +103,7 @@ function matchesDomain(hostname, domains) {
 }
 
 const SUBJECT_PATTERN =
-  /\b(accessib(?:le|ility)|ada\b|elevators?|wheelchair|ramps?|step[- ]free)/i;
+  /\b(accessib(?:le|ility)|ada\b|elevators?|escalators?|wheelchair|ramps?|step[- ]free)/i;
 
 const STRONG_OPENING_PATTERNS = [
   /\bnow (?:fully |completely )?(?:ada[- ])?(?:accessible|compliant)\b/,

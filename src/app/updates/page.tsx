@@ -61,7 +61,7 @@ export default function UpdatesPage() {
   return (
     <div className="page-enter space-y-12">
       <PageHeader
-        description="When a station gets working elevators or ramps, it appears here with the MTA record, press release, news story, or Reddit post that confirms it, and the station's status updates across the site. Sources are checked every three hours."
+        description="When a station gets working elevators or ramps, it appears here with the MTA record, press release, construction newsletter, news story, or Reddit post that confirms it, and the station's status updates across the site. Capital dashboard milestones and elevator and escalator work are tracked too. Sources are checked every three hours."
         title="Newly accessible stations"
       >
         <SourceStatus checkedAt={news.checkedAt} sources={news.sources} />
@@ -166,6 +166,16 @@ export default function UpdatesPage() {
           icon="elevator"
           text="The MTA's elevator and escalator records list new elevators as in service, often days before the announcement. When new ADA elevators reach the platforms in both directions, the station is marked accessible; one direction marks it partially accessible."
           title="MTA elevator records"
+        />
+        <Rule
+          icon="engineering"
+          text="Each weekly issue of This Week in MTA Construction is read from its public archive. A section saying a station is now accessible counts like a press release; elevator and escalator work shows up in the feed."
+          title="MTA construction newsletter"
+        />
+        <Rule
+          icon="construction"
+          text="Milestones the MTA posts on its Capital Program Dashboard, plus projects that change phase or move their estimated completion date. These track progress; they don't change a station's status by themselves."
+          title="Capital Program Dashboard"
         />
         <Rule
           icon="check_circle"

@@ -13,7 +13,9 @@ import {
 } from "./classify.mjs";
 
 export const NEWS_FILE_VERSION = 2;
-const FEED_LIMIT = 80;
+const FEED_LIMIT = 160;
+// MTA-published sources that aren't press releases.
+const MTA_KINDS = new Set(["mta", "capital", "newsletter"]);
 const TIER_RANK = { official: 3, news: 2, community: 1, unverified: 0 };
 
 export function itemId(url) {
@@ -55,7 +57,7 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
 
   let tier;
   let proofUrls = [];
-  if (raw.kind === "mta") {
+  if (MTA_KINDS.has(raw.kind)) {
     tier = "official";
     proofUrls = [raw.url];
   } else if (raw.kind === "news") {
@@ -106,16 +108,32 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       : { mentions: [], reason: rejected ? "rejected" : "not-opening", rows: [] };
 
   const rejectStations = new Set(review.rejectStations ?? []);
-  const rows = resolution.rows.filter(
+  const matchedRows = resolution.rows.filter(
     (rowIndex) => !rejectStations.has(stationKey(index.stations[rowIndex])),
   );
+  // Capital dashboard milestones track progress; they can back up an opening
+  // found elsewhere but never change a station on their own.
+  const supportOnly = raw.kind === "capital";
+  const rows = supportOnly ? [] : matchedRows;
 
   // Show which station a report was about even when nothing needed changing.
-  const shownRows = rows.length > 0 ? rows : (resolution.alreadyAccessibleRows ?? []);
+  const keyToIndex = raw.stationKeys?.length
+    ? new Map(index.stations.map((row, rowIndex) => [stationKey(row), rowIndex]))
+    : null;
+  const listedRows = (raw.stationKeys ?? [])
+    .map((key) => keyToIndex.get(key))
+    .filter((value) => value !== undefined);
+  const shownRows =
+    matchedRows.length > 0
+      ? matchedRows
+      : (resolution.alreadyAccessibleRows ?? []).length > 0
+        ? resolution.alreadyAccessibleRows
+        : listedRows;
 
   let status;
   if (detection.tentative && !rejected) status = rows.length > 0 ? "needs-review" : resolution.reason === "already-accessible" ? "already-accessible" : "news";
   else if (!detection.isOpening) status = rejected ? "rejected" : "news";
+  else if (supportOnly) status = "news";
   else if (rows.length > 0) status = tier === "official" || tier === "news" ? "verified" : "needs-review";
   else if (resolution.reason === "already-accessible") status = "already-accessible";
   else status = "needs-review";
@@ -144,7 +162,10 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
       source: raw.kind === "reddit" ? `r/${raw.subreddit || "reddit"}` : raw.sourceName || classifyUrl(raw.url).domain,
       stations: shownRows.map((rowIndex) => describeRow(index.stations[rowIndex])),
       status,
-      subject: isAccessibilitySubject(subjectText),
+      subject: raw.kind === "capital" || isAccessibilitySubject(subjectText),
+      ...(raw.projectTitle ? { projectTitle: raw.projectTitle } : {}),
+      // The MTA's own milestone note from the dashboard's open data.
+      ...(raw.kind === "capital" && raw.lead ? { detail: raw.lead.slice(0, 280) } : {}),
       tier,
       title,
       url: proofUrls[0] ?? raw.url,
@@ -152,6 +173,7 @@ export function evaluateItem(raw, index, { review = {} } = {}) {
     // Stations this report is about that are already accessible; used to add
     // corroborating sources to openings the tracker found earlier.
     corroborates: detection.isOpening && !rejected ? shownRows.filter((rowIndex) => !rows.includes(rowIndex)) : [],
+    // (capital items reach openings only through corroborates)
     rows,
   };
 }
@@ -519,7 +541,7 @@ export function recomputeSummary(accessibilityData) {
 }
 
 /** Merge a fresh run into the persisted news file. */
-export function buildNewsFile({ accessibilityData, now, previous, rawItems, review, sources }) {
+export function buildNewsFile({ accessibilityData, extras = {}, now, previous, rawItems, review, sources }) {
   const index = buildStationIndex(accessibilityData.stations);
   const evaluated = [];
   const seen = new Set();
@@ -566,6 +588,9 @@ export function buildNewsFile({ accessibilityData, now, previous, rawItems, revi
       sources,
       openings,
       feed,
+      // Caches for the capital dashboard diff and the newsletter reader.
+      capitalSnapshot: extras.capitalSnapshot ?? previous?.capitalSnapshot ?? null,
+      newsletterIssues: extras.newsletterIssues ?? previous?.newsletterIssues ?? [],
     },
   };
 }
@@ -579,6 +604,11 @@ export function hasMeaningfulChange(previous, next) {
     return copy;
   };
   const strip = (file) =>
-    JSON.stringify({ feed: file.feed, openings: file.openings?.map(withoutTimestamps) });
+    JSON.stringify({
+      capitalSnapshot: file.capitalSnapshot ?? null,
+      feed: file.feed,
+      newsletterIssues: (file.newsletterIssues ?? []).map((issue) => issue.url),
+      openings: file.openings?.map(withoutTimestamps),
+    });
   return strip(previous) !== strip(next);
 }

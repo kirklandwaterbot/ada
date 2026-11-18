@@ -9,7 +9,14 @@ import {
   normalizeStationText,
   resolveStations,
 } from "./accessibility-news/classify.mjs";
+import { capitalItems, stationsFromDescription } from "./accessibility-news/capital.mjs";
 import { equipmentItems, platformCoverage } from "./accessibility-news/equipment.mjs";
+import {
+  fetchConstructionNewsletter,
+  newsletterItems,
+  parseNewsletterArchive,
+  parseNewsletterSections,
+} from "./accessibility-news/newsletter.mjs";
 import {
   applyOpenings,
   buildNewsFile,
@@ -786,4 +793,176 @@ test("reads platform coverage from elevator directions", () => {
   assert.equal(platformCoverage([e("Northbound"), e("Southbound")]), "both");
   assert.equal(platformCoverage([e("Northbound"), e("Southbound", "+", "RNOS")]), "one");
   assert.equal(platformCoverage([e("Both", "-")]), "none");
+});
+
+const ARCHIVE_HTML = `<html><body><table><tr><td><img src="logo.png"></td></tr></table>
+<h2>This Week in MTA Construction newsletter archive</h2>
+<ul>
+<li>11/17/2026 &ndash; <a href="https://view.info.mta.org/?qs=slam">This Week in MTA Construction: Slam Dunk</a></li>
+<li>11/10/2026 &ndash; <a href="https://view.info.mta.org/?qs=dig">This Week in MTA Construction: Dig Deep</a></li>
+<li>06/16/2026 &ndash; <a href="https://view.info.mta.org/?vawpToken=OLD.1">This Week in MTA Construction: Overdue Victories</a></li>
+<li><a href="https://cloud.info.mta.org/construction-development-updates">Sign up</a></li>
+</ul></body></html>`;
+
+// Email-style issue: real headings for some sections, bold table cells for others.
+const ISSUE_HTML = `<html><head><style>p{}</style></head><body>
+<table><tr><td><a href="#">View as webpage</a></td></tr>
+<tr><td><h1>This Week in MTA Construction: Slam Dunk</h1></td></tr>
+<tr><td><p>Welcome back! Here is what our crews delivered this week across the system and what is coming next.</p></td></tr>
+<tr><td><h2>Woodhaven Blvd is now fully accessible</h2></td></tr>
+<tr><td><p>Riders at Woodhaven Blvd on the M and R lines can now use three new elevators from the street to the mezzanine and to both platforms, completing the station's accessibility upgrade.</p></td></tr>
+<tr><td><strong>Escalator work wraps at Lexington Av-63 St</strong></td></tr>
+<tr><td><p>We returned the last of ten replaced escalators to service at Lexington Av-63 St on the F and Q, finishing a multi-year replacement program at one of the deepest stations in the system.</p></td></tr>
+<tr><td><h2>Second Avenue Subway tunneling</h2></td></tr>
+<tr><td><p>The tunnel boring machine advanced another 400 feet under Second Avenue this week as crews continued mining toward 116 Street.</p></td></tr>
+<tr><td><p>You are receiving this email because you subscribed. Unsubscribe</p></td></tr>
+</table></body></html>`;
+
+test("reads the This Week in MTA Construction archive and issue sections", () => {
+  const archive = parseNewsletterArchive(ARCHIVE_HTML);
+  assert.deepEqual(
+    archive.map((issue) => `${issue.date} ${issue.title}`),
+    [
+      "2026-11-17 This Week in MTA Construction: Slam Dunk",
+      "2026-11-10 This Week in MTA Construction: Dig Deep",
+      "2026-06-16 This Week in MTA Construction: Overdue Victories",
+    ],
+  );
+
+  const sections = parseNewsletterSections(ISSUE_HTML);
+  const headings = sections.map((section) => section.heading);
+  assert.ok(headings.includes("Woodhaven Blvd is now fully accessible"));
+  assert.ok(headings.includes("Escalator work wraps at Lexington Av-63 St"));
+  assert.ok(headings.includes("Second Avenue Subway tunneling"));
+  assert.equal(sections.some((section) => /unsubscribe|view as webpage/i.test(`${section.heading} ${section.text}`)), false);
+
+  const items = newsletterItems(archive[0], sections);
+  // Only the accessibility/elevator/escalator sections become items.
+  assert.deepEqual(items.map((item) => item.title), [
+    "Woodhaven Blvd is now fully accessible",
+    "Escalator work wraps at Lexington Av-63 St",
+  ]);
+  assert.equal(items[0].sourceName, "This Week in MTA Construction, Slam Dunk");
+  assert.equal(items[0].publishedAt.slice(0, 10), "2026-11-17");
+});
+
+test("a newsletter section reporting an opening counts as an official MTA source", () => {
+  const data = baseData();
+  const [issue] = parseNewsletterArchive(ARCHIVE_HTML);
+  const items = newsletterItems(issue, parseNewsletterSections(ISSUE_HTML));
+  const { changes, file } = buildNewsFile({
+    accessibilityData: data,
+    now: new Date("2026-11-18T12:00:00Z"),
+    previous: null,
+    rawItems: items,
+    review: {},
+    sources: [],
+  });
+  assert.deepEqual(changes.map((change) => change.key), ["Woodhaven Blvd|Queens Blvd Line|M/R"]);
+  const woodhaven = file.openings.find((opening) => opening.station === "Woodhaven Blvd");
+  assert.equal(woodhaven.verification, "official");
+  assert.equal(woodhaven.evidence[0].kind, "newsletter");
+  assert.equal(file.feed.find((item) => item.title.startsWith("Escalator work")).status, "news");
+});
+
+test("only new newsletter issues are fetched, and failed ones are retried", async () => {
+  const requested = [];
+  const fetchImpl = async (url) => {
+    requested.push(String(url));
+    if (String(url).includes("construction-development-updates-archive")) return new Response(ARCHIVE_HTML);
+    if (String(url).includes("qs=dig")) return new Response("down", { status: 503 });
+    return new Response(ISSUE_HTML);
+  };
+  const result = await fetchConstructionNewsletter({
+    fetchImpl,
+    known: [{ date: "2026-06-16", title: "Overdue Victories", url: "https://view.info.mta.org/?vawpToken=OLD.1" }],
+    lookbackDays: 200,
+    now: Date.parse("2026-11-18T12:00:00Z"),
+  });
+  // Old issue already read; Slam Dunk read; Dig Deep failed and isn't cached.
+  assert.equal(requested.some((url) => url.includes("OLD.1")), false);
+  assert.deepEqual(result.issues.map((issue) => issue.url).sort(), [
+    "https://view.info.mta.org/?qs=slam",
+    "https://view.info.mta.org/?vawpToken=OLD.1",
+  ]);
+  assert.equal(result.items.length, 2);
+  assert.ok(result.log.some((entry) => entry.error));
+});
+
+test("tracks capital dashboard milestones, phase changes and completion dates", () => {
+  const data = baseData();
+  const project = {
+    description:
+      "This project will replace 17 elevators at 8 stations, including Pacific Street (3 elevators) and DeKalb Avenue (3 elevators) on the 4 Avenue Line, Church Avenue (1 elevator) on the Nostrand Line, and Stillwell Avenue (2 elevators) at the Coney Island Terminal.",
+    estimatedCompletionDate: "2026-12-31",
+    externalId: "12345",
+    key: "modern:12345",
+    phase: "Complete",
+    phases: [
+      {
+        milestones: [
+          { date: "2026-09-01", description: "", title: "Construction complete" },
+          { date: "2024-01-01", description: "Contract awarded", title: "Contract Award" },
+        ],
+        name: "Construction",
+      },
+    ],
+    title: "Replace 17 Elevators At 8 Stations",
+  };
+  const capital = { projects: [project] };
+  const now = Date.parse("2026-11-18T12:00:00Z");
+
+  assert.deepEqual(stationsFromDescription(project.description, data).sort(), [
+    "Church Av|Nostrand Av Line|2/5",
+    "DeKalb Av|4 Av Line, Brighton Line|B/Q/R",
+  ]);
+
+  const first = capitalItems(capital, { accessibilityData: data, adaStatuses: { stations: [] }, now });
+  assert.deepEqual(first.items.map((item) => item.title), ["Replace 17 Elevators At 8 Stations: Construction complete"]);
+  assert.equal(first.items[0].url.startsWith("https://capitaldashboard.mta.info/?projectId=12345"), true);
+
+  // Next run: the phase and estimated completion changed.
+  const previousSnapshot = { "modern:12345": { estimatedCompletionDate: "2026-09-30", phase: "Construction", title: project.title } };
+  const second = capitalItems(capital, { accessibilityData: data, adaStatuses: { stations: [] }, now, previousSnapshot });
+  assert.deepEqual(second.items.slice(1).map((item) => item.title), [
+    "Replace 17 Elevators At 8 Stations: now complete",
+    "Replace 17 Elevators At 8 Stations: completion pushed back to Dec 31, 2026",
+  ]);
+
+  const { file } = buildNewsFile({
+    accessibilityData: data,
+    extras: { capitalSnapshot: second.snapshot },
+    now: new Date(now),
+    previous: null,
+    rawItems: second.items,
+    review: {},
+    sources: [],
+  });
+  assert.equal(file.feed.length, 3);
+  assert.ok(file.feed.every((item) => item.tier === "official" && item.status === "news"));
+  assert.deepEqual(
+    [...new Set(file.feed[0].stations.map((station) => station.station))].sort(),
+    ["Church Av", "DeKalb Av"],
+  );
+  assert.equal(file.capitalSnapshot["modern:12345"].phase, "Complete");
+});
+
+test("a capital milestone worded like an opening never changes a station by itself", () => {
+  const data = baseData();
+  const now = Date.parse("2026-11-18T12:00:00Z");
+  const project = {
+    description: "",
+    estimatedCompletionDate: "2026-12-31",
+    externalId: "999",
+    key: "modern:999",
+    phase: "Construction",
+    phases: [{ milestones: [{ date: "2026-10-01", description: "Junius St station is now fully accessible.", title: "Progress Update" }], name: "Construction" }],
+    title: "NYCT ADA Station Improvements: Junius St",
+  };
+  const { items } = capitalItems({ projects: [project] }, { accessibilityData: data, adaStatuses: { stations: [] }, now });
+  const { changes, file } = buildNewsFile({ accessibilityData: data, now: new Date(now), previous: null, rawItems: items, review: {}, sources: [] });
+  assert.equal(changes.length, 0);
+  assert.equal(file.openings.length, 0);
+  assert.equal(file.feed[0].status, "news");
+  assert.deepEqual(file.feed[0].stations.map((station) => station.station), ["Junius St"]);
 });
