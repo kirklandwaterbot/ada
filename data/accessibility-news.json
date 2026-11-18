@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-18T16:41:31.959Z",
+  "checkedAt": "2026-11-18T17:46:55.524Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-18T16:41:39.004Z",
+      "checkedAt": "2026-11-18T17:46:59.995Z",
       "itemCount": 11,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-18T16:41:40.103Z",
+      "checkedAt": "2026-11-18T17:47:00.984Z",
       "itemCount": 78,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-18T16:41:54.155Z",
+      "checkedAt": "2026-11-18T17:47:14.874Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -349,19 +349,10 @@
         "https://www.mta.info/press-release/mta-adds-137-st-city-college-1-growing-list-of-accessible-subway-stations"
       ],
       "publishedAt": "2026-10-14T20:15:00.000Z",
-      "reason": "matched",
+      "reason": "already-accessible",
       "source": "MTA",
-      "stations": [
-        {
-          "line": "Broadway-7 Av Line",
-          "services": [
-            "1"
-          ],
-          "slug": "137-st-city-college-broadway-7-av-line-1",
-          "station": "137 St-City College"
-        }
-      ],
-      "status": "verified",
+      "stations": [],
+      "status": "already-accessible",
       "subject": true,
       "tier": "official",
       "title": "MTA Adds 137 St-City College 1 to Growing List of Accessible Subway Stations",
@@ -398,19 +389,10 @@
         "https://news.google.com/rss/articles/CBMikAFBVV95cUxNc1RxR3dtX1psbW5oN1dqNVdBbmduT1dULXFBcVNzUkw3azRoMVVoZVNXZEl4UUtrWEtrenZVUmY3RE01ME45OTdUcXZqSjdSSlpWb2dHbS12eUx3eHJRVnpZVlBqbDQxR3J4Z2lNdHp2em84OGhYMWhscHdfYk92V2Jybm04Z3ctUzFteEExYXI?oc=5"
       ],
       "publishedAt": "2026-10-14T07:00:00.000Z",
-      "reason": "matched",
+      "reason": "already-accessible",
       "source": "amNewYork",
-      "stations": [
-        {
-          "line": "Broadway-7 Av Line",
-          "services": [
-            "1"
-          ],
-          "slug": "137-st-city-college-broadway-7-av-line-1",
-          "station": "137 St-City College"
-        }
-      ],
-      "status": "verified",
+      "stations": [],
+      "status": "already-accessible",
       "subject": true,
       "tier": "news",
       "title": "West Harlem’s 137 St-City College 1 train station is now ADA accessible with installation of two new elevators",
@@ -647,19 +629,10 @@
         "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations"
       ],
       "publishedAt": "2026-08-19T18:30:00.000Z",
-      "reason": "matched",
+      "reason": "already-accessible",
       "source": "MTA",
-      "stations": [
-        {
-          "line": "Culver Line",
-          "services": [
-            "F"
-          ],
-          "slug": "kings-hwy-culver-line-f",
-          "station": "Kings Hwy"
-        }
-      ],
-      "status": "verified",
+      "stations": [],
+      "status": "already-accessible",
       "subject": true,
       "tier": "official",
       "title": "MTA Adds Kings Highway F to Growing List of Accessible Subway Stations",
@@ -676,19 +649,10 @@
         "https://news.google.com/rss/articles/CBMioAFBVV95cUxOQ09fZF9ianFJNldYUTllazF2eVlobmxWS05UTVozU2lybzh1STlLRHVJaENNcjlzd1NWbWtWQnhDZTZwRGR2STNOQ0haLWt0aDBsLXo3bWQ2TXdZN3dzUjVIRElCNm5zNWk4cjh2WnlBY0tfVEVldjdFZ1dOb0JSTVhzZE53WktINDBoOTU4ZEU4MDE5OGlZNVRsT3VUbUpz?oc=5"
       ],
       "publishedAt": "2026-08-19T07:00:00.000Z",
-      "reason": "matched",
+      "reason": "already-accessible",
       "source": "amNewYork",
-      "stations": [
-        {
-          "line": "Culver Line",
-          "services": [
-            "F"
-          ],
-          "slug": "kings-hwy-culver-line-f",
-          "station": "Kings Hwy"
-        }
-      ],
-      "status": "verified",
+      "stations": [],
+      "status": "already-accessible",
       "subject": true,
       "tier": "news",
       "title": "MTA unveils new elevators at now ADA accessible Kings Highway Brooklyn F train station",
