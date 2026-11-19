@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-18T17:50:27.934Z",
+    "generatedAt": "2026-11-19T18:01:57.159Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,7 +11,7 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 9,
+    "elevatorOutageCount": 7,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
     "lightRailElevatorOutageCount": 2,
@@ -3179,7 +3179,7 @@
           "unitId": "NJT-RAIL-NEW-YORK-PENN-4",
           "system": "rail",
           "location": "Tracks 3 & 4 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -4486,7 +4486,7 @@
           "unitId": "NJT-RAIL-SOUTH-AMBOY-2",
           "system": "rail",
           "location": "Eastbound Elevator No. 2 (Overhead Walkway/Mason Street)",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {

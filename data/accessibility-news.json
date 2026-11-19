@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-19T11:50:37.310Z",
+  "checkedAt": "2026-11-19T17:58:23.548Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-19T11:50:42.193Z",
-      "itemCount": 13,
+      "checkedAt": "2026-11-19T17:58:29.775Z",
+      "itemCount": 14,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-19T11:50:43.182Z",
-      "itemCount": 82,
+      "checkedAt": "2026-11-19T17:58:30.934Z",
+      "itemCount": 77,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-19T11:50:56.553Z",
+      "checkedAt": "2026-11-19T17:58:44.296Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -118,6 +118,26 @@
     }
   ],
   "feed": [
+    {
+      "discussionUrl": null,
+      "id": "30adadbbceeb",
+      "kind": "mta",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://www.mta.info/press-release/photos-mta-completes-two-elevator-replacements-atlantic-avenue-barclays-center"
+      ],
+      "publishedAt": "2026-11-19T17:00:00.000Z",
+      "reason": "already-accessible",
+      "source": "MTA",
+      "stations": [],
+      "status": "already-accessible",
+      "subject": true,
+      "tier": "official",
+      "title": "PHOTOS: MTA Completes Two Elevator Replacements at Atlantic Avenue-Barclays Center Station Complex",
+      "url": "https://www.mta.info/press-release/photos-mta-completes-two-elevator-replacements-atlantic-avenue-barclays-center"
+    },
     {
       "discussionUrl": null,
       "id": "b7cc84aafc86",
