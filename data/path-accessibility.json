@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-19T17:58:45.417Z",
+    "generatedAt": "2026-11-20T17:32:40.090Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -10,7 +10,7 @@
     "gtfsUrl": "https://rapid.nationalrtap.org/GTFSFileManagement/UserUploadFiles/14843/PATHGTFS.zip",
     "stationCount": 13,
     "accessibleStationCount": 9,
-    "activeVerticalTransitAlertCount": 0,
+    "activeVerticalTransitAlertCount": 2,
     "feedVersion": null,
     "validFrom": "20260720",
     "validTo": "20261114"
@@ -156,20 +156,20 @@
       "elevators": [
         {
           "unitId": "EXP-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "12:22 PM: At Exchange Place, the elevator from the platform to the mezzanine is temporarily out of service. Use stairs, escalators, or accessible Grove St Station. We're sorry for the inconvenience.",
+          "status": "outage",
+          "lastUpdated": "11/20/2026 17:22:09"
         }
       ],
       "escalators": [
         {
           "unitId": "EXP-escalator-service",
-          "location": "Station escalator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "12:22 PM: At Exchange Place, the elevator from the platform to the mezzanine is temporarily out of service. Use stairs, escalators, or accessible Grove St Station. We're sorry for the inconvenience.",
+          "status": "outage",
+          "lastUpdated": "11/20/2026 17:22:09"
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "12:22 PM: At Exchange Place, the elevator from the platform to the mezzanine is temporarily out of service. Use stairs, escalators, or accessible Grove St Station. We're sorry for the inconvenience."
     },
     {
       "agency": "PATH",
@@ -218,9 +218,9 @@
       "elevators": [
         {
           "unitId": "NEW-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "11:55 AM: PATH Newport elevator between mezzanine and Platform A (trains to 33 St and Hoboken) is temporarily out of service. We regret this inconvenience.",
+          "status": "outage",
+          "lastUpdated": "11/20/2026 16:55:32"
         }
       ],
       "escalators": [
@@ -231,7 +231,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "11:55 AM: PATH Newport elevator between mezzanine and Platform A (trains to 33 St and Hoboken) is temporarily out of service. We regret this inconvenience."
     },
     {
       "agency": "PATH",

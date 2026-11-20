@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-19T18:01:57.159Z",
+    "generatedAt": "2026-11-20T17:35:48.988Z",
     "source": "NJ Transit rail GTFS, official accessibility guidance, and verified station rules",
     "gtfsUrl": "https://www.njtransit.com/rail_data.zip",
     "accessibilityApiUrl": "https://www.njtransit.com/api/graphql/graphql",
@@ -11,7 +11,7 @@
     "accessibleStationCount": 132,
     "elevatorCount": 105,
     "elevatorStationCount": 48,
-    "elevatorOutageCount": 7,
+    "elevatorOutageCount": 6,
     "lightRailElevatorCount": 23,
     "lightRailElevatorStationCount": 14,
     "lightRailElevatorOutageCount": 2,
@@ -1465,7 +1465,7 @@
           "unitId": "NJT-RAIL-ELIZABETH-2",
           "system": "rail",
           "location": "Eastbound #3 Elevator",
-          "status": "outage",
+          "status": "operational",
           "lastUpdated": null
         },
         {
@@ -1804,8 +1804,8 @@
       "serviceRouteIds": [
         "NLR-NCS"
       ],
-      "latitude": 40.780317,
-      "longitude": -74.187931,
+      "latitude": 40.780485,
+      "longitude": -74.188118,
       "accessibilityStatus": "Accessible",
       "wheelchairBoarding": 1,
       "stationDetailUrl": "https://www.njtransit.com/accessibility/light-rail-accessibility",
