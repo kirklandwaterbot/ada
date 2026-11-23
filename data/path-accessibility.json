@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-22T16:53:50.758Z",
+    "generatedAt": "2026-11-23T20:52:27.530Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -10,7 +10,7 @@
     "gtfsUrl": "https://rapid.nationalrtap.org/GTFSFileManagement/UserUploadFiles/14843/PATHGTFS.zip",
     "stationCount": 13,
     "accessibleStationCount": 9,
-    "activeVerticalTransitAlertCount": 0,
+    "activeVerticalTransitAlertCount": 1,
     "feedVersion": null,
     "validFrom": "20260720",
     "validTo": "20261114"
@@ -218,9 +218,9 @@
       "elevators": [
         {
           "unitId": "NEW-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "03:36 PM: PATH Newport elevator between mezzanine and Platform A (trains to 33 St and Hoboken) is temporarily out of service. We regret this inconvenience.",
+          "status": "outage",
+          "lastUpdated": "11/23/2026 20:36:44"
         }
       ],
       "escalators": [
@@ -231,7 +231,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "03:36 PM: PATH Newport elevator between mezzanine and Platform A (trains to 33 St and Hoboken) is temporarily out of service. We regret this inconvenience."
     },
     {
       "agency": "PATH",
