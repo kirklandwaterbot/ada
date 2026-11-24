@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-24T02:16:53.187Z",
+  "checkedAt": "2026-11-24T13:53:28.907Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-24T02:16:58.242Z",
+      "checkedAt": "2026-11-24T13:53:34.520Z",
       "itemCount": 13,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-24T02:16:59.402Z",
-      "itemCount": 81,
+      "checkedAt": "2026-11-24T13:53:35.461Z",
+      "itemCount": 89,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-24T02:17:12.050Z",
+      "checkedAt": "2026-11-24T13:53:49.335Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -517,6 +517,26 @@
       "tier": "unverified",
       "title": "IMPROVED ACCESSIBLE ENTRANCES OPEN AT 161ST STREET–YANKEE STADIUM",
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQdkR4WXNoUVEzcHh4U1pZcEdvZ3dkZ2xBU0ZXdTZQRFFUZ0l6N3lxY3FVWm5qSGxldXVCTFVkNjl6RjR6WXd4T2VTMU5uYXJYbVBtV3B3M3Y2UmhzbFdmRmZ6UmhISmVtSHJLTnFRTEszZ2Zfd1ZzTktFNkNNYTM3UVFXSlJ0SU4wMmU4ZEVoTUtQT0ZBUFRFRDh6NS0xam5kTWNJTHRLcE1uMWl1aXc?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "14e222529e0b",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMigAJBVV95cUxNM1I2RkI0VXZxZFhlcXg2dFV2dDJuYjdrNTd3N3NUTUxMdlE2dU13ZlpzcXNGTjFrQ1BLVzBoVlN6d0hTbHJ6cjFQVkdfMm51YjM2bklPVXRUNUVuTG5jOFV0SFJUR3B6cWhRcGdJd2tNYkV5RlphelFzTUUteWJ4YlRmOVNuYlBkX0xNUVd2Y2JnVFVWbmxDVDJBZUFhZm85bElzM012RXJhRHFWNXE1S2NpX1hCLXFuMlB3Um1pR1o5MUNiYS1NYmR0S3E1U3RaMUN0SmJlZlRmSHZsMkdrN084dE1kOVh2b0RXVWo2Si0taEk1MDc5dTJCcTl1d05B?oc=5"
+      ],
+      "publishedAt": "2026-10-14T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Florida Today",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "IMPROVED ACCESSIBLE ENTRANCES OPEN AT 161ST STREET–YANKEE STADIUM SUBWAY STATION, EXPANDING ADA ACCESS IN THE BRONX",
+      "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxNM1I2RkI0VXZxZFhlcXg2dFV2dDJuYjdrNTd3N3NUTUxMdlE2dU13ZlpzcXNGTjFrQ1BLVzBoVlN6d0hTbHJ6cjFQVkdfMm51YjM2bklPVXRUNUVuTG5jOFV0SFJUR3B6cWhRcGdJd2tNYkV5RlphelFzTUUteWJ4YlRmOVNuYlBkX0xNUVd2Y2JnVFVWbmxDVDJBZUFhZm85bElzM012RXJhRHFWNXE1S2NpX1hCLXFuMlB3Um1pR1o5MUNiYS1NYmR0S3E1U3RaMUN0SmJlZlRmSHZsMkdrN084dE1kOVh2b0RXVWo2Si0taEk1MDc5dTJCcTl1d05B?oc=5"
     },
     {
       "discussionUrl": null,
