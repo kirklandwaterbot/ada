@@ -43,13 +43,25 @@
       "sourceUrl": "https://www.mta.info/press-release/mta-adds-kings-highway-f-growing-list-of-accessible-subway-stations",
       "station": "Kings Hwy",
       "verifiedBy": "accessibility-news-sync"
+    },
+    {
+      "effectiveDate": "November 24, 2026",
+      "evidence": "1 source reports this station is now fully accessible: BKReader — “MTA Opens Two Modernized Elevators at Atlantic Avenue-Barclays”.",
+      "line": "Canarsie Line",
+      "services": [
+        "L"
+      ],
+      "source": "News coverage",
+      "sourceUrl": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPM0ZjbDVSbWtBOWl6bFpTRHNUaW1zRFBYb19vbnpIUjdNVlF1ZWppaUV4eGhPT1RaSGlBSjdzWHlNQWZqTnZrQVFLSEhYZ3lxc21DNWxwbFRSRU5SWk9qVnMxVXJRSmJ3MnNJdm9hX1dtdDJkaXhBRklERUMxbVpVenlISklvWjZVZGVoUklJZE02S2JLdGNiNnRESzRsLWVPQjgwQ09XMUxpMjNCNGdnbHQ5T0k?oc=5",
+      "station": "Atlantic Av",
+      "verifiedBy": "accessibility-news-sync"
     }
   ],
   "summary": {
     "totalStations": 493,
-    "accessible": 163,
+    "accessible": 164,
     "partiallyAccessible": 9,
-    "notAccessible": 321,
+    "notAccessible": 320,
     "plannedAda": 101,
     "statenIslandStations": 21,
     "sirAccessible": 6,
@@ -5696,11 +5708,11 @@
       ],
       "division": "BMT",
       "line": "Canarsie Line",
-      "accessibilityStatus": "Not accessible",
-      "accessibilityRaw": "❌",
+      "accessibilityStatus": "Accessible",
+      "accessibilityRaw": "♿",
       "plannedAda": false,
       "plannedAdaNote": "",
-      "dateMadeAccessible": "",
+      "dateMadeAccessible": "November 24, 2026",
       "borough": "Brooklyn",
       "neighborhood": "East New York",
       "ridership2024": 399480,

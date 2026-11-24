@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-24T13:53:28.907Z",
+  "checkedAt": "2026-11-24T19:55:52.022Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-24T13:53:34.520Z",
+      "checkedAt": "2026-11-24T19:55:58.971Z",
       "itemCount": 13,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-24T13:53:35.461Z",
+      "checkedAt": "2026-11-24T19:56:00.136Z",
       "itemCount": 89,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-24T13:53:49.335Z",
+      "checkedAt": "2026-11-24T19:56:14.097Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -28,6 +28,39 @@
     }
   ],
   "openings": [
+    {
+      "line": "Canarsie Line",
+      "services": [
+        "L"
+      ],
+      "slug": "atlantic-av-canarsie-line-l",
+      "station": "Atlantic Av",
+      "applied": true,
+      "evidence": [
+        {
+          "discussionUrl": null,
+          "id": "38c82ed3a627",
+          "kind": "news",
+          "partial": false,
+          "publishedAt": "2026-11-24T15:38:02.000Z",
+          "source": "BKReader",
+          "tier": "news",
+          "title": "MTA Opens Two Modernized Elevators at Atlantic Avenue-Barclays",
+          "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPM0ZjbDVSbWtBOWl6bFpTRHNUaW1zRFBYb19vbnpIUjdNVlF1ZWppaUV4eGhPT1RaSGlBSjdzWHlNQWZqTnZrQVFLSEhYZ3lxc21DNWxwbFRSRU5SWk9qVnMxVXJRSmJ3MnNJdm9hX1dtdDJkaXhBRklERUMxbVpVenlISklvWjZVZGVoUklJZE02S2JLdGNiNnRESzRsLWVPQjgwQ09XMUxpMjNCNGdnbHQ5T0k?oc=5"
+        }
+      ],
+      "key": "Atlantic Av|Canarsie Line|L",
+      "openedAt": "2026-11-24T15:38:02.000Z",
+      "primarySource": {
+        "source": "BKReader",
+        "title": "MTA Opens Two Modernized Elevators at Atlantic Avenue-Barclays",
+        "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPM0ZjbDVSbWtBOWl6bFpTRHNUaW1zRFBYb19vbnpIUjdNVlF1ZWppaUV4eGhPT1RaSGlBSjdzWHlNQWZqTnZrQVFLSEhYZ3lxc21DNWxwbFRSRU5SWk9qVnMxVXJRSmJ3MnNJdm9hX1dtdDJkaXhBRklERUMxbVpVenlISklvWjZVZGVoUklJZE02S2JLdGNiNnRESzRsLWVPQjgwQ09XMUxpMjNCNGdnbHQ5T0k?oc=5"
+      },
+      "readyToApply": true,
+      "resultingStatus": "Accessible",
+      "verification": "news",
+      "appliedAt": "2026-11-24T19:56:14.128Z"
+    },
     {
       "line": "Broadway-7 Av Line",
       "services": [
@@ -118,6 +151,35 @@
     }
   ],
   "feed": [
+    {
+      "discussionUrl": null,
+      "id": "38c82ed3a627",
+      "kind": "news",
+      "opening": true,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMitAFBVV95cUxPM0ZjbDVSbWtBOWl6bFpTRHNUaW1zRFBYb19vbnpIUjdNVlF1ZWppaUV4eGhPT1RaSGlBSjdzWHlNQWZqTnZrQVFLSEhYZ3lxc21DNWxwbFRSRU5SWk9qVnMxVXJRSmJ3MnNJdm9hX1dtdDJkaXhBRklERUMxbVpVenlISklvWjZVZGVoUklJZE02S2JLdGNiNnRESzRsLWVPQjgwQ09XMUxpMjNCNGdnbHQ5T0k?oc=5"
+      ],
+      "publishedAt": "2026-11-24T15:38:02.000Z",
+      "reason": "matched",
+      "source": "BKReader",
+      "stations": [
+        {
+          "line": "Canarsie Line",
+          "services": [
+            "L"
+          ],
+          "slug": "atlantic-av-canarsie-line-l",
+          "station": "Atlantic Av"
+        }
+      ],
+      "status": "verified",
+      "subject": true,
+      "tier": "news",
+      "title": "MTA Opens Two Modernized Elevators at Atlantic Avenue-Barclays",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPM0ZjbDVSbWtBOWl6bFpTRHNUaW1zRFBYb19vbnpIUjdNVlF1ZWppaUV4eGhPT1RaSGlBSjdzWHlNQWZqTnZrQVFLSEhYZ3lxc21DNWxwbFRSRU5SWk9qVnMxVXJRSmJ3MnNJdm9hX1dtdDJkaXhBRklERUMxbVpVenlISklvWjZVZGVoUklJZE02S2JLdGNiNnRESzRsLWVPQjgwQ09XMUxpMjNCNGdnbHQ5T0k?oc=5"
+    },
     {
       "discussionUrl": null,
       "id": "30adadbbceeb",
