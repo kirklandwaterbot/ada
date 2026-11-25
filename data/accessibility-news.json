@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-24T19:55:52.022Z",
+  "checkedAt": "2026-11-25T08:45:26.175Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-24T19:55:58.971Z",
+      "checkedAt": "2026-11-25T08:45:31.491Z",
       "itemCount": 13,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-24T19:56:00.136Z",
-      "itemCount": 89,
+      "checkedAt": "2026-11-25T08:45:33.044Z",
+      "itemCount": 86,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-24T19:56:14.097Z",
+      "checkedAt": "2026-11-25T08:45:46.952Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -1199,6 +1199,26 @@
       "tier": "news",
       "title": "5 Brooklyn Subway Stations Set For Accessibility Upgrades",
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQQlBOR2gxVGlYaHNudV9NRlhFRVB6MnZPZXNmYXBLU0VmZVl2WDRvNG9LbmNkYXhGaEJzVmlrbUxuZmkwNUF1LW82ek9TeF9BZVlfNEh5TDNYZ2lnV2M4Smk1UnBSajJqOHpYeWhua2JrVFlZZHM0dnhVQ0pkS1BwZzkxVUZ0ZG1yaC1qMnVzZE1RVXBFbGw5UzBCU2pfa2ZXZmpuVnhYWUxISG8?oc=5"
+    },
+    {
+      "discussionUrl": null,
+      "id": "f4dae7eaa38c",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMiiAFBVV95cUxONTlFWUdvamFFbUk0R0dNUFZGakdJVXYzVm1RWE5IQ241Snh5bE5rTmZpYy0yZjV6ZXVJcEs3VWVfU1RIOUNzZWc0RVFIWDJrVXlEN3N2YUNWb1VoRXVWYXV4VzRNSE81cTNob3pmeElSbW0tbkdOMlFIb0NzYkFwLVd6VDRCb21I?oc=5"
+      ],
+      "publishedAt": "2026-07-07T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Railway Supply",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "unverified",
+      "title": "NYC subway accessibility upgrades cover five stations",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxONTlFWUdvamFFbUk0R0dNUFZGakdJVXYzVm1RWE5IQ241Snh5bE5rTmZpYy0yZjV6ZXVJcEs3VWVfU1RIOUNzZWc0RVFIWDJrVXlEN3N2YUNWb1VoRXVWYXV4VzRNSE81cTNob3pmeElSbW0tbkdOMlFIb0NzYkFwLVd6VDRCb21I?oc=5"
     },
     {
       "discussionUrl": null,
