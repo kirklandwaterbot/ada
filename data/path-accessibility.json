@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-25T18:59:26.539Z",
+    "generatedAt": "2026-11-26T18:49:28.821Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -10,7 +10,7 @@
     "gtfsUrl": "https://rapid.nationalrtap.org/GTFSFileManagement/UserUploadFiles/14843/PATHGTFS.zip",
     "stationCount": 13,
     "accessibleStationCount": 9,
-    "activeVerticalTransitAlertCount": 0,
+    "activeVerticalTransitAlertCount": 1,
     "feedVersion": null,
     "validFrom": "20260720",
     "validTo": "20261114"
@@ -156,9 +156,9 @@
       "elevators": [
         {
           "unitId": "EXP-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "06:15 AM: As a precautionary measure, elevators at HOB & EX PL will be closed due to severe weather. HOB closed 9a Thu 11/26-7a Fri 11/27. EXPL closed 10a Thu 11/26-8a Fri 11/27. HBLR will cross-honor riders who need elevator service at HOB, NWPT & EX PL.",
+          "status": "outage",
+          "lastUpdated": "11/26/2026 11:15:00"
         }
       ],
       "escalators": [
@@ -169,7 +169,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "06:15 AM: As a precautionary measure, elevators at HOB & EX PL will be closed due to severe weather. HOB closed 9a Thu 11/26-7a Fri 11/27. EXPL closed 10a Thu 11/26-8a Fri 11/27. HBLR will cross-honor riders who need elevator service at HOB, NWPT & EX PL."
     },
     {
       "agency": "PATH",
@@ -249,13 +249,13 @@
       "elevators": [
         {
           "unitId": "HOB-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "06:15 AM: As a precautionary measure, elevators at HOB & EX PL will be closed due to severe weather. HOB closed 9a Thu 11/26-7a Fri 11/27. EXPL closed 10a Thu 11/26-8a Fri 11/27. HBLR will cross-honor riders who need elevator service at HOB, NWPT & EX PL.",
+          "status": "outage",
+          "lastUpdated": "11/26/2026 11:15:00"
         }
       ],
       "escalators": [],
-      "serviceAlert": ""
+      "serviceAlert": "06:15 AM: As a precautionary measure, elevators at HOB & EX PL will be closed due to severe weather. HOB closed 9a Thu 11/26-7a Fri 11/27. EXPL closed 10a Thu 11/26-8a Fri 11/27. HBLR will cross-honor riders who need elevator service at HOB, NWPT & EX PL."
     },
     {
       "agency": "PATH",
