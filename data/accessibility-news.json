@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-26T17:01:34.055Z",
+  "checkedAt": "2026-11-27T12:39:12.997Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-26T17:01:38.526Z",
+      "checkedAt": "2026-11-27T12:39:18.218Z",
       "itemCount": 13,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-26T17:01:40.780Z",
-      "itemCount": 85,
+      "checkedAt": "2026-11-27T12:39:19.249Z",
+      "itemCount": 77,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-26T17:01:54.073Z",
+      "checkedAt": "2026-11-27T12:39:32.580Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -281,7 +281,7 @@
       "proofUrls": [
         "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOVV9OQW9Qajg0OGxBYWE1UW1SdVlFZFItT2IwT0c0eXZJYWhVMWhvM2NfbGxoZTAtOWdMRzMwT2Q2c243YjhiaUdCYlE5V0xPbkJDSkdSanVsRUpObEpPVDNSaGJHelZ1cEFFRTMybll3NXgyeGlqclNFOFpkWG5KM0VvcXRUVWtkcHhCTE10MEdHSUxla3o3U3dKZE42Q0ZPNDhZYzRhR2E?oc=5"
       ],
-      "publishedAt": "2026-10-29T16:56:00.000Z",
+      "publishedAt": "2026-10-29T07:00:00.000Z",
       "reason": "already-accessible",
       "source": "BKReader",
       "stations": [],
