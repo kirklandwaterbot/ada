@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-26T18:48:59.003Z",
+    "generatedAt": "2026-11-27T18:41:01.814Z",
     "source": "MTA Elevator & Escalator Status",
     "sourceUrl": "https://www.mta.info/elevator-escalator-status",
     "componentUrl": "https://consist.mta.info/elevators-escalators/index.js",
     "equipmentCount": 707,
-    "currentOutageCount": 24,
+    "currentOutageCount": 31,
     "futureOutageCount": 66
   },
   "equipmentCodes": [
@@ -1037,18 +1037,71 @@
     },
     {
       "timeframe": "current",
-      "equipmentCode": "ES421",
-      "equipmentType": "Escalator",
-      "station": "21 St-Queensbridge",
+      "equipmentCode": "EL131",
+      "equipmentType": "Elevator",
+      "station": "161 St-Yankee Stadium",
       "routes": [
-        "F",
-        "M"
+        "B",
+        "D",
+        "4"
       ],
-      "serving": "21 St & 41 Ave (NE corner) to mezzanine",
+      "serving": "161 St & River Ave (NE corner) to mezzanine to reach 4/B/D service in both directions",
+      "ada": true,
+      "reason": "Under Investigation",
+      "outageStart": "11/26/2026 05:07:00 PM",
+      "estimatedReturnToService": "11/27/2026 02:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "ES383X",
+      "equipmentType": "Escalator",
+      "station": "Fulton St",
+      "routes": [
+        "A",
+        "C",
+        "J",
+        "2",
+        "3",
+        "4",
+        "5",
+        "Z"
+      ],
+      "serving": "uptown 4/5 platform level to Transit Center exit (SE corner of Fulton St & Broadway)",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "11/26/2026 06:03:00 PM",
+      "estimatedReturnToService": "11/28/2026 07:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL104",
+      "equipmentType": "Elevator",
+      "station": "191 St",
+      "routes": [
+        "1"
+      ],
+      "serving": "191 St & St Nicholas Ave (SW corner) to mezzanine for service in both directions and access to passageway to Broadway & 191 St",
       "ada": false,
       "reason": "Under Investigation",
-      "outageStart": "11/26/2026 01:14:00 PM",
-      "estimatedReturnToService": "11/26/2026 09:00:00 PM",
+      "outageStart": "11/27/2026 01:20:00 PM",
+      "estimatedReturnToService": "11/27/2026 11:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL520",
+      "equipmentType": "Elevator",
+      "station": "137 St-City College",
+      "routes": [
+        "1"
+      ],
+      "serving": "Street (SW corner of Broadway and W 137 St) to downtown 1 platform.",
+      "ada": true,
+      "reason": "Under Investigation",
+      "outageStart": "11/27/2026 01:20:00 PM",
+      "estimatedReturnToService": "11/27/2026 09:00:00 PM",
       "maintenance": false
     },
     {
@@ -1063,23 +1116,8 @@
       "serving": "Flushing Ave & Broadway (SE corner) to mezzanine for service in both directions",
       "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "11/26/2026 01:17:00 PM",
-      "estimatedReturnToService": "11/26/2026 10:00:00 PM",
-      "maintenance": false
-    },
-    {
-      "timeframe": "current",
-      "equipmentCode": "EL425",
-      "equipmentType": "Elevator",
-      "station": "Junction Blvd",
-      "routes": [
-        "7"
-      ],
-      "serving": "Roosevelt Av & Junction Blvd (NE corner) to mezz and overpass for 7 in both directions.",
-      "ada": true,
-      "reason": "Under Investigation",
-      "outageStart": "11/26/2026 01:40:00 PM",
-      "estimatedReturnToService": "11/26/2026 07:00:00 PM",
+      "outageStart": "11/27/2026 01:29:00 PM",
+      "estimatedReturnToService": "11/27/2026 10:00:00 PM",
       "maintenance": false
     },
     {
@@ -1093,29 +1131,81 @@
       "serving": "Street (SE corner of Jerome Av and E Mosholu Pkwy North) to Transfer Mezzanine & Woodlawn-bound Platform",
       "ada": true,
       "reason": "Under Investigation",
-      "outageStart": "11/26/2026 11:12:00 AM",
-      "estimatedReturnToService": "11/26/2026 07:00:00 PM",
+      "outageStart": "11/27/2026 02:18:00 AM",
+      "estimatedReturnToService": "11/27/2026 10:00:00 AM",
       "maintenance": false
     },
     {
       "timeframe": "current",
-      "equipmentCode": "EL726X",
+      "equipmentCode": "ES432X",
+      "equipmentType": "Escalator",
+      "station": "Sutphin Blvd-Archer Av-JFK Airport",
+      "routes": [
+        "E",
+        "J",
+        "Z",
+        "LIRR"
+      ],
+      "serving": "LIRR and AirTrain Terminal (SW corner of Sutphin Blvd & Archer Ave) to mezzanine for E/J/Z service",
+      "ada": false,
+      "reason": "Repair",
+      "outageStart": "11/27/2026 07:29:00 AM",
+      "estimatedReturnToService": "11/29/2026 07:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL601",
       "equipmentType": "Elevator",
-      "station": "Cortlandt St",
+      "station": "34 St-Hudson Yards",
+      "routes": [
+        "7"
+      ],
+      "serving": "upper mezzanine to lower mezzanine for Flushing Main St-bound service",
+      "ada": true,
+      "reason": "Repair",
+      "outageStart": "11/27/2026 08:23:00 AM",
+      "estimatedReturnToService": "11/27/2026 05:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL728X",
+      "equipmentType": "Elevator",
+      "station": "Fulton St",
       "routes": [
         "A",
         "C",
         "E",
+        "J",
         "R",
         "W",
         "2",
-        "3"
+        "3",
+        "4",
+        "5",
+        "Z"
       ],
-      "serving": "Fulton Center level to downtown R/W platform and access to rest of complex",
+      "serving": "Dey St & Broadway (SW corner) to downtown 4/5 platform, access to rest of Fulton St complex, and connection to Oculus complex",
       "ada": true,
       "reason": "Repair",
-      "outageStart": "11/26/2026 12:21:00 PM",
-      "estimatedReturnToService": "11/28/2026 01:00:00 PM",
+      "outageStart": "11/27/2026 08:23:00 AM",
+      "estimatedReturnToService": "11/29/2026 10:00:00 AM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL522",
+      "equipmentType": "Elevator",
+      "station": "Parkchester",
+      "routes": [
+        "6"
+      ],
+      "serving": "Center of Hugh J. Grant Circle to mezzanine and Manhattan-bound platform.",
+      "ada": true,
+      "reason": "Under Investigation",
+      "outageStart": "11/27/2026 11:38:00 AM",
+      "estimatedReturnToService": "11/27/2026 08:00:00 PM",
       "maintenance": false
     },
     {
@@ -1133,8 +1223,42 @@
       "serving": "42 St (between Park Ave & Lexington Ave) to main mezzanine for access to 4/5/6/7/S service",
       "ada": false,
       "reason": "Repair",
-      "outageStart": "11/26/2026 12:23:00 PM",
-      "estimatedReturnToService": "11/28/2026 09:00:00 PM",
+      "outageStart": "11/27/2026 11:55:00 AM",
+      "estimatedReturnToService": "11/29/2026 10:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL105",
+      "equipmentType": "Elevator",
+      "station": "191 St",
+      "routes": [
+        "1"
+      ],
+      "serving": "191 St & St Nicholas Ave (SW corner) to mezzanine for service in both directions and access to passageway to Broadway & 191 St",
+      "ada": false,
+      "reason": "Under Investigation",
+      "outageStart": "11/27/2026 12:35:00 PM",
+      "estimatedReturnToService": "11/27/2026 11:00:00 PM",
+      "maintenance": false
+    },
+    {
+      "timeframe": "current",
+      "equipmentCode": "EL420",
+      "equipmentType": "Elevator",
+      "station": "74 St-Broadway",
+      "routes": [
+        "E",
+        "F",
+        "M",
+        "R",
+        "7"
+      ],
+      "serving": "Roosevelt Av & 74 St (SE corner) to Flushing Mn St-bound 7 plat & E/F/M/R/7 mezzanines.",
+      "ada": true,
+      "reason": "Under Investigation",
+      "outageStart": "11/27/2026 12:58:00 PM",
+      "estimatedReturnToService": "11/27/2026 09:00:00 PM",
       "maintenance": false
     },
     {
