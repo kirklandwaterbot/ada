@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-27T18:41:36.016Z",
+    "generatedAt": "2026-11-28T17:21:59.503Z",
     "source": "Port Authority PATH elevator/escalator status page configuration and live alerts",
     "configUrl": "https://www.panynj.gov/content/dam/path/trip-planner/trip-planner-config.json",
     "alertsUrl": "https://www.panynj.gov/bin/portauthority/alerts?agency=PATH",
@@ -94,9 +94,9 @@
       "elevators": [
         {
           "unitId": "JSQ-elevator-service",
-          "location": "Station elevator service",
-          "status": "operational",
-          "lastUpdated": null
+          "location": "10:23 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access.",
+          "status": "outage",
+          "lastUpdated": "11/28/2026 15:23:50"
         }
       ],
       "escalators": [
@@ -107,7 +107,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": ""
+      "serviceAlert": "10:23 AM: PATH Journal Square elevator between mezzanine and tracks 1 and 2 (trains to 33 St and World Trade Center) is temporarily out of service. Call 800-234-PATH for access."
     },
     {
       "agency": "PATH",
@@ -125,9 +125,9 @@
       "elevators": [
         {
           "unitId": "GRV-elevator-service",
-          "location": "01:31 PM: PATH Grove Street elevator between street and mezzanine is temporarily out of service. We regret this inconvenience.",
-          "status": "outage",
-          "lastUpdated": "11/27/2026 18:31:10"
+          "location": "Station elevator service",
+          "status": "operational",
+          "lastUpdated": null
         }
       ],
       "escalators": [
@@ -138,7 +138,7 @@
           "lastUpdated": null
         }
       ],
-      "serviceAlert": "01:31 PM: PATH Grove Street elevator between street and mezzanine is temporarily out of service. We regret this inconvenience."
+      "serviceAlert": ""
     },
     {
       "agency": "PATH",
