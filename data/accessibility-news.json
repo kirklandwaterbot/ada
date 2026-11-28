@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "checkedAt": "2026-11-27T12:39:12.997Z",
+  "checkedAt": "2026-11-28T07:58:15.571Z",
   "methodology": "Openings are applied automatically only when an MTA/NY State/NYC government page or a recognised NYC news outlet reports that a specific station is now accessible. Reddit posts count through the official or news links they cite; photo-only Reddit reports need two independent posts and are otherwise held for review. Ambiguous station names are never guessed.",
   "sources": [
     {
-      "checkedAt": "2026-11-27T12:39:18.218Z",
+      "checkedAt": "2026-11-28T07:58:21.328Z",
       "itemCount": 13,
       "kind": "mta",
       "name": "MTA press releases",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-27T12:39:19.249Z",
-      "itemCount": 77,
+      "checkedAt": "2026-11-28T07:58:22.327Z",
+      "itemCount": 83,
       "kind": "news",
       "name": "News outlets (Google News)",
       "status": "ok"
     },
     {
-      "checkedAt": "2026-11-27T12:39:32.580Z",
+      "checkedAt": "2026-11-28T07:58:35.712Z",
       "error": "Every subreddit request failed.",
       "itemCount": 0,
       "kind": "reddit",
@@ -310,6 +310,26 @@
       "tier": "official",
       "title": "PHOTOS: MTA Announces Modernized Elevator Opens at Coney Island-Stillwell Av Subway Station",
       "url": "https://www.mta.info/press-release/photos-mta-announces-modernized-elevator-opens-coney-island-stillwell-av-subway"
+    },
+    {
+      "discussionUrl": null,
+      "id": "ee541d65ad59",
+      "kind": "news",
+      "opening": false,
+      "tentative": false,
+      "partial": false,
+      "proofUrls": [
+        "https://news.google.com/rss/articles/CBMia0FVX3lxTE9yTEZYM3JMR2RBXzRkWTlHQzRCVUw3YnFCa25vaEw1Qm1fNVNzR2QyT2tCWEJBTEduanJJZC1tZHhqUVVuMHhBMVFsQl85TVBYT3p4WTZyZzhGX2p4cVJIS2JoOFlEQzZOVHhj?oc=5"
+      ],
+      "publishedAt": "2026-10-27T07:00:00.000Z",
+      "reason": "not-opening",
+      "source": "Brooklyn Eagle",
+      "stations": [],
+      "status": "news",
+      "subject": true,
+      "tier": "news",
+      "title": "Modernized elevator opens at Coney Island-Stillwell Av subway station",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9yTEZYM3JMR2RBXzRkWTlHQzRCVUw3YnFCa25vaEw1Qm1fNVNzR2QyT2tCWEJBTEduanJJZC1tZHhqUVVuMHhBMVFsQl85TVBYT3p4WTZyZzhGX2p4cVJIS2JoOFlEQzZOVHhj?oc=5"
     },
     {
       "discussionUrl": null,
